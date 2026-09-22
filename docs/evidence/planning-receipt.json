@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "artifact_kind": "planning_milestone_receipt",
+  "created_at": "2026-09-22T08:29:25+00:00",
+  "milestone": "M0",
+  "status": "ACCEPTED",
+  "scope": "Planning, specifications and publication; not an analytical software release.",
+  "planning_commit": "a6da031ffdfc3873890535724446f36d2a2c1fd6",
+  "prototype_checkpoint": "7c34e6600746b5c23acc75cb8943499ad530e288",
+  "publication": {
+    "repository": "https://github.com/erickinorganico/career-signals-mx",
+    "visibility": "PUBLIC",
+    "account": "erickinorganico",
+    "permission": "ADMIN",
+    "branch": "main",
+    "verified_remote_sha": "a6da031ffdfc3873890535724446f36d2a2c1fd6",
+    "verified_at": "2026-09-22T08:28:19Z",
+    "methods": [
+      "git ls-remote origin refs/heads/main",
+      "GitHub REST commits/main",
+      "GitHub REST contents/docs/README.md"
+    ],
+    "note": "This receipt records the prior planning commit. Later evidence-only commits can follow it."
+  },
+  "planning_inventory": {
+    "requirements": 18,
+    "tasks": 18,
+    "architecture_decisions": 5,
+    "requirement_mapping_prd_spec_validation": "PASS"
+  },
+  "adversarial_review": {
+    "model": "gpt-6-astra",
+    "effort": "high",
+    "status": "PASS",
+    "findings_resolved": 8,
+    "open_planning_blockers": 0,
+    "report": "docs/PLANNING-REVIEW.md",
+    "scope": "Documentation and implementable contracts only; no runtime tests or renewed source audit."
+  },
+  "documentation_checks": {
+    "command": "python scripts/check_docs.py",
+    "exit_code": 0,
+    "status": "PASS",
+    "files_scanned": 57,
+    "markdown_files": 30,
+    "local_links_checked": 121,
+    "json_files": 5,
+    "errors": [],
+    "staged_diff_check_exit_code": 0,
+    "scope": "Local links, required files, JSON syntax and heuristic credential/private-path scan at planning commit.",
+    "limits": "Not exhaustive secret detection, vulnerability scanning, external link validation or clean installation."
+  },
+  "publication_content_review": {
+    "status": "PASS",
+    "original_material_license": "MIT",
+    "notice": "THIRD_PARTY_NOTICES.md",
+    "included_data": "Authored synthetic fixture and source metadata only.",
+    "excluded": [
+      "Credentials",
+      "Local environments and caches",
+      "Restricted microdata",
+      "Unrelated proprietary material"
+    ],
+    "note": "No bundled third-party runtimes; dependency license inventory remains a software-release gate."
+  },
+  "prototype_audit": {
+    "audit_date": "2026-09-22",
+    "source": "docs/STATUS.md at planning_commit",
+    "tests_reexecuted_for_this_receipt": false,
+    "checks": [
+      {
+        "command": "python -m pytest tests/test_data.py tests/test_quality.py -q",
+        "passed": 7,
+        "exit_code": 0
+      },
+      {
+        "command": "python -m pytest tests/test_scout.py -q",
+        "passed": 11,
+        "exit_code": 0
+      },
+      {
+        "command": "python -m pytest --collect-only -q",
+        "collected": 25,
+        "collection_errors": 1,
+        "exit_code": 2
+      }
+    ],
+    "fixture_rows": 9,
+    "fixture_target": 54,
+    "missing_combinations": 45,
+    "missing_files": [
+      "brujula/report.py",
+      "contracts/agent-run.schema.json"
+    ],
+    "analytical_release_status": "BLOCKED",
+    "clean_install_verified": false,
+    "full_demo_verified": false
+  },
+  "sha256_manifest": {
+    "basis": "Git blob bytes at planning_commit, avoiding checkout newline normalization.",
+    "files": {
+      "AGENTS.md": "b4d183318fdbb9991ba59bc0e0245a447ae90ecd39d05ff181b6c18a4de6f4ce",
+      "CONTRIBUTING.md": "ca4998c755b9082ff7f70bddbd85c77a9d2eb53f84a9ec7d6de4099724a7f180",
+      "LICENSE": "104a35db5e41d7b9e080141d020ac55e388917ebec508b6eec723d5b30d4432a",
+      "PROJECT-EFFICIENCY.md": "52a0598ff58ffd5b91cc726a88b7b987106f53efa641f0abbc53d146f4300d4b",
+      "README.en.md": "fb5378c131f1877aa6264237a973e2a285fcdf3ff6057138300c2f7239ee795d",
+      "README.md": "f4676e7bbd5b2775499d02cb427485166d484b94240b65b1e27bb3a3c6283f1f",
+      "THIRD_PARTY_NOTICES.md": "f027e0d5b3eb7fbdd55798d49958f78b24270bd690fe74264658758ce3c42c84",
+      "docs/ARCHITECTURE.md": "4e3e5ad23f91845ba2d1eda94af9c5761dcfa54faf0cf84ff842f0d167ccaf9c",
+      "docs/CONTRACT.md": "6cbae5d9cdf2244597c4366657d43bd2b845fcccc1ff6cef73bc2af56b5ebf85",
+      "docs/GLOSSARY.md": "5e9d01293aa9d37f7322c3466c4af94ee86cdbba10daae1b56997aa3f4ac32ce",
+      "docs/METHODOLOGY.md": "64a983cfc428f9e0e1e375d0565b5aba5c479d49c31203fb25fcd78e8d1288cf",
+      "docs/ORCHESTRATION.md": "7ab844d566de6408bf02ee8a9da6c8f010e769c06df24d1f3cc43db3437a4f05",
+      "docs/PLAN.md": "f5d9651090a3c35ebf0d075aec2ede6ca04248371ec78b2def96c2fa7097c60d",
+      "docs/PLANNING-REVIEW.md": "04828e56f10649b9a176b86140f334849e7f8addee5c547f4b5ffc1fcc29b36b",
+      "docs/PRD.md": "1c4bbcfb41acb4eac91308c8c2d3a30d1e9443534cab6ab3583d36813b3dd693",
+      "docs/PROJECT-CHARTER.md": "381414a60a51ac13e4be62bf6a35ee8e1e35e9cfe5ca7f604ef41f1158a6f4fc",
+      "docs/README.md": "2ee043dfe39067fd748d1c3fe20407ff09b46301aa5dade0e2975f9a8413638b",
+      "docs/RISKS.md": "49c62845650372af558ef29c8f2990186133e26743f29bf8c6879c8dbee56ee5",
+      "docs/ROADMAP.md": "8a316dd5e48af1eced9051f56afaf46bb252c21ebbfd22a63ddc5407515f718a",
+      "docs/SCOPE.md": "733ec9d619bf9f76044edac383fca2e676325b7a91e3e15b91177bfb09814561",
+      "docs/SOURCES.md": "1e932bb1c7d1b726e69fb5f4e47e629b917098095cc6fe968159ceefc605c67d",
+      "docs/SPEC.md": "85efc66a62795a9e538104273f0326153f6f94d5226b39fa0b87c586547cfab3",
+      "docs/STATUS.md": "d4e9f345839a98d96b58cf22118cc6dd42bf4fe3d89d59b4fd18e6335f5f57b2",
+      "docs/VALIDATION-PLAN.md": "3189fb10d2904976244083b6a23dd64aa91604ec47e1844934b4c4bb26b57b31",
+      "docs/VISUALIZATION.md": "2cb0e253085ff29ab625b63f03e71f0c7f7a1c774836346c49c6c516feda24b7",
+      "docs/decisions/0001-research-repository-not-application.md": "6b397bab516f186209b411f764340db253b653ea8c522a03490d2fd8e79d6ee1",
+      "docs/decisions/0002-python-duckdb-without-required-dbt.md": "43259aa35fa9bbaacd82c556c6bf92492e220640c044c76555efacd5d480aeaf",
+      "docs/decisions/0003-synthetic-first-source-policy.md": "4ab2a7633ee237b4debfdbbaf3630f71b8e180cb120afeea2bf853133fe68107",
+      "docs/decisions/0004-agent-and-publisher-authority.md": "40e3df251ccc1020fb93ade0a86dcabfbddee0fc19c65ba11d4e48bf2f5301e6",
+      "docs/decisions/0005-current-failure-wins-over-historical-success.md": "61294307545d9e3547b45e1e15c3221d4df2798a4879792a456867b6247b472b",
+      "docs/decisions/README.md": "b24c7c18ea5a902f87fa3235168e2db3b5c3306dd28afaa2fb2eba706c768427",
+      "docs/source-research.json": "7e27231da319d2bc6d42d7860fafd70722453f3b50728ea624cfabba99af455b",
+      "scripts/check_docs.py": "9cdb163856c5d152ba8c4572cd65657b9536f603d1e63fa119f2ac10cc6319bf"
+    }
+  }
+}

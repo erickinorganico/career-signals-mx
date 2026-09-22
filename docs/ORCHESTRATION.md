@@ -27,7 +27,7 @@ agentes de esta etapa no retomaron features pendientes.
 | `sol_plan_sources` reutilizado | gpt-5.6-sol / medium | ARCHITECTURE, SPEC, CONTRACT, METHODOLOGY, GLOSSARY, ADRs | Entregado y corregido tras revisión; 18 specs y 5 ADRs |
 | `luna_data` reutilizado | gpt-5.6-luna / medium | STATUS y VALIDATION-PLAN; auditoría sin reparaciones | Entregado: 7 tests datos/calidad y 11 scout; colección global bloqueada |
 | `astra_docs_review` | gpt-6-astra / high | Revisión adversarial documental; PLANNING-REVIEW | PASS en segunda revisión; ocho hallazgos resueltos |
-| Principal | modelo de la tarea principal | README ES/EN, mandato, índice, fuentes públicas, eficiencia, integración y publicación | Acepta M0; preserva checkpoint incompleto `7c34e66` y publica documentos después del checker |
+| Principal | modelo de la tarea principal | README ES/EN, mandato, índice, fuentes públicas, eficiencia, integración y publicación | Acepta M0; checkpoint `7c34e66` y documentos `a6da031` publicados; identidad, visibilidad y SHA remoto verificados |
 
 El runtime no permitió abrir otra subtarea Terra al alcanzar el límite de
 agentes. Se reutilizó el Sol disponible para los specs; no se afirma que Terra
@@ -36,6 +36,9 @@ resoluciones están en [PLANNING-REVIEW](PLANNING-REVIEW.md). El principal
 alineó VALIDATION-PLAN con los IDs canónicos y cerró las aclaraciones sobre
 crashes, staging, receipt final y el índice humano. La aceptación cubre la
 planeación; los bloqueadores del prototipo permanecen en [STATUS](STATUS.md).
+El [recibo M0](evidence/planning-receipt.json) registra el commit publicado y
+el manifiesto SHA-256 del paquete aceptado. Sus hashes usan blobs Git para evitar
+diferencias de finales de línea entre sistemas.
 
 ## Reglas para continuar
 

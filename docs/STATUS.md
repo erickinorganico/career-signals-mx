@@ -4,7 +4,9 @@ Fecha de auditoría: 2026-09-22. **Planeación M0: aceptada. Release analítico:
 BLOCKED.** Las pruebas del prototipo se ejecutaron offline; la identidad y la
 publicación en GitHub se comprobaron por separado. El repositorio es público,
 rama `main`, cuenta `erickinorganico` con permiso `ADMIN`: commit inicial
-`acace35` y checkpoint incompleto `7c34e66` publicados.
+`acace35`, checkpoint incompleto `7c34e66` y baseline documental `a6da031`
+publicados. El [recibo de planeación](evidence/planning-receipt.json) conserva
+el SHA remoto comprobado, la validación y hashes de los documentos de ese commit.
 
 La revisión adversarial de la planeación obtuvo **PASS**, con ocho hallazgos
 corregidos y verificados en [PLANNING-REVIEW](PLANNING-REVIEW.md). La referencia
@@ -24,7 +26,7 @@ técnica es [CONTRACT](CONTRACT.md); las tareas pendientes están en [PLAN](PLAN
 | Reportes Markdown/HTML y gráficas | BLOCKED | `tests/test_report.py` importa `brujula.report` | `brujula/report.py` no existe; la colección completa falla antes de ejecutar reportes |
 | Visualización analítica | DOCUMENTED | `docs/VISUALIZATION.md` define Matplotlib, null como gap, metadata y separación campo/ocupación | No hay evidencia ejecutable hasta restaurar `brujula/report.py` |
 | README y licencia | VERIFIED — documentación | README ES/EN, MIT y THIRD_PARTY_NOTICES revisados; checker documental comprueba entregables, enlaces locales, JSON y patrones de secretos/rutas privadas | No es auditoría exhaustiva de seguridad ni de dependencias; clean setup sigue pendiente |
-| Publicación GitHub | VERIFIED — checkpoint | Push `7c34e66` verificado en [erickinorganico/career-signals-mx](https://github.com/erickinorganico/career-signals-mx), público y rama `main` | La publicación del código incompleto y los documentos no constituye un release analítico |
+| Publicación GitHub | VERIFIED — planeación y checkpoint | Push documental `a6da031` verificado por Git y API en [erickinorganico/career-signals-mx](https://github.com/erickinorganico/career-signals-mx), público y rama `main`; prototipo en `7c34e66` | La publicación del código incompleto y los documentos no constituye un release analítico |
 
 ## Checks ejecutados
 

@@ -19,6 +19,7 @@ verificación y no debe sustituirse por una lectura optimista del plan.
 | Evitar fallos | [RISKS](RISKS.md), [VALIDATION-PLAN](VALIDATION-PLAN.md) | Riesgos, casos rojos y evidencias de cierre |
 | Saber qué está probado | [STATUS](STATUS.md) | Resultados actuales, bloqueadores y límites |
 | Revisar la planeación | [PLANNING-REVIEW](PLANNING-REVIEW.md) | Hallazgos adversariales y resolución, con alcance documental |
+| Verificar la entrega | [Recibo M0](evidence/planning-receipt.json) | Commit remoto, hashes documentales, checks y límites de la entrega |
 | Coordinar agentes | [ORCHESTRATION](ORCHESTRATION.md), [eficiencia](../PROJECT-EFFICIENCY.md) | Routing efectivo y condiciones para Laya |
 | Contribuir | [CONTRIBUTING](../CONTRIBUTING.md) | Cambios acotados y verificación proporcional |
 | Revisar licencias | [LICENSE](../LICENSE), [avisos](../THIRD_PARTY_NOTICES.md) | Autoría original, dependencias y atribución de fuentes |
