@@ -1,0 +1,303 @@
+{
+  "audit_date": "2026-09-22",
+  "project": "Brújula Laboral MX",
+  "decision": {
+    "mvp_numeric_source": "synthetic_fixture",
+    "reason": "ENOE tiene acceso público, metadatos y términos de libre uso explícitos, pero no se encontró un tabulado pequeño por campo con las tres métricas; el cálculo real requiere validar ponderación y varianza del diseño.",
+    "benchmark_source_id": "ola_stps",
+    "synthetic_demo_required_for": [
+      "three_period_time_series",
+      "national_and_jalisco_illustrative_geography"
+    ],
+    "candidate_future_real_source_id": "inegi_enoe_2025_q2"
+  },
+  "sources": [
+    {
+      "source_id": "inegi_enoe_2025_q2",
+      "owner": "Instituto Nacional de Estadística y Geografía (INEGI)",
+      "authority_type": "official_national_statistics",
+      "urls": {
+        "program": "https://www.inegi.org.mx/programas/enoe/15ymas/",
+        "metadata_catalog": "https://www.inegi.org.mx/rnm/index.php/catalog/1121",
+        "terms": "https://www.inegi.org.mx/inegi/terminos.html",
+        "file_description": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/doc/enoe_123_fd_c_bas_amp.pdf",
+        "variable_reconstruction": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/doc/recons_var_15ymas.pdf"
+      },
+      "access": {
+        "status": "available",
+        "observed_on": "2026-09-22",
+        "microdata_condition": "public_access",
+        "credentials_required": false,
+        "paid": false
+      },
+      "terms": {
+        "status": "explicit_free_use_terms_found",
+        "permissions": [
+          "copy_and_distribute",
+          "publish",
+          "adapt_and_reorder",
+          "extract_part_or_all",
+          "commercial_use_as_input"
+        ],
+        "obligations": [
+          "preserve_metadata",
+          "credit_INEGI_and_product",
+          "include_update_date_when_possible",
+          "disclose_analysis_or_transformation",
+          "do_not_imply_INEGI_endorsement"
+        ],
+        "terms_may_change": true
+      },
+      "methodology": {
+        "study_type": "probabilistic_household_survey",
+        "population": "Usual residents of selected dwellings; economic characteristics are collected for ages 12+, while published indicators are generated for ages 15+.",
+        "unit_of_analysis": [
+          "dwelling",
+          "household",
+          "household_member"
+        ],
+        "geographic_coverage": [
+          "national",
+          "state",
+          "self_representing_city"
+        ],
+        "collection_frequency": "continuous_weekly",
+        "publication_frequency": [
+          "monthly",
+          "quarterly"
+        ],
+        "reference_period": "Economic characteristics refer to the week before interview; income refers to the previous month; sociodemographics refer to interview time.",
+        "sampling": "Stratified two-stage design using UPM, with weights adjusted for nonresponse and calibration.",
+        "questionnaire_change": "Expanded COE in Q1; basic COE in Q2-Q4.",
+        "precision_materials": "CV, standard error and confidence intervals are linked for published estimates. Custom field estimates require design-aware variance estimation."
+      },
+      "grain": "person-level microdata joined to dwelling/household tables; derived slice grain is field_of_study x country x quarter x metric",
+      "limitations": [
+        "survey_estimates_not_administrative_counts",
+        "small_field_samples_may_be_imprecise",
+        "must_use_weights_strata_and_upm",
+        "Q1_and_Q2_Q4_questionnaires_are_not_identical",
+        "income_nonresponse_must_not_be_zero_filled"
+      ],
+      "decision": "prioritized_candidate_for_future_extension_numeric_ingestion_not_activated"
+    },
+    {
+      "source_id": "ola_stps",
+      "owner": "Secretaría del Trabajo y Previsión Social (STPS)",
+      "authority_type": "official_government_portal",
+      "urls": {
+        "trends": "https://www.observatoriolaboral.gob.mx/static/estudios-publicaciones/Tendencias_empleo.html",
+        "social_sciences": "https://www.observatoriolaboral.gob.mx/static/estudios-publicaciones/Sociales.html",
+        "terms": "https://www.observatoriolaboral.gob.mx/static/acerca-ola/Condiciones_uso.html",
+        "glossary": "https://www.observatoriolaboral.gob.mx/static/herramientas-sitio/Glosario_terminos.html"
+      },
+      "access": {
+        "status": "partially_available",
+        "observed_on": "2026-09-22",
+        "note": "Direct fetch of the trends endpoint returned HTTP 502 in the audit tool; indexed official pages and the Social Sciences table remained retrievable.",
+        "credentials_required": false,
+        "paid": false
+      },
+      "terms": {
+        "status": "informational_conditions_no_explicit_reuse_license_found",
+        "found": [
+          "informational_purpose",
+          "user_responsible_for_decisions",
+          "STPS_limits_responsibility",
+          "figures_come_from_ENOE_and_SNE"
+        ]
+      },
+      "methodology": {
+        "population": "The glossary defines career statistics over occupied persons with higher education; exact filters must be confirmed per indicator.",
+        "grain": "career or study area at national level",
+        "periodicity": "Page reported figures updated to 2026-Q2 during audit.",
+        "upstream_sources": [
+          "ENOE STPS-INEGI",
+          "Servicio Nacional de Empleo administrative records"
+        ]
+      },
+      "limitations": [
+        "no_explicit_reuse_permission_found",
+        "table_header_says_thousands_of_people_but_displayed_values_look_like_people_counts",
+        "presentation_layer_does_not_expose_full_reproducible_query"
+      ],
+      "decision": "benchmark_only_no_automated_ingest"
+    },
+    {
+      "source_id": "datamexico",
+      "owner": "Secretaría de Economía",
+      "authority_type": "official_government_integration_platform",
+      "urls": {
+        "data_access": "https://www.economia.gob.mx/datamexico/es/about/infoapi",
+        "terms": "https://www.economia.gob.mx/datamexico/es/about/legal",
+        "versions": "https://www.economia.gob.mx/datamexico/es/about/versions",
+        "tesseract_manual": "https://www.economia.gob.mx/datamexico/files/tesseract.pdf"
+      },
+      "access": {
+        "status": "available",
+        "observed_on": "2026-09-22",
+        "formats": [
+          "CSV",
+          "JSON_Tidy",
+          "JSON_Arrays"
+        ],
+        "credentials_required_for_vizbuilder_download": false,
+        "paid": false
+      },
+      "terms": {
+        "status": "reuse_ambiguous_for_open_source_redistribution",
+        "found": [
+          "platform_or_site_content_described_as_AGPLv3",
+          "copies_downloads_or_prints_authorized_for_personal_noncommercial_use",
+          "users_must_not_alter_information",
+          "underlying_data_come_from_multiple_public_sources"
+        ],
+        "conflict": "The software/content license statement does not clearly grant a uniform redistribution license for every underlying dataset."
+      },
+      "methodology": {
+        "population": "Varies by cube and originating source.",
+        "grain": "Varies by cube, drilldown, measure and cut.",
+        "periodicity": "Varies by dataset; version 5.1.0 dated 2025-11-25 reports updated ENOE employment data.",
+        "required_metadata": "Cube data dictionary and originating source must be recorded per observation."
+      },
+      "limitations": [
+        "integrated_platform_is_not_the_originating_authority_for_all_data",
+        "license_scope_is_ambiguous",
+        "measure_semantics_vary_by_cube"
+      ],
+      "decision": "reference_only_pending_license_clarification"
+    },
+    {
+      "source_id": "imco_compara_carreras_2026",
+      "owner": "Instituto Mexicano para la Competitividad (IMCO)",
+      "authority_type": "independent_research_organization",
+      "urls": {
+        "methodology": "https://comparacarreras.imco.org.mx/metodologia/"
+      },
+      "access": {
+        "status": "available",
+        "observed_on": "2026-09-22",
+        "paid": false
+      },
+      "terms": {
+        "status": "all_rights_reserved_no_reusable_data_license_found",
+        "copyright_notice": "© 2026 ComparaCarreras. Todos los derechos reservados."
+      },
+      "methodology": {
+        "population": "Usual residents ages 15-98 with complete interview; professional-degree or postgraduate completers for bachelor's indicators and technical-degree completers for TSU.",
+        "classification": "CMPE 2016 detailed field",
+        "periodicity": "Edition based on the four most recent quarters; 2026 uses 2025-Q2 through 2026-Q1.",
+        "weighting": "Each quarter processed separately, then estimates averaged; rates recalculated from the averages using the complex ENOE design.",
+        "precision_gate": "CV <= 15% in all four quarters, assessed separately for field population and mean income.",
+        "income_population": "Occupied persons working at least 30 hours/week and reporting positive labor income.",
+        "income_transformations": [
+          "upper_outlier_handling",
+          "underreporting_adjustment_using_ENIGH_2024"
+        ]
+      },
+      "limitations": [
+        "derived_values_not_equivalent_to_simple_quarterly_ENOE_estimates",
+        "subgroup_salary_estimates_do_not_receive_the_same_CV_filter",
+        "field_to_occupation_correspondence_is_an_IMCO_reviewed_bridge_not_an_official_identity"
+      ],
+      "decision": "methodology_reference_only"
+    },
+    {
+      "source_id": "inegi_mopradef",
+      "owner": "Instituto Nacional de Estadística y Geografía (INEGI)",
+      "authority_type": "official_national_statistics",
+      "urls": {
+        "program": "https://www.inegi.org.mx/programas/mopradef/default.html?init=1",
+        "terms": "https://www.inegi.org.mx/inegi/terminos.html"
+      },
+      "access": {
+        "status": "available",
+        "observed_on": "2026-09-22",
+        "paid": false
+      },
+      "terms": {
+        "status": "covered_by_INEGI_free_use_terms"
+      },
+      "methodology": {
+        "topic": "sport_and_physical_activity",
+        "population_2013_2024": "Persons ages 18+ in selected dwellings.",
+        "population_2025": "Persons ages 12+ in selected dwellings.",
+        "unit_of_observation": [
+          "selected_dwelling",
+          "household",
+          "eligible_person"
+        ],
+        "periodicity": "quarterly_through_2014_then_annual_from_2015",
+        "breaks": [
+          "independent_operation_and_dwelling_sample_from_2024",
+          "conceptual_and_methodological_update_from_2025",
+          "target_population_changes_from_18_plus_to_12_plus_in_2025"
+        ]
+      },
+      "limitations": [
+        "outside_career_and_labor_domain",
+        "pre_2025_and_2025_total_population_series_not_directly_comparable"
+      ],
+      "decision": "negative_control_for_methodology_breaks"
+    }
+  ],
+  "vertical_slice": {
+    "data_mode": "synthetic_fixture",
+    "synthetic_required": true,
+    "demo_periods": 3,
+    "demo_geographies": [
+      {
+        "type": "country",
+        "id": "MX",
+        "label": "México"
+      },
+      {
+        "type": "state_demo",
+        "id": "demo_jalisco",
+        "label": "Jalisco ilustrativo"
+      }
+    ],
+    "demo_period_ids": [
+      "2025-Q2",
+      "2025-Q3",
+      "2025-Q4"
+    ],
+    "fields": [
+      "Derecho",
+      "Comunicación y periodismo",
+      "Ciencias políticas"
+    ],
+    "field_id_rule": "Use internal demo IDs and label them as synthetic; do not present them as CMPE. Resolve official CMPE identifiers only in the future ENOE extension.",
+    "future_real_period_candidate": "2025-Q2",
+    "future_real_geography": {
+      "type": "country",
+      "id": "MX"
+    },
+    "metrics": [
+      {
+        "metric_id": "employed_people",
+        "population": "Residents ages 15+ with a valid field-of-study code who meet the official occupied-person reconstruction.",
+        "formula": "sum(expansion_factor)",
+        "unit": "persons",
+        "missing_rule": "null_not_zero"
+      },
+      {
+        "metric_id": "mean_monthly_income",
+        "population": "Occupied persons in the field who report positive monetary monthly labor income.",
+        "formula": "sum(monthly_income * expansion_factor) / sum(expansion_factor among valid positive-income reporters)",
+        "unit": "current_MXN_per_month",
+        "missing_rule": "exclude_from_denominator_and_report_nonresponse"
+      },
+      {
+        "metric_id": "female_share",
+        "population": "Occupied persons in the field with valid sex classification.",
+        "formula": "100 * sum(expansion_factor for women) / sum(expansion_factor for valid-sex occupied persons)",
+        "unit": "percent",
+        "missing_rule": "exclude_from_denominator_and_report_missing"
+      }
+    ],
+    "precision_gate": "MVP values are synthetic and remain REVIEW. Future real ENOE ingestion is not activated until population, CMPE, strata, UPM, weights and design-aware variance have been validated. Unquantified real estimates may remain internal research in REVIEW; they are not eligible for numeric release.",
+    "mvp_label": "Datos sintéticos de demostración; no representan mediciones reales de México o Jalisco.",
+    "future_real_attribution": "Fuente: INEGI, Encuesta Nacional de Ocupación y Empleo (ENOE), bases de datos del segundo trimestre de 2025. Cálculos y transformación de Brújula Laboral MX; no realizados ni avalados por INEGI. Consulta: 2026-09-22."
+  }
+}
