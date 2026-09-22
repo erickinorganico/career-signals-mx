@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://brujula.local/contracts/dataset.schema.json",
+  "title": "Brújula Laboral MX dataset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "label", "mode", "description", "sources", "dimensions", "metrics", "evidence", "observations"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "id": {"type": "string", "minLength": 1},
+    "label": {"type": "string", "minLength": 1},
+    "mode": {"enum": ["illustrative", "official_snapshot"]},
+    "description": {"type": "string", "minLength": 1},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+    "dimensions": {"$ref": "#/$defs/dimensions"},
+    "metrics": {"type": "array", "items": {"$ref": "#/$defs/metric"}},
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "observations": {"type": "array", "items": {"$ref": "#/$defs/observation"}}
+  },
+  "$defs": {
+    "concept": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "label", "description"],
+      "properties": {"id": {"type": "string", "minLength": 1}, "label": {"type": "string", "minLength": 1}, "description": {"type": "string", "minLength": 1}}
+    },
+    "geography": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "label"],
+      "properties": {"id": {"type": "string", "minLength": 1}, "label": {"type": "string", "minLength": 1}}
+    },
+    "period": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "label", "start", "end"],
+      "properties": {"id": {"type": "string", "minLength": 1}, "label": {"type": "string", "minLength": 1}, "start": {"type": "string", "format": "date"}, "end": {"type": "string", "format": "date"}}
+    },
+    "bridge": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "from_type", "from_id", "to_type", "to_id", "method", "confidence", "status", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1}, "from_type": {"type": "string", "minLength": 1}, "from_id": {"type": "string", "minLength": 1},
+        "to_type": {"type": "string", "minLength": 1}, "to_id": {"type": "string", "minLength": 1}, "method": {"type": "string", "minLength": 1},
+        "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1}, "status": {"const": "REVIEW"},
+        "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "dimensions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["fields", "occupations", "industries", "geographies", "periods", "bridges"],
+      "properties": {
+        "fields": {"type": "array", "items": {"$ref": "#/$defs/concept"}}, "occupations": {"type": "array", "items": {"$ref": "#/$defs/concept"}},
+        "industries": {"type": "array", "items": {"$ref": "#/$defs/concept"}}, "geographies": {"type": "array", "items": {"$ref": "#/$defs/geography"}},
+        "periods": {"type": "array", "items": {"$ref": "#/$defs/period"}}, "bridges": {"type": "array", "items": {"$ref": "#/$defs/bridge"}}
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "url", "terms_url", "license", "authority", "access_status", "approved", "checked_at", "population", "coverage", "periodicity", "methodology", "notes"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1}, "name": {"type": "string", "minLength": 1}, "url": {"type": ["string", "null"]}, "terms_url": {"type": ["string", "null"]}, "license": {"type": ["string", "null"]}, "authority": {"type": ["string", "null"]}, "access_status": {"type": ["string", "null"]}, "approved": {"type": "boolean"}, "checked_at": {"type": ["string", "null"], "format": "date"}, "population": {"type": ["string", "null"]}, "coverage": {"type": ["string", "null"]}, "periodicity": {"type": ["string", "null"]}, "methodology": {"type": ["string", "null"]}, "notes": {"type": ["string", "null"]}
+      }
+    },
+    "metric": {
+      "type": "object", "additionalProperties": false, "required": ["id", "label", "unit", "description", "price_basis"],
+      "properties": {"id": {"type": "string", "minLength": 1}, "label": {"type": "string", "minLength": 1}, "unit": {"enum": ["MXN/month", "people", "percent"]}, "description": {"type": "string", "minLength": 1}, "price_basis": {"enum": ["nominal", "not_applicable"]}}
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false, "required": ["id", "source_id", "label", "url", "kind", "note"],
+      "properties": {"id": {"type": "string", "minLength": 1}, "source_id": {"type": "string", "minLength": 1}, "label": {"type": "string", "minLength": 1}, "url": {"type": ["string", "null"]}, "kind": {"type": "string", "minLength": 1}, "note": {"type": ["string", "null"]}}
+    },
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "concept_type", "concept_id", "geography_id", "period_id", "metric_id", "value", "source_id", "population", "methodology_id", "unit", "price_basis", "sample_size", "coefficient_variation", "status", "precision_note", "evidence_refs", "synthetic"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1}, "concept_type": {"enum": ["field_of_study", "occupation"]}, "concept_id": {"type": "string", "minLength": 1}, "geography_id": {"type": "string", "minLength": 1}, "period_id": {"type": "string", "minLength": 1}, "metric_id": {"type": "string", "minLength": 1},
+        "value": {"type": ["number", "null"]}, "source_id": {"type": "string", "minLength": 1}, "population": {"type": "string", "minLength": 1}, "methodology_id": {"type": "string", "minLength": 1}, "unit": {"enum": ["MXN/month", "people", "percent"]}, "price_basis": {"enum": ["nominal", "not_applicable"]},
+        "sample_size": {"type": ["integer", "null"], "minimum": 0}, "coefficient_variation": {"type": ["number", "null"], "minimum": 0}, "status": {"enum": ["MEASURED", "REVIEW", "UNKNOWN", "BLOCKED"]}, "precision_note": {"type": ["string", "null"]}, "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}}, "synthetic": {"type": "boolean"}
+      }
+    }
+  }
+}
