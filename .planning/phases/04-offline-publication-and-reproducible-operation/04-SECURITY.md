@@ -47,3 +47,7 @@ This register remains in progress until every authored mitigation has execution 
 ## Audit trail
 
 Initial plan-time register: 17 authored entries, all pending execution evidence. The register records planned controls only; it makes no claim that source changes, installed behavior, rendered artifacts, or release evidence are secure. Phase 5 publication remains a separate gate.
+
+## Resource implementation readback
+
+Plan04-01 now has concrete resource proof at a7ef126 and an independent bounded clean review in04-RESOURCE-REVIEW.md: wheel/resource/font/oracle hashes and forbidden-content inventory match; 12 focused controls pass; installed outside-checkout and Windows native PDF proof is recorded. This supplies evidence for T-04-01/T-04-02/T-04-SC. Entries remain pending final phase audit because later schemas, installed numerical code and actual report font selection still change this boundary. No authored threat is silently waived.
