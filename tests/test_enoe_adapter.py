@@ -44,6 +44,7 @@ def fixture(tmp_path, rows=ROWS, header=HEADER):
     digest = hashlib.sha256(data).hexdigest()
     (root / "raw" / f"{digest}.zip").write_bytes(data)
     config = json.loads(registry.read_text())
+    config["synthetic_fixture"] = True
     next(x for x in config["snapshots"] if x["id"] == sid)["expected_sha256"] = digest
     registry.write_text(json.dumps(config))
     folder = root / "acquisitions" / sid
@@ -59,9 +60,16 @@ def test_complete_frame_design_and_order(tmp_path):
     frame, audit = load_snapshot_frame(sid, root, registry)
     assert len(frame.weight) == 3
     assert audit["raw_rows"] == 4 and audit["frame_rows"] == 3
+    assert frame.synthetic is True and audit["synthetic"] is True
+    assert audit["provenance"] == "declared_synthetic_fixture"
     assert audit["design"]["psus"] == 2 and audit["design"]["strata"] == 1
     assert frame.age.tolist() == [15, 98, 97]
     assert frame.cmpe.tolist() == ["033100", None, "031300"]
+    assert frame.cmpe_catalog_labels["033100"] == "Derecho"
+    assert frame.cmpe_catalog_labels["031300"] == "Ciencias políticas"
+    assert "999999" not in frame.cmpe_catalog_labels
+    with pytest.raises(TypeError):
+        frame.cmpe_catalog_labels["033100"] = "changed"
     assert audit["lexemes"]["cs_p14_c"]["space_padded"] == 1
     assert not any(isinstance(value, list) for value in audit.values())
     sid2, root2, registry2 = fixture(tmp_path / "other", rows=list(reversed(ROWS)))
@@ -106,6 +114,15 @@ def test_cmpe_lookup_matches_phase1_normalizer(tmp_path):
     frame, _ = load_snapshot_frame(sid, root, registry)
     for raw, actual in ((" 33100", frame.cmpe[0]), ("999999", frame.cmpe[1]), ("31300", frame.cmpe[2])):
         assert actual == normalize_cmpe_key(raw, frame.cmpe_catalog_keys)
+
+
+def test_custom_unmarked_registry_cannot_impersonate_official(tmp_path):
+    sid, root, registry = fixture(tmp_path)
+    config = json.loads(registry.read_text())
+    config.pop("synthetic_fixture")
+    registry.write_text(json.dumps(config))
+    with pytest.raises(AcquisitionError, match="provenance"):
+        load_snapshot_frame(sid, root, registry)
     sid, root, registry = fixture(tmp_path / "failed")
     current = root / "acquisitions" / sid / "current.json"
     receipt = json.loads(current.read_text()); receipt["status"] = "FAILED"; current.write_text(json.dumps(receipt))

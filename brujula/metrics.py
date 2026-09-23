@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+from copy import deepcopy
 from collections import Counter
 from collections.abc import Mapping
 from functools import lru_cache
@@ -22,7 +23,7 @@ from .resources import _resource
 
 
 @lru_cache(maxsize=1)
-def load_metric_manifest() -> dict:
+def _metric_manifest_cached() -> dict:
     """Return canonical definitions with a content digest for method identity."""
     path = _resource("catalog", "data/catalog", "enoe-metrics.json")
     document = json.loads(path.read_text(encoding="utf-8"))
@@ -42,6 +43,11 @@ def load_metric_manifest() -> dict:
     document["content_sha256"] = digest
     document["method_version"] = f"{document['version']}:{digest}"
     return document
+
+
+def load_metric_manifest() -> dict:
+    """Return a defensive copy; callers cannot mutate cached method identity."""
+    return deepcopy(_metric_manifest_cached())
 
 
 def _domain(frame: Frame, population_id: str, selector: Mapping) -> np.ndarray:
@@ -146,12 +152,21 @@ def metric_vectors(frame: Frame, population_id: str, domain: dict, metric_id: st
     """Build full-length aligned vectors without dropping zero-domain clusters."""
     if not isinstance(frame, Frame):
         raise TypeError("metric_vectors requires a verified Frame")
-    manifest = load_metric_manifest()
+    if type(frame.synthetic) is not bool:
+        raise ValueError("frame provenance is unclassified")
+    manifest = _metric_manifest_cached()
     definitions = {item["id"]: item for item in manifest["metrics"]}
     if metric_id not in definitions:
         raise ValueError("unknown ENOE metric")
-    if frame.period not in manifest["dictionary_refs"]:
+    expected_dictionary = manifest["dictionary_refs"].get(frame.period)
+    if expected_dictionary is None:
         raise ValueError("quarter lacks metric dictionary reference")
+    actual_dictionary = frame.inventory.get("dictionary_member", {}).get("sha256")
+    if not isinstance(actual_dictionary, str) or len(actual_dictionary) != 64:
+        raise ValueError("frame dictionary digest is invalid")
+    if not frame.synthetic and actual_dictionary != expected_dictionary:
+        raise ValueError("frame dictionary SHA-256 does not match official quarter definition")
+    dictionary_binding = "synthetic_fixture" if frame.synthetic else "official_verified"
     selector_key = (population_id, tuple(sorted(domain.items())))
     cached = frame.metric_cache.get("domain_state")
     if cached is not None and cached[0] == selector_key:
@@ -235,5 +250,6 @@ def metric_vectors(frame: Frame, population_id: str, domain: dict, metric_id: st
     return {
         "numerator": numerator, "denominator": denominator, "domain": d.copy(),
         "coverage": coverage, "exclusions": state["exclusions"],
-        "method_version": manifest["method_version"],
+        "method_version": manifest["method_version"] if not frame.synthetic else f"{manifest['method_version']}:synthetic:{actual_dictionary}",
+        "synthetic": frame.synthetic, "dictionary_binding": dictionary_binding,
     }

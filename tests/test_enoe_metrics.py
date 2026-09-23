@@ -24,6 +24,31 @@ def test_manifest_hash_and_all_metrics():
         assert {"id", "operation", "numerator", "denominator", "unit", "price_basis", "sentinels", "dictionary_refs"} <= set(entry)
 
 
+def test_manifest_return_mutation_cannot_change_later_method(tmp_path):
+    original = load_metric_manifest()
+    expected = original["method_version"]
+    original["method_version"] = "tampered"
+    original["metrics"][0]["id"] = "tampered"
+    original["dictionary_refs"]["2025-Q2"] = "0" * 64
+    fresh = load_metric_manifest()
+    assert fresh["method_version"] == expected
+    assert fresh["metrics"][0]["id"] == "population_total"
+    assert fresh["dictionary_refs"]["2025-Q2"] != "0" * 64
+    result = vectors(tmp_path, "population_total")
+    assert result["method_version"] != "tampered"
+    assert result["synthetic"] is True
+    assert result["dictionary_binding"] == "synthetic_fixture"
+
+
+def test_real_frame_dictionary_mismatch_fails_before_metric(tmp_path):
+    sid, root, registry = fixture(tmp_path)
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    object.__setattr__(frame, "synthetic", False)
+    frame.inventory["dictionary_member"]["sha256"] = "0" * 64
+    with pytest.raises(ValueError, match="dictionary"):
+        metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {}, "occupied_total")
+
+
 def test_occupied_pea_and_suboccupation_are_distinct(tmp_path):
     occupied = vectors(tmp_path / "occupied", "occupied_total")
     pea = vectors(tmp_path / "pea", "pea_total")

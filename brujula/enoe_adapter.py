@@ -12,12 +12,14 @@ import math
 import re
 import zipfile
 from collections import Counter, defaultdict
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
+from types import MappingProxyType
 
 import numpy as np
 
-from .acquisition import AcquisitionError, resolve_snapshot
+from .acquisition import AcquisitionError, _default_registry, _read_registry, resolve_snapshot
 from .populations import normalize_cmpe_key
 from .source_inventory import PERIODS, inventory_snapshot
 
@@ -42,6 +44,9 @@ class Frame:
     inventory: dict
     cmpe_catalog_keys: frozenset[str]
     columns: dict[str, np.ndarray]
+    synthetic: bool | None = None
+    provenance: str = "unclassified"
+    cmpe_catalog_labels: Mapping[str, str] = field(default_factory=lambda: MappingProxyType({}))
     metric_cache: dict = field(default_factory=dict, repr=False, compare=False)
 
     def __len__(self) -> int:
@@ -85,10 +90,11 @@ def _lex(raw: str | None, field: str, counts: Counter) -> str | None:
     return value
 
 
-def _catalog(archive: zipfile.ZipFile, member: str) -> frozenset[str]:
+def _catalog(archive: zipfile.ZipFile, member: str) -> tuple[frozenset[str], Mapping[str, str]]:
     with archive.open(member) as stream:
         reader = csv.DictReader(io.TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
-        keys = [row.get("CVE") for row in reader]
+        rows = list(reader)
+        keys = [row.get("CVE") for row in rows]
     if not keys or any(not isinstance(key, str) for key in keys):
         raise AcquisitionError("CMPE catalog lacks keys")
     # This validates the entire period catalog, including normalized collisions.
@@ -96,7 +102,15 @@ def _catalog(archive: zipfile.ZipFile, member: str) -> frozenset[str]:
     # an eligible field key for the population normalizer.
     valid_keys = [key for key in keys if key != "999999"]
     normalize_cmpe_key("", valid_keys)
-    return frozenset(key.zfill(6) for key in valid_keys)
+    labels = {}
+    for row in rows:
+        key, label = row.get("CVE"), row.get("DESCRIP")
+        if key == "999999":
+            continue
+        if not isinstance(label, str) or not label.strip():
+            raise AcquisitionError("CMPE catalog has an unlabeled field")
+        labels[key.zfill(6)] = label
+    return frozenset(labels), MappingProxyType(labels)
 
 
 def _dictionary(archive: zipfile.ZipFile, member: str, required: set[str]) -> None:
@@ -123,6 +137,27 @@ def load_snapshot_frame(snapshot_id: str, output_root: Path, registry_path: Path
     inventory = inventory_snapshot(snapshot_id, Path(output_root), registry_path)
     if inventory["source_id"] != "inegi_enoe" or inventory["microdata_publication_approved"] is not False:
         raise AcquisitionError("unapproved source identity or publication state")
+    configured = _read_registry(Path(registry_path) if registry_path is not None else _default_registry())
+    approved = _read_registry(_default_registry())
+    approved_item = next((item for item in approved["snapshots"] if item["id"] == snapshot_id), None)
+    if approved_item is None:
+        raise AcquisitionError("snapshot has no approved reference identity")
+    approved_identity = (
+        inventory["raw_sha256"] == approved_item["expected_sha256"]
+        and inventory["source_url"] == approved_item["url"]
+        and inventory["catalog_id"] == approved_item["catalog_id"]
+        and inventory["metadata_url"] == approved_item["metadata_url"]
+        and inventory["authority"] == approved["authority"]
+        and inventory["license"] == approved["license"]
+    )
+    declared_synthetic = configured.get("synthetic_fixture") is True
+    marker = configured.get("synthetic_fixture")
+    if marker is not None and type(marker) is not bool:
+        raise AcquisitionError("synthetic provenance marker must be boolean")
+    if not approved_identity and not declared_synthetic:
+        raise AcquisitionError("custom snapshot lacks approved identity or explicit synthetic provenance")
+    synthetic = declared_synthetic
+    provenance = "declared_synthetic_fixture" if synthetic else "approved_pinned_snapshot"
     path, receipt = resolve_snapshot(snapshot_id, Path(output_root), registry_path)
     if receipt["sha256"] != inventory["raw_sha256"] or receipt["run_id"] != inventory["receipt_run_id"]:
         raise AcquisitionError("snapshot changed after inventory")
@@ -133,7 +168,7 @@ def load_snapshot_frame(snapshot_id: str, output_root: Path, registry_path: Path
     raw_rows = 0
     excluded = Counter()
     with zipfile.ZipFile(path) as archive:
-        catalog = _catalog(archive, inventory["catalog_member"]["path"])
+        catalog, labels = _catalog(archive, inventory["catalog_member"]["path"])
         _dictionary(archive, inventory["dictionary_member"]["path"], required)
         with archive.open(member) as binary:
             reader = csv.DictReader(io.TextIOWrapper(binary, encoding="latin1", newline=""), strict=True)
@@ -197,9 +232,11 @@ def load_snapshot_frame(snapshot_id: str, output_root: Path, registry_path: Path
     after_path, after_receipt = resolve_snapshot(snapshot_id, Path(output_root), registry_path)
     if after_path != path or after_receipt != receipt:
         raise AcquisitionError("snapshot changed during frame load")
-    frame = Frame(snapshot_id, inventory["period"], inventory["source_id"], inventory, catalog, arrays)
+    frame = Frame(snapshot_id, inventory["period"], inventory["source_id"], inventory, catalog, arrays,
+                  synthetic=synthetic, provenance=provenance, cmpe_catalog_labels=labels)
     audit = {
         "snapshot_id": snapshot_id, "period": inventory["period"], "source_id": inventory["source_id"],
+        "synthetic": synthetic, "provenance": provenance,
         "raw_sha256": inventory["raw_sha256"], "sdem_sha256": inventory["sdem_member"]["sha256"],
         "dictionary_sha256": inventory["dictionary_member"]["sha256"], "catalog_sha256": inventory["catalog_member"]["sha256"],
         "raw_rows": raw_rows, "frame_rows": count, "excluded": dict(sorted(excluded.items())),
