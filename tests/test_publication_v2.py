@@ -28,7 +28,10 @@ def test_actual_packet_is_complete_and_exact(packet, model):
     assert len(model["profiles"]["metric_ids"]) == 23
     assert set(model["records"]) == set(packet["record_index"])
     assert model["opening_claim_ids"] == packet["opening_claim_ids"]
-    assert all(link["record_ids"] and link["claim_ids"] for link in model["figure_links"])
+    assert len(model["figure_links"]) == 9
+    assert all(link["record_ids"] for link in model["figure_links"])
+    state = next(link for link in model["figure_links"] if link["figure_id"] == "figure:state-availability")
+    assert len(state["record_ids"]) == 32
 
 
 def test_changed_packet_and_model_are_rejected(packet, model):
