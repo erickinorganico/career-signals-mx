@@ -5,15 +5,15 @@ milestone_name: Release
 current_phase: 02
 current_phase_name: Defensible Survey Estimates
 status: executing
-stopped_at: Phase 2 plan 02-01 executing strict full-frame adapter and metric definitions.
+stopped_at: Phase 2 plan 02-02 executing full-design estimates and strict public projection.
 last_updated: "2026-09-23T04:47:19.752Z"
 last_activity: 2026-09-22
-last_activity_desc: Phase 2 final plan review passed; adapter and metrics implementation started
+last_activity_desc: Eight real adapter audits and 275 regression tests passed; next plan assembles estimates
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 10
-  completed_plans: 4
+  completed_plans: 5
   percent: 20
 ---
 
@@ -29,17 +29,17 @@ See: .planning/PROJECT.md (updated 2026-09-22)
 ## Current Position
 
 Phase: 02 — Defensible Survey Estimates
-Plan: 1 of 3 (02-01)
+Plan: 2 of 3 (02-02, executing)
 Status: executing
-Last activity: 2026-09-22 — Phase 2 final plan review passed; adapter and metrics implementation started
+Last activity: 2026-09-22 — Eight real adapter audits and 275 regression tests passed; next plan assembles estimates
 
-Progress: 1/5 phases accepted; 4/10 currently planned execution plans implemented. This is not release completion.
+Progress: 1/5 phases accepted; 5/10 currently planned execution plans implemented. This is not release completion.
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans implemented: 4
+- Total plans implemented: 5
 - Executor-reported durations are recorded in each plan summary; they exclude orchestration, research and independent reviews.
 
 **By Phase:** Phase 1 — 4/4 plans complete, 27/27 truths verified, six prohibitions mechanically enforced; canonical phase completion returned no warnings.
@@ -59,7 +59,7 @@ Execute Phase 2 sequential waves. Phase 3 targeted plan review passed; execution
 ### Blockers/Concerns
 
 - Phase 1: Complete. Full Python regression 254 passed, no skips; six additional Node controls pass and fail on known bad subjects. Independent verification and canonical closure pass without warnings.
-- Phase 2: Eight source-code/design audits pass. Python/R prototype agrees, but the final known-age cohort oracle is still required. Official 2025-Q2 points reconcile; variance differences are documented project approximations. Full metric adapter and acceptance remain.
+- Phase 2: Adapter and 23 metric definitions implemented; all eight real frames match the prior audit and 275 regression tests pass. Full v2 estimates and final-cohort R/official numerical acceptance remain. Prototype agreement is not final acceptance.
 - Phase 4: Windows offline PDF smoke test passed via verified WeasyPrint 70. Final report parity, visual quality and cross-format suppression remain release gates.
 
 ## Deferred Items
@@ -69,5 +69,5 @@ None. The full real-data scope remains in v1.0.0.
 ## Session Continuity
 
 Last session: 2026-09-22
-Stopped at: Phase 2 plan 02-01 executing; full-frame adapter and metric definitions.
+Stopped at: Phase 2 plan 02-02 executing full-design estimates and strict public projection.
 Resume file: None

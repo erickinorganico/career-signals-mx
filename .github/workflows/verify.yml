@@ -27,7 +27,7 @@ jobs:
       - name: Verify contracts, evals, tests and documentation
         run: python -m brujula verify
       - name: Verify research prohibitions with executable controls
-        run: node --test tests/phase1_prohibitions_*.test.cjs
+        run: node --test tests/phase*_prohibitions_*.test.cjs
       - name: Build and resolve the offline synthetic demonstration
         run: |
           python -m brujula demo --as-of 2026-09-22 --output artifacts/ci-demo
