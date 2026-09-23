@@ -41,6 +41,13 @@ def test_synthetic_packet_has_complete_public_only_shape(monkeypatch):
     assert '"estimate":' not in json.dumps(packet)
 
 
+def test_saved_json_packet_remains_valid_after_round_trip(monkeypatch):
+    packet, _, _, _ = _synthetic_packet(monkeypatch, complementary=True)
+    loaded = json.loads(json.dumps(packet, ensure_ascii=False, allow_nan=False))
+    assert findings_v2.validate_analysis_packet(loaded) == []
+    assert loaded == packet
+
+
 @pytest.mark.parametrize("target", ["source", "record", "label", "coverage", "comparison",
                                      "opening", "limitations", "claim"])
 def test_coherently_rehashed_packet_tampering_fails(monkeypatch, target):
@@ -98,6 +105,8 @@ def test_real_accepted_aggregate_packet(monkeypatch):
               for sid in manifest["snapshots"]}
     registry = load_definition_registry(entity_reference_code="02")
     packet = findings_v2.build_analysis_packet(publics, manifest, audits, registry)
+    # The publication handoff is a persisted JSON artifact, not only an in-memory object.
+    packet = json.loads(json.dumps(packet, ensure_ascii=False, allow_nan=False))
     assert findings_v2.validate_analysis_packet(packet) == []
     assert len(packet["record_index"]) == 6739
     assert len(packet["comparisons"]) == 4209
