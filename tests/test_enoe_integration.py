@@ -112,6 +112,15 @@ def test_internal_initialization_cannot_rewrite_public_baseline():
         initialize_internal_golden(prior, changed)
 
 
+def test_internal_initialization_is_idempotent_but_cannot_replace_existing_pin():
+    snapshot, _, _, golden = _numeric_pin_fixture()
+    assert initialize_internal_golden(golden, deepcopy(golden)) == golden
+    changed = deepcopy(golden)
+    changed["internal_content_sha256_by_snapshot"][snapshot] = "replacement"
+    with pytest.raises(ValueError, match="would change approved internal"):
+        initialize_internal_golden(golden, changed)
+
+
 def test_failure_invalidates_previous_success(tmp_path):
     write_attempt(tmp_path, {"status": "PASS", "digest": "old"})
     write_attempt(tmp_path, {"status": "BLOCKED", "reason": "numerical_failure"})

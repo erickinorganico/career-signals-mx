@@ -77,11 +77,14 @@ def compare_pinned_numeric_content(public: dict, internal: dict, golden: dict,
 
 
 def initialize_internal_golden(prior: dict, candidate: dict) -> dict:
-    """Add internal hashes only; every approved public/official pin stays fixed."""
+    """Initialize absent internal hashes; an existing pin is immutable."""
     without_internal = lambda value: {key: item for key, item in value.items()
                                       if key != "internal_content_sha256_by_snapshot"}
     if without_internal(prior) != without_internal(candidate):
         raise ValueError("golden initialization would change approved public or official evidence")
+    if ("internal_content_sha256_by_snapshot" in prior
+            and prior["internal_content_sha256_by_snapshot"] != candidate["internal_content_sha256_by_snapshot"]):
+        raise ValueError("golden initialization would change approved internal diagnostics")
     return {**prior, "internal_content_sha256_by_snapshot": candidate["internal_content_sha256_by_snapshot"]}
 
 
