@@ -116,6 +116,44 @@ def _method_version(manifest: dict) -> str:
     return f"{VARIANCE_METHOD}:adapter:{adapter_hash}:metrics:{manifest['content_sha256']}"
 
 
+def _population_coverage(frame, domain: dict) -> dict:
+    """Unweighted, possibly overlapping exclusion counts before field filtering."""
+    scope = np.ones(len(frame), dtype=bool)
+    if domain["geography_id"] != "mx":
+        geography = frame.columns[frame.inventory["geography_header"].lower()]
+        scope &= geography == int(domain["geography_id"])
+    if domain["recorded_sex_id"] != "all":
+        scope &= frame.sex == int(domain["recorded_sex_id"])
+    age_eligible = (frame.eda >= 15) & (frame.eda <= (98 if domain["population_id"] == NATIONAL_15_PLUS_CONTEXT else 97))
+    professional = (frame.cs_p13_1 == 7) & (frame.cs_p16 == 1)
+    population_eligible = scope & age_eligible
+    if domain["population_id"] == COMPLETED_PROFESSIONAL_KNOWN_AGE:
+        population_eligible &= professional
+    field = domain["field_of_study_id"]
+    masks = {
+        "age_unknown": np.isin(frame.eda, [98, 99, -1]),
+        "age_below_15": frame.eda < 15,
+        "technical_education": frame.cs_p13_1 == 6,
+        "postgraduate_education": np.isin(frame.cs_p13_1, [8, 9]),
+        "unknown_education": np.isin(frame.cs_p13_1, [-1, 0, 99]),
+        "incomplete_education": frame.cs_p16 == 2,
+        "unknown_completion": np.isin(frame.cs_p16, [-1, 9]),
+        "unknown_field": frame.cs_p14_c == None,  # noqa: E711 - NumPy object array comparison
+    }
+    counts = {name: int(np.count_nonzero(scope & mask)) for name, mask in masks.items()}
+    counts["unknown_field_eligible_professional"] = int(np.count_nonzero(
+        scope & age_eligible & professional & masks["unknown_field"]))
+    if field != "all":
+        counts["other_known_field"] = int(np.count_nonzero(
+            population_eligible & (frame.cs_p14_c != None) & (frame.cs_p14_c != field)))  # noqa: E711
+    return {
+        "responding_resident_n": int(np.count_nonzero(scope)),
+        "population_eligible_n": int(np.count_nonzero(population_eligible)),
+        "counts_nonexclusive": True,
+        "exclusions": counts,
+    }
+
+
 def _record(frame, domain: dict, metric: dict, vectors: dict, design: SurveyDesign,
             method_version: str, evidence_id: str, *, synthetic: bool) -> dict:
     operation = metric["operation"]
@@ -194,11 +232,17 @@ def estimate_snapshot(snapshot_id: str, output_root: Path, *, domains: list[dict
     if frame_audit["synthetic"] != frame.synthetic or frame_audit.get("provenance") != frame.provenance:
         raise ValueError("frame and audit synthetic provenance disagree")
     synthetic = frame_audit["synthetic"]
+    if synthetic:
+        method_version += f":synthetic:{frame.inventory['dictionary_member']['sha256']}"
     records = []
     requested = {}
     evaluated = {}
+    population_coverage = {}
     for domain, population, selector in sorted(parsed, key=lambda item: tuple(item[0][key] for key in
                                                ("population_id", "field_of_study_id", "geography_id", "recorded_sex_id"))):
+        domain_key = "|".join((domain["population_id"], domain["field_of_study_id"],
+                               domain["geography_id"], domain["recorded_sex_id"]))
+        population_coverage[domain_key] = _population_coverage(frame, domain)
         for metric in sorted(manifest["metrics"], key=lambda item: item["id"]):
             grain = (snapshot_id, domain["population_id"], domain["field_of_study_id"], "all", "all",
                      domain["geography_id"], domain["recorded_sex_id"], frame.period, metric["id"], METHOD_ID)
@@ -210,7 +254,14 @@ def estimate_snapshot(snapshot_id: str, output_root: Path, *, domains: list[dict
             if tuple(record[name] for name in GRAIN) != grain:
                 raise ValueError("evaluated record grain differs from request")
             evaluated[ledger_key] = {"status": record["status"], "has_estimate": record["estimate"] is not None,
-                                     "reason": record["reason"]}
+                                     "reason": record["reason"],
+                                     "coverage": {name: vectors["coverage"][name] for name in
+                                                  ("domain_n", "eligible_n", "reason")},
+                                     "exclusions": dict(vectors["exclusions"]),
+                                     "method_version": record["method_version"],
+                                     "metric_version": vectors["method_version"],
+                                     "dictionary_binding": vectors["dictionary_binding"],
+                                     "synthetic": vectors["synthetic"]}
             records.append(record)
     if requested.keys() != evaluated.keys() or len(records) != len(requested):
         raise ValueError("estimation inventory has unevaluated cells")
@@ -251,6 +302,8 @@ def estimate_snapshot(snapshot_id: str, output_root: Path, *, domains: list[dict
         raise ValueError(f"invalid public research v2: {failures[:5]}")
     audit = {"snapshot_id": snapshot_id, "period": frame.period, "raw_sha256": inventory["raw_sha256"],
              "synthetic": synthetic, "provenance": frame.provenance,
+             "method_version": method_version, "dictionary_sha256": inventory["dictionary_member"]["sha256"],
+             "source_frame_audit": frame_audit, "population_coverage": population_coverage,
              "design": {"n_psu_design": design.n_psu_design, "n_strata_design": design.n_strata_design,
                         "design_df": design.design_df, "singleton_strata": design.singleton_strata_count},
              "requested_cells": requested, "evaluated_cells": evaluated,

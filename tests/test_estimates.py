@@ -128,3 +128,37 @@ def test_missing_synthetic_provenance_fails_closed(monkeypatch, tmp_path):
               "geography_id": "mx", "recorded_sex_id": "all"}
     with pytest.raises(ValueError, match="synthetic provenance"):
         estimates.estimate_snapshot("enoe_2025_q2", tmp_path, domains=[domain])
+
+
+def test_aggregate_audit_keeps_distinct_exclusions_without_weighted_leaks(monkeypatch, tmp_path):
+    from brujula import estimates
+    frame = synthetic_frame()
+    columns = dict(frame.columns)
+    for name in ("eda", "cs_p13_1", "cs_p16", "cs_p14_c", "ingocup"):
+        columns[name] = columns[name].copy()
+    columns["cs_p14_c"] = columns["cs_p14_c"].astype(object)
+    columns["eda"][0] = 98
+    columns["cs_p13_1"][1] = 6
+    columns["cs_p13_1"][2] = 8
+    columns["cs_p16"][3] = 2
+    columns["cs_p14_c"][4] = None
+    columns["ingocup"][6] = 0
+    frame = replace(frame, columns=columns)
+    source_audit = {"synthetic": True, "provenance": frame.provenance,
+                    "lexemes": {"eda": {"digits": 40}}}
+    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (frame, source_audit))
+    domain = {"population_id": "completed_professional_known_age", "field_of_study_id": "all",
+              "geography_id": "mx", "recorded_sex_id": "all"}
+    output = estimates.estimate_snapshot(frame.snapshot_id, tmp_path, domains=[domain])
+    audit = output["audit"]
+    assert audit["source_frame_audit"]["lexemes"]["eda"]["digits"] == 40
+    population = audit["population_coverage"]["completed_professional_known_age|all|mx|all"]
+    assert population["responding_resident_n"] == 40
+    assert population["counts_nonexclusive"] is True
+    assert all(population["exclusions"][key] == 1 for key in
+               ("age_unknown", "technical_education", "postgraduate_education",
+                "incomplete_education", "unknown_field_eligible_professional"))
+    income_key = next(key for key in audit["evaluated_cells"] if "|positive_income_mean|" in key)
+    assert audit["evaluated_cells"][income_key]["exclusions"]["income_amount_unknown"] >= 1
+    assert audit["evaluated_cells"][income_key]["coverage"]["eligible_n"] > 0
+    assert "weighted_denominator" not in json.dumps(audit)
