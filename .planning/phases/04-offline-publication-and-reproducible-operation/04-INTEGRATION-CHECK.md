@@ -76,3 +76,23 @@ Checked the final targeted `04-05-PLAN.md` revision on 2026-09-23. **Result: PAS
 The revised readback and Task 1 explicitly compare the sealed packet's `source_manifest.acceptance` to the selected immutable numerical receipt before promotion. The named fields match `findings_v2._source_manifest`: `status`, `numeric_content_digest`, `metric_manifest_sha256`, fixed `code_sha256`, and for each of eight snapshots `public_content_sha256`, `numeric_digest`, `requested_count`. The packet's source `period_id`, `sha256`, `url` and `method_version` are compared with accepted catalogs and live custody. The sanitized summary retains acceptance attempt ID and receipt SHA separately from canonical content, and Task 2 cross-checks the sealed `analysis.json` on current resolution; reconstruction replay repeats that check. Mismatched packet/receipt association and altered summary are explicit negative tests.
 
 The distinction between canonical content and acquisition attempts is correct: a newly accepted attempt with identical approved content can reproduce the same analysis packet while its source/current and acceptance attempt identities are still verified and recorded separately. Raw payload digests and acquisition clocks are intentionally outside the analytical identity. This remains a static plan verdict; implementation and real installed replay evidence are still required.
+
+## Final publication-schema resource delta
+
+Checked only the new `04-05-PLAN.md` resource ownership/registration delta against `brujula/resources.py`, `tests/test_installed_runtime.py`, `pyproject.toml` and `brujula/enoe_acceptance.py` on 2026-09-23. **Result: 0 BLOCKER, 1 WARNING.**
+
+The missing implementation is correctly identified: `_SCHEMA_NAMES` lacks `publication-manifest-v2.schema.json`, while the installed resource test still asserts 23 authored resources. The plan assigns both `brujula/resources.py` and `tests/test_installed_runtime.py` to Task 1 and requires the schema in the exact 24-resource inventory. `pyproject.toml` already packages `contracts/*.json`, so no separate package-data change is needed. `_numeric_resource_digests()` has a fixed seven-resource map that excludes this downstream schema, and the numerical code inventory is separately fixed; this plan edit does not require numerical repinning or survey recomputation.
+
+**WARNING — verification_derivation, Plan 04-05 Task 1.** Task 1 owns the changed installed-runtime test, but its `<verify><automated>` command runs only `tests/test_pipeline_v2.py`. That command need not detect the stale 23-resource assertion or missing installed schema. **Fix:** include `tests/test_installed_runtime.py` in Task 1's automated verify command so this registration is checked before the task is marked done. The later full-suite gate still exists, so this is a feedback-timing warning rather than a phase-goal blocker.
+
+```yaml
+issues:
+  - plan: "04-05"
+    task: 1
+    dimension: verification_derivation
+    severity: WARNING
+    description: "Task 1 owns the installed resource inventory test but does not run it in its automated verify command."
+    fix_hint: "Add tests/test_installed_runtime.py to Task 1 automated verification."
+```
+
+**Final delta recheck: PASS, 0 BLOCKER, 0 WARNING.** Task 1 now runs both `tests/test_pipeline_v2.py` and `tests/test_installed_runtime.py` in its automated verify command. The prior warning is resolved; the 24-resource schema registration and unchanged seven-resource numerical boundary remain explicit in the plan. This is a plan verdict, not a claim that execution tests have passed.
