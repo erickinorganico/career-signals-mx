@@ -15,8 +15,19 @@ tech-stack:
   added: [numpy==2.5.3 direct dependency]
   patterns: [single-pass column loading, one-domain bounded mask cache, content-dependent negative controls]
 key-files:
-  created: [brujula/enoe_adapter.py, brujula/metrics.py, data/catalog/enoe-metrics.json, tests/test_enoe_adapter.py, tests/test_enoe_metrics.py, tests/phase2_prohibitions_01.py, tests/phase2_prohibitions_01.test.cjs]
-  modified: [pyproject.toml]
+  created:
+    - brujula/enoe_adapter.py
+    - brujula/metrics.py
+    - data/catalog/enoe-metrics.json
+    - tests/test_enoe_adapter.py
+    - tests/test_enoe_metrics.py
+    - tests/phase2_prohibitions_01.py
+    - tests/phase2_prohibitions_01.test.cjs
+    - tests/fixtures/phase2_prohibitions/01.clean.json
+    - tests/fixtures/phase2_prohibitions/01-p1.bad.json
+    - tests/fixtures/phase2_prohibitions/01-p2.bad.json
+  modified:
+    - pyproject.toml
 key-decisions:
   - "Keep every valid responding/resident row and design PSU before domain restriction."
   - "Exclude unknown labor and SUB_O states from rate denominators with explicit counts."
@@ -73,7 +84,7 @@ status: complete
 - `load_metric_manifest()` validates the catalog's canonical SHA-256 and returns `method_version=enoe-metrics-2026-09-22:2ee87c8b7bfae9addcdf224ae93071023b918a5a22012e1355b9378b73e5827e`. `metric_vectors(frame, population_id, domain, metric_id)` returns `numerator`, `denominator`, `domain`, `coverage`, `exclusions`, and `method_version`. Arrays retain full-frame alignment; empty denominators have null weighted coverage and an explicit reason.
 - Both Phase 2 prohibitions have portable Node/Python checks over current APIs. Synthetic bad subjects independently trigger the named failure, clean subjects pass, and the canonical GSD producer returned `status=green`, `located=true`, `flagged=false`, `failFirstProof=violation-fixture` for each.
 
-## Verification
+## Validation Results
 
 - Focused Python controls: 83 passed after the denominator/cache changes; 21 adapter/metric tests passed after the final catalog lookup optimization.
 - Full Python regression at final implementation HEAD `b6c2fcc`, run by the integration owner: 275 passed, 0 skipped, with only the established duplicate-ZIP fixture warning.
@@ -97,6 +108,13 @@ status: complete
 2. **Task 2 — metric definitions:** `c279ad9` RED, `d7d8a9f` GREEN, `cb2d0b1` denominator/cache correction.
 3. **Task 3 — prohibition controls:** `ae8cc8d` Node/fixture control, `4626a87` current API runner. The content scanner itself was corrected before the GREEN commit.
 4. **Cross-task real-source performance:** `b6c2fcc` validates CMPE keys once and performs equivalent O(1) row lookup; focused parity test passed.
+
+## Files Created and Modified
+
+- `brujula/enoe_adapter.py` and `brujula/metrics.py` implement the frame and metric APIs.
+- `data/catalog/enoe-metrics.json` records the 23 metric definitions and canonical content hash.
+- `tests/test_enoe_adapter.py`, `tests/test_enoe_metrics.py`, `tests/phase2_prohibitions_01.py`, and `tests/phase2_prohibitions_01.test.cjs` hold the behavioral and negative controls.
+- `pyproject.toml` pins the direct NumPy dependency. Three small JSON subjects live under `tests/fixtures/phase2_prohibitions/`.
 
 ## Deviations from Plan
 
