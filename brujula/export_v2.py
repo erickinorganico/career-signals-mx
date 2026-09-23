@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import json
 import os
 from pathlib import Path
 import shutil
@@ -36,6 +37,7 @@ COMPARISON_COLUMNS = {
     "absolute_change": "DOUBLE", "relative_change_pct": "DOUBLE", "display_unit": "VARCHAR",
     "reasons": "VARCHAR", "limitations": "VARCHAR", "source_snapshot_ids": "VARCHAR",
     "source_sha256s": "VARCHAR", "slot_periods": "VARCHAR",
+    "signature_previous": "VARCHAR", "signature_current": "VARCHAR",
 }
 
 CLAIM_COLUMNS = {
@@ -67,15 +69,18 @@ def _record_rows(model: dict) -> list[tuple]:
     return rows
 
 
+def _canonical_json(value: object) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True,
+                      separators=(",", ":"), allow_nan=False)
+
+
 def _table_data(model: dict) -> dict[str, tuple[dict[str, str], list[tuple]]]:
     tables: dict[str, tuple[dict[str, str], list[tuple]]] = {}
     tables["public_records"] = (RECORD_COLUMNS, _record_rows(model))
     tables["comparisons"] = (COMPARISON_COLUMNS, [tuple({**entry,
-        "reasons": "|".join(entry["reasons"]),
-        "limitations": "|".join(entry["limitations"]),
-        "source_snapshot_ids": "|".join(entry["source_snapshot_ids"]),
-        "source_sha256s": "|".join(entry["source_sha256s"]),
-        "slot_periods": "|".join(entry["slot_periods"])}.get(name)
+        **{field: _canonical_json(entry[field]) for field in
+           ("reasons", "limitations", "source_snapshot_ids", "source_sha256s",
+            "slot_periods", "signature_previous", "signature_current")}}.get(name)
         for name in COMPARISON_COLUMNS) for entry in sorted(model["comparisons"], key=lambda e: e["comparison_id"])])
     tables["claims"] = (CLAIM_COLUMNS, [tuple({**claim, **claim["quantities"]}.get(name)
         for name in CLAIM_COLUMNS) for claim in sorted(model["claims"], key=lambda c: c["claim_id"])])
@@ -148,6 +153,13 @@ def _dictionary(tables: dict) -> str:
         "reason": "Public reason for limitation or missing value; CSV blank represents SQL null.",
         "field_of_study_id": "Text classification code; leading zeros are significant.",
         "geography_id": "Text geography code; leading zeros are significant.",
+        "signature_previous": "Canonical UTF-8 JSON object for the previous endpoint's complete comparability signature. Parse as JSON; all keys and types are preserved.",
+        "signature_current": "Canonical UTF-8 JSON object for the current endpoint's complete comparability signature. Parse as JSON; all keys and types are preserved.",
+        "reasons": "Canonical UTF-8 JSON array of comparison reasons; parse as JSON to preserve array boundaries.",
+        "limitations": "Canonical UTF-8 JSON array of comparison limitations; parse as JSON to preserve array boundaries.",
+        "source_snapshot_ids": "Canonical UTF-8 JSON array of endpoint source snapshot IDs.",
+        "source_sha256s": "Canonical UTF-8 JSON array of endpoint source hashes.",
+        "slot_periods": "Canonical UTF-8 JSON array of comparison periods.",
     }
     lines = ["# Brújula Laboral MX public data dictionary", "",
              "All tables derive from the independently pinned Phase 3 sanitized public packet.",

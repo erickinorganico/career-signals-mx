@@ -27,11 +27,12 @@ def _figure_links(claims: list[dict], opening_ids: list[str], records: dict,
     def add(name: str, ids: list[str], claim_ids: list[str] | None = None) -> None:
         selected = sorted(set(ids))
         if not selected:
-            raise ValueError(f"declared public figure {name} is empty")
+            return  # A sparse accepted packet may have no supported row for this figure.
         present = set(selected)
         comparison_ids = sorted(c["comparison_id"] for c in comparisons
                                 if c["previous_record_id"] in present
-                                and c["current_record_id"] in present)
+                                and c["current_record_id"] in present
+                                and c["comparable"] is True and c["status"] == "REVIEW")
         links.append({"figure_id": "figure:" + name, "table_id": "table:" + name,
                       "record_ids": selected, "comparison_ids": comparison_ids,
                       "claim_ids": claim_ids or [],

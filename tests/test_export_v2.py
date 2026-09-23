@@ -10,7 +10,7 @@ import pytest
 from brujula.export_v2 import export_public_tables
 from brujula.export_v2 import _csv_value
 from brujula.publication_v2 import build_publication_model
-from tests.test_analysis_integration import _synthetic_packet
+from tests.publication_v2_support import pinned_synthetic_packet
 
 
 PACKET = Path(__file__).resolve().parents[1] / ".cache/research/phase3-analysis/analysis.json"
@@ -18,8 +18,7 @@ PACKET = Path(__file__).resolve().parents[1] / ".cache/research/phase3-analysis/
 
 @pytest.fixture
 def synthetic_packet(monkeypatch):
-    packet, *_ = _synthetic_packet(monkeypatch, complementary=True)
-    return packet
+    return pinned_synthetic_packet(monkeypatch)
 
 
 @pytest.fixture
@@ -89,11 +88,10 @@ def _assert_comparison_parity(packet, target, db):
         source = expected[exported["comparison_id"]]
         assert set(source) - set(columns) == {"evidence_refs"}
         for column, value in exported.items():
-            if column in ("signature_previous", "signature_current"):
+            if column in ("signature_previous", "signature_current", "reasons", "limitations",
+                          "source_snapshot_ids", "source_sha256s", "slot_periods"):
                 assert value == _canonical(source[column])
                 assert json.loads(value) == source[column]
-            elif column in ("reasons", "limitations", "source_snapshot_ids", "source_sha256s", "slot_periods"):
-                assert value == "|".join(source[column])
             else:
                 assert value == source[column]
             assert csv_row[column] == ("" if value is None else str(_csv_value(value)))

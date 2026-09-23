@@ -9,7 +9,7 @@ import pytest
 from brujula.publication_v2 import build_publication_model, validate_publication_model
 from brujula.publication_v2 import _figure_links
 from brujula.analysis_v2 import _digest
-from tests.test_analysis_integration import _synthetic_packet
+from tests.publication_v2_support import pinned_synthetic_packet
 
 
 PACKET = Path(__file__).resolve().parents[1] / ".cache/research/phase3-analysis/analysis.json"
@@ -17,8 +17,7 @@ PACKET = Path(__file__).resolve().parents[1] / ".cache/research/phase3-analysis/
 
 @pytest.fixture
 def packet(monkeypatch):
-    packet, *_ = _synthetic_packet(monkeypatch, complementary=True)
-    return packet
+    return pinned_synthetic_packet(monkeypatch)
 
 
 @pytest.fixture
