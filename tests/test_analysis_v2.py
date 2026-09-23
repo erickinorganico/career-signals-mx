@@ -181,3 +181,18 @@ def test_observed_exact_income_response_has_explicit_denominator_and_empty_state
     assert analysis_v2._observed_response(10, 10)["observed_percent"] == 100.0
     with pytest.raises(ValueError, match="response count"):
         analysis_v2._observed_response(11, 10)
+
+
+def test_complementary_parent_cannot_reveal_one_suppressed_state():
+    parent = {"value": 900.0, "status": "REVIEW", "reason": "project_singleton_adjustment",
+              "weighted_denominator_estimate": 900.0,
+              "support": {"weighted_support_total": 900.0},
+              "precision": {"standard_error": 9.0, "coefficient_variation": 1.0,
+                            "ci90_lower": 880.0, "ci90_upper": 920.0}}
+    parts = [{"value": float(i)} for i in range(31)] + [{"value": None}]
+    analysis_v2._redact_parent_if_complementary(parent, parts)
+    assert parent["value"] is None
+    assert parent["reason"] == "complementary_suppression"
+    assert parent["weighted_denominator_estimate"] is None
+    assert parent["support"]["weighted_support_total"] is None
+    assert all(parent["precision"][key] is None for key in analysis_v2.SUPPRESSED_PRECISION)
