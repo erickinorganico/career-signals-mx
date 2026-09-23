@@ -1,0 +1,18 @@
+{
+  "suite_id": "brujula_claim_authority_v1",
+  "version": "1.0",
+  "cases": [
+    {"id": "baseline", "category": "contract", "mutation": "none", "expected": "accept", "critical": true},
+    {"id": "false_zero", "category": "null_semantics", "mutation": "false_zero", "expected": "reject", "critical": true},
+    {"id": "invented_numeric", "category": "claims", "mutation": "invented_numeric", "expected": "reject", "critical": true},
+    {"id": "concept_confusion", "category": "concepts", "mutation": "concept_confusion", "expected": "reject", "critical": true},
+    {"id": "vacancy_claim", "category": "concepts", "mutation": "vacancy_claim", "expected": "reject", "critical": true},
+    {"id": "evidence_orphan", "category": "evidence", "mutation": "evidence_orphan", "expected": "reject", "critical": true},
+    {"id": "evidence_incongruent", "category": "evidence", "mutation": "evidence_incongruent", "expected": "reject", "critical": true},
+    {"id": "method_mismatch", "category": "comparability", "mutation": "method_mismatch", "expected": "reject", "critical": true},
+    {"id": "comparison_claim_v1", "category": "comparability", "mutation": "comparison_claim_v1", "expected": "reject", "critical": true},
+    {"id": "causal_claim", "category": "claims", "mutation": "causal_claim", "expected": "reject", "critical": true},
+    {"id": "instruction_like_input", "category": "authority", "mutation": "instruction_like_input", "expected": "accept", "critical": true},
+    {"id": "no_match", "category": "abstention", "mutation": "no_match", "expected": "accept", "critical": true}
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://brujula.local/contracts/agent-run.schema.json",
+  "title": "Deterministic read-only agent replay",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mode", "publication_allowed", "roles", "insights"],
+  "properties": {
+    "mode": {"const": "deterministic_replay"},
+    "publication_allowed": {"type": "boolean"},
+    "roles": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"$ref": "#/$defs/role"}},
+    "insights": {"type": "array", "items": {"$ref": "https://brujula.local/contracts/insight.schema.json"}}
+  },
+  "$defs": {
+    "proposal": {
+      "type": "object", "additionalProperties": false,
+      "required": ["action", "target_id", "status", "rationale"],
+      "properties": {
+        "action": {"enum": ["review_source", "review_bridge"]},
+        "target_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_.:-]{0,127}$"},
+        "status": {"const": "REVIEW"},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "role": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "label", "status", "read_only", "summary", "proposals", "evidence_refs"],
+      "properties": {
+        "id": {"enum": ["source_scout", "schema_mapper", "data_quality_guardian", "insight_analyst", "visualization_planner", "publisher"]},
+        "label": {"type": "string", "minLength": 1},
+        "status": {"enum": ["MEASURED", "REVIEW", "UNKNOWN", "BLOCKED"]},
+        "read_only": {"const": true},
+        "summary": {"type": "string", "minLength": 1},
+        "proposals": {"type": "array", "items": {"$ref": "#/$defs/proposal"}},
+        "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    }
+  }
+}

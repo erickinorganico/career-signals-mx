@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://brujula.local/contracts/insight.schema.json",
+  "title": "Evidence-bound analytical insight",
   "type": "object",
   "additionalProperties": false,
   "required": ["id", "status", "title", "observation", "interpretation", "recommendation", "evidence_refs", "unknowns", "synthetic"],
