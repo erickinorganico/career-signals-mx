@@ -2,11 +2,13 @@
 
 **Researched:** 2026-09-22  
 **Domain:** static editorial publication, public aggregate exports, sealed local runs  
-**Confidence:** MEDIUM (v2 numerical and analytical acceptance remain pending)
+**Confidence:** MEDIUM (Phase 2 numerical acceptance passed; Phase 3 analytical acceptance remains pending)
+
+**Execution readback, 2026-09-23:** Phase 2 is accepted and Phase 3 Plan 03-01 now returns a sanitized `profiles["record_index"]`. This common analysis projection propagates complementary parent redactions. Phase 4 must consume the final validated Phase 3 packet and that projection; rebuilding the original public projection directly from numerical estimates would restore those additional redactions. Inspect accepted 03-02/03 interfaces before executable planning.
 
 ## User Constraints
 
-No Phase 4 `CONTEXT.md` exists. The following authorized constraints come from `AGENTS.md`, `.planning/PROJECT.md`, `.planning/ROADMAP.md`, `.planning/REQUIREMENTS.md`, and Phase 3's locked context. [VERIFIED: local project files]
+This research preceded the now-present `04-CONTEXT.md` and `04-EDITORIAL-SPEC.md`; those reviewed decisions govern execution. The following authorized constraints come from `AGENTS.md`, `.planning/PROJECT.md`, `.planning/ROADMAP.md`, `.planning/REQUIREMENTS.md`, and Phase 3's locked context. [VERIFIED: local project files]
 
 ### Locked decisions
 
@@ -61,7 +63,7 @@ The existing v1 `pipeline.py` is the operational pattern, not a reusable data sh
 
 The project-local PDF probe has already rendered Spanish text, inline SVG, an 80-row table and page numbering using WeasyPrint 70.0 on Windows with local Pango/Fontconfig. Use that result; do not repeat the download. The final real report still needs full output parity and visual review, including Ubuntu. [VERIFIED: `.planning/research/PDF-PROBE.md`; CITED: https://doc.courtbouillon.org/weasyprint/latest/first_steps.html]
 
-**Primary recommendation:** Implement one sealed v2 publication builder whose only numerical input is `public_research_projection(internal_v2)`, and make every reader resolve the sealed manifest **and** current status of all eight required acquisitions. [VERIFIED: `brujula/research_contract.py`; `brujula/acquisition.py`; `docs/CONTRACT.md`]
+**Primary recommendation:** Implement one sealed v2 publication builder whose only numerical input is the validated Phase 3 analysis packet and its sanitized `record_index`, and make every reader resolve the sealed manifest **and** current status of all eight required acquisitions. [VERIFIED: `brujula/research_contract.py`; `brujula/acquisition.py`; `docs/CONTRACT.md`]
 
 ## Architectural Responsibility Map
 

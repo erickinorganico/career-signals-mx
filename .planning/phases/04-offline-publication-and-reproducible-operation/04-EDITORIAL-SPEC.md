@@ -95,3 +95,7 @@ path may access diagnostic estimates, fill nulls by complements, infer missing
 values, or create unsupported prose. Record visual findings and fixes alongside
 automated cross-format validation; successful PDF generation alone is not a
 visual acceptance result.
+
+## Verified preparation
+
+The [font and contrast audit](../../research/FONT-ASSET-AUDIT.md) records exact DejaVu Sans/Serif regular/bold hashes, Spanish glyph coverage, embedding flags, the full-notice obligation and calculated color ratios. Use those reviewed local candidates during implementation; final embedding and rendered inspection remain required.
