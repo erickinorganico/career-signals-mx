@@ -21,7 +21,7 @@ SECRET_PATTERNS = [
 
 def repository_files() -> list[Path]:
     result = list(ROOT.glob("*.md"))
-    for directory in ("docs", "brujula", "contracts", "data", "tests", "scripts"):
+    for directory in ("docs", "brujula", "contracts", "data", "tests", "scripts", "evals", ".github"):
         root = ROOT / directory
         if root.exists():
             result.extend(p for p in root.rglob("*") if p.is_file() and "__pycache__" not in p.parts

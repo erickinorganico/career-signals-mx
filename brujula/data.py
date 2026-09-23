@@ -7,7 +7,9 @@ from typing import Any
 
 from jsonschema import Draft202012Validator, FormatChecker
 
-SCHEMA_PATH = Path(__file__).resolve().parents[1] / "contracts" / "dataset.schema.json"
+from .resources import contract_path
+
+SCHEMA_PATH = contract_path("dataset.schema.json")
 
 
 def load_dataset(path: Path) -> dict[str, Any]:

@@ -10,6 +10,18 @@ from brujula.quality import compare_observations, validate_dataset
 FIXTURE = Path(__file__).parents[1] / "data" / "fixtures" / "pilot.json"
 
 
+def test_comparison_blocks_overflow_and_boolean_values():
+    dataset = load_dataset(FIXTURE)
+    periods = {period["id"]: period for period in dataset["dimensions"]["periods"]}
+    previous = copy.deepcopy(dataset["observations"][0])
+    current = dict(previous, period_id=dataset["dimensions"]["periods"][1]["id"], value=1e308)
+    previous["value"] = 1e-320
+    result = compare_observations(previous, current, periods)
+    assert not result["comparable"] and "nonfinite_change" in result["reasons"]
+    previous["value"] = True
+    assert not compare_observations(previous, current, periods)["comparable"]
+
+
 def test_fixture_is_publishable_with_illustrative_freshness():
     result = validate_dataset(load_dataset(FIXTURE), as_of=date(2026, 1, 15))
     assert result["publishable"] is True

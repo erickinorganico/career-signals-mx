@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://brujula.local/contracts/run.schema.json",
+  "title": "Final immutable build receipt (publication outcome is separate)",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "run_id", "status", "build_status", "input_name", "input_sha256", "adapter_version", "started_at", "completed_at", "as_of", "parameters", "error"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "run_id": {"type": "string", "pattern": "^[0-9]{8}T[0-9]{6}-[a-f0-9]{12}$"},
+    "status": {"enum": ["MEASURED", "REVIEW", "UNKNOWN", "BLOCKED"]},
+    "build_status": {"enum": ["SUCCEEDED", "FAILED"]},
+    "input_name": {"type": "string", "minLength": 1},
+    "input_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "adapter_version": {"type": "string", "minLength": 1},
+    "started_at": {"type": "string", "format": "date-time"},
+    "completed_at": {"type": "string", "format": "date-time"},
+    "as_of": {"type": "string", "format": "date"},
+    "parameters": {"type": "object", "additionalProperties": false, "required": ["network"], "properties": {"network": {"const": false}}},
+    "error": {"oneOf": [{"type": "null"}, {"type": "object", "additionalProperties": false, "required": ["type", "message"], "properties": {"type": {"type": "string"}, "message": {"type": "string"}}}]},
+    "observation_count": {"type": "integer", "minimum": 1},
+    "mode": {"enum": ["illustrative", "official_snapshot"]},
+    "warehouse": {"type": "object", "additionalProperties": false, "required": ["file", "observation_count"], "properties": {"file": {"const": "warehouse.duckdb"}, "observation_count": {"type": "integer", "minimum": 1}}}
+  },
+  "allOf": [
+    {"if": {"properties": {"build_status": {"const": "SUCCEEDED"}}}, "then": {"required": ["observation_count", "mode", "warehouse"], "properties": {"status": {"enum": ["REVIEW", "MEASURED"]}, "error": {"type": "null"}, "input_sha256": {"type": "string"}}}},
+    {"if": {"properties": {"build_status": {"const": "FAILED"}}}, "then": {"properties": {"status": {"const": "BLOCKED"}, "error": {"type": "object"}}}}
+  ]
+}

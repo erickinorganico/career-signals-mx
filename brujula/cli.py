@@ -8,18 +8,23 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from .pipeline import ROOT, atomic_json, build, now
+from .pipeline import ROOT, atomic_json, build, now, resolve_current
+from .resources import CHECKOUT_ROOT
 
 
 def verify() -> int:
+    if CHECKOUT_ROOT is None:
+        raise RuntimeError("verify requires the source checkout containing tests, evals and documentation")
     results = []
-    commands = [[sys.executable, "-m", "pytest", "-q", "--junitxml=artifacts/verification/junit.xml"]]
+    commands = [[sys.executable, "scripts/check_docs.py"],
+                [sys.executable, "-m", "evals.run"],
+                [sys.executable, "-m", "pytest", "-q", "--junitxml=artifacts/verification/junit.xml"]]
     for command in commands:
         try:
             run = subprocess.run(command, cwd=ROOT, check=False)
-            results.append({"command": command, "exit_code": run.returncode})
+            results.append({"command": ["python", *command[1:]], "exit_code": run.returncode})
         except OSError as exc:
-            results.append({"command": command, "exit_code": 127, "error": str(exc)})
+            results.append({"command": ["python", *command[1:]], "exit_code": 127, "error": type(exc).__name__})
     report = {"checked_at": now(), "status": "PASS" if all(r["exit_code"] == 0 for r in results) else "FAIL",
               "scope": "unit, integration, analytical E2E, negative controls, reports and agents; offline", "checks": results}
     atomic_json(ROOT / "artifacts/verification/verify.json", report)
@@ -36,6 +41,9 @@ def main(argv: list[str] | None = None) -> int:
         cmd.add_argument("--output", type=Path, default=ROOT / "artifacts")
         cmd.add_argument("--as-of", type=date.fromisoformat, help="Fecha ISO de evaluación; la fecha de ejecución se conserva aparte")
     checks = sub.add_parser("verify", help="Pruebas unitarias, integración, E2E analítico y controles negativos")
+    report = sub.add_parser("report", help="Resolver el reporte actual después de validar estado y hashes")
+    report.add_argument("--output", type=Path, default=ROOT / "artifacts")
+    report.add_argument("--format", choices=("html", "markdown"), default="html")
     scout = sub.add_parser("scout", help="Revisar una página INEGI autorizada; genera propuesta, nunca publica cifras")
     scout.add_argument("--source", default="inegi_enoe_2025_q2")
     scout.add_argument("--output", type=Path, default=ROOT / "artifacts/scout")
@@ -46,9 +54,13 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(result["receipt"], ensure_ascii=False, indent=2), flush=True)
             if not result["publishable"]:
                 return 1
-            print("Reporte actual:", args.output / "report.md")
+            report = resolve_current(args.output)
+            print("Reporte actual verificado:", report["html"])
         elif args.command == "verify":
             return verify()
+        elif args.command == "report":
+            report = resolve_current(args.output)
+            print(report[args.format])
         elif args.command == "scout":
             from .scout import scout_source
             result = scout_source(args.source, args.output)

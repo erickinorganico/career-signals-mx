@@ -153,7 +153,7 @@ def compare_observations(previous: dict[str, Any], current: dict[str, Any], peri
         if row.get("concept_type") not in {"field_of_study", "occupation"} or not row.get("concept_id"): reasons.append(f"invalid_{label}_concept")
         if row.get("status") not in {"MEASURED", "REVIEW", "UNKNOWN", "BLOCKED"}: reasons.append(f"invalid_{label}_status")
         if not row.get("evidence_refs"): reasons.append(f"missing_{label}_evidence")
-        if row.get("value") is not None and not isinstance(row.get("value"), (int, float)): reasons.append(f"invalid_{label}_value")
+        if row.get("value") is not None and (isinstance(row.get("value"), bool) or not isinstance(row.get("value"), (int, float))): reasons.append(f"invalid_{label}_value")
         if row.get("value") is not None and isinstance(row.get("value"), (int, float)) and not math.isfinite(row["value"]): reasons.append(f"nonfinite_{label}_value")
     fields = ("concept_type", "concept_id", "geography_id", "metric_id", "unit", "population", "methodology_id", "price_basis", "source_id", "synthetic")
     for field in fields:
@@ -183,5 +183,7 @@ def compare_observations(previous: dict[str, Any], current: dict[str, Any], peri
     if not reasons:
         absolute = current["value"] - previous["value"]
         relative = None if previous["value"] == 0 else absolute / previous["value"] * 100
-        return {"status": "REVIEW" if previous.get("status") == "REVIEW" or current.get("status") == "REVIEW" else "MEASURED", "comparable": True, "absolute_change": absolute, "relative_change_pct": relative, "reasons": [], "evidence_refs": sorted(set(previous.get("evidence_refs", [])) | set(current.get("evidence_refs", [])))}
+        if math.isfinite(absolute) and (relative is None or math.isfinite(relative)):
+            return {"status": "REVIEW" if previous.get("status") == "REVIEW" or current.get("status") == "REVIEW" else "MEASURED", "comparable": True, "absolute_change": absolute, "relative_change_pct": relative, "reasons": [], "evidence_refs": sorted(set(previous.get("evidence_refs", [])) | set(current.get("evidence_refs", [])))}
+        reasons.append("nonfinite_change")
     return {"status": "BLOCKED", "comparable": False, "absolute_change": None, "relative_change_pct": None, "reasons": reasons, "evidence_refs": sorted(set(previous.get("evidence_refs", [])) | set(current.get("evidence_refs", [])))}

@@ -5,6 +5,7 @@ import io
 import json
 import subprocess
 import sys
+import shutil
 from copy import deepcopy
 from datetime import date
 from pathlib import Path
@@ -12,7 +13,7 @@ from pathlib import Path
 import duckdb
 import pytest
 
-from brujula.pipeline import ROOT, build, export_csv, immutable_bytes
+from brujula.pipeline import ROOT, build, export_csv, immutable_bytes, resolve_current
 
 
 @pytest.fixture(scope="module")
@@ -52,7 +53,9 @@ def test_full_analytical_pipeline(successful_run):
 
 
 def test_failed_refresh_replaces_current_without_destroying_history(successful_run, tmp_path):
-    output, good = successful_run
+    original, good = successful_run
+    output = tmp_path / "isolated"
+    shutil.copytree(original, output)
     bad = deepcopy(good["dataset"])
     bad["observations"][0]["evidence_refs"] = ["invented-reference"]
     input_path = tmp_path / "invalid.json"
@@ -110,3 +113,99 @@ def test_build_lock_prevents_overlapping_writers(tmp_path):
     with pytest.raises(RuntimeError, match="build is running"):
         build(output=tmp_path)
     assert (tmp_path / ".build.lock").read_text(encoding="utf-8") == "test-owner"
+
+
+def test_resolver_ignores_stale_human_index_and_rejects_changed_artifact(successful_run, tmp_path):
+    original, good = successful_run
+    output = tmp_path / "copy"
+    shutil.copytree(original, output)
+    (output / "report.md").write_text("outdated index", encoding="utf-8")
+    resolved = resolve_current(output)
+    assert resolved["bundle"]["run_id"] == good["run_id"]
+    resolved["html"].write_text("modified artifact", encoding="utf-8")
+    with pytest.raises(ValueError, match="integrity"):
+        resolve_current(output)
+
+
+def test_resolver_detects_corrupted_raw_provenance(successful_run, tmp_path):
+    original, good = successful_run
+    output = tmp_path / "copy"
+    shutil.copytree(original, output)
+    raw = output / "raw" / (good["receipt"]["input_sha256"] + ".json")
+    raw.write_text("modified input", encoding="utf-8")
+    with pytest.raises(ValueError, match="Raw input integrity"):
+        resolve_current(output)
+
+
+def fast_renderer(payload, path):
+    path.mkdir(parents=True)
+    for name in ("report.md", "report.html"):
+        (path / name).write_text("SYNTHETIC test artifact", encoding="utf-8")
+    return {"markdown": "report.md", "html": "report.html", "charts": []}
+
+
+def test_renderer_failure_retains_staging_only(monkeypatch, tmp_path):
+    def broken_renderer(*args):
+        raise ValueError("renderer failed")
+    monkeypatch.setattr("brujula.report.render_report", broken_renderer)
+    payload = build(output=tmp_path)
+    run = tmp_path / "runs" / payload["run_id"]
+    assert (run / "observations.parquet").exists()  # diagnostic staging only
+    assert payload["status"] == "BLOCKED" and payload["dataset"] is None
+    with pytest.raises(ValueError, match="BLOCKED"):
+        resolve_current(tmp_path)
+
+
+def test_crash_before_receipt_recovers_as_failure(monkeypatch, tmp_path):
+    def crashed(*args):
+        raise KeyboardInterrupt()
+    monkeypatch.setattr("brujula.report.render_report", crashed)
+    with pytest.raises(KeyboardInterrupt):
+        build(output=tmp_path)
+    current = json.loads((tmp_path / "current.json").read_text())
+    assert current["build_status"] == "RUNNING" and not current["publishable"]
+    digest = hashlib.sha256((ROOT / "data/fixtures/pilot.json").read_bytes()).hexdigest()
+    assert current["input_sha256"] == digest
+    abandoned = tmp_path / "runs" / current["run_id"]
+    assert not (abandoned / "receipt.json").exists()
+    monkeypatch.setattr("brujula.report.render_report", fast_renderer)
+    assert build(output=tmp_path)["publishable"]
+    assert json.loads((abandoned / "receipt.json").read_text())["build_status"] == "FAILED"
+    assert json.loads((abandoned / "receipt.json").read_text())["input_sha256"] == digest
+
+
+@pytest.mark.parametrize("exception", [OSError, KeyboardInterrupt])
+def test_failure_between_sealing_and_commit_never_rewrites_receipt(monkeypatch, tmp_path, exception):
+    import brujula.pipeline as pipeline
+    original_write = pipeline.atomic_json
+    rejected = []
+    def fail_once(path, value):
+        if path.name == "current.json" and value.get("publishable") and not rejected:
+            rejected.append(value["run_id"])
+            raise exception("commit interruption")
+        original_write(path, value)
+    monkeypatch.setattr("brujula.report.render_report", fast_renderer)
+    monkeypatch.setattr(pipeline, "atomic_json", fail_once)
+    if exception is KeyboardInterrupt:
+        with pytest.raises(KeyboardInterrupt):
+            build(output=tmp_path)
+    else:
+        assert not build(output=tmp_path)["publishable"]
+    with pytest.raises(ValueError, match="BLOCKED"):
+        resolve_current(tmp_path)
+    old_run = tmp_path / "runs" / rejected[0]
+    sealed = (old_run / "receipt.json").read_bytes()
+    assert json.loads(sealed)["build_status"] == "SUCCEEDED"
+    assert build(output=tmp_path)["publishable"]
+    assert (old_run / "receipt.json").read_bytes() == sealed
+    assert json.loads((old_run / "publication-failure.json").read_text())["build_status"] == "FAILED"
+
+
+def test_index_failure_after_commit_keeps_verified_current(monkeypatch, tmp_path):
+    monkeypatch.setattr("brujula.report.render_report", fast_renderer)
+    def fail_index(*args):
+        raise OSError("index unavailable")
+    monkeypatch.setattr("brujula.pipeline.current_report", fail_index)
+    payload = build(output=tmp_path)
+    assert payload["publishable"]
+    assert resolve_current(tmp_path)["bundle"]["run_id"] == payload["run_id"]
