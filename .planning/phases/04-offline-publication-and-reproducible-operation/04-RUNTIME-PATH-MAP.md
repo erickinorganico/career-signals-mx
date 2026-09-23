@@ -101,9 +101,11 @@ Phase 4 renderer/exporter/pipeline changes consume the validated Phase 3 sanitiz
 1. Package resource inventory with SHA-256.
 2. Explicit installed CLI interfaces for source/output/audit/workbook/PDF/R.
 3. Receipt with runtime versions, resolved paths, resource/source digests, code hash inventory and numeric/public digests.
-4. Installed-wheel acceptance and replay on Windows and Ubuntu.
+4. Installed-wheel fixture/resource/failure checks and PDF rendering on Windows and Ubuntu; complete real installed-wheel numerical acceptance and unchanged replay in the designated local research environment. REL-02 separates cross-platform fixture installation from real-bundle numerical acceptance and does not require two independent downloads or redistribution of local microdata.
 5. Failure evidence: failed acquisition invalidates current and preserves history.
 6. One validated public projection feeds reports, figures, tables and exports; no diagnostics/person rows cross the boundary.
 
 Authoritative current Phase 2 evidence remains docs/evidence/phase-02-numerical-acceptance.json. This map prepares Phase 4 packaging/runtime work and does not upgrade that evidence.
 
+
+Scope clarification, 2026-09-23: the cross-platform installation and PDF checks remain required. Full real numerical reacceptance is required after the implementation/resource refactor and must execute from the installed package; duplicating that full survey/R workload on every operating system is not an additional requirement in REL-02 or 04-CONTEXT. Keep the two evidence classes explicit.

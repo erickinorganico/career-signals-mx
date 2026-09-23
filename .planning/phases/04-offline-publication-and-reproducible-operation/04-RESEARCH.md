@@ -38,7 +38,7 @@ This research preceded the now-present `04-CONTEXT.md` and `04-EDITORIAL-SPEC.md
 | PUB-02 | Offline HTML/Markdown/PDF parity | Shared report model; restricted local URL fetcher; PDF probe |
 | PUB-03 | SVG/PNG and semantic tables | Existing Matplotlib Agg; W3C table semantics; print/zoom gate |
 | PUB-04 | CSV/Parquet/DuckDB with public keys | Stable v2 grain ID, dictionary, schema and join checks |
-| PUB-05 | One public suppression boundary | `public_research_projection`, all-format sentinel audit |
+| PUB-05 | One public suppression boundary | Validated Phase 3 sanitized packet, all-format sentinel audit |
 | OPS-01 | Refresh and offline numerical replay | Pinned snapshots; content digest excluding run metadata |
 | OPS-02 | Sealed run before current promotion | Existing v1 state machine adapted to v2; crash matrix |
 | OPS-03 | Verify all inputs and acquisitions on access | Per-snapshot `resolve_snapshot` plus manifest/current checks |
@@ -199,7 +199,7 @@ TO 'observations.parquet' (FORMAT PARQUET);
 
 ## Resolved Decisions and Execution Gates
 
-1. **Resolved dependency rule:** inspect the accepted Phase 2/3 implementations and numerical/analysis acceptance ledger before executable Phase 4 sign-off. Bind all render/export adapters to those exact public interfaces; any missing precision/coverage/provenance key is an upstream gap to fix, not a renderer assumption. Acceptance of those phases is still pending. [VERIFIED: `.planning/ROADMAP.md`; `03-CONTEXT.md`; `04-CONTEXT.md`]
+1. **Resolved dependency rule:** inspect the accepted Phase 2/3 implementations and numerical/analysis acceptance ledger before executable Phase 4 sign-off. Bind all render/export adapters to those exact public interfaces; any missing precision/coverage/provenance key is an upstream gap to fix, not a renderer assumption. Phase 2 acceptance is complete; final Phase 3 acceptance remains pending. [VERIFIED: `.planning/ROADMAP.md`; `03-CONTEXT.md`; `04-CONTEXT.md`]
 2. **Resolved suppression scope:** the publisher must never fill a suppressed null by a complement or reconstruct an unsupported direct measure from other records. Displayed direct measures bind to supported public records; differences require the validated comparison contract. Tests inject a reconstructed complementary cell and require rejection across the output packet. The public-survey precision contract does not promise confidentiality or general resistance to algebraic inference from all released aggregates; do not invent that stronger requirement or silently claim it. [DECISION: `04-CONTEXT.md`; PUB-05 public-output boundary]
 3. **Resolved accessibility claim:** semantic HTML tables, alternatives, contrast/zoom and visually inspected/searchable PDF are required. Successful rendering does not establish PDF/UA certification or screen-reader conformance; make only the claims that receive explicit final tests. No formal PDF certification is assumed. [DECISION: `04-CONTEXT.md`; VERIFIED: `.planning/research/PDF-PROBE.md`; CITED: https://www.w3.org/WAI/tutorials/tables/]
 
@@ -210,7 +210,7 @@ TO 'observations.parquet' (FORMAT PARQUET);
 | Python 3.12.13 project runtime | CLI/tests | Probe environment exists, but shell `python` pyenv shim is unselected | Use project `.venv`/explicit interpreter in plans. [VERIFIED: local tool probe; `pyproject.toml`] |
 | DuckDB/Matplotlib/jsonschema | Existing package | Pinned in `pyproject.toml` and tests | Reuse. [VERIFIED: local files] |
 | WeasyPrint 70.0 + Pango/Fontconfig | PDF | Windows project-local probe succeeded | Add explicit optional/runtime installation and clean Ubuntu check. [VERIFIED: `.planning/research/PDF-PROBE.md`] |
-| Eight accepted ENOE snapshots + Phase 2/3 packets | Real report | Acquisition/prototypes partial; acceptance pending | Block publication until upstream gates pass. [VERIFIED: `.planning/PROJECT.md`; `.planning/ROADMAP.md`] |
+| Eight accepted ENOE snapshots + Phase 2/3 packets | Real report | Eight acquired snapshots and Phase 2 numerical replay accepted; Phase 3 packet acceptance pending | Block publication until upstream gates pass. [VERIFIED: `.planning/PROJECT.md`; `.planning/ROADMAP.md`] |
 
 ## Validation Architecture
 

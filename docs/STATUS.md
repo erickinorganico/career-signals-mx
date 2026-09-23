@@ -10,8 +10,12 @@ una repetición idéntica. La revisión independiente verificó 43/43 criterios;
 el cierre GSD no tiene advertencias. La precisión propia continúa siendo no
 oficial, con las discrepancias documentadas. La
 [evidencia numérica](evidence/phase-02-numerical-acceptance.json) conserva los
-intentos y hashes. Los perfiles y hallazgos están en implementación; el informe
-y el release final siguen pendientes.
+intentos y hashes. Los perfiles cubren 118 campos observados y conservan los
+desgloses requeridos de 32 entidades y dos categorías de sexo registrado. El
+registro contiene 4,209 comparaciones posibles, 2,120 de ellas descriptivamente
+compatibles; las demás conservan sus causas de bloqueo. La regresión pasó 403
+pruebas. Los hallazgos con evidencia están en implementación; el informe y el
+release final siguen pendientes.
 
 La evidencia que sigue es el registro histórico de la demo sintética 0.1.0;
 sus bloqueos de ingesta y cifras de pruebas no describen el alcance activo.

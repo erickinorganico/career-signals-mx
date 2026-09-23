@@ -1,7 +1,7 @@
 # Phase 4: Offline Publication and Reproducible Operation - Pattern Map
 
 **Mapped:** 2026-09-22
-**Scope:** preparatory map only; Phase 2 numerical acceptance and Phase 3 claim/comparison packets are pending.
+**Scope:** preparatory map, refreshed 2026-09-23; Phase 2 is accepted. Phase 3 profile/comparison interfaces exist; its final claim/packet review and acceptance remain pending.
 **Source edits:** none.
 
 ## File Classification
@@ -44,7 +44,7 @@ for key in ("standard_error", "coefficient_variation", "ci90_lower", "ci90_upper
 failures = validate_public_research_v2(result)
 ```
 
-The ten-key `GRAIN` at `research_contract.py:17-20` and duplicate-grain check at `:135-140` are the stable identity inputs; v2 records have no `id`. A versioned, length-safe canonical hash key for exports/figures/claims is **new code**, not an existing function. Define exact key bytes and a collision check after upstream packet readback. Use `public_research_projection` and `validate_public_research_v2` as the release gate. The public `reason` code mapping at `:32-46` must be preserved; internal free-form reason text cannot enter publication. The Phase 3 claim registry and comparison interface still require actual accepted readback.
+The ten-key `GRAIN` remains the identity input. Implemented Phase 3 `analysis_v2.index_public_estimates` assigns canonical `v2r:` IDs; reuse those exact IDs after final upstream acceptance, rather than inventing another export key. `build_profiles` propagates complementary parent redactions into its sanitized `record_index`. The publisher must consume the final validated Phase 3 packet and this common index. The preceding v2 projection is an allowlist pattern only: reprojecting original estimates would restore additional redactions and is forbidden. Preserve controlled public reasons and `redaction_reason`; internal diagnostics never enter publication. Inspect final claims/packet validation and comparison-ledger interfaces after Phase 3 acceptance.
 
 ### `brujula/report_v2.py`* — HTML, Markdown, paired figures and PDF
 

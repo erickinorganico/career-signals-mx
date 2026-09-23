@@ -14,7 +14,7 @@
       "category": "empty",
       "status": "resolved",
       "verification": "explicit",
-      "resolution": "ANA-01 empty: no accepted public record produces a visible missing cell with reason rather than an invented field value.",
+      "resolution": "ANA-01 empty: a computed suppressed public record produces a visible null cell with its actual reason rather than an invented field value; an absent computation blocks.",
       "reason": null,
       "probe": "What is the result for empty, single-element, or null input?"
     },

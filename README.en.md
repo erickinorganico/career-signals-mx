@@ -7,10 +7,12 @@ analytical reports. [Español](README.md) · [Documentation](docs/README.md)
 > **Real-data version 1.0.0: under construction.** The full scope covers eight
 > ENOE quarters, 2024 Q3–2026 Q2, survey uncertainty, field profiles, offline
 > HTML/Markdown/PDF reporting and reusable public aggregates. Source custody and
-> statistical estimation are accepted: 6,739 estimates, independent R checks,
+> statistical estimation are accepted: 6,739 evaluated cells, independent R checks,
 > official references and identical eight-quarter replay. Project precision
-> remains explicitly nonofficial. Profiles and findings are being implemented;
-> the report and final release remain pending. See the
+> remains explicitly nonofficial. Profiles cover 118 observed named fields;
+> the comparison ledger contains 4,209 slots, with 2,120 supported descriptive
+> comparisons. The regression suite passed 403 tests. Evidence-bound findings,
+> reporting and the final release are still in progress. See the
 > [numerical evidence](docs/evidence/phase-02-numerical-acceptance.json),
 > [release plan](docs/FINAL-RELEASE-PLAN.md) and [GSD status](.planning/STATE.md).
 >

@@ -10,10 +10,12 @@ ocupación sin tratarlos como equivalentes.
 > **Versión 1.0.0 de investigación real: en construcción.** El alcance completo
 > abarca ocho trimestres ENOE, 2024-T3 a 2026-T2, precisión estadística, perfiles,
 > informe offline HTML/Markdown/PDF y datos reutilizables. Las fuentes y la fase
-> estadística están aceptadas: 6,739 estimaciones, contraste independiente con R,
+> estadística están aceptadas: 6,739 celdas evaluadas, contraste independiente con R,
 > referencias oficiales y replay idéntico de los ocho trimestres. La precisión
-> propia sigue identificada como no oficial. Los perfiles y hallazgos están en
-> implementación; el informe y el release final siguen pendientes. Consulta la
+> propia sigue identificada como no oficial. Ya están implementados los perfiles
+> de 118 campos observados y 4,209 comparaciones posibles, de las que 2,120
+> cumplen las reglas descriptivas. La regresión pasó 403 pruebas. Los hallazgos
+> con evidencia, el informe y el release final siguen en ejecución. Consulta la
 > [evidencia numérica](docs/evidence/phase-02-numerical-acceptance.json), el
 > [plan final](docs/FINAL-RELEASE-PLAN.md) y el [estado GSD](.planning/STATE.md).
 >
