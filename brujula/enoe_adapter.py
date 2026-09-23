@@ -91,8 +91,11 @@ def _catalog(archive: zipfile.ZipFile, member: str) -> frozenset[str]:
     if not keys or any(not isinstance(key, str) for key in keys):
         raise AcquisitionError("CMPE catalog lacks keys")
     # This validates the entire period catalog, including normalized collisions.
-    normalize_cmpe_key("", keys)
-    return frozenset(keys)
+    # The official catalog carries 999999 as its unknown sentinel; it is not
+    # an eligible field key for the population normalizer.
+    valid_keys = [key for key in keys if key != "999999"]
+    normalize_cmpe_key("", valid_keys)
+    return frozenset(valid_keys)
 
 
 def _dictionary(archive: zipfile.ZipFile, member: str, required: set[str]) -> None:
