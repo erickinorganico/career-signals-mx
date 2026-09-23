@@ -232,6 +232,87 @@ def test_missing_accepted_receipt_seals_analysis_failure(tmp_path):
     assert (audit / "attempts" / (current["attempt_id"] + ".json")).is_file()
 
 
+def test_symlinked_authority_paths_fail_before_read(monkeypatch, tmp_path):
+    audit = tmp_path / "numerical"
+    audit.mkdir()
+    current = audit / "current.json"
+    current.write_text("{}", encoding="utf-8")
+    original = Path.is_symlink
+    monkeypatch.setattr(Path, "is_symlink", lambda path: path == current or original(path))
+    with pytest.raises(ValueError, match="symlink"):
+        p._accepted(audit)
+    monkeypatch.setattr(Path, "is_symlink", original)
+    run = tmp_path / "publication" / "runs" / "20260923T120000-aaaaaaaaaaaa"
+    run.mkdir(parents=True)
+    monkeypatch.setattr(Path, "is_symlink", lambda path: path == run.parent or original(path))
+    with pytest.raises(ValueError, match="symlink"):
+        p._verify_sealed(run, tmp_path / "source")
+
+
+def test_junction_runs_parent_rejected_before_any_publication_write(monkeypatch, tmp_path):
+    source, out, audit, analysis, _names = _stub_build(monkeypatch, tmp_path)
+    (out / "runs").mkdir(parents=True)
+    original = Path.is_junction
+    monkeypatch.setattr(Path, "is_junction", lambda path: path == out / "runs" or original(path))
+    with pytest.raises(ValueError, match="junction|reparse|escaped"):
+        p.build_publication(source, out, audit, analysis)
+    assert not (out / "current.json").exists()
+    assert not (out / "runs" / "20260923T120000-aaaaaaaaaaaa").exists()
+
+
+def test_analysis_output_junction_parent_rejected_before_receipt(monkeypatch, tmp_path):
+    source = tmp_path / "source"
+    audit = tmp_path / "operation-audit"
+    acceptance = tmp_path / "numerical" / "attempts" / ("a" * 36 + ".json")
+    escaped_parent = tmp_path / "alias"
+    escaped_parent.mkdir()
+    original = Path.is_junction
+    monkeypatch.setattr(Path, "is_junction", lambda path: path == escaped_parent or original(path))
+    with pytest.raises(ValueError, match="junction"):
+        p.analyze_acceptance(source, acceptance, escaped_parent / "analysis.json", audit)
+    assert not (escaped_parent / "analysis.json").exists()
+    assert not audit.exists()
+
+
+def test_manifest_accepts_exact_sparse_figure_inventory(monkeypatch, tmp_path):
+    # Six non-opening figures remain; 0–3 supported opening claims add 0–6 files.
+    for group_count in range(4):
+        case = tmp_path / str(group_count)
+        case.mkdir()
+        source, out, audit, analysis, names = _stub_build(monkeypatch, case)
+        names.difference_update({name for name in names
+                                 if name.startswith("figures/f") and int(name[9:11]) >= 12})
+        names.update({f"figures/g{i}.{extension}" for i in range(group_count)
+                      for extension in ("svg", "png")})
+        assert len(names) == 67 + 2 * group_count
+        sealed = p.build_publication(source, out, audit, analysis)
+        assert set(sealed["manifest"]["artifact_hashes"]) == names
+        p._validate_manifest(sealed["manifest"])
+
+
+def test_replay_logical_exports_checks_csv_and_parquet_independently(tmp_path):
+    import duckdb
+
+    left, right = tmp_path / "left", tmp_path / "right"
+    for root in (left, right):
+        root.mkdir()
+        db = duckdb.connect(str(root / "public.duckdb"))
+        db.execute("CREATE TABLE public_records(value DOUBLE)")
+        db.execute("INSERT INTO public_records VALUES (1.0)")
+        db.execute(f"COPY public_records TO '{(root / 'public-records.parquet').as_posix()}' (FORMAT PARQUET)")
+        db.close()
+        (root / "public-records.csv").write_text("value\n1.0\n", encoding="utf-8")
+    assert p._logical_exports(left, right, {"public_records"})
+    (right / "public-records.csv").write_text("value\n999.0\n", encoding="utf-8")
+    assert not p._logical_exports(left, right, {"public_records"})
+    (right / "public-records.csv").write_text("value\n1.0\n", encoding="utf-8")
+    (right / "public-records.parquet").unlink()
+    db = duckdb.connect()
+    db.execute(f"COPY (SELECT 999.0 AS value) TO '{(right / 'public-records.parquet').as_posix()}' (FORMAT PARQUET)")
+    db.close()
+    assert not p._logical_exports(left, right, {"public_records"})
+
+
 def test_replay_reconstructs_and_keeps_baseline_immutable(monkeypatch, tmp_path):
     source, audit = tmp_path / "sources", tmp_path / "replay-audit"
     sealed = tmp_path / "publication" / "runs" / "20260923T120000-aaaaaaaaaaaa"

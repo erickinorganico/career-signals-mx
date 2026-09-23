@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import csv
 import json
 import re
 from datetime import datetime, timezone
@@ -45,11 +46,28 @@ def _read(path: Path) -> tuple[dict, str]:
 
 
 def _strict_roots(*paths: Path) -> tuple[Path, ...]:
+    for path in paths:
+        candidate = Path(path)
+        if any(_is_reparse(part) for part in (candidate, *candidate.parents)):
+            raise ValueError("symlink or junction root")
     roots = tuple(Path(path).resolve() for path in paths)
     if any(a.is_relative_to(b) or b.is_relative_to(a)
            for i, a in enumerate(roots) for b in roots[i + 1:]):
         raise ValueError("source, output and audit roots overlap")
     return roots
+
+
+def _is_reparse(path: Path) -> bool:
+    return path.is_symlink() or bool(getattr(path, "is_junction", lambda: False)())
+
+
+def _guard_children(root: Path, *names: str) -> None:
+    if _is_reparse(root):
+        raise ValueError("symlink or junction root")
+    for name in names:
+        path = root / name
+        if _is_reparse(path) or (path.exists() and not path.resolve().is_relative_to(root.resolve())):
+            raise ValueError("symlink or junction publication path")
 
 
 def _safe_file(root: Path, name: str) -> Path:
@@ -59,8 +77,8 @@ def _safe_file(root: Path, name: str) -> Path:
     if rel.is_absolute() or any(p in ("", ".", "..") for p in rel.parts) or rel.as_posix() != name:
         raise ValueError("unsafe artifact path")
     path = root.joinpath(*rel.parts)
-    if path.is_symlink() or any(p.is_symlink() for p in path.parents if p != root):
-        raise ValueError("symlink artifact path")
+    if _is_reparse(path) or any(_is_reparse(p) for p in path.parents if p != root):
+        raise ValueError("symlink or junction artifact path")
     if not path.resolve().is_relative_to(root.resolve()):
         raise ValueError("escaped artifact path")
     return path
@@ -93,13 +111,18 @@ def _sources(source_root: Path) -> list[dict]:
 
 
 def _accepted(audit_dir: Path, selected: Path | None = None) -> tuple[dict, str]:
-    current, _ = _read(audit_dir / "current.json")
+    current_path = audit_dir / "current.json"
+    if any(_is_reparse(path) for path in (audit_dir, current_path, audit_dir / "attempts")):
+        raise ValueError("symlink numerical authority")
+    current, _ = _read(current_path)
     if current.get("status") != "PASS" or current.get("operation") is not None:
         raise ValueError("numerical current is not accepted")
     attempt_id = current.get("attempt_id")
     if not isinstance(attempt_id, str) or not re.fullmatch(r"[a-f0-9-]{36}", attempt_id):
         raise ValueError("invalid numerical attempt ID")
     immutable = audit_dir / "attempts" / f"{attempt_id}.json"
+    if _is_reparse(immutable):
+        raise ValueError("symlink numerical acceptance receipt")
     if selected is not None and Path(selected).resolve() != immutable.resolve():
         raise ValueError("selected acceptance is not current")
     receipt, digest = _read(immutable)
@@ -188,8 +211,8 @@ def _expected(model: dict) -> set[str]:
 def _disk_files(run: Path) -> set[str]:
     result = set()
     for path in run.rglob("*"):
-        if path.is_symlink():
-            raise ValueError("symlink in sealed run")
+        if _is_reparse(path):
+            raise ValueError("symlink or junction in sealed run")
         if path.is_file():
             result.add(path.relative_to(run).as_posix())
     return result
@@ -206,6 +229,8 @@ def _render(model: dict, run: Path) -> dict[str, str]:
     from .pdf_v2 import render_pdf
     from .report_v2 import FONT_SHA256, render_publication
 
+    _guard_children(run, "assets", "figures", "exports", "report.html", "report.md", "report.pdf")
+    _guard_children(run / "assets", "fonts")
     rendered = render_publication(model, run)
     expected_figures = _figure_names(model)
     returned_figures = {item[key] for item in rendered["figures"] for key in ("svg", "png")}
@@ -253,14 +278,18 @@ def build_publication(source_root: Path, output_root: Path, audit_dir: Path,
                       analysis_packet_path: Path) -> dict:
     """Seal a validated aggregate run, then atomically promote current."""
     source_root, output_root, audit_dir = _strict_roots(source_root, output_root, audit_dir)
-    analysis_packet_path = Path(analysis_packet_path).resolve()
+    analysis_packet_path = _strict_roots(analysis_packet_path)[0]
     if (analysis_packet_path.is_relative_to(source_root)
             or analysis_packet_path.is_relative_to(output_root)):
         raise ValueError("analysis input and source/output roots overlap")
+    _guard_children(output_root, "runs", "current.json", ".build.lock")
     output_root.mkdir(parents=True, exist_ok=True)
     with BuildLock(output_root):
+        _guard_children(output_root, "runs", "current.json", ".build.lock")
         run_id = _attempt_id()
         run = output_root / "runs" / run_id
+        if _is_reparse(run):
+            raise ValueError("symlink or junction run path")
         run.mkdir(parents=True, exist_ok=False)
         stage = "start"
         atomic_json(output_root / "current.json", {"schema_version": "2.0", "run_id": run_id,
@@ -322,9 +351,11 @@ def build_publication(source_root: Path, output_root: Path, audit_dir: Path,
 
 
 def _verify_sealed(run: Path, source_root: Path, expected_manifest_sha: str | None = None) -> dict:
-    if not RUN_ID.fullmatch(run.name) or run.parent.name != "runs" or run.is_symlink():
+    if not RUN_ID.fullmatch(run.name) or run.parent.name != "runs":
         raise ValueError("invalid sealed run path")
-    if (run / "manifest.json").is_symlink() or (run / "receipt.json").is_symlink():
+    if _is_reparse(run) or _is_reparse(run.parent):
+        raise ValueError("symlink sealed run path")
+    if _is_reparse(run / "manifest.json") or _is_reparse(run / "receipt.json"):
         raise ValueError("symlink sealed authority")
     raw_manifest = (run / "manifest.json").read_bytes()
     manifest_sha = _sha(raw_manifest)
@@ -369,7 +400,7 @@ def _verify_sealed(run: Path, source_root: Path, expected_manifest_sha: str | No
                 or item["url"] != dep["source_url"]):
             raise ValueError("sealed source summary differs")
     expected = _expected(model)
-    if set(manifest["artifact_hashes"]) != expected or len(expected) != 73:
+    if set(manifest["artifact_hashes"]) != expected:
         raise ValueError("sealed artifact allowlist differs")
     observed = _inventory(run, expected)
     if observed != manifest["artifact_hashes"] or observed["analysis.json"] != packet_sha:
@@ -386,7 +417,7 @@ def resolve_publication_current(output_root: Path, source_root: Path) -> dict:
     """Return current paths only after two complete independent live checks."""
     output_root, source_root = _strict_roots(output_root, source_root)
     current_path = output_root / "current.json"
-    if current_path.is_symlink():
+    if _is_reparse(current_path):
         raise ValueError("symlink current pointer")
     current, pointer_sha = _read(current_path)
     run_id = current.get("run_id")
@@ -413,9 +444,7 @@ def resolve_publication_current(output_root: Path, source_root: Path) -> dict:
 
 def _accepted_payloads(acceptance: dict, sources: list[dict]) -> tuple[dict, dict]:
     root = Path(acceptance["output_root"])
-    if root.is_symlink():
-        raise ValueError("symlink numerical output root")
-    root = root.resolve(strict=True)
+    root = _strict_roots(root)[0].resolve(strict=True)
     publics, audits = {}, {}
     for dep in sources:
         sid = dep["snapshot_id"]
@@ -423,7 +452,7 @@ def _accepted_payloads(acceptance: dict, sources: list[dict]) -> tuple[dict, dic
         for key, suffix, destination in (("public_v2_path", "-public-v2.json", publics),
                                          ("path", "-aggregate.json", audits)):
             candidate = Path(pin[key])
-            if candidate.is_symlink() or candidate.resolve(strict=True) != root / f"{sid}{suffix}":
+            if _is_reparse(candidate) or candidate.resolve(strict=True) != root / f"{sid}{suffix}":
                 raise ValueError("accepted output file escaped or changed")
             destination[sid] = _read(candidate)[0]
         public, audit = publics[sid], audits[sid]
@@ -439,8 +468,10 @@ def _accepted_payloads(acceptance: dict, sources: list[dict]) -> tuple[dict, dic
 
 
 def _operation_receipt(audit: Path, result: dict) -> dict:
+    _guard_children(audit, "attempts", "current.json", ".build.lock")
     audit.mkdir(parents=True, exist_ok=True)
     with BuildLock(audit):
+        _guard_children(audit, "attempts", "current.json", ".build.lock")
         attempt_id = _attempt_id()
         payload = {**result, "attempt_id": attempt_id, "completed_at": now()}
         immutable_bytes(audit / "attempts" / f"{attempt_id}.json", json_bytes(payload))
@@ -451,12 +482,12 @@ def _operation_receipt(audit: Path, result: dict) -> dict:
 def analyze_acceptance(source_root: Path, acceptance_receipt: Path,
                        analysis_output: Path, audit_dir: Path) -> dict:
     """Build a new independently guarded packet from the current immutable acceptance."""
-    acceptance_receipt = Path(acceptance_receipt).resolve()
+    acceptance_receipt = _strict_roots(acceptance_receipt)[0]
     numerical_audit = acceptance_receipt.parent.parent
     if acceptance_receipt.parent.name != "attempts":
         raise ValueError("immutable acceptance receipt required")
     source_root, audit_dir, numerical_audit = _strict_roots(source_root, audit_dir, numerical_audit)
-    analysis_output = Path(analysis_output).resolve()
+    analysis_output = _strict_roots(analysis_output)[0]
     if (analysis_output.exists() or analysis_output.is_relative_to(source_root)
             or analysis_output.is_relative_to(numerical_audit)
             or analysis_output.is_relative_to(audit_dir)):
@@ -464,9 +495,9 @@ def analyze_acceptance(source_root: Path, acceptance_receipt: Path,
     stage = "acceptance"
     try:
         accepted, accepted_sha = _accepted(numerical_audit, acceptance_receipt)
-        accepted_output = Path(accepted["output_root"]).resolve()
+        accepted_output = Path(accepted["output_root"])
         stage = "roots"
-        _strict_roots(source_root, audit_dir, numerical_audit, accepted_output)
+        accepted_output = _strict_roots(source_root, audit_dir, numerical_audit, accepted_output)[-1]
         if analysis_output.is_relative_to(accepted_output):
             raise ValueError("analysis output overlaps accepted output")
         stage = "inputs"
@@ -513,8 +544,28 @@ def _logical_exports(old: Path, new: Path, tables: set[str]) -> bool:
     new_db = duckdb.connect(str(new / "public.duckdb"), read_only=True)
     try:
         for table in sorted(tables):
-            if old_db.execute(f"SELECT * FROM {table} ORDER BY 1").fetchall() != new_db.execute(
-                    f"SELECT * FROM {table} ORDER BY 1").fetchall():
+            left_rows = old_db.execute(f"SELECT * FROM {table} ORDER BY 1")
+            left_types = [(item[0], str(item[1])) for item in left_rows.description]
+            left_values = left_rows.fetchall()
+            right_rows = new_db.execute(f"SELECT * FROM {table} ORDER BY 1")
+            right_types = [(item[0], str(item[1])) for item in right_rows.description]
+            if left_types != right_types or left_values != right_rows.fetchall():
+                return False
+            stem = "public-records" if table == "public_records" else table.replace("_", "-")
+            with (old / f"{stem}.csv").open(newline="", encoding="utf-8") as left:
+                with (new / f"{stem}.csv").open(newline="", encoding="utf-8") as right:
+                    if list(csv.reader(left)) != list(csv.reader(right)):
+                        return False
+            left_parquet = old / f"{stem}.parquet"
+            right_parquet = new / f"{stem}.parquet"
+            left_rows = old_db.execute("SELECT * FROM read_parquet(?) ORDER BY 1",
+                                       [str(left_parquet)])
+            left_types = [(item[0], str(item[1])) for item in left_rows.description]
+            left_values = left_rows.fetchall()
+            right_rows = new_db.execute("SELECT * FROM read_parquet(?) ORDER BY 1",
+                                        [str(right_parquet)])
+            right_types = [(item[0], str(item[1])) for item in right_rows.description]
+            if left_types != right_types or left_values != right_rows.fetchall():
                 return False
         return True
     finally:
@@ -527,10 +578,14 @@ def replay_publication(source_root: Path, sealed_run: Path, audit_dir: Path) -> 
     source_root, sealed_run, audit_dir = _strict_roots(source_root, sealed_run, audit_dir)
     if sealed_run.parent.name != "runs" or not RUN_ID.fullmatch(sealed_run.name):
         raise ValueError("sealed publication run required")
+    _guard_children(audit_dir, "replay-runs", "attempts", "current.json", ".build.lock")
     audit_dir.mkdir(parents=True, exist_ok=True)
     with BuildLock(audit_dir):
+        _guard_children(audit_dir, "replay-runs", "attempts", "current.json", ".build.lock")
         attempt_id = _attempt_id()
         attempt = audit_dir / "replay-runs" / attempt_id
+        if _is_reparse(attempt):
+            raise ValueError("symlink or junction replay path")
         attempt.mkdir(parents=True, exist_ok=False)
         try:
             baseline = _verify_sealed(sealed_run, source_root)

@@ -12,7 +12,7 @@
     "numerical_acceptance": {"type": "object", "additionalProperties": false, "required": ["attempt_id", "receipt_sha256", "numeric_content_digest", "metric_manifest_sha256", "code_sha256", "resource_sha256", "source_manifest"], "properties": {"attempt_id": {"type": "string"}, "receipt_sha256": {"$ref": "#/$defs/sha256"}, "numeric_content_digest": {"$ref": "#/$defs/sha256"}, "metric_manifest_sha256": {"$ref": "#/$defs/sha256"}, "code_sha256": {"type": "object", "minProperties": 11, "maxProperties": 11, "additionalProperties": {"$ref": "#/$defs/sha256"}}, "resource_sha256": {"type": "object", "minProperties": 7, "maxProperties": 7, "additionalProperties": {"$ref": "#/$defs/sha256"}}, "source_manifest": {"type": "object"}}},
     "analysis_content_digest": {"$ref": "#/$defs/sha256"},
     "publication_content_digest": {"$ref": "#/$defs/sha256"},
-    "artifact_hashes": {"type": "object", "minProperties": 73, "maxProperties": 73, "propertyNames": {"pattern": "^[^\\\\]+$"}, "additionalProperties": {"$ref": "#/$defs/sha256"}},
+    "artifact_hashes": {"type": "object", "minProperties": 67, "maxProperties": 73, "propertyNames": {"pattern": "^[^\\\\]+$"}, "additionalProperties": {"$ref": "#/$defs/sha256"}},
     "receipt_sha256": {"$ref": "#/$defs/sha256"},
     "sealed_at": {"type": "string", "format": "date-time"}
   },
