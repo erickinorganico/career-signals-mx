@@ -94,12 +94,12 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 - [x] 04-01-PLAN.md — Installed resources and PDF capability (wave 1)
 - [x] 04-03-PLAN.md — Public projection and joined exports (wave 1)
 
-**Wave 2** *(in progress; Wave 1 accepted)*
+**Wave 2** *(accepted)*
 
 - [x] 04-02-PLAN.md — Installed numerical acceptance and replay (wave 2)
-- [ ] 04-04-PLAN.md — Editorial reports, figures and PDF (wave 2)
+- [x] 04-04-PLAN.md — Editorial reports, figures and PDF (wave 2)
 
-**Wave 3** *(blocked on Wave 2 completion)*
+**Wave 3** *(in progress; Wave 2 accepted)*
 
 - [ ] 04-05-PLAN.md — Sealed publication and installed CLI (wave 3)
 
@@ -178,5 +178,5 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 | 1. Official Sources and Research Contract | 4/4 | Complete    | 2026-09-22 |
 | 2. Defensible Survey Estimates | 3/3 | Complete    | 2026-09-23 |
 | 3. Supported Labor Findings | 3/3 | Complete    | 2026-09-23 |
-| 4. Offline Publication and Reproducible Operation | 3/6 | In Progress|  |
+| 4. Offline Publication and Reproducible Operation | 4/6 | In Progress|  |
 | 5. Independent Audit and v1.0.0 Release | 0/TBD | Not started | - |
