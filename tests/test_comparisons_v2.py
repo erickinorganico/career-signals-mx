@@ -234,3 +234,28 @@ def test_missing_reference_emits_blocked_entity_slots(pair, registry):
     ledger = build_comparison_ledger(profiles, registry=registry)
     entities = [x for x in ledger if x["comparison_type"] == "entity_slice"]
     assert entities and all(not x["comparable"] and "entity_reference_code" in x["reasons"] for x in entities)
+
+
+@pytest.mark.parametrize("axis", ["sex", "entity"])
+def test_same_period_slice_has_difference_limits_without_time_change(pair, registry, axis):
+    registry["entity_reference_code"] = "02"
+    if axis == "sex":
+        left, right = pair("2026-Q2", sex="1"), pair("2026-Q2", sex="2", value=43)
+    else:
+        left, right = pair("2026-Q2", geography="02"), pair("2026-Q2", geography="01", value=43)
+    result = compare_public_slices(left, right, axis=axis, registry=registry)
+    assert result["comparable"] and result["absolute_change"] == 3
+    assert "descriptive_difference_only" in result["limitations"]
+    assert "same_period_descriptive_slice" in result["limitations"]
+    assert not {"descriptive_change_only", "quarterly_samples_may_overlap", "seasonality_qoq", "like_quarter_yoy"}.intersection(result["limitations"])
+
+
+def test_temporal_pairs_keep_specific_seasonality_and_overlap_limits(pair, registry):
+    qoq = compare_public_records(pair("2025-Q2"), pair("2025-Q3"), registry=registry)
+    yoy = compare_public_records(pair("2025-Q2"), pair("2026-Q2"), registry=registry)
+    for result in (qoq, yoy):
+        assert result["comparable"]
+        assert {"descriptive_change_only", "quarterly_samples_may_overlap"}.issubset(result["limitations"])
+        assert "same_period_descriptive_slice" not in result["limitations"]
+    assert "seasonality_qoq" in qoq["limitations"] and "like_quarter_yoy" not in qoq["limitations"]
+    assert "like_quarter_yoy" in yoy["limitations"] and "seasonality_qoq" not in yoy["limitations"]
