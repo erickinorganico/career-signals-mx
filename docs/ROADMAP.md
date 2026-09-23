@@ -7,11 +7,11 @@ cambia con evidencia revisada; archivos presentes o trabajo parcial no bastan.
 | Hito | Resultado | Requisitos | Entrada | Gate de salida | Estado |
 |---|---|---|---|---|---|
 | M0 — Planeación y publicación inicial | Repositorio público, mandato, fuentes, scope, PRD, contrato, plan, riesgos y trazabilidad coherentes | REQ-001 | Handoff corregido y auditoría de fuentes | Revisión principal confirma links, precedencia, ausencia de secretos/datos restringidos y consistencia de IDs | `PLANNING COMPLETE` |
-| M1 — Contrato y slice sintético | Fixture ilustrativo conforme al contrato, con conceptos separados y nulos deliberados | REQ-002–REQ-005 | M0 aceptado | Schema rechaza estructura/enums inválidos y el quality gate rechaza refs/estados inválidos; todo valor sintético es `REVIEW` y visible como tal | `PENDING` |
-| M2 — Integridad, comparabilidad y trazabilidad | Quality gate, freshness, comparisons, receipts, DuckDB y exports locales | REQ-006–REQ-011 | M1 aceptado | Casos verdes y rojos pasan; fallo invalida current; warehouse y exports preservan semántica | `PENDING` |
-| M3 — Reportes y briefs estáticos | Markdown/HTML, gráficas, tablas alternativas e insights auditables | REQ-012–REQ-014 | M2 aceptado | Render determinista; nulos son gaps; cada claim resuelve evidencia y muestra límites | `PENDING` |
-| M4 — Agentes read-only y evals | Roles estructurados para fuentes, calidad, insights y visualización sin autoridad de mutación | REQ-015–REQ-016 | M2 aceptado; M3 disponible para eval E2E | Evals bloquean evidencia faltante, falsa causalidad, mezcla conceptual y publicación impropia | `PENDING` |
-| M5 — Release reproducible | Instalación limpia, replay offline, tests/E2E, revisión adversarial y publicación verificada | REQ-017–REQ-018 | M1–M4 aceptados | Matriz completa, secret/license review, receipt final y reproducción independiente | `PENDING` |
+| M1 — Contrato y slice sintético | Fixture ilustrativo conforme al contrato, con conceptos separados y nulos deliberados | REQ-002–REQ-005 | M0 aceptado | Schema y quality gate pasan casos verdes/rojos; 54 grains y 7 nulos explícitos | `VERIFIED` |
+| M2 — Integridad, comparabilidad y trazabilidad | Quality gate, freshness, comparisons, receipts, DuckDB y exports locales | REQ-006–REQ-011 | M1 aceptado | Casos verdes y rojos pasan; fallo invalida current; warehouse y exports preservan semántica | `VERIFIED` |
+| M3 — Reportes y briefs estáticos | Markdown/HTML, gráficas, tablas alternativas e insights auditables | REQ-012–REQ-014 | M2 aceptado | Render determinista; nulos son gaps; cada claim resuelve evidencia y muestra límites | `VERIFIED` |
+| M4 — Agentes read-only y evals | Roles estructurados para fuentes, calidad, insights y visualización sin autoridad de mutación | REQ-015–REQ-016 | M2 aceptado; M3 disponible para eval E2E | 12/12 evals; propuestas sin autoridad de mutación | `VERIFIED` |
+| M5 — Release reproducible | Instalación limpia, replay offline, tests/E2E, revisión adversarial y publicación verificada | REQ-017–REQ-018 | M1–M4 aceptados | Suite local PASS, clean source offline PASS y revisión Astra PASS; publicación pendiente | `VERIFIED LOCALLY; PUBLICATION PENDING` |
 | M6 — ENOE real para México | Primer snapshot real nacional con ponderación, diseño muestral y precisión validados | Requisitos nuevos después de M5 | M5 aceptado y source activation aprobada | Términos, CMPE, factor/estrato/UPM, varianza, atribución, hash y comparabilidad revisados | `CONDITIONAL` |
 
 ## M0 — Planeación y publicación inicial
@@ -20,7 +20,8 @@ Este hito fija autoridad, alcance, requisitos y trabajo ejecutable. Incluye la
 creación del repositorio autorizado y la auditoría primaria de fuentes. El
 integrador principal revisó el paquete documental y sus IDs canónicos, por lo
 que M0 queda `PLANNING COMPLETE`. Esa marca no implica runtime, demo, release
-analítico ni definición de terminado; M1–M5 permanecen pendientes.
+analítico ni definición de terminado; M1–M4 están verificados localmente y M5
+tiene verificación local PASS, con publicación del release pendiente.
 
 ## M1 — Contrato y slice sintético
 

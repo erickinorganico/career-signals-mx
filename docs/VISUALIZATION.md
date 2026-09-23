@@ -9,7 +9,9 @@ La API `brujula.report.render_report(payload, output_dir)` genera `report.md`,
 relativas: `{markdown:"report.md", html:"report.html", charts:[...]}`. No
 inicia un servidor, no descarga fuentes y no interpreta ausencias como cero.
 
-Las barras comparan el último periodo nacional disponible por métrica. La
+Las barras usan el último periodo nacional declarado por métrica. Conservan
+los campos sin valor con la etiqueta «Sin dato», sin barras de altura cero ni
+reemplazo por un trimestre anterior. La
 tendencia muestra ingreso mensual medio por campo y geografía; `null`,
 `UNKNOWN`, `BLOCKED` y pares sin una comparación declarada compatible rompen la
 línea. Cada figura muestra fuente, periodo, geografía, unidad, universo,

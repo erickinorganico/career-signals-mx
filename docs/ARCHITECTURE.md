@@ -20,15 +20,15 @@ hasta validar licencia, clasificación, ponderación, varianza y precisión.
 
 | Superficie | Estado actual | Evidencia local | Falta para cerrar |
 |---|---|---|---|
-| Contrato del dataset | Implementado | `contracts/dataset.schema.json` | alinear estados de calidad públicos a mayúsculas y documentar migración |
-| Fixture sintético | Implementado | `data/fixtures/pilot.json` | verificar cobertura 3×3×2×3 y casos nulos |
-| Loader y quality | Parcial | `brujula/data.py`, `brujula/quality.py` | cierre de estados públicos, comparabilidad y E2E |
+| Contrato del dataset | Implementado | `contracts/dataset.schema.json` | revisión E2E limpia |
+| Fixture sintético | Implementado | `data/fixtures/pilot.json` | revisión E2E limpia |
+| Loader y quality | Implementado localmente | `brujula/data.py`, `brujula/quality.py` | revisión E2E limpia |
 | DuckDB | Parcial | `brujula/warehouse.py` | constraints lógicos/FK verificados y exports completos |
-| Pipeline y receipts | Parcial | `brujula/pipeline.py` | depende de módulos/contratos faltantes; ejecutar ruta verde/roja |
+| Pipeline y receipts | Implementado localmente | `brujula/pipeline.py`, `brujula/runlock.py` | revisión E2E limpia |
 | Source Scout | Parcial | `brujula/scout.py` | revisión de política de red y ejecución opt-in |
-| Agentes read-only | Parcial | `brujula/agents.py`, `contracts/insight.schema.json` | falta `contracts/agent-run.schema.json`; tests/semántica final |
-| Reportes/gráficas | No implementado en este snapshot | `brujula/report.py` no existe | implementar `render_report`; Markdown/HTML/gráficas |
-| CLI | Parcial | `brujula/cli.py` | el comando build no puede cerrar mientras falten dependencias |
+| Agentes read-only | Implementado localmente | `brujula/agents.py`, `contracts/agent-run.schema.json` | revisión E2E limpia |
+| Reportes/gráficas | Implementado localmente | `brujula/report.py` | revisión visual/E2E limpia |
+| CLI | Implementado localmente | `brujula/cli.py` | revisión E2E limpia |
 | Verificación integral | No demostrada | tests declaran expectativas | una colección verde todavía no constituye evidencia disponible |
 
 ## Flujo objetivo
@@ -69,12 +69,12 @@ grain, rangos, coherencia métrica/unidad/precio, fuentes aprobadas, evidence
 refs, bridges y freshness. Los estados públicos son únicamente `MEASURED`,
 `REVIEW`, `UNKNOWN`, `BLOCKED`; valores sintéticos no nulos son `REVIEW`.
 
-La API target
+La API implementada
 `compare_observations(previous,current,periods_by_id)` solo calcula delta si coinciden:
 concepto/tipo, geografía, métrica, unidad, población, metodología, base de
 precios, fuente y bandera sintética; los periodos deben ser distintos y
-`current.start>previous.end` según el mapa de periodos. La firma actual de dos
-argumentos todavía requiere migración. `null`, `UNKNOWN` o `BLOCKED` impiden delta. Un valor previo cero
+`current.start>previous.end` según el mapa de periodos. `null`, `UNKNOWN` o
+`BLOCKED` impiden delta. Un valor previo cero
 admite diferencia absoluta y deja cambio relativo en `null`.
 
 ### Warehouse DuckDB
@@ -109,13 +109,12 @@ activa fuentes. GitHub es una operación externa del flujo de desarrollo.
 Ningún agente calcula métricas, altera DuckDB, promueve fuentes, aprueba bridges
 o convierte una propuesta en dato. `run_agents(dataset, quality, comparisons,
 catalog) -> dict` y `validate_agent_run(...) -> list[str]` son el límite público
-planeado. El schema de insights existe; el schema de agent-run falta en el
-snapshot auditado.
+implementado. Los schemas de insights y agent-run se validan antes del sellado.
 
 ### Reportes
 
-`render_report(payload, output_dir) -> dict` está planeado y aún no existe en el
-snapshot auditado. Debe crear `report.md`, `report.html` y una lista de gráficas
+`render_report(payload, output_dir) -> dict` crea `report.md`, `report.html` y
+una lista de gráficas
 PNG/SVG con Matplotlib no interactivo. HTML es un documento estático: sin
 JavaScript, CDN, tracking, fuentes remotas ni servidor.
 
@@ -147,10 +146,15 @@ ese pointer y nunca es autoridad independiente.
 
 ## Atomicidad, concurrencia y fallos
 
-- `.build.lock` impide dos writers sobre el mismo directorio de salida.
+- `.build.lock` usa un lock persistente del sistema operativo para impedir dos
+  writers; se libera normalmente y la siguiente ejecución recupera un RUNNING
+  dejado por crash.
 - `current.json` es el único commit canónico. Se escribe por `os.replace` solo
   cuando el run completo está sellado o cuando se registra el fallo vigente.
   `report.md` raíz es una conveniencia humana, nunca autoridad por sí sola.
+- El pointer y el journal mutable se actualizan tras calcular el digest del
+  input. Generation success se sella antes del commit; un crash posterior al
+  commit y anterior a `report.md` deja el `current` válido.
 - Staging, exports y reportes parciales dentro del run no son publicables antes
   del commit de `current.json`. El consumidor CLI verifica el pointer, status y
   hashes del run antes de mostrar su reporte. Si el proceso cae entre escrituras
@@ -166,6 +170,9 @@ ese pointer y nunca es autoridad independiente.
 - Solo una ejecución que terminó gates, exports, reporte y manifest puede mover
   `current.json` a un éxito. Un archivo parcial puede quedar como diagnóstico
   histórico, pero no entra en el conjunto activo.
+- Si la generación selló `SUCCEEDED` y falla la publicación, el receipt sellado
+  permanece y se escribe `publication-failure.json`; `current` queda BLOCKED.
+  Un fallo del índice humano posterior al commit no revoca el éxito canónico.
 
 ## Dependencias y despliegue
 

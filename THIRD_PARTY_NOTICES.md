@@ -11,6 +11,14 @@ Sus licencias propias no se reemplazan por la licencia MIT del proyecto.
 Antes de empaquetar binarios o distribuir entornos, el gate de release deberá
 inventariar también dependencias transitivas y conservar sus avisos.
 
+Para 0.1.0 se revisaron los metadatos de los 23 paquetes fijados, sin entradas
+carentes de información de licencia. El [inventario](docs/evidence/dependency-licenses.json)
+conserva expresiones SPDX o metadatos/clasificadores del paquete instalado.
+Los avisos completos permanecen con cada distribución. El wheel del proyecto
+solo incluye código, contratos, catálogo y fixture propios; no redistribuye
+las dependencias. El [resultado de pip-audit](docs/evidence/dependency-audit.json)
+no encontró vulnerabilidades conocidas en ese conjunto durante la revisión.
+
 El [catálogo de fuentes](docs/SOURCES.md) documenta condiciones de INEGI,
 OLA/STPS, Data México e IMCO. La auditoría pública conserva enlaces y notas
 metodológicas, no microdatos ENOE ni cifras OLA redistribuidas. No se incluye

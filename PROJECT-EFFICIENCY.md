@@ -1,6 +1,6 @@
 # Eficiencia de modelos y Laya
 
-Fecha: 2026-09-22. Alcance: código del prototipo actual y diseño del observatorio.
+Fecha: 2026-09-22. Alcance: runtime sintético 0.1.0 y diseño del observatorio.
 Decisión: **not applicable en el runtime actual**; no se ejecutó inferencia Laya
 ni se midió ahorro. Esta conclusión no impide evaluar un caller futuro.
 

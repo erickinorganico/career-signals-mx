@@ -15,9 +15,10 @@ después de verificaciones proporcionales. También autorizó trabajo local,
 instalación de dependencias open source sin costo monetario y subagentes
 nativos de Codex.
 
-La entrega vigente de esta etapa es la planeación, los specs, README, alcance y
-su publicación. El objetivo posterior sigue siendo completar el observatorio;
-un documento aceptado no acredita su implementación.
+La entrega vigente es un MVP sintético local con loader, quality, pipeline,
+warehouse, reportes, agentes read-only y CLI verificables. La publicación del
+release analítico sigue pendiente; el estado implementado no autoriza datos
+oficiales ni una fuente real.
 
 Quedan fuera de esta versión una aplicación, frontend, backend de aplicación,
 interfaz navegable y hosting obligatorio. Sí corresponden scripts, CLI,

@@ -5,6 +5,9 @@ aplicación web, navegador, servidor HTTP ni APIs pagadas. Los estados de cada
 gate son `DOCUMENTED`, `IMPLEMENTED`, `PARTIAL`, `VERIFIED` o `BLOCKED`; una
 decisión de release necesita evidencia reproducible, no solo código presente.
 
+El resultado ejecutado está en [RELEASE](RELEASE.md) y su
+[recibo](evidence/release-receipt.json); este archivo conserva los criterios.
+
 ## Hitos
 
 | Hito | Propósito | Salida de aceptación |

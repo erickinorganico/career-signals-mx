@@ -2,9 +2,9 @@
 
 Versión: 1.0 · Fecha: 2026-09-22 · Estado: baseline documental aceptado para implementación.
 
-Esta especificación traduce REQ-001..REQ-018 a contratos verificables. “Actual”
-describe el checkout auditado; “target” describe el resultado requerido. Ningún
-archivo parcial equivale a cumplimiento.
+Esta especificación traduce REQ-001..REQ-018 a contratos verificables. La matriz
+señala implementación local y evidencia disponible; no declara por sí sola un
+release final.
 
 ## Interfaces públicas
 
@@ -13,6 +13,7 @@ python -m brujula build [--input PATH] [--output DIR] [--as-of YYYY-MM-DD]
 python -m brujula demo  [--input PATH] [--output DIR] [--as-of YYYY-MM-DD]
 python -m brujula verify
 python -m brujula scout [--source SOURCE_ID] [--output DIR]
+python -m brujula report --output DIR --format html|markdown
 ```
 
 - `build` y `demo` son aliases del flujo analítico; exit 0 solo si el bundle es
@@ -28,24 +29,24 @@ python -m brujula scout [--source SOURCE_ID] [--output DIR]
 
 | SPEC | REQ | Contrato | Estado auditado | Evidencia de aceptación |
 |---|---|---|---|---|
-| SPEC-001 | REQ-001 | Catálogo candidato separado de fuentes activas | Parcial | cada record registra autoridad, URL, términos, cobertura, método, fecha y decisión |
-| SPEC-002 | REQ-002 | Schemas versionados, strict y sin campos extra | Parcial | dataset/insight pasan positivos y rechazan negativos; agent-run falta |
-| SPEC-003 | REQ-003 | Slice 3 campos×3 periodos×2 geos×3 métricas | Parcial | 54 grains, con nulos/estado explícitos |
-| SPEC-004 | REQ-004 | Dimensiones separadas y bridges `REVIEW` | Parcial | ningún join/aggregate trata bridge como identidad |
-| SPEC-005 | REQ-005 | `null` no es cero; estados públicos uppercase | Parcial | UNKNOWN/BLOCKED tienen null; salidas conservan ausencia |
-| SPEC-006 | REQ-006 | Gate de schema, refs, grain, rangos y coherencia | Parcial | tests bloquean duplicado, ref rota, unidad/base y % inválido |
-| SPEC-007 | REQ-007 | Freshness usa fin del periodo de negocio | Parcial | as_of, latest_period_end, age, threshold y state |
-| SPEC-008 | REQ-008 | Delta solo entre observaciones compatibles | Parcial | diferencia contractual retorna comparable=false y deltas null |
-| SPEC-009 | REQ-009 | Raw content-addressed y receipt por intento | Parcial | SHA coincide; colisión falla; current refleja último intento |
-| SPEC-010 | REQ-010 | DuckDB normalizado por run | Parcial | tablas/grain/cardinalidad; sin bridge aggregation |
-| SPEC-011 | REQ-011 | CSV/Parquet solo tras gates | Parcial | fallos no exportan; metadatos críticos preservados |
-| SPEC-012 | REQ-012 | Reportes MD/HTML + PNG/SVG accesibles | Falta | `render_report` existe y tests pasan |
-| SPEC-013 | REQ-013 | Null=gaps; incompatibles no conectados | Falta | tests de render sin cero implícito ni BLOCKED |
-| SPEC-014 | REQ-014 | Insight packet strict y evidence-bound | Parcial | schema/validator rechazan claims huérfanos |
-| SPEC-015 | REQ-015 | Seis roles read-only sin mutación | Parcial | agent-run schema + evals verifican proposals REVIEW |
-| SPEC-016 | REQ-016 | Evals verdes/rojos contractuales | Falta/parcial | cero falso, concepto, evidencia, causalidad, incompatibilidad |
-| SPEC-017 | REQ-017 | Instalación y E2E offline reproducibles | No demostrado | entorno limpio: verify/demo exit 0 |
-| SPEC-018 | REQ-018 | Release con revisión secreto/licencia/método | Planeado | checklist, Astra adversarial, matriz y receipt final |
+| SPEC-001 | REQ-001 | Catálogo candidato separado de fuentes activas | Implementado localmente | `data/catalog/sources.json`, `brujula/scout.py`, `tests/test_scout.py` |
+| SPEC-002 | REQ-002 | Schemas versionados, strict y sin campos extra | Implementado localmente | dataset/insight/agent-run/run pasan positivos y rechazan negativos; `tests/test_data.py`, `tests/test_agents.py`, `tests/test_pipeline.py` |
+| SPEC-003 | REQ-003 | Slice 3 campos×3 periodos×2 geos×3 métricas | Implementado localmente | 54 grains, con nulos/estado explícitos; `tests/test_data.py` |
+| SPEC-004 | REQ-004 | Dimensiones separadas y bridges `REVIEW` | Implementado localmente | `tests/test_data.py`, `tests/test_warehouse.py` |
+| SPEC-005 | REQ-005 | `null` no es cero; estados públicos uppercase | Implementado localmente | `tests/test_quality.py`, `tests/test_report.py` |
+| SPEC-006 | REQ-006 | Gate de schema, refs, grain, rangos y coherencia | Implementado localmente | `tests/test_data.py`, `tests/test_quality.py` |
+| SPEC-007 | REQ-007 | Freshness usa fin del periodo de negocio | Implementado localmente | `tests/test_quality.py` |
+| SPEC-008 | REQ-008 | Delta solo entre observaciones compatibles | Implementado localmente | `tests/test_quality.py`, `tests/test_pipeline.py` |
+| SPEC-009 | REQ-009 | Raw content-addressed y receipt por intento | Implementado localmente | `tests/test_pipeline.py`, `tests/test_runlock.py` |
+| SPEC-010 | REQ-010 | DuckDB normalizado por run | Implementado localmente | `tests/test_warehouse.py` |
+| SPEC-011 | REQ-011 | CSV/Parquet solo tras gates | Implementado localmente | `tests/test_export.py`, `tests/test_pipeline.py` |
+| SPEC-012 | REQ-012 | Reportes MD/HTML + PNG/SVG accesibles | Implementado localmente | `brujula/report.py`; `tests/test_report.py` |
+| SPEC-013 | REQ-013 | Null=gaps; incompatibles no conectados | Implementado localmente | `tests/test_report.py` |
+| SPEC-014 | REQ-014 | Insight packet strict y evidence-bound | Implementado localmente | `tests/test_insights.py`, `tests/test_agents.py` |
+| SPEC-015 | REQ-015 | Seis roles read-only sin mutación | Implementado localmente | `contracts/agent-run.schema.json`, `brujula/agents.py`, `tests/test_agents.py` |
+| SPEC-016 | REQ-016 | Evals verdes/rojos contractuales | Implementado localmente | `tests/test_evals.py`, `docs/EVALS.md` |
+| SPEC-017 | REQ-017 | Instalación y E2E offline reproducibles | Verificado localmente | suite integrada y clean source offline PASS; publicación pendiente |
+| SPEC-018 | REQ-018 | Release con revisión secreto/licencia/método | Verificado localmente; publicación pendiente | `IMPLEMENTATION-REVIEW.md`, `pip-audit`, matriz y receipt final |
 
 ## Dataset, SQL y cardinalidad
 
@@ -85,8 +86,9 @@ agregación.
 7. Materializar DuckDB y exportar CSV/Parquet.
 8. Renderizar Markdown, HTML y gráficas deterministas.
 9. Escribir bundle, manifest y receipt inmutable.
-10. Hacer un único commit canónico de `current.json`; después materializar el
-    pointer humano `report.md` verificando status y hashes.
+10. Sellar éxito, receipt y manifest antes del único commit canónico de
+    `current.json`; después materializar el pointer humano `report.md`. El CLI
+    verifica el hash del manifest y todos sus artefactos antes de mostrarlo.
 
 El bundle sintético target es `REVIEW`; `publishable=true` significa demostración
 sintética publicable, no medición real.
@@ -95,15 +97,16 @@ sintética publicable, no medición real.
 
 Un gate o excepción produce public status `BLOCKED` y receipt
 `build_status=FAILED`, bundle bloqueado sin cifras heredadas y current canónico
-apuntando al fallo. Archivos de staging ya creados pueden conservarse como
-diagnóstico dentro del run fallido, pero nunca se referencian como activos ni se
-consideran exports publicables. Runs exitosos históricos se conservan sin
-presentarse como actuales. El lock se libera en `finally`.
+apuntando al fallo. Si la generación ya selló un receipt `SUCCEEDED` y falla la
+publicación, se conserva ese receipt y se escribe un `publication-failure.json`
+separado; `current` queda `BLOCKED`. El journal es mutable y permite recuperar
+un `RUNNING` interrumpido. Runs exitosos históricos se conservan sin presentarse
+como actuales. No se equipara receipt de ejecución con publicación remota.
 
 ## Quality y comparabilidad
 
-Estados públicos: `MEASURED`, `REVIEW`, `UNKNOWN`, `BLOCKED`. Quality root debe
-usar esos enums; lowercase queda como deuda actual. La reducción es determinista:
+Estados públicos: `MEASURED`, `REVIEW`, `UNKNOWN`, `BLOCKED`. Quality root usa
+esos enums. La reducción es determinista:
 
 | Condición de filas/gates | `quality.status` | `publishable` |
 |---|---|---:|
@@ -129,10 +132,8 @@ concepto/tipo, fuente, población, geo, métrica, unidad, método, base de preci
 synthetic flag, periodos distintos/ordenados y valores disponibles. El orden se
 deriva de `dim_period.start/end` ISO, no del texto de `period_id`; para comparar,
 `current.start > previous.end`. Como las filas no contienen fechas, la firma
-target cambia a `compare_observations(previous,current,periods_by_id)` (o a un
-componente equivalente con contexto de periodos ya validado). Esto requiere
-migrar `pipeline.make_comparisons` y tests; la firma actual de dos argumentos no
-satisface todavía esta regla. Si falla,
+la API implementada es `compare_observations(previous,current,periods_by_id)` y
+`pipeline.make_comparisons` le entrega el mapa validado de periodos. Si falla,
 `comparable=false` y deltas `null`. Base cero admite delta absoluto y relative
 change `null`.
 
@@ -169,4 +170,6 @@ revisión metodológica adversarial, hashes/manifest y tabla SPEC↔test↔artef
 Falla si UI/servidor es dependencia, faltan módulos/schemas importados, tests no
 coleccionan, ausencia aparece como cero, bridge agrega, una cifra real carece de
 precisión/evidencia, current apunta a éxito tras fallo o se redistribuye material
-sin términos claros.
+sin términos claros. Todo `official_snapshot` permanece `BLOCKED` por
+`source_activation` hasta M6; aprobar un registro local no activa una fuente
+real.

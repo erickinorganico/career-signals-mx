@@ -35,10 +35,34 @@ haya participado en esta etapa documental. La revisión adversarial y las
 resoluciones están en [PLANNING-REVIEW](PLANNING-REVIEW.md). El principal
 alineó VALIDATION-PLAN con los IDs canónicos y cerró las aclaraciones sobre
 crashes, staging, receipt final y el índice humano. La aceptación cubre la
-planeación; los bloqueadores del prototipo permanecen en [STATUS](STATUS.md).
+planeación; el estado posterior de implementación se registra en [STATUS](STATUS.md).
 El [recibo M0](evidence/planning-receipt.json) registra el commit publicado y
 el manifiesto SHA-256 del paquete aceptado. Sus hashes usan blobs Git para evitar
 diferencias de finales de línea entre sistemas.
+
+## Implementación del piloto sintético
+
+La continuación autorizada retomó M1–M5 con ownership por módulo y sin activar
+fuentes numéricas reales. Los subagentes no delegaron ni publicaron por separado.
+
+| Asignación | Modelo/esfuerzo | Entrega y verificación |
+|---|---|---|
+| `m1_data` | Luna nativo / medium | Contratos, fixture de 54 filas, loader, calidad, DuckDB y exports; pruebas y documentación |
+| `m3_reports` | Terra / medium | Markdown/HTML, PNG/SVG, tablas, gaps, identidades tipadas y etiquetas Sin dato; 10 tests de reportes y revisión visual |
+| `m4_agents` | Sol / high | Seis roles, schemas, insights canónicos y 12 evals; 28 tests afectados |
+| `m5_runtime_review` | Astra / high | Revisión independiente; cinco hallazgos reproducidos, corregidos y verificados; PASS |
+| Principal | modelo de la tarea principal | Pipeline, CLI, recuperación, empaquetado, integración, replay limpio, revisión de publicación y GitHub |
+
+La revisión encontró colisiones entre namespaces conceptuales, orden temporal
+con un null inicial, recursos ausentes del wheel, pérdida de hash tras crash y
+claims no vinculados exactamente a evidencia. Las correcciones y repros constan
+en [IMPLEMENTATION-REVIEW](IMPLEMENTATION-REVIEW.md).
+
+El principal verificó una copia limpia y una instalación del wheel fuera del
+checkout. La auditoría de dependencias llevó a actualizar pytest a 9.0.3 y a
+repetir los checks afectados. El [recibo de release](evidence/release-receipt.json)
+conserva los resultados finales, hashes y publicación. Se reutilizó la evaluación
+de [Laya](../PROJECT-EFFICIENCY.md): no hay un caller LLM operativo que sustituir.
 
 ## Reglas para continuar
 

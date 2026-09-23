@@ -2,9 +2,8 @@
 
 Baseline: 2026-09-22. Este plan convierte [PRD.md](PRD.md) en tareas pequeñas y
 verificables. El paquete de planeación M0 está **aceptado** y la
-implementación/runtime permanece **pendiente de verificación**. La presencia de
-código o tests parciales no se interpreta como demo verde ni definición de
-terminado.
+implementación/runtime del MVP sintético está **verificada localmente**. La
+publicación del release y su revisión final siguen pendientes.
 
 ## Resultado del release inicial
 
@@ -50,8 +49,12 @@ integrador revisa el diff y repite los checks afectados. “Archivo creado”,
 | Repositorio público y rama `main` | `VERIFIED` | `erickinorganico/career-signals-mx`, push inicial `acace35`; los pushes posteriores requieren sus propios checks |
 | Auditoría de fuentes | `DOCUMENTED` | `SOURCES.md` y `source-research.json`; documentar candidatos no activa datos numéricos reales |
 | Planeación y specs | `PLANNING COMPLETE` | M0 fue revisado como baseline documental; no acredita implementación ni release |
-| Implementación local | `UNVERIFIED` | Hay archivos parciales; no se ha aceptado una ruta verde ni el E2E |
-| Release reproducible | `PENDING` | Requiere M1–M5, revisión adversarial y receipt final |
+| Implementación local | `VERIFIED` | Suite integrada y replay offline PASS; fixture sintético y artefactos trazables |
+| Release reproducible | `PENDING` | Verificación local PASS; publicación y cierre del integrador pendientes |
+
+Ledger actual: `TASK-001`–`TASK-014` están completos y verificados localmente;
+`TASK-015` queda pendiente de revisión/publicación del release; `TASK-016`–
+`TASK-018` son condicionales de M6 y requieren activar una fuente oficial.
 
 ## Backlog ordenado
 
@@ -122,11 +125,11 @@ TASK-001–003. El resultado habilita implementación; no habilita una fuente re
   para cada combinación; IDs editoriales `demo_`; valores sintéticos no nulos
   en `REVIEW`; catálogo oficial separado.
 - **Checks:** test de schema, cobertura, refs, nulos y ausencia de cifras OLA/
-  ENOE canónicas. El fixture actual tiene 9 filas y no satisface aún el target.
+  ENOE canónicas. El fixture implementado tiene 54 grains, con 7 filas `UNKNOWN` y `null` explícitos.
 - **Cubre:** REQ-001–REQ-005.
 
-**Checkpoint M1:** el integrador carga el fixture desde cero y confirma que
-ninguna salida puede presentarlo como medición real.
+**Checkpoint M1:** aceptado localmente; el integrador verificó el fixture desde
+cero y ninguna salida puede presentarlo como medición real.
 
 ### M2 — Calidad, comparabilidad y trazabilidad
 
@@ -167,9 +170,8 @@ ninguna salida puede presentarlo como medición real.
 - **Checks:** tests de conteo, round-trip, nulos, bloqueo y columnas requeridas.
 - **Cubre:** REQ-010, REQ-011.
 
-**Checkpoint M2:** el integrador ejecuta TASK-006–008 junto con M1 y conserva un
-receipt de integración parcial y uno rojo controlado. El receipt parcial no es
-un receipt de release porque todavía faltan reportes, agentes y M5.
+**Checkpoint M2:** aceptado localmente; quality, comparabilidad, receipts,
+DuckDB y exports pasan sus checks. El receipt no es una autorización de release.
 
 ### M3 — Reportes y briefs estáticos
 

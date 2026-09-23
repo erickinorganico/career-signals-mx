@@ -1,8 +1,9 @@
 # Documentación de Brújula Laboral MX
 
-El repositorio entrega en esta etapa un paquete de planeación y especificación.
-El prototipo tiene partes incompletas; [STATUS](STATUS.md) es la referencia de
-verificación y no debe sustituirse por una lectura optimista del plan.
+El repositorio entrega un MVP sintético local verificable y su documentación de
+contratos. La publicación del release continúa pendiente; [STATUS](STATUS.md)
+es la referencia de verificación y conserva el recibo histórico M0 separado del
+estado actual.
 
 | Necesidad | Documento | Qué decide o prueba |
 |---|---|---|
@@ -20,6 +21,10 @@ verificación y no debe sustituirse por una lectura optimista del plan.
 | Saber qué está probado | [STATUS](STATUS.md) | Resultados actuales, bloqueadores y límites |
 | Revisar la planeación | [PLANNING-REVIEW](PLANNING-REVIEW.md) | Hallazgos adversariales y resolución, con alcance documental |
 | Verificar la entrega | [Recibo M0](evidence/planning-receipt.json) | Commit remoto, hashes documentales, checks y límites de la entrega |
+| Revisar implementación | [IMPLEMENTATION-REVIEW](IMPLEMENTATION-REVIEW.md) | Revisión Astra y hallazgos corregidos; pendiente si el archivo aún no se incorpora |
+| Consultar evals | [EVALS](EVALS.md) | Casos y resultados de evaluación; pendiente si el archivo aún no se incorpora |
+| Preparar release | [RELEASE](RELEASE.md) | Checklist de publicación; lo creará el integrador |
+| Ver fixture sintético | [Ejemplo sintético](../examples/synthetic/README.md) | Atribución y límites del fixture; lo creará el integrador |
 | Coordinar agentes | [ORCHESTRATION](ORCHESTRATION.md), [eficiencia](../PROJECT-EFFICIENCY.md) | Routing efectivo y condiciones para Laya |
 | Contribuir | [CONTRIBUTING](../CONTRIBUTING.md) | Cambios acotados y verificación proporcional |
 | Revisar licencias | [LICENSE](../LICENSE), [avisos](../THIRD_PARTY_NOTICES.md) | Autoría original, dependencias y atribución de fuentes |

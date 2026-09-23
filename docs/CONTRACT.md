@@ -2,10 +2,11 @@
 
 Fecha: 2026-09-22 · Python 3.12+ · JSON `snake_case` · UTF-8.
 
-Este contrato distingue **existente**, **faltante** y **target**. El checkout
-auditado contiene schema de dataset/insight, fixture, quality, warehouse,
-pipeline, scout y agentes parciales. `brujula/report.py` y
-`contracts/agent-run.schema.json` faltan; el build completo no está demostrado.
+Este contrato distingue capacidades implementadas, verificadas localmente y
+pendientes de revisión integral. El checkout contiene schema de dataset,
+insight, agent-run y run, fixture sintético, quality, warehouse, pipeline,
+scout, agentes y renderer estático. La aceptación de release/E2E limpio sigue
+pendiente de revisión del integrador.
 
 ## Dataset JSON — existente, sujeto a alineación
 
@@ -48,13 +49,11 @@ Evidence: `{id,source_id,label,url,kind,note}`.
 }
 ```
 
-El target público usa los cuatro estados uppercase. La implementación auditada
-aún devuelve estados lowercase/internos en algunas rutas; es deuda previa al E2E.
-`quality.status`, `row_statuses` y `freshness.status` usan el enum público. En
-cambio, `checks[*].status` es un veredicto diagnóstico interno
-`PASS|FAIL|BLOCKED`; no representa el estado de una observación ni se expone
-como clasificación estadística. Esta reutilización del nombre `status` se
-mantiene por compatibilidad v1 y debe documentarse en consumidores.
+Los estados públicos de `quality.status`, `row_statuses` y `freshness.status`
+son siempre mayúsculas. `checks[*].status` conserva el veredicto diagnóstico
+`PASS|FAIL|BLOCKED`.
+El mismo nombre `status` en `checks` es diagnóstico interno; no representa la
+clasificación estadística de una observación.
 
 ## Comparisons — existente
 
@@ -62,11 +61,10 @@ mantiene por compatibilidad v1 y debe documentarse en consumidores.
 Si no comparable, deltas null. Status target: REVIEW para descripción sintética,
 BLOCKED para incompatibilidad. No implica significancia estadística.
 
-La firma existente `compare_observations(previous,current)` solo ve IDs. La
-firma target es `compare_observations(previous,current,periods_by_id)` para
-resolver `start/end` desde `dim_period` y exigir
-`current.start>previous.end`. Este cambio de API obliga a migrar pipeline y
-tests; observation no contiene fechas.
+La firma implementada es `compare_observations(previous,current,periods_by_id)`
+para resolver `start/end` desde `dim_period` y exigir
+`current.start>previous.end`; `observation` no contiene fechas y el pipeline
+resuelve el mapa de periodos antes de comparar.
 
 ## Insights — schema existente
 
@@ -74,7 +72,7 @@ tests; observation no contiene fechas.
 Strict, evidence no vacía. Observation deriva de fila; interpretación y
 recomendación no introducen números o causalidad nuevos.
 
-## Agent run — target, schema faltante
+## Agent run — schema implementado
 
 Estructura raíz target:
 `{mode:"deterministic_replay",publication_allowed,roles,insights}`. `roles`
@@ -87,7 +85,8 @@ Fragmento ilustrativo de una entrada de rol (no es un agent-run completo):
 
 Exactamente seis roles: source_scout, schema_mapper, data_quality_guardian,
 insight_analyst, visualization_planner, publisher. Proposals nunca superan
-REVIEW. `contracts/agent-run.schema.json` está planeado y falta.
+REVIEW. `contracts/agent-run.schema.json` valida la estructura de seis roles y
+las propuestas read-only.
 
 ## Catálogo candidato
 
@@ -117,9 +116,11 @@ RUNNING.
 Fallo: BLOCKED, publishable false, dataset null, insights vacíos, sin cifras
 heredadas. Éxito sintético: REVIEW, publishable true y warning obligatorio.
 
-## Reports — target, renderer faltante
+## Reports — renderer estático implementado
 
-`render_report(payload,output_dir)->{markdown:"report.md",html:"report.html",charts:[...]}`.
+`render_report(payload,output_dir)->{markdown:"report.md",html:"report.html",charts:[...]}`
+genera los artefactos offline; el CLI `report --output DIR --format html|markdown`
+resuelve primero `current.json` y verifica manifest y hashes.
 Documentos estáticos sin browser/servidor. HTML escapa payload, no scripts/red.
 Cada gráfica tiene tabla alternativa y metadata.
 
@@ -141,8 +142,14 @@ ingesta numérica.
 - `artifacts/current.json`: único commit canónico por replace atómico; apunta a
   un run completo exitoso o al fallo vigente.
 - `artifacts/report.md`: pointer humano derivado; no es autoridad independiente.
-- `artifacts/.build.lock`: escritor único.
+- `artifacts/.build.lock`: lock persistente del sistema operativo; se libera al
+  salir normalmente y se recupera tras un crash.
 - `manifest.json`: hashes relativos; receipt final se sella una vez.
+
+Durante `RUNNING`, `current.json` y `runs/<run_id>/journal.json` conservan el
+estado y, después de leer el input, su digest SHA-256. La generación sella
+bundle, receipt y manifest antes de publicar `current`; un crash posterior al
+commit pero anterior al índice humano deja un `current` válido.
 
 Un consumidor verifica `current.json`, su status y hashes antes de abrir el
 reporte. Si el índice humano `report.md` discrepa del puntero por un crash,
@@ -163,3 +170,13 @@ fallo los retiene solo como diagnóstico histórico y no los enlaza desde curren
 No es contrato activo. Requiere source snapshot versionado y variables de diseño
 para pesos/varianza. Claves CMPE no se inventan. Cambiar grain/estados exige
 migración de schema, tests y ADR.
+
+
+## Restricción de prosa v1
+
+Los packets de insights se vinculan a observaciones exactas mediante plantillas
+canónicas para título, observación, interpretación, recomendación y límites.
+El gate rechaza texto libre, causalidad y cantidades nuevas, incluso en palabras.
+V1 no acepta prosa agentic de comparaciones hasta disponer de un contrato propio
+completo; esto no deshabilita las comparaciones numéricas deterministas usadas
+por las gráficas. La identidad se resuelve con `(concept_type, concept_id)`.

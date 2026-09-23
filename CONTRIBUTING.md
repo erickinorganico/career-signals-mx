@@ -10,9 +10,9 @@ dependencias resueltas; lee sus criterios de aceptación antes de cambiar códig
 2. Mantén un cambio acotado y preserva el trabajo concurrente. Si cambia una
    interfaz, actualiza contrato y consumidores juntos; no renombres conceptos
    estadísticos por conveniencia técnica.
-3. Ejecuta los checks afectados y `python scripts/check_docs.py`. La suite
-   completa sigue bloqueada en el checkpoint actual: consulta STATUS y no
-   describas un subconjunto verde como cierre E2E.
+3. Ejecuta los checks afectados y `python scripts/check_docs.py`. La demo y el
+   replay son offline; separa la evidencia de tests locales de la instalación
+   limpia, el E2E y la publicación, que requieren revisión del integrador.
 4. Actualiza STATUS con evidencia y el plan con el estado de la tarea. Los
    cambios de decisión merecen un ADR nuevo o una referencia que sustituya el
    anterior.
@@ -32,7 +32,8 @@ producción. Ejecútalas y corrige regresiones del cambio sin pedir aprobación
 por cada iteración. Separa tests offline de lecturas optativas de fuentes.
 Las verificaciones necesarias se definen en [VALIDATION-PLAN](docs/VALIDATION-PLAN.md).
 
-Una propuesta de agente no activa fuentes ni bridges. No incorporamos APIs de
+Una propuesta de agente no activa fuentes ni bridges. `official_snapshot`
+permanece bloqueado hasta M6. No incorporamos APIs de
 inferencia pagadas o servicios obligatorios. Laya necesita un caso real y una
 evaluación previa de la política completa; véase [PROJECT-EFFICIENCY](PROJECT-EFFICIENCY.md).
 

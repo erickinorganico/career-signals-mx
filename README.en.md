@@ -4,8 +4,8 @@
 Analytics repository combining source research, evidence-aware pipelines and
 analytical reports. [Español](README.md) · [Documentation](docs/README.md)
 
-> **Current status: accepted planning baseline, with a partial prototype.**
-> The full demo is not release-ready. All included observations are synthetic,
+> **Version 0.1.0: synthetic MVP implemented and verified.**
+> The local demo produces reproducible artifacts. All included observations are synthetic,
 > not Mexican labor estimates, vacancies or personal career recommendations.
 > See [verified status and blockers](docs/STATUS.md).
 
@@ -20,8 +20,9 @@ does not build a frontend, application backend or navigable website.
 The pilot design covers three study fields (law, communication and journalism,
 political science), three quarters (2025 Q2–Q4), national Mexico and an
 illustrative Jalisco segment. Its three measures are employed population,
-nominal mean monthly income and women's share of employment. The target is 54
-synthetic observations; the prototype's actual coverage is recorded in STATUS.
+nominal mean monthly income and women's share of employment. The implemented
+fixture contains 54 synthetic observations, including seven explicit
+`UNKNOWN`/`null` rows.
 
 An ENOE extension is future work, subject to verified redistribution conditions,
 official field codes, population filters, weights and complex-survey precision.
@@ -39,7 +40,7 @@ in the source catalog. LATAM requires separate country-level methodology review.
 The detailed design is maintained in Spanish. It distinguishes accepted design
 decisions from implemented behavior and verified releases.
 
-## Inspect the development checkpoint
+## Run the local demo
 
 With Git, Python 3.12 and `uv` available:
 
@@ -47,18 +48,24 @@ With Git, Python 3.12 and `uv` available:
 git clone https://github.com/erickinorganico/career-signals-mx.git
 cd career-signals-mx
 uv venv --python 3.12
-uv pip install -r requirements.txt
+uv pip sync requirements.txt
 .venv/bin/python scripts/check_docs.py
-.venv/bin/python -m pytest tests/test_data.py tests/test_quality.py tests/test_scout.py -q
+.venv/bin/python -m brujula demo --as-of 2026-09-22 --output artifacts/demo
+.venv/bin/python -m brujula report --output artifacts/demo --format html
+.venv/bin/python -m brujula verify
 ```
 
 On Windows use `.venv/Scripts/python.exe`. Standard `venv` and `pip install -r
 requirements.txt` are alternatives. These commands inspect documentation and
-the tested subset, not a completed clean-install or end-to-end release.
+run the local replay. Artifacts are written under `artifacts/demo/`, including
+`current.json` and the sealed run. `report` resolves and verifies the current
+report before returning its path. See the [release](docs/RELEASE.md),
+[verification receipt](docs/evidence/release-receipt.json) and
+[synthetic example](examples/synthetic/README.md). After dependency installation,
+the replay needs no network or external data.
 
-The planned CLI entry points are `python -m brujula demo`, `python -m brujula
-verify` and opt-in `python -m brujula scout`. **Demo/full verification remain
-blocked by missing components.** The metadata scout cannot activate new numeric
+The CLI includes `build`, `demo`, `verify`, `report --output DIR --format
+html|markdown` and opt-in `scout`. The metadata scout cannot activate new numeric
 sources or publish statistical claims.
 
 ## Evidence rules
@@ -69,8 +76,8 @@ method, unit, geography or price basis can block comparisons. Nominal income is
 not purchasing power; descriptive changes do not identify causes.
 
 Failed refreshes must invalidate the current release while preserving historical
-runs. This is a specified invariant, not a claim that the incomplete E2E already
-passes. Current agent code uses deterministic replay; no autonomous LLM service
+runs. Integration tests cover this invariant and crash recovery. Agent code
+uses deterministic replay; no autonomous LLM service
 or paid inference is required or claimed.
 
 See [contributing](CONTRIBUTING.md), [model orchestration](docs/ORCHESTRATION.md)

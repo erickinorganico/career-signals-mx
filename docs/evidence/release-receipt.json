@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "version": "0.1.0",
+  "checked_at": "2026-09-23T01:10:05.041479+00:00",
+  "status": "VERIFIED_LOCALLY_PUBLICATION_PENDING",
+  "scope": "synthetic_only",
+  "runtime": {
+    "python": "3.12.13",
+    "requirements_sha256": "31b60a6067df6af04283ad60914afaceb1ab328fd0568805138dd862ef6f60d1"
+  },
+  "verification": {
+    "command": "python -m brujula verify",
+    "status": "PASS",
+    "checked_at": "2026-09-23T01:08:56.456+00:00",
+    "tests": 89,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "network": "disabled in test fixtures",
+    "evals": {
+      "suite_id": "brujula_claim_authority_v1",
+      "eval_version": "1.0",
+      "status": "PASS",
+      "case_count": 12,
+      "passed_count": 12,
+      "critical_violations": []
+    },
+    "clean_source_replay": {
+      "source_commit": "3f3be9c",
+      "status": "PASS",
+      "tests": 88,
+      "note": "Before the final missing-field report regression; final suite has 89 tests."
+    },
+    "review": {
+      "status": "PASS",
+      "report": "docs/IMPLEMENTATION-REVIEW.md",
+      "findings_closed": 5
+    },
+    "ci": {
+      "status": "PENDING"
+    }
+  },
+  "installed_wheel": {
+    "status": "PASS",
+    "installed_without_checkout": true,
+    "runtime_files_byte_matched": [
+      "__init__.py",
+      "__main__.py",
+      "agents.py",
+      "cli.py",
+      "data.py",
+      "export.py",
+      "insights.py",
+      "pipeline.py",
+      "quality.py",
+      "report.py",
+      "resources.py",
+      "runlock.py",
+      "scout.py",
+      "warehouse.py",
+      "contracts/agent-run.schema.json",
+      "contracts/dataset.schema.json",
+      "contracts/insight.schema.json",
+      "contracts/run.schema.json",
+      "catalog/sources.json",
+      "fixtures/pilot.json"
+    ],
+    "python": "3.12.13",
+    "rows": 54,
+    "nulls": 7,
+    "charts": 8,
+    "insights": 3,
+    "manifest_verified": true,
+    "run": {
+      "schema_version": "1.0",
+      "run_id": "20260923T011112-6517df1c657f",
+      "status": "REVIEW",
+      "build_status": "SUCCEEDED",
+      "input_name": "pilot.json",
+      "input_sha256": "62de3d3345235ffd389ec86d8d3f2ac0c48f5ee03a71f9a714a2279de45eb6a5",
+      "adapter_version": "local-json/1.1",
+      "started_at": "2026-09-23T01:11:12.928+00:00",
+      "completed_at": "2026-09-23T01:11:16.751+00:00",
+      "as_of": "2026-09-22",
+      "parameters": {
+        "network": false
+      },
+      "error": null,
+      "observation_count": 54,
+      "mode": "illustrative",
+      "warehouse": {
+        "file": "warehouse.duckdb",
+        "observation_count": 54
+      },
+      "publishable": true,
+      "report": "runs/20260923T011112-6517df1c657f/report/report.md",
+      "manifest_sha256": "8d1119617603de02792ab31bdf55ef6d5839ad3cfa36d60396e5fb3e9da8e722"
+    },
+    "wheel_sha256": "1117e9b788271c1ef3ad855104520be4afdbf1f8d67d8ea8331da1586fe68410",
+    "bundle_zip_sha256": "df49f61e1b805be986ad5cf8287e9cc31c5cb81304f76e44a172e307fade25f8",
+    "text_artifacts_scanned": 18,
+    "example_hashes": {
+      "charts/income-trends.png": "7a934e0a528dcffd2c8a68c5b6b3a2a3e970a6079a065c2485e037f5f67a22a6",
+      "charts/income-trends.svg": "2ddae7d71a70f96a99d17a2dbeb22aa4f4ced15b0887941e31417fcfbbf64de3",
+      "charts/latest-national-44c571887d4905ed.png": "afe19c0750f87e656d4c01bc132c9ff7b3cd678e967e6826a6a7542be2f75952",
+      "charts/latest-national-44c571887d4905ed.svg": "256bd3cdb2a59c3a0003b19bd18f223b5361c48cb6d2400eb50ebe29ed8a75a1",
+      "charts/latest-national-708be81560efebbd.png": "b9738863c93f94330df97ea723d695ab2ba4aa9ac182aa29a7f28b0bc264b92f",
+      "charts/latest-national-708be81560efebbd.svg": "d1f17876d02266cbd26f94c7fef752f6751c4cc6b01231384f2d97f53c949c45",
+      "charts/latest-national-e15a2d57e1089efd.png": "7b180bacc6e6731b1a99c9c78142794289be19a44ebc299815e24a599dc2726e",
+      "charts/latest-national-e15a2d57e1089efd.svg": "62cc214db67d6c7d7ecda91b9fe5db0f643eae6bad119d9678586e57196d1b58",
+      "README.md": "4180c184dc6350e6830b961be56e0a5d65c72eedb77124af27b71b5f5cdaf3bd",
+      "report.html": "336974a371a9bf629020ce6eab991b23e82acdfaed0d7756f3a4e887cbcaf04f",
+      "report.md": "8470e7f255bca5ef18bd4d14acdb7c377b0e46888ffd0283f3ef00d55f3e8ff6"
+    },
+    "line_endings": "Canonical LF source fixture, preserving generated example bytes via .gitattributes"
+  },
+  "security_and_licenses": {
+    "status": "PASS",
+    "dependency_count": 23,
+    "known_vulnerabilities": 0,
+    "missing_license_metadata": 0,
+    "dependency_audit": "docs/evidence/dependency-audit.json",
+    "license_inventory": "docs/evidence/dependency-licenses.json",
+    "scan_scope": "Heuristic credentials/private-path scan over source, docs and generated text; manual synthetic/license review. Not a proof of absence of all defects."
+  },
+  "publication": {
+    "status": "PENDING",
+    "repository": "https://github.com/erickinorganico/career-signals-mx",
+    "authorized_owner": "erickinorganico"
+  },
+  "limits": [
+    "All figures are synthetic; REVIEW means labelled research artifacts, not measured Mexican estimates.",
+    "No ENOE ingestion; M6 requires a separate source activation and statistical review.",
+    "Read-only deterministic agent roles; no external inference or agentic comparison prose.",
+    "No frontend, backend service or web deployment."
+  ]
+}
