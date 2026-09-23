@@ -266,7 +266,7 @@ def _signature(record: dict, provenance: dict, registry: dict) -> tuple[dict, li
                  "industry_classification": classifications.get("industry"),
                  "metric_id": metric_id, "metric_version": registry.get("metric_version"),
                  "metric_numerator": metric.get("numerator"), "metric_denominator": metric.get("denominator"),
-                 "metric_dictionary_refs": tuple(metric.get("dictionary_refs", ())),
+                 "metric_dictionary_refs": list(metric.get("dictionary_refs", ())),
                  "unit": record.get("unit"), "price_basis": record.get("price_basis"),
                  "method_id": record.get("method_id"), "method_version": record.get("method_version"),
                  "design_id": record.get("design_id"), "estimator_version": registry.get("estimator_version"),
