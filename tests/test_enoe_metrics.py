@@ -56,6 +56,20 @@ def test_unknown_age_field_and_empty_denominators(tmp_path):
     assert not np.any(empty["numerator"])
 
 
+def test_unknown_labor_status_does_not_become_rate_zero(tmp_path):
+    row = ROWS[0].replace(",2,1,1,1,100,", ",2,1,9,1,100,")
+    employment = vectors(tmp_path / "employment", "employment_rate", rows=[row, ROWS[1], ROWS[2]])
+    unemployment = vectors(tmp_path / "unemployment", "unemployment_rate", rows=[row, ROWS[1], ROWS[2]])
+    assert employment["denominator"].tolist() == [0., 1., 1.]
+    assert unemployment["denominator"].tolist() == [0., 1., 1.]
+    assert employment["exclusions"]["unknown_clase2"] == 1
+    assert unemployment["exclusions"]["unknown_clase2"] == 1
+    unknown_pea = ROWS[0].replace(",2,1,1,1,100,", ",2,9,1,1,100,")
+    participation = vectors(tmp_path / "participation", "participation_rate", rows=[unknown_pea, ROWS[1], ROWS[2]])
+    assert participation["denominator"].tolist() == [0., 1., 1.]
+    assert participation["exclusions"]["unknown_clase1"] == 1
+
+
 @pytest.mark.parametrize("metric", ["positive_income_mean", "known_hours_mean", "suboccupied_rate", "unemployment_rate"])
 def test_row_order_preserves_aggregate_vectors(tmp_path, metric):
     a = vectors(tmp_path / "a", metric)

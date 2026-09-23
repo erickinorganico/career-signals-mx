@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "version": "enoe-metrics-2026-09-22",
-  "content_sha256": "0c6ef476f4aa6786c65cc1b06f286964b0258293c7b3bf3cacdf3774c2a8b638",
+  "content_sha256": "7d189faaf96a26734d065495ae35ebc76c28b8cef441bdbc8803b555f17da772",
   "source_id": "inegi_enoe",
   "dictionary_refs": {
     "2024-Q3": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
@@ -24,9 +24,9 @@
     {"id":"occupied_total","operation":"total","numerator":"domain & CLASE2=1","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"CLASE2":[1]},"sentinels":{"CLASE2":"blank/unsupported excluded"},"dictionary_refs":["CLASE2"]},
     {"id":"pea_total","operation":"total","numerator":"domain & CLASE1=1","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"CLASE1":[1]},"sentinels":{"CLASE1":"blank/unsupported excluded"},"dictionary_refs":["CLASE1"]},
     {"id":"unemployed_total","operation":"total","numerator":"domain & CLASE2=2 & CLASE1=1","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"CLASE2":[2],"CLASE1":[1]},"sentinels":{"CLASE2":"blank/unsupported excluded"},"dictionary_refs":["CLASE1","CLASE2"]},
-    {"id":"employment_rate","operation":"ratio","numerator":"domain & CLASE2=1","denominator":"domain","unit":"percent","price_basis":"not_applicable","valid_categories":{"CLASE2":[1]},"sentinels":{"CLASE2":"unknown excluded from numerator"},"dictionary_refs":["CLASE2"]},
-    {"id":"participation_rate","operation":"ratio","numerator":"domain & CLASE1=1","denominator":"domain","unit":"percent","price_basis":"not_applicable","valid_categories":{"CLASE1":[1]},"sentinels":{"CLASE1":"unknown excluded from numerator"},"dictionary_refs":["CLASE1"]},
-    {"id":"unemployment_rate","operation":"ratio","numerator":"domain & CLASE1=1 & CLASE2=2","denominator":"domain & CLASE1=1","unit":"percent","price_basis":"not_applicable","valid_categories":{"CLASE1":[1],"CLASE2":[2]},"sentinels":{"CLASE2":"unknown excluded from numerator"},"dictionary_refs":["CLASE1","CLASE2"]},
+    {"id":"employment_rate","operation":"ratio","numerator":"domain & CLASE2=1","denominator":"domain & CLASE2 in 1..4","unit":"percent","price_basis":"not_applicable","valid_categories":{"CLASE2":[1,2,3,4]},"sentinels":{"CLASE2":"blank/unsupported excluded from denominator and counted"},"dictionary_refs":["CLASE2"]},
+    {"id":"participation_rate","operation":"ratio","numerator":"domain & CLASE1=1","denominator":"domain & CLASE1 in 1,2","unit":"percent","price_basis":"not_applicable","valid_categories":{"CLASE1":[1,2]},"sentinels":{"CLASE1":"blank/unsupported excluded from denominator and counted"},"dictionary_refs":["CLASE1"]},
+    {"id":"unemployment_rate","operation":"ratio","numerator":"domain & CLASE1=1 & CLASE2=2","denominator":"domain & CLASE1=1 & CLASE2 in 1,2","unit":"percent","price_basis":"not_applicable","valid_categories":{"CLASE1":[1],"CLASE2":[1,2]},"sentinels":{"CLASE2":"PEA with blank/unsupported labor status excluded from denominator and counted"},"dictionary_refs":["CLASE1","CLASE2"]},
     {"id":"positive_income_mean","operation":"mean","numerator":"INGOCUP where domain & occupied & positive_known","denominator":"domain & occupied & positive_known","unit":"MXN/month","price_basis":"nominal","valid_categories":{"ING7C":[1,2,3,4,5],"INGOCUP":"1..999998"},"sentinels":{"INGOCUP":"0 and 999999 unknown; conflicting band/amount excluded","ING7C":"6 no income; 7 unspecified"},"dictionary_refs":["ING7C","INGOCUP","CLASE2"]},
     {"id":"positive_income_coverage","operation":"ratio","numerator":"domain & occupied & positive_known","denominator":"domain & occupied","unit":"percent","price_basis":"not_applicable","valid_categories":{"ING7C":[1,2,3,4,5],"INGOCUP":"1..999998"},"sentinels":{"INGOCUP":"0 and 999999 excluded"},"dictionary_refs":["ING7C","INGOCUP","CLASE2"]},
     {"id":"no_income_count","operation":"total","numerator":"domain & occupied & ING7C=6 & no positive amount","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"ING7C":[6]},"sentinels":{"INGOCUP":"positive amount with band 6 conflicts"},"dictionary_refs":["ING7C","INGOCUP"]},

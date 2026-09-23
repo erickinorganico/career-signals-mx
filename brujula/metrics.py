@@ -83,6 +83,9 @@ def _states(frame: Frame, domain: np.ndarray) -> dict[str, np.ndarray | dict]:
     occupied = frame.clase2 == 1
     pea = frame.clase1 == 1
     unemployed = pea & (frame.clase2 == 2)
+    known_clase1 = np.isin(frame.clase1, [1, 2])
+    known_clase2 = np.isin(frame.clase2, [1, 2, 3, 4])
+    known_pea_status = pea & np.isin(frame.clase2, [1, 2])
     band = frame.ing7c
     amount = frame.ingocup
     positive_amount = (amount >= 1) & (amount <= 999998)
@@ -139,9 +142,9 @@ def metric_vectors(frame: Frame, population_id: str, domain: dict, metric_id: st
         "occupied_total": (d & o, zero),
         "pea_total": (d & pea, zero),
         "unemployed_total": (d & unemployed, zero),
-        "employment_rate": (d & o, d),
-        "participation_rate": (d & pea, d),
-        "unemployment_rate": (d & unemployed, d & pea),
+        "employment_rate": (d & o, d & state["known_clase2"]),
+        "participation_rate": (d & pea, d & state["known_clase1"]),
+        "unemployment_rate": (d & unemployed, d & state["known_pea_status"]),
         "positive_income_mean": (np.where(d & positive, frame.ingocup, 0), d & positive),
         "positive_income_coverage": (d & positive, d & o),
         "no_income_count": (d & no_income, zero),
