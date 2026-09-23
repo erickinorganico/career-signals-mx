@@ -115,6 +115,7 @@ def test_ledger_has_all_slots_in_stable_order(pair, registry):
     assert [x["comparison_type"] for x in ledger].count("like_quarter_annual") == 4
     assert all("standard_error" not in x and "p_value" not in x for x in ledger)
     records[3]["record"]["value"] = None
+    next(cell for cell in profiles["national"] if cell["record_id"] == records[3]["record_id"])["value"] = None
     blocked = build_comparison_ledger(profiles, registry=registry)
     assert len(blocked) == 11
     assert any(not x["comparable"] and x["absolute_change"] is None for x in blocked)
@@ -129,3 +130,42 @@ def test_ledger_rejects_record_index_identity_tamper(pair, registry):
     records[3]["record"]["population_id"] = "national_15_plus_context"
     with pytest.raises(ValueError, match="grain"):
         build_comparison_ledger(profiles, registry=registry)
+
+
+def test_zero_prior_has_no_relative_percent_and_income_is_nominal(pair, registry):
+    earlier, later = pair("2025-Q2", value=0), pair("2025-Q3", value=5)
+    result = compare_public_records(earlier, later, registry=registry)
+    assert result["comparable"] and result["absolute_change"] == 5
+    assert result["relative_change_pct"] is None
+    for item, amount in ((earlier, 10000), (later, 10500)):
+        item["record"].update(metric_id="positive_income_mean", unit="MXN/month",
+                              price_basis="nominal", value=amount)
+        item["grain"] = tuple(item["record"][key] for key in registry["grain"])
+        item["record_id"] = "v2r:" + hashlib.sha256(json.dumps(list(item["grain"]),
+                            sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+    income = compare_public_records(earlier, later, registry=registry)
+    assert income["comparable"] and income["absolute_change"] == 500
+    assert income["display_unit"] == "nominal MXN/month"
+    assert "purchasing" not in json.dumps(income).lower()
+
+
+def test_missing_version_and_wrong_native_alias_are_blocked(pair, registry):
+    earlier, later = pair("2025-Q2", geography="02"), pair("2025-Q3", geography="02")
+    altered = deepcopy(registry)
+    altered["snapshots"]["enoe_2025_q2"]["native_geography_field"] = "CVE_ENT"
+    assert "geography_alias_code_name" in compare_public_records(earlier, later, registry=altered)["reasons"] or \
+           "edition_revision" in compare_public_records(earlier, later, registry=altered)["reasons"]
+    altered = deepcopy(registry)
+    del altered["suppression_policy_version"]
+    assert "precision_policy" in compare_public_records(earlier, later, registry=altered)["reasons"]
+
+
+def test_reason_and_id_order_are_stable(pair, registry):
+    earlier, later = pair("2025-Q2"), pair("2025-Q3")
+    later["record"]["population_id"] = "national_15_plus_context"
+    later["record"]["unit"] = "people"
+    first = compare_public_records(earlier, later, registry=registry)
+    later["record"] = dict(reversed(list(later["record"].items())))
+    second = compare_public_records(earlier, later, registry=registry)
+    assert first["comparison_id"] == second["comparison_id"]
+    assert first["reasons"] == second["reasons"] == sorted(set(first["reasons"]))

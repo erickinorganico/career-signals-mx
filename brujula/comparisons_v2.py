@@ -150,6 +150,10 @@ def load_definition_registry(*, entity_reference_code: str | None = None) -> dic
 
 def _signature(record: dict, provenance: dict, registry: dict) -> tuple[dict, list[str]]:
     reasons: list[str] = []
+    expected_grain = tuple(record.get(key) for key in GRAIN)
+    if (tuple(provenance.get("grain", ())) != expected_grain
+            or provenance.get("record_id") != "v2r:" + _digest(list(expected_grain))):
+        reasons.append("grain_identity")
     sid = record.get("source_snapshot_id")
     approved = registry.get("snapshots", {}).get(sid)
     if sid not in RAW_SHA256 or not approved or approved.get("raw_sha256") != RAW_SHA256.get(sid):
@@ -361,12 +365,21 @@ def build_comparison_ledger(profiles: dict, *, registry: dict) -> list[dict]:
         if item.get("record_id") != record_id:
             raise ValueError("sanitized index key differs from stable record ID")
         row = item["record"]
+        grain = tuple(row.get(name) for name in GRAIN)
+        if tuple(item.get("grain", ())) != grain or record_id != "v2r:" + _digest(list(grain)):
+            raise ValueError("sanitized record grain or canonical ID differs from the public index")
         key = (row["population_id"], row["field_of_study_id"], row["occupation_id"],
                row["industry_id"], row["geography_id"], row["recorded_sex_id"], row["metric_id"], row["period_id"])
         if key in by_key:
             raise ValueError("duplicate public comparison grain")
         by_key[key] = item
     national = profiles.get("national", [])
+    for cell in national:
+        item = index.get(cell.get("record_id"))
+        if (item is None or cell.get("source_sha256", item["snapshot_sha256"]) != item["snapshot_sha256"]
+                or any(cell.get(name) != item["record"].get(name) for name in GRAIN)
+                or cell.get("value") != item["record"].get("value")):
+            raise ValueError("national profile cell differs from sanitized record index")
     series = sorted({(c["population_id"], c["field_of_study_id"], c["occupation_id"],
                       c["industry_id"], c["geography_id"], c["recorded_sex_id"], c["metric_id"])
                      for c in national})
