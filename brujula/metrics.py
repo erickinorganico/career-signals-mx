@@ -7,6 +7,7 @@ import json
 import math
 from collections import Counter
 from collections.abc import Mapping
+from functools import lru_cache
 
 import numpy as np
 
@@ -20,6 +21,7 @@ from .populations import (
 from .resources import _resource
 
 
+@lru_cache(maxsize=1)
 def load_metric_manifest() -> dict:
     """Return canonical definitions with a content digest for method identity."""
     path = _resource("catalog", "data/catalog", "enoe-metrics.json")
@@ -79,13 +81,17 @@ def _domain(frame: Frame, population_id: str, selector: Mapping) -> np.ndarray:
     return mask
 
 
-def _states(frame: Frame, domain: np.ndarray) -> dict[str, np.ndarray | dict]:
+def _base_states(frame: Frame) -> dict[str, np.ndarray]:
+    cached = frame.metric_cache.get("base")
+    if cached is not None:
+        return cached
     occupied = frame.clase2 == 1
     pea = frame.clase1 == 1
     unemployed = pea & (frame.clase2 == 2)
     known_clase1 = np.isin(frame.clase1, [1, 2])
     known_clase2 = np.isin(frame.clase2, [1, 2, 3, 4])
     known_pea_status = pea & np.isin(frame.clase2, [1, 2])
+    known_suboccupation = occupied & np.isin(frame.sub_o, [0, 1])
     band = frame.ing7c
     amount = frame.ingocup
     positive_amount = (amount >= 1) & (amount <= 999998)
@@ -93,10 +99,29 @@ def _states(frame: Frame, domain: np.ndarray) -> dict[str, np.ndarray | dict]:
     conflicting = occupied & np.isin(band, [0, 6, 7]) & positive_amount
     no_income = occupied & (band == 6) & ~positive_amount
     unspecified_income = occupied & (band == 7) & ~positive_amount
-    consistent_income = positive_income | no_income | unspecified_income
+    # A known ING7C band remains usable for state shares even when its exact
+    # amount is unavailable; only a contradictory 6/7 band with positive
+    # amount is excluded. The positive-amount mean keeps its narrower mask.
+    consistent_income = occupied & (band >= 1) & (band <= 7) & ~conflicting
     hour = frame.hrsocup
     duration = frame.dur9c
     known_hours = occupied & (((hour >= 1) & (hour <= 168) & (duration >= 2) & (duration <= 8)) | ((hour == 0) & (duration == 1)))
+    base = {key: value for key, value in locals().items() if isinstance(value, np.ndarray) and value.dtype == np.bool}
+    frame.metric_cache["base"] = base
+    return base
+
+
+def _states(frame: Frame, domain: np.ndarray) -> dict[str, np.ndarray | dict]:
+    base = _base_states(frame)
+    occupied = base["occupied"]
+    conflicting = base["conflicting"]
+    positive_amount = base["positive_amount"]
+    no_income = base["no_income"]
+    unspecified_income = base["unspecified_income"]
+    known_hours = base["known_hours"]
+    band = frame.ing7c
+    hour = frame.hrsocup
+    duration = frame.dur9c
     relevant = domain & occupied
     exclusions = Counter({
         "unknown_clase1": int(np.count_nonzero(domain & ~np.isin(frame.clase1, [1, 2]))),
@@ -110,10 +135,11 @@ def _states(frame: Frame, domain: np.ndarray) -> dict[str, np.ndarray | dict]:
         "unknown_emp_ppal": int(np.count_nonzero(relevant & ~np.isin(frame.emp_ppal, [1, 2]))),
         "unknown_pos_ocu": int(np.count_nonzero(relevant & ~np.isin(frame.pos_ocu, [1, 2, 3, 4]))),
         "unknown_sex": int(np.count_nonzero(relevant & ~np.isin(frame.sex, [1, 2]))),
+        "unknown_sub_o": int(np.count_nonzero(relevant & ~np.isin(frame.sub_o, [0, 1]))),
         "unknown_field": int(np.count_nonzero(domain & np.equal(frame.cs_p14_c, None))),
         "unknown_age_98": int(np.count_nonzero(domain & (frame.eda == 98))),
     })
-    return locals() | {"exclusions": {k: v for k, v in sorted(exclusions.items()) if v}}
+    return base | {"exclusions": {k: v for k, v in sorted(exclusions.items()) if v}}
 
 
 def metric_vectors(frame: Frame, population_id: str, domain: dict, metric_id: str) -> dict:
@@ -126,8 +152,16 @@ def metric_vectors(frame: Frame, population_id: str, domain: dict, metric_id: st
         raise ValueError("unknown ENOE metric")
     if frame.period not in manifest["dictionary_refs"]:
         raise ValueError("quarter lacks metric dictionary reference")
-    d = _domain(frame, population_id, domain)
-    state = _states(frame, d)
+    selector_key = (population_id, tuple(sorted(domain.items())))
+    cached = frame.metric_cache.get("domain_state")
+    if cached is not None and cached[0] == selector_key:
+        d, state = cached[1], cached[2]
+    else:
+        d = _domain(frame, population_id, domain)
+        state = _states(frame, d)
+        # Only the latest domain is kept: bounded memory across hundreds of
+        # entity/field/sex cells, with per-frame base masks reused throughout.
+        frame.metric_cache["domain_state"] = (selector_key, d, state)
     o = state["occupied"]
     pea = state["pea"]
     unemployed = state["unemployed"]
@@ -136,35 +170,51 @@ def metric_vectors(frame: Frame, population_id: str, domain: dict, metric_id: st
     unspecified = state["unspecified_income"]
     consistent = state["consistent_income"]
     known_hours = state["known_hours"]
-    zero = np.zeros(len(frame), dtype=np.float64)
-    specs: dict[str, tuple[np.ndarray, np.ndarray]] = {
-        "population_total": (d, zero),
-        "occupied_total": (d & o, zero),
-        "pea_total": (d & pea, zero),
-        "unemployed_total": (d & unemployed, zero),
-        "employment_rate": (d & o, d & state["known_clase2"]),
-        "participation_rate": (d & pea, d & state["known_clase1"]),
-        "unemployment_rate": (d & unemployed, d & state["known_pea_status"]),
-        "positive_income_mean": (np.where(d & positive, frame.ingocup, 0), d & positive),
-        "positive_income_coverage": (d & positive, d & o),
-        "no_income_count": (d & no_income, zero),
-        "no_income_share": (d & no_income, d & consistent),
-        "unspecified_income_count": (d & unspecified, zero),
-        "unspecified_income_share": (d & unspecified, d & consistent),
-        "main_job_informality_rate": (d & o & (frame.emp_ppal == 1), d & o & np.isin(frame.emp_ppal, [1, 2])),
-        "women_occupied_share": (d & o & (frame.sex == 2), d & o & np.isin(frame.sex, [1, 2])),
-        "suboccupied_count": (d & o & (frame.sub_o == 1), zero),
-        "suboccupied_rate": (d & o & (frame.sub_o == 1), d & o),
-        "known_hours_mean": (np.where(d & known_hours, frame.hrsocup, 0), d & known_hours),
-        "known_hours_coverage": (d & known_hours, d & o),
-    }
-    for code in (1, 2, 3, 4):
-        specs[f"position_{code}_share"] = (d & o & (frame.pos_ocu == code), d & o & np.isin(frame.pos_ocu, [1, 2, 3, 4]))
-    if metric_id not in specs:
+    if metric_id == "population_total":
+        numerator, denominator = d, None
+    elif metric_id == "occupied_total":
+        numerator, denominator = d & o, None
+    elif metric_id == "pea_total":
+        numerator, denominator = d & pea, None
+    elif metric_id == "unemployed_total":
+        numerator, denominator = d & unemployed, None
+    elif metric_id == "employment_rate":
+        numerator, denominator = d & o, d & state["known_clase2"]
+    elif metric_id == "participation_rate":
+        numerator, denominator = d & pea, d & state["known_clase1"]
+    elif metric_id == "unemployment_rate":
+        numerator, denominator = d & unemployed, d & state["known_pea_status"]
+    elif metric_id == "positive_income_mean":
+        numerator, denominator = np.where(d & positive, frame.ingocup, 0), d & positive
+    elif metric_id == "positive_income_coverage":
+        numerator, denominator = d & positive, d & o
+    elif metric_id == "no_income_count":
+        numerator, denominator = d & no_income, None
+    elif metric_id == "no_income_share":
+        numerator, denominator = d & no_income, d & consistent
+    elif metric_id == "unspecified_income_count":
+        numerator, denominator = d & unspecified, None
+    elif metric_id == "unspecified_income_share":
+        numerator, denominator = d & unspecified, d & consistent
+    elif metric_id == "main_job_informality_rate":
+        numerator, denominator = d & o & (frame.emp_ppal == 1), d & o & np.isin(frame.emp_ppal, [1, 2])
+    elif metric_id == "women_occupied_share":
+        numerator, denominator = d & o & (frame.sex == 2), d & o & np.isin(frame.sex, [1, 2])
+    elif metric_id.startswith("position_") and metric_id.endswith("_share"):
+        code = int(metric_id.split("_")[1])
+        numerator, denominator = d & o & (frame.pos_ocu == code), d & o & np.isin(frame.pos_ocu, [1, 2, 3, 4])
+    elif metric_id == "suboccupied_count":
+        numerator, denominator = d & o & (frame.sub_o == 1), None
+    elif metric_id == "suboccupied_rate":
+        numerator, denominator = d & o & (frame.sub_o == 1), d & state["known_suboccupation"]
+    elif metric_id == "known_hours_mean":
+        numerator, denominator = np.where(d & known_hours, frame.hrsocup, 0), d & known_hours
+    elif metric_id == "known_hours_coverage":
+        numerator, denominator = d & known_hours, d & o
+    else:
         raise ValueError("metric definition has no vector implementation")
-    numerator, denominator = specs[metric_id]
     numerator = np.asarray(numerator, dtype=np.float64)
-    denominator = np.asarray(denominator, dtype=np.float64)
+    denominator = np.zeros(len(frame), dtype=np.float64) if denominator is None else np.asarray(denominator, dtype=np.float64)
     if not np.all(np.isfinite(numerator)) or not np.all(np.isfinite(denominator)):
         raise ValueError("metric vector is nonfinite")
     eligible_n = int(np.count_nonzero(denominator if definitions[metric_id]["operation"] != "total" else numerator))
@@ -183,7 +233,7 @@ def metric_vectors(frame: Frame, population_id: str, domain: dict, metric_id: st
         "reason": "empty_denominator" if definitions[metric_id]["operation"] != "total" and eligible_n == 0 else None,
     }
     return {
-        "numerator": numerator, "denominator": denominator, "domain": d,
+        "numerator": numerator, "denominator": denominator, "domain": d.copy(),
         "coverage": coverage, "exclusions": state["exclusions"],
         "method_version": manifest["method_version"],
     }

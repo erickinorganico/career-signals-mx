@@ -12,14 +12,14 @@ import math
 import re
 import zipfile
 from collections import Counter, defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
 
 from .acquisition import AcquisitionError, resolve_snapshot
 from .populations import normalize_cmpe_key
-from .source_inventory import inventory_snapshot
+from .source_inventory import PERIODS, inventory_snapshot
 
 
 COLUMNS = (
@@ -42,6 +42,7 @@ class Frame:
     inventory: dict
     cmpe_catalog_keys: frozenset[str]
     columns: dict[str, np.ndarray]
+    metric_cache: dict = field(default_factory=dict, repr=False, compare=False)
 
     def __len__(self) -> int:
         return len(self.columns["fac_tri"])
@@ -171,6 +172,8 @@ def load_snapshot_frame(snapshot_id: str, output_root: Path, registry_path: Path
         field: np.asarray(values, dtype=np.float64 if field == "fac_tri" else np.int64 if field in NUMERIC else object)
         for field, values in buffers.items()
     }
+    for values in arrays.values():
+        values.flags.writeable = False
     if not np.isfinite(np.sum(arrays["fac_tri"], dtype=np.float64)):
         raise AcquisitionError("FAC_TRI aggregate overflow")
     pairs = set(zip(arrays["est_d_tri"], arrays["upm"]))
@@ -193,3 +196,13 @@ def load_snapshot_frame(snapshot_id: str, output_root: Path, registry_path: Path
         "lexemes": {field: dict(sorted(counts.items())) for field, counts in sorted(lexical.items())},
     }
     return frame, audit
+
+
+def audit_all_snapshots(output_root: Path, registry_path: Path | None = None) -> list[dict]:
+    """Repeat the strict adapter over all approved periods; return aggregates only."""
+    audits = []
+    for period in PERIODS:
+        snapshot_id = "enoe_" + period.lower().replace("-", "_")
+        _, audit = load_snapshot_frame(snapshot_id, output_root, registry_path)
+        audits.append(audit)
+    return audits

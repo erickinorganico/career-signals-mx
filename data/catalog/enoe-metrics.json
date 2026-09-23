@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "version": "enoe-metrics-2026-09-22",
-  "content_sha256": "7d189faaf96a26734d065495ae35ebc76c28b8cef441bdbc8803b555f17da772",
+  "content_sha256": "2ee87c8b7bfae9addcdf224ae93071023b918a5a22012e1355b9378b73e5827e",
   "source_id": "inegi_enoe",
   "dictionary_refs": {
     "2024-Q3": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
@@ -15,7 +15,7 @@
   },
   "general_rules": {
     "frame": "R_DEF 0/00 and C_RES 1/3, all eligible rows before domain restrictions",
-    "missing": "blank or unsupported category is never observed zero",
+    "missing": "blank or unsupported category is never observed zero; known ING7C 1..5 bands with unknown exact amount remain in income-state share denominators but not the positive-known amount mean",
     "field": "CS_P14_C normalized to six ASCII digits and present in the bundled quarter catalog",
     "price_basis": "nominal for INGOCUP; not_applicable otherwise"
   },
@@ -40,7 +40,7 @@
     {"id":"position_3_share","operation":"ratio","numerator":"domain & occupied & POS_OCU=3","denominator":"domain & occupied & POS_OCU in 1..4","unit":"percent","price_basis":"not_applicable","valid_categories":{"POS_OCU":[1,2,3,4]},"sentinels":{"POS_OCU":"0 no aplica; 5 unspecified"},"dictionary_refs":["POS_OCU"]},
     {"id":"position_4_share","operation":"ratio","numerator":"domain & occupied & POS_OCU=4","denominator":"domain & occupied & POS_OCU in 1..4","unit":"percent","price_basis":"not_applicable","valid_categories":{"POS_OCU":[1,2,3,4]},"sentinels":{"POS_OCU":"0 no aplica; 5 unspecified"},"dictionary_refs":["POS_OCU"]},
     {"id":"suboccupied_count","operation":"total","numerator":"domain & occupied & SUB_O=1","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"SUB_O":[1]},"sentinels":{"SUB_O":"0 no aplica; never universal non-suboccupied"},"dictionary_refs":["SUB_O","CLASE2"]},
-    {"id":"suboccupied_rate","operation":"ratio","numerator":"domain & occupied & SUB_O=1","denominator":"domain & occupied","unit":"percent","price_basis":"not_applicable","valid_categories":{"SUB_O":[1]},"sentinels":{"SUB_O":"0 no aplica; not a universal binary category"},"dictionary_refs":["SUB_O","CLASE2"]},
+    {"id":"suboccupied_rate","operation":"ratio","numerator":"domain & occupied & SUB_O=1","denominator":"domain & occupied & SUB_O in 0,1","unit":"percent","price_basis":"not_applicable","valid_categories":{"SUB_O":[0,1]},"sentinels":{"SUB_O":"0 no aplica; only valid within occupied; blank/unsupported excluded and counted"},"dictionary_refs":["SUB_O","CLASE2"]},
     {"id":"known_hours_mean","operation":"mean","numerator":"HRSOCUP where domain & occupied & ((1..168 and DUR9C 2..8) or (0 and DUR9C 1))","denominator":"same known-hours condition","unit":"hours/week","price_basis":"not_applicable","valid_categories":{"HRSOCUP":"0..168 conditional","DUR9C":[1,2,3,4,5,6,7,8]},"sentinels":{"DUR9C":"9 unspecified, including physical HRSOCUP 0","HRSOCUP":"169+ invalid"},"dictionary_refs":["HRSOCUP","DUR9C"]},
     {"id":"known_hours_coverage","operation":"ratio","numerator":"domain & occupied & known_hours","denominator":"domain & occupied","unit":"percent","price_basis":"not_applicable","valid_categories":{"HRSOCUP":"0..168 conditional","DUR9C":[1,2,3,4,5,6,7,8]},"sentinels":{"DUR9C":"9 unknown even if physical HRSOCUP 0"},"dictionary_refs":["HRSOCUP","DUR9C"]}
   ]

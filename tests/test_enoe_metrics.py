@@ -2,6 +2,7 @@
 
 import numpy as np
 import pytest
+import brujula.metrics as metrics_module
 
 from brujula.enoe_adapter import load_snapshot_frame
 from brujula.metrics import load_metric_manifest, metric_vectors
@@ -68,6 +69,52 @@ def test_unknown_labor_status_does_not_become_rate_zero(tmp_path):
     participation = vectors(tmp_path / "participation", "participation_rate", rows=[unknown_pea, ROWS[1], ROWS[2]])
     assert participation["denominator"].tolist() == [0., 1., 1.]
     assert participation["exclusions"]["unknown_clase1"] == 1
+
+
+def test_income_state_shares_keep_known_band_with_unknown_amount(tmp_path):
+    positive_amount_unknown = ROWS[0].replace(",1,100,1,", ",1,999999,1,")
+    unspecified = ROWS[1].replace(",1,2,7,999999,", ",1,1,7,999999,")
+    rows = [positive_amount_unknown, unspecified, ROWS[2]]
+    no_income = vectors(tmp_path / "no_income", "no_income_share", rows=rows)
+    unspecified_share = vectors(tmp_path / "unspecified", "unspecified_income_share", rows=rows)
+    positive_mean = vectors(tmp_path / "positive", "positive_income_mean", rows=rows)
+    assert no_income["denominator"].tolist() == [1., 1., 1.]
+    assert unspecified_share["denominator"].tolist() == [1., 1., 1.]
+    assert no_income["numerator"].tolist() == [0., 0., 1.]
+    assert unspecified_share["numerator"].tolist() == [0., 1., 0.]
+    assert positive_mean["coverage"]["weighted_denominator"] is None
+
+
+def test_frame_reuses_masks_for_metrics_in_same_domain(tmp_path, monkeypatch):
+    sid, root, registry = fixture(tmp_path)
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    counts = {"domain": 0, "states": 0}
+    original_domain, original_states = metrics_module._domain, metrics_module._states
+
+    def domain_once(*args):
+        counts["domain"] += 1
+        return original_domain(*args)
+
+    def states_once(*args):
+        counts["states"] += 1
+        return original_states(*args)
+
+    monkeypatch.setattr(metrics_module, "_domain", domain_once)
+    monkeypatch.setattr(metrics_module, "_states", states_once)
+    for metric in ("occupied_total", "positive_income_mean", "known_hours_mean"):
+        metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {}, metric)
+    assert counts == {"domain": 1, "states": 1}
+    metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {"entity": 2}, "occupied_total")
+    assert counts == {"domain": 2, "states": 2}
+    assert set(frame.metric_cache) == {"base", "domain_state"}
+
+
+def test_unknown_suboccupation_excluded_from_rate_denominator(tmp_path):
+    unknown_sub = ROWS[0].replace(",1,1,1,2,40,", ",1,1,9,2,40,")
+    result = vectors(tmp_path, "suboccupied_rate", rows=[unknown_sub, ROWS[1], ROWS[2]])
+    assert result["numerator"].tolist() == [0., 0., 0.]
+    assert result["denominator"].tolist() == [0., 0., 1.]
+    assert result["exclusions"]["unknown_sub_o"] == 1
 
 
 @pytest.mark.parametrize("metric", ["positive_income_mean", "known_hours_mean", "suboccupied_rate", "unemployment_rate"])

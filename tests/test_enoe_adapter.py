@@ -84,6 +84,20 @@ def test_empty_singleton_duplicate_and_failed_current(tmp_path):
     sid, root, registry = fixture(tmp_path / "duplicate", header=HEADER + ",EDA")
     with pytest.raises(AcquisitionError):
         load_snapshot_frame(sid, root, registry)
+
+
+def test_same_upm_label_in_two_strata_is_two_clusters(tmp_path):
+    second = ROWS[2].replace(",1,12,4,", ",2,11,4,")
+    sid, root, registry = fixture(tmp_path, rows=[ROWS[0], ROWS[1], second])
+    _, audit = load_snapshot_frame(sid, root, registry)
+    assert audit["design"] == {"strata": 2, "psus": 2, "singleton_strata": 2}
+
+
+def test_weight_overflow_fails_before_estimation(tmp_path):
+    giant = ROWS[0].replace(",1,11,2,", ",1,11," + "9" * 400 + ",")
+    sid, root, registry = fixture(tmp_path, rows=[giant, ROWS[1], ROWS[2]])
+    with pytest.raises(AcquisitionError):
+        load_snapshot_frame(sid, root, registry)
     sid, root, registry = fixture(tmp_path / "failed")
     current = root / "acquisitions" / sid / "current.json"
     receipt = json.loads(current.read_text()); receipt["status"] = "FAILED"; current.write_text(json.dumps(receipt))
