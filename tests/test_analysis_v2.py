@@ -144,6 +144,9 @@ def synthetic_inputs(monkeypatch, *, complementary=False):
         snapshot: {"sha256": source_hash, "url": public["sources"][0]["url"]}
         for snapshot, public in publics.items()})
     monkeypatch.setattr(analysis_v2, "_approved_public_pins", lambda: approved_pins)
+    approved_coverage = {snapshot: analysis_v2._coverage_digest(audit)
+                         for snapshot, audit in audits.items()}
+    monkeypatch.setattr(analysis_v2, "_approved_coverage_pins", lambda: approved_coverage)
     return publics, {"manifest": manifest, "audits": audits}
 
 
@@ -337,6 +340,10 @@ def test_coverage_cannot_change_independently_of_accepted_inputs(monkeypatch, ta
     else:
         evaluated["exclusions"]["income_amount_unknown"] = value
     # A caller-controlled extra hash does not approve different coverage.
-    acceptance["manifest"]["snapshots"][snapshot]["coverage_sha256"] = "0" * 64
+    try:
+        claimed_digest = analysis_v2._coverage_digest(audit)
+    except ValueError:
+        claimed_digest = "0" * 64
+    acceptance["manifest"]["snapshots"][snapshot]["coverage_sha256"] = claimed_digest
     with pytest.raises(ValueError, match="coverage"):
         analysis_v2.index_public_estimates(publics, acceptance)

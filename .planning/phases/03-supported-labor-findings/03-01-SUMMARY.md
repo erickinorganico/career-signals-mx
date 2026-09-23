@@ -146,6 +146,12 @@ None. Empty dictionaries and lists in the implementation and tests are accumulat
 
 Plans 03-02 and 03-03 can consume `profiles['record_index']` for comparison and claims while retaining `redaction_reason`. The Phase 4 packaging pass should resolve the source-catalog, code-hash and golden-pin resource paths for an installed wheel; the current local checkout is verified.
 
+## Integration correction — bound coverage references
+
+After the initial wave summary, a targeted synthetic reproduction changed an aggregate responding count from 100 to 999,999,999 without changing accepted estimate hashes; the old index accepted it. RED commit `98e4f6e` captures that failure. The correction independently pins every population coverage map and every exact-grain metric coverage/exclusion map in the hash-only resource `data/fixtures/enoe-analysis-coverage-pins.json`, originating from the accepted final Phase 2 replay. The resource contains no person rows or diagnostic estimates. Published count values must also be nonnegative integers with valid eligible/observed denominators; exclusion categories remain nonexclusive.
+
+The seven new negative cases cover changed population/responding/domain counts, negative or mistyped exclusions, NaN and booleans, including a coherently changed caller-supplied coverage hash. Focused tests: **19 passed**; current Node controls: **2 passed**. Real aggregate-only readback verifies all eight independent coverage pins and preserves 6,739 records, 920/2,714/2,944/184 section appearances and five unique redacted parents. Profile content digest: `6c4123296e3e50b0d02e1e88f34a702df4766725d37dfd776ea4aaad2b8d3139`. The Phase 2 numerical code, accepted values, golden and historical receipts remain unchanged. The next wave's full suite includes this correction; no duplicate survey or R execution is needed.
+
 ## Self-Check: PASSED
 
 All eight planned implementation/control files and this SUMMARY exist. All eight listed task commits resolve to Git commits. Focused, canonical prohibition, accepted-real and full-suite evidence above was read back after the final code changes.

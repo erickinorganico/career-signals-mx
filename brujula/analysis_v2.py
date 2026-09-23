@@ -18,6 +18,7 @@ from .populations import (COMPLETED_PROFESSIONAL_KNOWN_AGE,
 from .research_contract import GRAIN, _public_reason, validate_public_research_v2
 from .source_inventory import PERIODS
 from .source_inventory import _registry
+from .resources import _resource
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -107,6 +108,45 @@ def _approved_public_pins() -> dict[str, str]:
     return golden["public_content_sha256_by_snapshot"]
 
 
+def _approved_coverage_pins() -> dict[str, str]:
+    """Load independent accepted aggregate coverage references from package data."""
+    path = _resource("fixtures", "data/fixtures", "enoe-analysis-coverage-pins.json")
+    return json.loads(path.read_text(encoding="utf-8"))["coverage_sha256_by_snapshot"]
+
+
+def _coverage_digest(audit: dict) -> str:
+    """Bind every published observed count to its exact source and metric grain."""
+    populations, evaluations = audit.get("population_coverage"), audit.get("evaluated_cells")
+    if not isinstance(populations, dict) or not isinstance(evaluations, dict):
+        raise ValueError("aggregate coverage inventories are absent")
+
+    def count(value: object) -> bool:
+        return type(value) is int and value >= 0
+
+    def buckets(value: object) -> bool:
+        return isinstance(value, dict) and all(
+            isinstance(key, str) and key and count(number) for key, number in value.items())
+
+    for row in populations.values():
+        if (not isinstance(row, dict) or row.get("counts_nonexclusive") is not True
+                or not count(row.get("responding_resident_n"))
+                or not count(row.get("population_eligible_n"))
+                or row["population_eligible_n"] > row["responding_resident_n"]
+                or not buckets(row.get("exclusions"))
+                or not buckets(row.get("observed_category_counts"))):
+            raise ValueError("invalid population coverage counts or denominator")
+    metric_coverage = {}
+    for key, row in evaluations.items():
+        coverage = row.get("coverage") if isinstance(row, dict) else None
+        if (not isinstance(coverage, dict) or not count(coverage.get("domain_n"))
+                or not count(coverage.get("eligible_n"))
+                or coverage["eligible_n"] > coverage["domain_n"]
+                or not buckets(row.get("exclusions"))):
+            raise ValueError("invalid metric coverage counts or denominator")
+        metric_coverage[key] = {"coverage": coverage, "exclusions": row["exclusions"]}
+    return _digest({"population_coverage": populations, "metric_coverage": metric_coverage})
+
+
 def _required_grains(snapshot: str, period: str, metrics: tuple[str, ...],
                      fields: tuple[str, ...], latest: str) -> set[tuple[str, ...]]:
     domains = {(NATIONAL_15_PLUS_CONTEXT, "all", "mx", "all"),
@@ -148,7 +188,9 @@ def index_public_estimates(public_by_snapshot: Mapping[str, dict],
     _check_codes(manifest)
     metrics = tuple(sorted(row["id"] for row in load_metric_manifest()["metrics"]))
     approved_sources, approved_pins = _approved_sources(), _approved_public_pins()
-    if set(approved_sources) != set(snapshots) or set(approved_pins) != set(snapshots):
+    approved_coverage = _approved_coverage_pins()
+    if (set(approved_sources) != set(snapshots) or set(approved_pins) != set(snapshots)
+            or set(approved_coverage) != set(snapshots)):
         raise ValueError("approved source or public-pin inventory is incomplete")
     entries, by_grain, catalogs, evaluations, coverage = [], {}, {}, {}, {}
     quarter_numeric_digests = {}
@@ -248,6 +290,8 @@ def index_public_estimates(public_by_snapshot: Mapping[str, dict],
         catalogs[snapshot] = {name: deepcopy(public[name]) for name in
                               ("sources", "populations", "fields_of_study", "occupations", "industries",
                                "geographies", "recorded_sexes", "periods", "metrics", "methods", "evidence")}
+        if _coverage_digest(audit) != approved_coverage[snapshot]:
+            raise ValueError("aggregate coverage differs from independent accepted pin")
         coverage[snapshot] = deepcopy(audit.get("population_coverage"))
     if _digest(quarter_numeric_digests) != manifest["numeric_content_digest"]:
         raise ValueError("combined numeric content digest differs from accepted Phase 2 result")

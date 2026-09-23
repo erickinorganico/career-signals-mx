@@ -1,0 +1,17 @@
+{
+  "coverage_sha256_by_snapshot": {
+    "enoe_2024_q3": "83a515bb48f74f377fa71c738d3fa1b0a5c03dfdf80cddd025066e3c5329b065",
+    "enoe_2024_q4": "a4c475915103a229cab8facdc59e6cebc81164b2cad8bc5fb1354b598c0b3587",
+    "enoe_2025_q1": "0e41edd83e9272435699f81b827e95da443c52058144a6ffd8626740822be068",
+    "enoe_2025_q2": "a7aa21d6ae2ae3c61b51f839c87e01fc7cf7f41cbbecd1db09a2ebf26f96759a",
+    "enoe_2025_q3": "21ffc83140ac4aa2869238bea19caf356e14240d8b3e8ad82ed6cc1c7eb3f17f",
+    "enoe_2025_q4": "51a43a9ae420988780247385ad70b11448a94592cfbf63ab245acbef7a8beaac",
+    "enoe_2026_q1": "090d52441cd406d62e42240bfede9956e0fda325fbe93537cdb68a1a92a40739",
+    "enoe_2026_q2": "7cf26d6cf04280f9dac8a5934cba87a14ed94c60a427fc8ee32244e7bc8ac122"
+  },
+  "originating_acceptance_attempt_id": "45fe0738-b981-4c9c-852b-28545bf4a9bf",
+  "originating_numeric_content_digest": "8db575e9d664864d1513e3b9658bd9b060c4cb3bed8b51561f208adeb97b9a00",
+  "schema_version": "1.0",
+  "scope": "Hash-only accepted aggregate coverage references; contains no person rows or diagnostic estimates.",
+  "synthetic": false
+}
