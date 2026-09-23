@@ -21,6 +21,16 @@ GEO_NEW = ("CVE_AGEB", "CVE_ENT", "CVE_LOC", "CVE_MUN")
 MAX_METADATA_BYTES = 1024 * 1024
 
 
+def normalize_cmpe_code(raw_code: str | None, coding: dict) -> str | None:
+    """Resolve only reviewed focus codes; unknown and missing codes remain null."""
+    if not isinstance(raw_code, str) or not re.fullmatch(r"[0-9]{1,6}", raw_code):
+        return None
+    if raw_code == "999999":
+        return None
+    selected = coding.get("focus_codes", {}).get(raw_code)
+    return selected["code"] if selected else None
+
+
 def _registry(path: Path | None) -> tuple[dict, dict[str, dict]]:
     registry = _read_registry(Path(path) if path is not None else _default_registry())
     items = registry["snapshots"]
@@ -34,6 +44,8 @@ def _registry(path: Path | None) -> tuple[dict, dict[str, dict]]:
             raise AcquisitionError(f"registry {key} is required")
     if registry.get("publication_approved") is not False:
         raise AcquisitionError("inventory requires unapproved microdata publication state")
+    if registry["source_id"] != "inegi_enoe" or registry["terms_url"] != "https://www.inegi.org.mx/inegi/terminos.html":
+        raise AcquisitionError("inventory registry source identity or terms changed")
     for item in items:
         for key in ("url", "catalog_id", "catalog_title", "metadata_url", "expected_sha256"):
             if not isinstance(item.get(key), str) or not item[key].strip():
@@ -147,6 +159,19 @@ def _revisions(rows: list[dict[str, str]], name: str, member: dict | None) -> di
     return {"status": "sdem_bitacora_present", "member": member, "count": len(rows), "date": f"{year}-{month}-{day}", "fields": dict(sorted(fields.items()))}
 
 
+def _validate_revisions(period: str, revisions: dict) -> None:
+    expected = {
+        "2024-Q3": {"cs_p14_c": 4},
+        "2024-Q4": {"cs_p14_c": 5, "cs_p20a_c": 1, "cs_p20b_c": 2, "par_c": 1},
+    }
+    if period in expected:
+        if revisions["member"] is None or revisions["fields"] != expected[period] or revisions["date"] != "2025-05-27":
+            raise AcquisitionError(f"required {period} SDEM bitácora is missing or inconsistent")
+    elif revisions["member"] is not None:
+        # A newly appearing log changes the evidence base and requires review.
+        raise AcquisitionError(f"unexpected {period} SDEM bitácora requires review")
+
+
 def _inventory(snapshot_id: str, output_root: Path, registry_path: Path | None, registry: dict, item: dict) -> dict:
     path, receipt = resolve_snapshot(snapshot_id, output_root, registry_path)
     if not isinstance(receipt.get("completed_at"), str) or not receipt["completed_at"]:
@@ -176,6 +201,7 @@ def _inventory(snapshot_id: str, output_root: Path, registry_path: Path | None, 
                 revisions = _revisions(_metadata_rows(revision_data, bitacora), bitacora, revision_member)
             else:
                 revisions = _revisions([], bitacora, None)
+            _validate_revisions(item["period"], revisions)
     except (zipfile.BadZipFile, KeyError, OSError) as exc:
         raise AcquisitionError("cannot inspect exact ZIP members") from exc
     normalized_header = [x.upper() for x in header]
@@ -191,18 +217,24 @@ def _inventory(snapshot_id: str, output_root: Path, registry_path: Path | None, 
     if "CS_P14_C" not in normalized_header:
         raise AcquisitionError("SDEM header lacks CS_P14_C")
     current = Path(output_root) / "acquisitions" / snapshot_id / "current.json"
+    attempt = current.parent / "attempts" / f"{receipt['run_id']}.json"
+    _assert_latest_attempt(current.parent, receipt)
     try:
         if json.loads(current.read_text(encoding="utf-8")) != receipt:
             raise AcquisitionError("snapshot current changed during inventory")
+        attempt_bytes = attempt.read_bytes()
+        if json.loads(attempt_bytes.decode("utf-8")) != receipt:
+            raise AcquisitionError("immutable attempt changed during inventory")
     except (OSError, json.JSONDecodeError) as exc:
         raise AcquisitionError("snapshot current changed during inventory") from exc
+    _assert_latest_attempt(current.parent, receipt)
     return {
         "snapshot_id": snapshot_id, "period": item["period"], "source_id": registry["source_id"],
         "source_url": item["url"], "catalog_id": item["catalog_id"], "catalog_title": item["catalog_title"],
         "metadata_url": item["metadata_url"], "authority": registry["authority"], "license": registry["license"],
         "terms_url": registry["terms_url"], "registry_checked_at": registry["checked_at"],
         "acquired_at": receipt["completed_at"], "receipt_run_id": receipt["run_id"],
-        "receipt_sha256": hashlib.sha256(json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2).encode("utf-8")).hexdigest(),
+        "receipt_sha256": hashlib.sha256(attempt_bytes).hexdigest(),
         "receipt_started_at": receipt.get("started_at"), "receipt_completed_at": receipt["completed_at"],
         "raw_sha256": receipt["sha256"], "sdem_member": person_member, "dictionary_member": dictionary_member,
         "catalog_member": catalog_member, "sdem_header": header, "sdem_column_count": len(header),
@@ -212,6 +244,18 @@ def _inventory(snapshot_id: str, output_root: Path, registry_path: Path | None, 
         "transformation_note": "Metadata and full member hashes only; no person rows or ZIP bytes exported. CMPE keys are validated and zero-filled; unknown stays unknown.",
         "microdata_publication_approved": False,
     }
+
+
+def _assert_latest_attempt(folder: Path, receipt: dict) -> None:
+    run_id = receipt.get("run_id")
+    if not isinstance(run_id, str) or not run_id:
+        raise AcquisitionError("snapshot current lacks run ID")
+    try:
+        attempts = [p.stem for p in (folder / "attempts").glob("*.json")]
+    except OSError as exc:
+        raise AcquisitionError("snapshot attempts are unreadable") from exc
+    if not attempts or max(attempts) != run_id:
+        raise AcquisitionError("snapshot has a newer attempt than current")
 
 
 def inventory_snapshot(snapshot_id: str, output_root: Path, registry_path: Path | None = None) -> dict:
@@ -225,4 +269,15 @@ def inventory_snapshot(snapshot_id: str, output_root: Path, registry_path: Path 
 def inventory_all(output_root: Path, registry_path: Path | None = None) -> list[dict]:
     """Return all eight current packages in approved chronological order."""
     registry, items = _registry(registry_path)
-    return [_inventory(sid, Path(output_root), registry_path, registry, items[sid]) for sid in items]
+    root = Path(output_root)
+    records = [_inventory(sid, root, registry_path, registry, items[sid]) for sid in items]
+    for record in records:
+        folder = root / "acquisitions" / record["snapshot_id"]
+        _assert_latest_attempt(folder, {"run_id": record["receipt_run_id"]})
+        try:
+            current = json.loads((folder / "current.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise AcquisitionError("snapshot current changed during inventory") from exc
+        if current.get("run_id") != record["receipt_run_id"] or current.get("status") != "SUCCEEDED" or current.get("sha256") != record["raw_sha256"]:
+            raise AcquisitionError("snapshot current changed during inventory")
+    return records
