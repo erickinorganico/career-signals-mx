@@ -1,6 +1,7 @@
 """Resolve authored resources shipped in the installed package."""
 
 import hashlib
+import importlib
 from importlib.resources import files
 from pathlib import Path
 
@@ -74,8 +75,12 @@ def oracle_script_path() -> Path:
 
 
 _AUTHORED_RESOURCES = {
+    "catalog/sources.json": catalog_path,
     "catalog/enoe-snapshots.json": snapshot_catalog_path,
     "catalog/enoe-metrics.json": metric_catalog_path,
+    "catalog/enoe-geography-equivalence.json": lambda: _bundled("catalog", "enoe-geography-equivalence.json"),
+    "fixtures/pilot.json": fixture_path,
+    "fixtures/analysis-v2-golden.json": lambda: _bundled("fixtures", "analysis-v2-golden.json"),
     "fixtures/enoe-aggregate-golden.json": aggregate_golden_path,
     "fixtures/enoe-analysis-reference.json": analysis_reference_path,
     "fixtures/enoe-analysis-coverage-pins.json": coverage_pins_path,
@@ -83,10 +88,49 @@ _AUTHORED_RESOURCES = {
 }
 
 _SCHEMA_NAMES = (
+    "agent-run.schema.json",
     "analysis-v2.schema.json",
+    "dataset.schema.json",
+    "insight.schema.json",
     "research-v2.schema.json",
     "research-v2-public.schema.json",
+    "run.schema.json",
 )
+
+_FONT_NAMES = frozenset({
+    "DejaVuSans.ttf", "DejaVuSans-Bold.ttf",
+    "DejaVuSerif.ttf", "DejaVuSerif-Bold.ttf", "LICENSE_DEJAVU",
+})
+
+
+def font_path(name: str) -> Path:
+    if name not in _FONT_NAMES:
+        raise ValueError(f"Unapproved font resource: {name}")
+    return _bundled("assets/fonts", name)
+
+
+def require_pdf_capability() -> str:
+    """Render a small PDF to prove both optional Python and native libraries work."""
+    try:
+        weasyprint = importlib.import_module("weasyprint")
+    except (ImportError, OSError) as exc:
+        raise RuntimeError(
+            "PDF requires weasyprint==70.0 plus Pango/Fontconfig; on Windows set "
+            "WEASYPRINT_DLL_DIRECTORIES to reviewed local DLLs, or install "
+            "Pango on Ubuntu."
+        ) from exc
+    if getattr(weasyprint, "__version__", None) != "70.0":
+        raise RuntimeError("PDF requires weasyprint==70.0")
+    try:
+        rendered = weasyprint.HTML(string="<html><body>Prueba áéíóú ñ</body></html>").write_pdf()
+    except Exception as exc:
+        raise RuntimeError(
+            "PDF native Pango/Fontconfig render failed; check "
+            "WEASYPRINT_DLL_DIRECTORIES on Windows or Pango on Ubuntu."
+        ) from exc
+    if not rendered.startswith(b"%PDF-"):
+        raise RuntimeError("PDF native render did not produce a PDF")
+    return weasyprint.__version__
 
 
 def authored_resource_digests() -> dict[str, str]:
@@ -99,4 +143,6 @@ def authored_resource_digests() -> dict[str, str]:
         digests[f"contracts/{name}"] = hashlib.sha256(
             _bundled("contracts", name).read_bytes()
         ).hexdigest()
+    for name in sorted(_FONT_NAMES):
+        digests[f"assets/fonts/{name}"] = hashlib.sha256(font_path(name).read_bytes()).hexdigest()
     return digests
