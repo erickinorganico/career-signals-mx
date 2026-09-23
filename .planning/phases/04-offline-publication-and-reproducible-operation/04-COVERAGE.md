@@ -12,6 +12,8 @@ This phase is a local batch publisher and static artifact pipeline. It has no fr
 | Sealed filesystem current/manifest | INTEGRATE | Exact artifact hashes plus live eight-source check; 04-05/06 |
 | Remote report/API service, frontend or hosting | OPT-OUT | Static offline research deliverable; AGENTS.md and 04-CONTEXT.md exclude it. |
 | New remote data or paid/external inference | OPT-OUT | No new source or external service is authorized. |
-| Phase 5 GitHub release and bilingual onboarding | DEFERRED TO ASSIGNED PHASE | Distinct REL requirements and independent final audit. |
+| Phase 5 GitHub release and bilingual onboarding | OPT-OUT | Outside Phase 4 only: required in Phase 5 under REL-01 through REL-04 and independent final audit. This does not remove either deliverable from the milestone. |
 
 The primary analytical identity remains the existing ten-key v2r grain. Figure alt text is a representation of that record or accepted comparison, not a new entity. Acquisition attempts, numerical acceptance, publication runs and release IDs remain separate.
+
+Canonical coverage precheck on 2026-09-23 rejected the former decision label `DEFERRED TO ASSIGNED PHASE`, which is not one of its allowed `INTEGRATE` / `OPT-OUT` values. The last row now uses the supported per-phase opt-out with its explicit Phase 5 obligation; scope and release requirements are unchanged.

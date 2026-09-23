@@ -5,15 +5,15 @@ milestone_name: Release
 current_phase: 04
 current_phase_name: Offline Publication and Reproducible Operation
 status: executing
-stopped_at: 04-01 complete; 04-03 public model and exports executing
-last_updated: "2026-09-23T19:43:31.492Z"
+stopped_at: 04-01 and 04-03 verified; beginning 04-02 installed numerical acceptance
+last_updated: "2026-09-23T20:39:33.358Z"
 last_activity: 2026-09-23
-last_activity_desc: Phase 3 complete, transitioned to Phase 04
+last_activity_desc: Wave 1 verified; 04-02 installed numerical acceptance begins
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 16
-  completed_plans: 11
+  completed_plans: 12
   percent: 60
 ---
 
@@ -29,17 +29,17 @@ See: .planning/PROJECT.md (updated 2026-09-22)
 ## Current Position
 
 Phase: 04 — Offline Publication and Reproducible Operation
-Plan: 1/6 complete; 04-03 executing
-Status: Executing 04-03
-Last activity: 2026-09-23 — 04-01 verified; 04-03 public model and exports executing
+Plan: 2/6 complete; 04-02 executing
+Status: Executing 04-02
+Last activity: 2026-09-23 — Wave 1 verified: 476 tests passed and independent export review clean; installed numerical migration begins
 
-Progress: 3/5 phases accepted; 11/16 execution plans implemented (69%). This is not release completion.
+Progress: 3/5 phases accepted; 12/16 currently planned execution plans implemented (75%). Phase 5 is not yet planned; this is not release completion.
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans implemented: 11
+- Total plans implemented: 12
 - Executor-reported durations are recorded in each plan summary; they exclude orchestration, research and independent reviews.
 
 **By Phase:** Phase 1 — 4/4 plans complete, 27/27 truths verified, six prohibitions mechanically enforced; canonical phase completion returned no warnings.
@@ -71,6 +71,6 @@ None. The full real-data scope remains in v1.0.0.
 
 ## Session Continuity
 
-Last session: 2026-09-23T19:43:31.474Z
-Stopped at: 04-01 complete; 04-03 public model and exports executing
+Last session: 2026-09-23T20:39:33.332Z
+Stopped at: 04-01 and 04-03 verified; beginning 04-02 installed numerical acceptance
 Resume file: None

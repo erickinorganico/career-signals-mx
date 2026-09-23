@@ -51,3 +51,7 @@ Initial plan-time register: 17 authored entries, all pending execution evidence.
 ## Resource implementation readback
 
 Plan 04-01 now has concrete resource proof at a7ef126 and an independent bounded clean review in 04-RESOURCE-REVIEW.md: wheel/resource/font/oracle hashes and forbidden-content inventory match; 12 focused controls pass; installed outside-checkout and Windows native PDF proof is recorded. This supplies evidence for T-04-01/T-04-02/T-04-SC. Entries remain pending final phase audit because later schemas, installed numerical code and actual report font selection still change this boundary. No authored threat is silently waived.
+
+## Public-model and export readback
+
+Plan 04-03 is independently clean at a89b782 after resolving all three initial findings. The corrected full suite has 476 passed and zero skipped; the clean-source boundary suite has 18 passed with only the two optional real integrations skipped. Complete comparison signatures/evidence survive all formats, and figure links exclude blocked comparisons. 04-EXPORT-REVIEW.md and 04-WAVE1-CHECKS.md supply bounded evidence for T-04-06/T-04-07/T-04-08; final security closure remains a phase audit after renderer and sealed-operation checks.
