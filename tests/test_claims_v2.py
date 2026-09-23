@@ -27,7 +27,7 @@ def _item(field="031300", unit="percent", value=48.25):
                                               separators=(",", ":")).encode()).hexdigest()
     return {"record_id": rid, "grain": grain, "record": row,
             "snapshot_sha256": "a" * 64, "method_version": "method:v1",
-            "display": {"field": "Derecho" if field == "031300" else "Comunicación y periodismo",
+            "display": {"field": "Ciencias políticas" if field == "031300" else "Comunicación y periodismo",
                         "population": POPULATION_LABELS["completed_professional_known_age"],
                         "metric": METRIC_LABELS["employment_rate"], "geography": "México",
                         "recorded_sex": "todos los sexos registrados", "period": "2026-Q2"}}
@@ -38,12 +38,12 @@ def test_observation_has_exact_evidence_and_canonical_spanish():
     index = {item["record_id"]: item}
     claim = make_claim("observation", item["record_id"], public_index=index, comparison_ledger={})
     assert validate_claim(claim, public_index=index, comparison_ledger={}) == []
-    assert "Derecho" in claim["observation"] and "48,25" in claim["observation"]
+    assert "Ciencias políticas" in claim["observation"] and "48,25" in claim["observation"]
     assert claim["record_ids"] == [item["record_id"]]
     assert claim["source_snapshot_ids"] == ["enoe_2026_q2"]
     assert claim["source_sha256s"] == ["a" * 64]
     for field, replacement in (("observation", "causa 7 empleos"),
-                               ("title", "ocupación en la profesión de Derecho"),
+                               ("title", "ocupación en la profesión de Ciencias políticas"),
                                ("limitation", "estadísticamente significativo")):
         altered = deepcopy(claim)
         altered[field] = replacement
@@ -58,7 +58,7 @@ def test_equal_values_from_different_fields_are_not_interchangeable():
     altered["record_ids"] = [second["record_id"]]
     assert validate_claim(altered, public_index=index, comparison_ledger={})
     altered = deepcopy(claim)
-    altered["title"] = altered["title"].replace("Derecho", "Dеrecho")  # Cyrillic lookalike
+    altered["title"] = altered["title"].replace("Ciencias", "Cienciаs")  # Cyrillic lookalike
     assert validate_claim(altered, public_index=index, comparison_ledger={})
 
 
