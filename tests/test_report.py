@@ -3,6 +3,7 @@ from copy import deepcopy
 from pathlib import Path
 
 import pytest
+from matplotlib.axes import Axes
 
 from brujula.report import _period_x_positions, _trend_points, _trend_segments, render_report
 
@@ -114,3 +115,25 @@ def test_global_period_axis_order_survives_leading_null_series(payload):
     assert positions[leading_null["period_id"]] == 0
     assert positions[later["period_id"]] == 1
     assert [row["id"] for row in _trend_points([leading_null, later])] == ["later-valid"]
+
+
+def test_latest_national_chart_keeps_missing_fields_as_holes(tmp_path, payload, monkeypatch):
+    rows = [row for row in payload["dataset"]["observations"] if row["metric_id"] == "female_share" and row["geography_id"] == "demo_mx" and row["period_id"] == "demo_2025_q4"]
+    assert len(rows) == 3
+    rows[0].update(value=57.0, status="REVIEW")
+    for row in rows[1:]:
+        row.update(value=None, status="UNKNOWN")
+    heights: list[list[float]] = []
+    original_bar = Axes.bar
+
+    def capture_bar(self, x, height, *args, **kwargs):
+        heights.append(list(height) if hasattr(height, "__iter__") else [height])
+        return original_bar(self, x, height, *args, **kwargs)
+
+    monkeypatch.setattr(Axes, "bar", capture_bar)
+    render_report(payload, tmp_path)
+    svg = "\n".join(path.read_text(encoding="utf-8") for path in (tmp_path / "charts").glob("*.svg"))
+    assert "Derecho" in svg and "Comunicación y periodismo" in svg and "Ciencias políticas" in svg
+    assert "Sin dato" in svg
+    assert [57.0] in heights
+    assert all(0.0 not in captured for captured in heights)

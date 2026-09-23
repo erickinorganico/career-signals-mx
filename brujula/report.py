@@ -127,9 +127,9 @@ def _figure_metadata(rows: list[dict[str, Any]], maps: dict[str, dict[str, Any]]
             f"base de precio: {names(row.get('price_basis') for row in rows)}; precision: {names(row.get('precision_note') for row in rows)}")
 
 
-def _decorate(fig: Any, ax: Any, metadata: str) -> None:
+def _decorate(fig: Any, ax: Any, metadata: str, bottom: float = 0.33) -> None:
     ax.grid(axis="y", alpha=0.25)
-    fig.subplots_adjust(bottom=0.33)
+    fig.subplots_adjust(bottom=bottom)
     fig.text(0.5, 0.035, fill(f"{SYNTHETIC_WARNING} | {metadata}", width=130),
              ha="center", va="bottom", fontsize=7.5)
 
@@ -143,26 +143,34 @@ def _latest_metric_charts(dataset: dict[str, Any], maps: dict[str, dict[str, Any
         return charts, descriptions
     for metric_id, metric in sorted(maps["metrics"].items()):
         rows = [row for row in dataset.get("observations", []) if row.get("concept_type") == "field_of_study" and row.get("geography_id") == national and row.get("metric_id") == metric_id]
-        usable = [row for row in rows if _usable(row)]
+        if not rows:
+            continue
+        latest_end = max(periods.get(row["period_id"], {}).get("end", "") for row in rows)
+        selected_by_field = {row["concept_id"]: row for row in rows if periods.get(row["period_id"], {}).get("end") == latest_end}
+        field_ids = sorted((item["id"] for item in dataset.get("dimensions", {}).get("fields", [])), key=lambda ident: maps["concepts"].get(("field_of_study", ident), ident))
+        selected = [selected_by_field.get(field_id) for field_id in field_ids]
+        usable = [row for row in selected if row is not None and _usable(row)]
         if not usable:
             continue
-        latest_end = max(periods.get(row["period_id"], {}).get("end", "") for row in usable)
-        selected = [row for row in usable if periods.get(row["period_id"], {}).get("end") == latest_end]
-        selected.sort(key=lambda row: maps["concepts"].get((row["concept_type"], row["concept_id"]), row["concept_id"]))
-        labels = [maps["concepts"].get((row["concept_type"], row["concept_id"]), row["concept_id"]) for row in selected]
-        values = [float(row["value"]) for row in selected]
+        labels = [maps["concepts"].get(("field_of_study", field_id), field_id) for field_id in field_ids]
+        values = [float(row["value"]) for row in usable]
         fig, ax = plt.subplots(figsize=(8, 4.8))
-        bars = ax.bar(labels, values, color="#1d4e89")
+        available_positions = [index for index, row in enumerate(selected) if row is not None and _usable(row)]
+        bars = ax.bar(available_positions, values, color="#1d4e89")
         ax.set_title(f"{metric.get('label', metric_id)}: ultimo periodo nacional disponible")
         ax.set_ylabel(metric.get("unit", ""))
-        ax.tick_params(axis="x", rotation=18)
+        ax.set_xticks(range(len(field_ids)), labels, rotation=18)
         for bar, value in zip(bars, values):
             ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), _number(value, metric.get("unit")), ha="center", va="bottom", fontsize=8)
-        _decorate(fig, ax, _figure_metadata(selected, maps))
+        label_height = max(values) * 0.035
+        for index, row in enumerate(selected):
+            if row is None or not _usable(row):
+                ax.text(index, label_height, "Sin dato", ha="center", va="bottom", fontsize=8, color="#555555")
+        _decorate(fig, ax, _figure_metadata([row for row in selected if row is not None], maps))
         name = _safe_chart_name("latest-national", metric_id)
         files = _chart_save(fig, output / "charts" / name)
         charts.extend(files)
-        descriptions.append({"name": name, "title": f"{metric.get('label', metric_id)}: ultimo periodo nacional disponible", "files": files, "headers": ["Campo de estudio", "Valor", "Periodo", "Geografia", "Unidad", "Fuente", "Poblacion", "Base de precio", "Precision", "Advertencia"], "rows": [[maps["concepts"].get((row["concept_type"], row["concept_id"])), _display_row_value(row), periods.get(row["period_id"], {}).get("label"), maps["geographies"].get(row["geography_id"]), metric.get("unit"), maps["sources"].get(row.get("source_id"), {}).get("name"), row.get("population"), row.get("price_basis"), row.get("precision_note"), SYNTHETIC_WARNING] for row in selected]})
+        descriptions.append({"name": name, "title": f"{metric.get('label', metric_id)}: ultimo periodo nacional disponible", "files": files, "headers": ["Campo de estudio", "Valor", "Periodo", "Geografia", "Unidad", "Fuente", "Poblacion", "Base de precio", "Precision", "Advertencia"], "rows": [[maps["concepts"].get(("field_of_study", field_id)), _display_row_value(row or {"status": "UNKNOWN"}), periods.get((row or {}).get("period_id"), {}).get("label"), maps["geographies"].get((row or {}).get("geography_id")), metric.get("unit"), maps["sources"].get((row or {}).get("source_id"), {}).get("name"), (row or {}).get("population"), (row or {}).get("price_basis"), (row or {}).get("precision_note"), SYNTHETIC_WARNING] for field_id, row in zip(field_ids, selected)]})
     return charts, descriptions
 
 
@@ -180,16 +188,18 @@ def _income_trend(dataset: dict[str, Any], maps: dict[str, dict[str, Any]], comp
     fig, ax = plt.subplots(figsize=(9, 5))
     table_rows: list[list[Any]] = []
     plotted = False
-    for (concept_id, geography_id), series in sorted(grouped.items()):
+    colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+    for series_index, ((concept_id, geography_id), series) in enumerate(sorted(grouped.items())):
         series.sort(key=lambda row: periods.get(row.get("period_id"), {}).get("start", ""))
         label = f"{maps['concepts'].get(('field_of_study', concept_id), concept_id)} — {maps['geographies'].get(geography_id)}"
+        color = colors[series_index % len(colors)]
         visible = _trend_points(series)
         if visible:
             ax.scatter([x_positions.get(row.get("period_id")) for row in visible],
-                       [float(row["value"]) for row in visible], label=label)
+                       [float(row["value"]) for row in visible], label=label, color=color)
             plotted = True
         for previous, current in _trend_segments(series, comparable):
-            ax.plot([x_positions.get(previous.get("period_id")), x_positions.get(current.get("period_id"))], [float(previous["value"]), float(current["value"])], color="#1d4e89")
+            ax.plot([x_positions.get(previous.get("period_id")), x_positions.get(current.get("period_id"))], [float(previous["value"]), float(current["value"])], color=color)
         for index, row in enumerate(series):
             connected = index > 0 and _usable(series[index - 1]) and _usable(row) and (series[index - 1]["id"], row["id"]) in comparable
             table_rows.append([maps["concepts"].get(("field_of_study", concept_id)), maps["geographies"].get(geography_id), periods.get(row.get("period_id"), {}).get("label"), _display_row_value(row), "Disponible" if _usable(row) else "No disponible", "Conectado con comparacion declarada" if connected else ("Punto aislado; no hay par comparable declarado" if _usable(row) else "Brecha por valor o estado no disponible"), row.get("population"), row.get("price_basis"), row.get("precision_note"), SYNTHETIC_WARNING])
@@ -199,8 +209,8 @@ def _income_trend(dataset: dict[str, Any], maps: dict[str, dict[str, Any]], comp
     ax.set_title("Ingreso mensual medio por campo y geografia")
     ax.set_ylabel("MXN/month")
     ax.set_xticks(range(len(chronological_periods)), [period.get("label", period["id"]) for period in chronological_periods])
-    ax.legend(fontsize=8)
-    _decorate(fig, ax, _figure_metadata(rows, maps))
+    ax.legend(fontsize=7, loc="upper center", bbox_to_anchor=(0.5, -0.14), ncol=2)
+    _decorate(fig, ax, _figure_metadata(rows, maps), bottom=0.5)
     files = _chart_save(fig, output / "charts" / "income-trends")
     return files, {"name": "income-trends", "title": "Ingreso mensual medio por campo y geografia", "files": files, "headers": ["Campo de estudio", "Geografia", "Periodo", "Valor", "Disponibilidad", "Tratamiento de linea", "Poblacion", "Base de precio", "Precision", "Advertencia"], "rows": table_rows}
 

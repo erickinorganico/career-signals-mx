@@ -21,11 +21,11 @@ SECRET_PATTERNS = [
 
 def repository_files() -> list[Path]:
     result = list(ROOT.glob("*.md"))
-    for directory in ("docs", "brujula", "contracts", "data", "tests", "scripts", "evals", ".github"):
+    for directory in ("docs", "brujula", "contracts", "data", "tests", "scripts", "evals", ".github", "examples"):
         root = ROOT / directory
         if root.exists():
             result.extend(p for p in root.rglob("*") if p.is_file() and "__pycache__" not in p.parts
-                          and p.suffix in {".md", ".json", ".py", ".toml", ".ps1", ".sh", ".yml"})
+                          and p.suffix in {".md", ".json", ".py", ".toml", ".ps1", ".sh", ".yml", ".html", ".svg"})
     result += [ROOT / p for p in ("pyproject.toml", "requirements.txt", "LICENSE", ".gitignore")]
     return sorted(set(p for p in result if p.exists()))
 
@@ -66,7 +66,7 @@ def main() -> int:
             location = (path.parent / unquote(parsed.path)).resolve()
             if not location.is_relative_to(ROOT) or not location.exists():
                 errors.append(f"{relative}: broken local link {target}")
-    mandatory = ["README.md", "README.en.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "PROJECT-EFFICIENCY.md", "CONTRIBUTING.md",
+    mandatory = ["README.md", "README.en.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "PROJECT-EFFICIENCY.md", "CONTRIBUTING.md", "CHANGELOG.md", "docs/RELEASE.md", "docs/IMPLEMENTATION-REVIEW.md", "docs/EVALS.md",
                  *[f"docs/{name}.md" for name in ("README", "PROJECT-CHARTER", "SCOPE", "PRD", "PLAN", "ROADMAP", "RISKS", "ARCHITECTURE", "SPEC", "CONTRACT", "METHODOLOGY", "GLOSSARY", "SOURCES", "STATUS", "VALIDATION-PLAN", "ORCHESTRATION", "VISUALIZATION", "PLANNING-REVIEW")],
                  "docs/decisions/README.md"]
     for required in mandatory:

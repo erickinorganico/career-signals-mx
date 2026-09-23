@@ -2,3 +2,5 @@
 *.png binary
 *.parquet binary
 *.duckdb binary
+# Preserve published example bytes for the release manifest on every platform.
+examples/synthetic/** -text
