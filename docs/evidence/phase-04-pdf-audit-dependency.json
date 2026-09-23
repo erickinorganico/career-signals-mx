@@ -49,8 +49,32 @@
   ],
   "limits": [
     "Registry identity and name heuristics do not establish a vulnerability audit.",
-    "Published artifact hashes verified from registry metadata; installation and real PDF readback still required.",
-    "No project runtime dependency or clean CI success is claimed by this receipt."
+    "Downloaded wheel hash and local installation verified; the reader probe uses the historical synthetic PDF only.",
+    "No final report, project test dependency declaration or clean CI success is claimed by this receipt."
   ],
-  "historical_bundled_inspector_version": "6.10.0"
+  "historical_bundled_inspector_version": "6.10.0",
+  "local_installation": {
+    "checked_at": "2026-09-23T20:25:12.492869+00:00",
+    "wheel_sha256": "7e5d6e730e7dae87d560a2cee218b852f6498c8be61966f3cd02ead971e48d14",
+    "installed_version": "6.19.0",
+    "environment": "ignored project-local PDF audit environment",
+    "synthetic_reader_probe": {
+      "status": "PASS",
+      "synthetic": true,
+      "pdf_sha256": "6678eeefaac313c8d676165c43cee9077d21cd382aefcb0e6077083691a0cadd",
+      "pages": 5,
+      "required_text": [
+        "Brújula",
+        "Comunicación",
+        "México",
+        "Fila de prueba 1",
+        "Fila de prueba 80"
+      ],
+      "embedded_fonts": {
+        "/CFDMQT+Arial-Bold": true,
+        "/HHHHIV+Arial": true,
+        "/HQHFOH+MingLiU_HKSCS-ExtB": true
+      }
+    }
+  }
 }
