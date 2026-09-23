@@ -82,6 +82,26 @@ def test_unknown_age_field_and_empty_denominators(tmp_path):
     assert not np.any(empty["numerator"])
 
 
+@pytest.mark.parametrize("snapshot_id", ["enoe_2025_q2", "enoe_2025_q3"])
+@pytest.mark.parametrize("selector", [2, "02"])
+def test_entity_selectors_match_canonical_loaded_geography(tmp_path, snapshot_id, selector):
+    sid, root, registry = fixture(tmp_path / snapshot_id / str(selector), snapshot_id=snapshot_id)
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    result = metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {"entity": selector}, "occupied_total")
+    assert result["domain"].tolist() == [True, True, False]
+    assert result["numerator"].tolist() == [1.0, 0.0, 0.0]
+    assert float(result["numerator"].sum()) == 1.0
+
+
+def test_missing_entity_does_not_enter_valid_entity_domain(tmp_path):
+    missing = ROWS[0].removesuffix(",02") + ","
+    sid, root, registry = fixture(tmp_path, rows=[missing, ROWS[1], ROWS[2]])
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    result = metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {"entity": "02"}, "occupied_total")
+    assert result["domain"].tolist() == [False, True, False]
+    assert float(result["numerator"].sum()) == 0.0
+
+
 def test_unknown_labor_status_does_not_become_rate_zero(tmp_path):
     row = ROWS[0].replace(",2,1,1,1,100,", ",2,1,9,1,100,")
     employment = vectors(tmp_path / "employment", "employment_rate", rows=[row, ROWS[1], ROWS[2]])

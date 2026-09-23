@@ -162,7 +162,12 @@ def load_snapshot_frame(snapshot_id: str, output_root: Path, registry_path: Path
     if receipt["sha256"] != inventory["raw_sha256"] or receipt["run_id"] != inventory["receipt_run_id"]:
         raise AcquisitionError("snapshot changed after inventory")
     member = inventory["sdem_member"]["path"]
-    required = set(COLUMNS) | {inventory["geography_header"].lower()}
+    geography_field = inventory["geography_header"].lower()
+    # ENT and CVE_ENT are approved aliases for the same canonical entity
+    # selector. Keep the lexical source field in the audit, but materialize it
+    # as an integer column so metrics can compare it to official selectors.
+    numeric_fields = NUMERIC | {geography_field}
+    required = set(COLUMNS) | {geography_field}
     lexical = defaultdict(Counter)
     buffers: dict[str, list] = {field: [] for field in required}
     raw_rows = 0
@@ -206,7 +211,7 @@ def load_snapshot_frame(snapshot_id: str, output_root: Path, registry_path: Path
                             # The official catalog was validated once; this
                             # lookup retains Phase 1 normalization semantics.
                             value = _cmpe_key(value, catalog)
-                        elif field in NUMERIC:
+                        elif field in numeric_fields:
                             value = int(value) if value is not None else -1
                         buffers[field].append(value)
             except (csv.Error, UnicodeDecodeError, OverflowError) as exc:
@@ -215,7 +220,7 @@ def load_snapshot_frame(snapshot_id: str, output_root: Path, registry_path: Path
     if count < 2:
         raise AcquisitionError("complete response/resident frame has fewer than two rows")
     arrays = {
-        field: np.asarray(values, dtype=np.float64 if field == "fac_tri" else np.int64 if field in NUMERIC else object)
+        field: np.asarray(values, dtype=np.float64 if field == "fac_tri" else np.int64 if field in numeric_fields else object)
         for field, values in buffers.items()
     }
     for values in arrays.values():

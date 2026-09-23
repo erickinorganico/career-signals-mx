@@ -23,19 +23,22 @@ ROWS = [
 ]
 
 
-def fixture(tmp_path, rows=ROWS, header=HEADER):
+def fixture(tmp_path, rows=ROWS, header=HEADER, snapshot_id="enoe_2025_q2"):
     root, registry = _cache(tmp_path)
-    sid = "enoe_2025_q2"
-    member = _member_paths("2025-Q2")[0]
+    sid = snapshot_id
+    period = next(x["period"] for x in json.loads(registry.read_text())["snapshots"] if x["id"] == sid)
+    if header == HEADER and period >= "2025-Q3":
+        header = HEADER.replace(",ent,ageb,loc,mun", ",cve_ent,cve_ageb,cve_loc,cve_mun")
+    member = _member_paths(period)[0]
     item = next(x for x in json.loads(registry.read_text())["snapshots"] if x["id"] == sid)
     old = root / "raw" / f"{item['expected_sha256']}.zip"
     with zipfile.ZipFile(old) as archive:
         content = {x.filename: archive.read(x) for x in archive.infolist()}
     content[member] = (header + "\n" + "\n".join(row + ",1,1,1" if row else row for row in rows) + "\n").encode("latin1")
-    dictionary = _member_paths("2025-Q2")[1]
+    dictionary = _member_paths(period)[1]
     content[dictionary] = ("NOMBRE_CAMPO,LONGITUD,TIPO,NEMÓNICO,CATÁLOGO,RANGO_CLAVES\n" +
         "".join(f"Campo,{6 if field == 'cs_p14_c' else 2},C,{field},{'cs_p14_c' if field == 'cs_p14_c' else ''},\n"
-                for field in set(HEADER.split(',')))).encode("utf-8")
+                for field in set(header.split(',')))).encode("utf-8")
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w") as archive:
         for name, data in content.items():
@@ -76,6 +79,27 @@ def test_complete_frame_design_and_order(tmp_path):
     _, reverse_audit = load_snapshot_frame(sid2, root2, registry2)
     assert audit["design"] == reverse_audit["design"]
     assert audit["frame_rows"] == reverse_audit["frame_rows"]
+
+
+@pytest.mark.parametrize("snapshot_id,geography_field", [
+    ("enoe_2025_q2", "ent"), ("enoe_2025_q3", "cve_ent"),
+])
+def test_geography_aliases_materialize_canonical_integer_codes(tmp_path, snapshot_id, geography_field):
+    sid, root, registry = fixture(tmp_path, snapshot_id=snapshot_id)
+    frame, audit = load_snapshot_frame(sid, root, registry)
+    values = frame.columns[geography_field]
+    assert values.dtype == np.int64
+    # Source cells are zero-prefixed strings (02/03); selectors consume ints.
+    assert values.tolist() == [2, 2, 3]
+    assert audit["lexemes"][geography_field]["digits"] == 3
+
+
+def test_missing_geography_is_unknown_and_cannot_match_valid_entity(tmp_path):
+    missing = ROWS[0].removesuffix(",02") + ","
+    sid, root, registry = fixture(tmp_path, rows=[missing, ROWS[1], ROWS[2]])
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    assert frame.columns["ent"].tolist() == [-1, 2, 3]
+    assert not np.any(frame.columns["ent"] == 1)
 
 
 @pytest.mark.parametrize("bad", ["0,1", "0,1,30,7,1,33100,1,11,0,2,1,1,1,100,1,1,1,2,40,02", "0,1,30,7,1,33100,1,11,1e309,2,1,1,1,100,1,1,1,2,40,02", "0,1,30,7,1,33100,1,11,2,2,1,1,1,100,1,1,1,2,40,\u00a002"])
