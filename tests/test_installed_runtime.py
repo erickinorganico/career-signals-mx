@@ -35,7 +35,8 @@ def test_authored_resource_paths_and_digests():
         path = accessor()
         assert path.is_file(), name
         assert digests[name] == hashlib.sha256(path.read_bytes()).hexdigest()
-    assert len(digests) == 23
+    assert "contracts/publication-manifest-v2.schema.json" in digests
+    assert len(digests) == 24
 
 
 def test_packaged_oracle_is_byte_identical_to_authored_script():
