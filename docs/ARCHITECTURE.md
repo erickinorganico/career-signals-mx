@@ -1,5 +1,7 @@
 # Arquitectura de Brújula Laboral MX
 
+> **Arquitectura histórica del piloto sintético 0.1.0.** La arquitectura real 1.0.0 está en implementación conforme al [roadmap activo](../.planning/ROADMAP.md) y [CONTRACT-V2](CONTRACT-V2.md). La mención de M6 como extensión condicional describe el alcance anterior.
+
 Estado del documento: especificación implementable, 2026-09-22. Este documento
 distingue capacidades presentes en el checkout de capacidades aceptadas o
 planeadas. Una decisión aceptada no prueba que el código exista ni que el E2E

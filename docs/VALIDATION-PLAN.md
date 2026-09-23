@@ -1,5 +1,7 @@
 # Plan de validación y release analítico
 
+> **Validación histórica del piloto sintético 0.1.0.** La validación de ENOE real sigue los planes `VALIDATION.md` de cada fase del [roadmap activo](../.planning/ROADMAP.md), con aceptación registrada en [STATE](../.planning/STATE.md). Los gates históricos siguientes no certifican el release 1.0.0.
+
 Este plan cubre pipelines, tablas, gráficas y reportes locales. No incluye una
 aplicación web, navegador, servidor HTTP ni APIs pagadas. Los estados de cada
 gate son `DOCUMENTED`, `IMPLEMENTED`, `PARTIAL`, `VERIFIED` o `BLOCKED`; una

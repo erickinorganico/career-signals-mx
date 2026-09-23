@@ -47,10 +47,10 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
   3. A consumer sees null and a reason where support or precision fails, including n<30, fewer than two contributing UPM, CV>=30, null denominator, or degenerate precision, and never reads observed n as effective sample size.
   4. An independent reviewer can reproduce Python point estimates and errors against R survey on real and analytic controls and inspect untuned discrepancies against compatible official national and state totals and precision cells.
 
-**Plans**: 1/3 plans executed; numerical phase acceptance remains pending
+**Plans**: 2/3 plans executed; 02-03 numerical acceptance is executing
 
 - [x] 02-01-PLAN.md
-- [ ] 02-02-PLAN.md
+- [x] 02-02-PLAN.md
 - [ ] 02-03-PLAN.md
 
 ### Phase 3: Supported Labor Findings
@@ -107,7 +107,7 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Official Sources and Research Contract | 4/4 | Complete    | 2026-09-22 |
-| 2. Defensible Survey Estimates | 1/3 | Executing 02-02 | - |
+| 2. Defensible Survey Estimates | 2/3 | Executing 02-03 | - |
 | 3. Supported Labor Findings | 0/3 | Plans reviewed; dependent on Phase 2 | - |
 | 4. Offline Publication and Reproducible Operation | 0/TBD | Not started | - |
 | 5. Independent Audit and v1.0.0 Release | 0/TBD | Not started | - |
