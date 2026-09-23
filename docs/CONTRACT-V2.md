@@ -95,6 +95,14 @@ motivo para mostrar cobertura sin revelar la estimación. El schema público
 rechaza tanto la clave `estimate` como cualquier cifra diagnóstica en una fila
 suprimida. Las pruebas usan sentinelas idénticos para `estimate`, denominador
 y total ponderado anidado, más un centinela de intervalo independiente.
+El motivo público es un código controlado, nunca texto diagnóstico interno:
+`synthetic_fixture`, `project_singleton_adjustment`,
+`precision_suppressed`, `unsupported`, `review_required`, `unknown`
+o `blocked`. La proyección reconoce solo motivos internos conocidos por
+coincidencia exacta (ignorando mayúsculas y espacios externos); cualquier
+otro motivo se reduce al código genérico de su estado. El schema público
+rechaza texto libre en `reason`. El detalle interno permanece en el
+registro diagnóstico local.
 
 Los componentes de precisión no se certifican por este contrato. El método
 de varianza (`precision.method`) y el de intervalo (`precision.ci_method`) se

@@ -106,7 +106,9 @@
         "weighted_denominator": {"$ref": "#/$defs/nullable_nonnegative"},
         "support": {"$ref": "#/$defs/support"}, "precision": {"$ref": "#/$defs/precision"},
         "status": {"enum": ["MEASURED", "REVIEW", "UNKNOWN", "BLOCKED"]},
-        "reason": {"type": ["string", "null"]},
+        "reason": {"enum": [null, "synthetic_fixture", "project_singleton_adjustment",
+                             "precision_suppressed", "unsupported", "review_required",
+                             "unknown", "blocked"]},
         "value": {"$ref": "#/$defs/nullable_number"},
         "evidence_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
         "synthetic": {"type": "boolean"}

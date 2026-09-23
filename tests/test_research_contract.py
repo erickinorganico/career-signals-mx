@@ -190,6 +190,32 @@ def test_suppressed_projection_never_leaks_value_equivalent_sentinels():
     assert projected["precision"]["level"] == 0.90
 
 
+def test_public_reason_cannot_copy_internal_diagnostic_or_suppressed_estimate():
+    fixture = research_fixture()
+    record = fixture["records"][0]
+    record.update(status="BLOCKED", value=None, estimate=120.0,
+                  reason="Suppressed estimate 120.0")
+    public = public_research_projection(fixture)
+    assert public["records"][0]["reason"] == "blocked"
+    assert "120.0" not in json.dumps(public)
+    assert validate_public_research_v2(public) == []
+    public["records"][0]["reason"] = "Suppressed estimate 120.0"
+    assert validate_public_research_v2(public)
+
+
+def test_public_reason_preserves_known_categories_and_bounds_unknown_review_text():
+    fixture = research_fixture()
+    record = fixture["records"][0]
+    assert public_research_projection(fixture)["records"][0]["reason"] == "synthetic_fixture"
+    record["reason"] = "Project singleton adjustment"
+    record["precision"]["singleton_policy"] = "adjust"
+    assert public_research_projection(fixture)["records"][0]["reason"] == "project_singleton_adjustment"
+    record.update(value=None, status="BLOCKED", reason="precision")
+    assert public_research_projection(fixture)["records"][0]["reason"] == "precision_suppressed"
+    record.update(status="REVIEW", reason="internal case ID 120.0")
+    assert public_research_projection(fixture)["records"][0]["reason"] == "review_required"
+
+
 def test_supported_review_and_measured_value_remain_visible():
     fixture = research_fixture()
     review = public_research_projection(fixture)["records"][0]

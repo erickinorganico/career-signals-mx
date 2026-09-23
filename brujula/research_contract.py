@@ -29,6 +29,21 @@ CATALOG_REFS = {
 # CV is reported in percentage points. Allow rounding to two decimal places,
 # while always grading against the CV calculated from the supplied SE.
 CV_ABS_TOLERANCE_PP = 0.005
+PUBLIC_REASON_CODES = {
+    "synthetic fixture": "synthetic_fixture",
+    "project singleton adjustment": "project_singleton_adjustment",
+    "precision": "precision_suppressed",
+    "unsupported": "unsupported",
+}
+
+
+def _public_reason(reason: str | None, status: str) -> str | None:
+    if reason is None:
+        return None
+    known = PUBLIC_REASON_CODES.get(reason.strip().casefold())
+    if known is not None:
+        return known
+    return {"REVIEW": "review_required", "UNKNOWN": "unknown", "BLOCKED": "blocked"}[status]
 
 
 @lru_cache(maxsize=2)
@@ -231,6 +246,7 @@ def public_research_projection(payload: Mapping[str, object]) -> dict:
     for row in payload["records"]:
         suppressed = row["value"] is None
         projected = {key: list(row[key]) if key == "evidence_refs" else row[key] for key in record_fields}
+        projected["reason"] = _public_reason(row["reason"], row["status"])
         projected["weighted_denominator"] = None if suppressed else row["weighted_denominator"]
         projected["support"] = {key: row["support"][key] for key in support_fields}
         projected["support"]["weighted_support_total"] = None if suppressed else row["support"]["weighted_support_total"]
