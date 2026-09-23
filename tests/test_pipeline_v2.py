@@ -109,6 +109,10 @@ def test_inventory_rejects_extra_missing_and_symlink(tmp_path):
     (root / "extra.txt").write_bytes(b"extra")
     with pytest.raises(ValueError, match="inventory"):
         p._inventory(root, {"analysis.json"})
+    (root / "extra.txt").unlink()
+    (root / "analysis.json").unlink()
+    with pytest.raises(ValueError, match="inventory"):
+        p._inventory(root, {"analysis.json"})
 
 
 def test_current_pointer_rejects_unlisted_authority_fields(monkeypatch, tmp_path):
@@ -120,9 +124,33 @@ def test_current_pointer_rejects_unlisted_authority_fields(monkeypatch, tmp_path
     p.atomic_json(out / "current.json", pointer)
     monkeypatch.setattr(p, "_verify_sealed", lambda *_args: {
         "sources": [], "artifact_hashes": {}, "manifest": {}, "receipt": {}})
-    with pytest.raises(ValueError, match="current pointer"):
+    with pytest.raises(ValueError, match="current publication"):
         p.resolve_publication_current(out, source)
-    (root / "extra.txt").unlink()
-    (root / "analysis.json").unlink()
-    with pytest.raises(ValueError, match="inventory"):
-        p._inventory(root, {"analysis.json"})
+
+
+def test_current_resolution_rechecks_source_and_artifact_identity(monkeypatch, tmp_path):
+    source, out = tmp_path / "source", tmp_path / "out"
+    out.mkdir()
+    p.atomic_json(out / "current.json", {
+        "schema_version": "2.0", "run_id": "20260923T120000-aaaaaaaaaaaa",
+        "status": "REVIEW", "build_status": "SUCCEEDED", "manifest_sha256": "a" * 64})
+    count = 0
+
+    def verify(*_args):
+        nonlocal count
+        count += 1
+        return {"sources": [{"attempt": count}], "artifact_hashes": {},
+                "manifest": {}, "receipt": {}}
+
+    monkeypatch.setattr(p, "_verify_sealed", verify)
+    with pytest.raises(ValueError, match="changed during resolution"):
+        p.resolve_publication_current(out, source)
+    assert count == 2
+
+
+def test_safe_artifact_paths_reject_traversal_and_backslashes(tmp_path):
+    root = tmp_path / "run"
+    root.mkdir()
+    for value in ("../escape", "C:/absolute", "sub\\evil", "/absolute"):
+        with pytest.raises(ValueError, match="unsafe|escaped"):
+            p._safe_file(root, value)

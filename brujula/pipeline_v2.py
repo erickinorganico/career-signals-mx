@@ -53,7 +53,7 @@ def _strict_roots(*paths: Path) -> tuple[Path, ...]:
 
 
 def _safe_file(root: Path, name: str) -> Path:
-    if not isinstance(name, str) or not name or "\\" in name:
+    if not isinstance(name, str) or not name or "\\" in name or ":" in name:
         raise ValueError("unsafe artifact path")
     rel = PurePosixPath(name)
     if rel.is_absolute() or any(p in ("", ".", "..") for p in rel.parts) or rel.as_posix() != name:
@@ -323,6 +323,8 @@ def build_publication(source_root: Path, output_root: Path, audit_dir: Path,
 def _verify_sealed(run: Path, source_root: Path, expected_manifest_sha: str | None = None) -> dict:
     if not RUN_ID.fullmatch(run.name) or run.parent.name != "runs" or run.is_symlink():
         raise ValueError("invalid sealed run path")
+    if (run / "manifest.json").is_symlink() or (run / "receipt.json").is_symlink():
+        raise ValueError("symlink sealed authority")
     raw_manifest = (run / "manifest.json").read_bytes()
     manifest_sha = _sha(raw_manifest)
     if expected_manifest_sha is not None and manifest_sha != expected_manifest_sha:
@@ -383,9 +385,13 @@ def resolve_publication_current(output_root: Path, source_root: Path) -> dict:
     """Return current paths only after two complete independent live checks."""
     output_root, source_root = _strict_roots(output_root, source_root)
     current_path = output_root / "current.json"
+    if current_path.is_symlink():
+        raise ValueError("symlink current pointer")
     current, pointer_sha = _read(current_path)
     run_id = current.get("run_id")
-    if (current.get("status") != "REVIEW" or current.get("build_status") != "SUCCEEDED"
+    if (set(current) != {"schema_version", "run_id", "status", "build_status", "manifest_sha256"}
+            or current.get("schema_version") != "2.0"
+            or current.get("status") != "REVIEW" or current.get("build_status") != "SUCCEEDED"
             or not isinstance(run_id, str) or not RUN_ID.fullmatch(run_id)
             or not isinstance(current.get("manifest_sha256"), str)
             or not HEX.fullmatch(current["manifest_sha256"])):
