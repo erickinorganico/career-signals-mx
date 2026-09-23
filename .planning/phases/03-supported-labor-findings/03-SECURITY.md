@@ -1,8 +1,8 @@
 ---
 phase: 3
 slug: supported-labor-findings
-status: planned
-threats_open: 12
+status: in_progress
+threats_open: 4
 asvs_level: 1
 register_authored_at_plan_time: true
 created: 2026-09-23
@@ -22,16 +22,16 @@ Plans did not assign severities; integrity and disclosure threats are conservati
 
 | Plan / threat | Component | Severity | Disposition | Required mitigation | Evidence / status |
 |---|---|---|---|---|---|
-| 01 / T-03-01 | Phase 2 acceptance/input | high | mitigate | Verify all eight snapshot hashes, method manifest and public v2 roots before indexing. | OPEN — verify implementation and behavioral controls |
-| 01 / T-03-02 | record identity | high | mitigate | Canonical ten-key grain serialization, duplicate/collision negative tests. | OPEN — verify implementation and behavioral controls |
-| 01 / T-03-03 | sparse coverage | high | mitigate | Public-only input, complementary suppression and nested sentinel tests. | OPEN — verify implementation and behavioral controls |
-| 01 / T-03-04 | missing profile cell | high | mitigate | Preserve controlled reason, source, population and metric keys in every expected slot. | OPEN — verify implementation and behavioral controls |
-| 01 / T-03-SC | dependency install | low | accept | No new package install in this plan. | plan-time acceptance; verify unchanged dependencies |
-| 02 / T-03-05 | source-family/edition signature | high | mitigate | Preserve snapshot hash; verify edition and method/definition registry before equality. | OPEN — verify implementation and behavioral controls |
-| 02 / T-03-06 | geography alias | high | mitigate | Exact 32 code/name mapping and official cross-boundary evidence with negative key/name fixtures. | OPEN — verify implementation and behavioral controls |
-| 02 / T-03-07 | blocked delta | high | mitigate | Stable ordered endpoint IDs, all reason codes and null numeric fields. | OPEN — verify implementation and behavioral controls |
-| 02 / T-03-08 | sparse pair | high | mitigate | Public-only endpoints; no diagnostic fallback or delta from null. | OPEN — verify implementation and behavioral controls |
-| 02 / T-03-SC | dependency install | low | accept | No new package install in this plan. | plan-time acceptance; verify unchanged dependencies |
+| 01 / T-03-01 | Phase 2 acceptance/input | high | mitigate | Verify all eight snapshot hashes, method manifest and public v2 roots before indexing. | CLOSED — analysis_v2 index checks exact eight approved sources, numerical code inventory, public golden and independent aggregate coverage pins; focused repinning negatives in tests/test_analysis_v2.py, correction de69626. |
+| 01 / T-03-02 | record identity | high | mitigate | Canonical ten-key grain serialization, duplicate/collision negative tests. | CLOSED — canonical ten-key JSON grain IDs and duplicate/request/evaluation checks; stable reorder and missing-computation tests plus real 6,739-record readback. |
+| 01 / T-03-03 | sparse coverage | high | mitigate | Public-only input, complementary suppression and nested sentinel tests. | CLOSED — public-v2 validation, null diagnostic checks and common sanitized record_index; complementary-parent continuity test and real five-parent readback. |
+| 01 / T-03-04 | missing profile cell | high | mitigate | Preserve controlled reason, source, population and metric keys in every expected slot. | CLOSED — exact expected 32-state/two-sex/national grids and computed suppression causes; missing computation rejects instead of filling zero; current Node sparse-cell control passes. |
+| 01 / T-03-SC | dependency install | low | accept | No new package install in this plan. | CLOSED — no dependency additions in Plan 03-01 or coverage correction; package data is hash-only JSON. |
+| 02 / T-03-05 | source-family/edition signature | high | mitigate | Preserve snapshot hash; verify edition and method/definition registry before equality. | CLOSED — packaged eight-source registry, independent metadata/definition pins and exact policy versions; mismatch negatives and real ledger readback pass at 9ed3244. |
+| 02 / T-03-06 | geography alias | high | mitigate | Exact 32 code/name mapping and official cross-boundary evidence with negative key/name fixtures. | CLOSED — exact 32 official state keys/names and ENT/CVE_ENT mapping, pinned catalog digest and reviewed conditional concept assertion; changed-name/alias fixtures block. |
+| 02 / T-03-07 | blocked delta | high | mitigate | Stable ordered endpoint IDs, all reason codes and null numeric fields. | CLOSED — full series/period slot IDs, stable sorted reasons and null blocked deltas; multiple fully missing series test and all 4,209 real IDs unique. |
+| 02 / T-03-08 | sparse pair | high | mitigate | Public-only endpoints; no diagnostic fallback or delta from null. | CLOSED — null/redaction endpoints block, fixed BC 02 reference cannot be replaced, absent reference retains blocked entity slots; focused controls pass. |
+| 02 / T-03-SC | dependency install | low | accept | No new package install in this plan. | CLOSED — no new dependency installation; approved source metadata is authored package JSON. |
 | 03 / T-03-09 | claim evidence IDs | high | mitigate | Resolve exact record/comparison/source/method refs and reject swapped-grain fixtures. | OPEN — verify implementation and behavioral controls |
 | 03 / T-03-10 | canonical prose | high | mitigate | Rebuild text from typed template and compare exact output; extra-number/label tests. | OPEN — verify implementation and behavioral controls |
 | 03 / T-03-11 | packet/claim text | high | mitigate | Public-only input, strict schema and nested/complementary suppression sentinels. | OPEN — verify implementation and behavioral controls |
@@ -45,3 +45,7 @@ Close a mitigation only after source and affected checks prove it. Reuse the ind
 ## Audit trail
 
 Initial execution register: 15 authored entries, 12 mitigations awaiting implementation evidence and three no-install dispositions requiring scope confirmation. The upstream Phase 2 statistical gate is accepted; it does not prove Phase 3 comparison or claim safety.
+
+Plan 03-01 follow-through: five authored entries are closed by source readback and affected verification, including 19 profile tests, two current Node controls and real aggregate-only input validation. Eight mitigation entries and two no-install scope confirmations remain pending for Plans 03-02/03. Phase security acceptance still requires the independent code review and complete final behavioral gate.
+
+Plan 03-02 follow-through: another five entries closed at 9ed3244/1e741d2, with 18 focused tests, two current Node/canonical controls, real aggregate-only ledger readback and the 403-test full suite. Four mitigations and one no-install confirmation remain for Plan 03-03; final independent code/security acceptance remains required.

@@ -19,10 +19,12 @@ Que una persona pueda entender y verificar una conclusión laboral útil sin con
 - Publicación autorizada y acceso verificado a erickinorganico/career-signals-mx — repositorio existente.
 - Ocho snapshots ENOE con inventario offline, metadatos, poblaciones explícitas y contrato v2 interno/público — Phase 1, 27/27 criterios y seis prohibiciones comprobadas; cierre canónico GSD sin advertencias. Ver `01-VERIFICATION.md` y `01-VALIDATION.md`.
 
+- Estimaciones reales de ocho trimestres y 6,739 celdas, contrastadas con 26 casos reales de R survey, cuatro controles analíticos y dos ediciones oficiales — Phase 2, 43/43 criterios y siete prohibiciones; inicialización y replay inalterado coinciden. Ver `02-VERIFICATION.md` y `docs/evidence/phase-02-numerical-acceptance.json`.
+
 ### Active
 
 - [x] Adquirir y versionar ocho cortes ENOE oficiales, 2024-Q3 a 2026-Q2, con licencia, metadatos y recibos verificables — Phase 1; microdatos conservados localmente.
-- [ ] Estimar por diseño complejo, contrastar resultados con INEGI y R, y suprimir cifras que no cumplan la política de precisión.
+- [x] Estimar por diseño complejo, contrastar resultados con INEGI y R, y suprimir cifras que no cumplan la política de precisión — Phase 2 aceptada; precisión del ajuste propio explícitamente no oficial.
 - [ ] Publicar contexto nacional y egresados profesionales, con foco en Derecho, Comunicación y Ciencias políticas y referencias de otros campos oficiales.
 - [ ] Mostrar evolución trimestral, diferencias por sexo, cobertura territorial y condiciones laborales con universos explícitos.
 - [ ] Entregar informe editorial offline HTML/Markdown/PDF, gráficas SVG/PNG, datos tabulares y evidencia de cada conclusión.
@@ -40,9 +42,9 @@ Que una persona pueda entender y verificar una conclusión laboral útil sin con
 
 Python 3.12, CLI local, DuckDB, JSON Schema y Matplotlib. El código v1 protege la demo sintética y necesita un contrato v2 para investigación oficial. Existen investigaciones recientes en `docs/research/COMPARABLE-REPOSITORIES.md`, `PRODUCT-GAP-AUDIT.md` y `ENOE-METHOD-REVIEW.md`; deben reutilizarse y profundizarse solo donde hay vacíos.
 
-La ampliación está definida en `docs/FINAL-RELEASE-PLAN.md` y ADR 0006. La adquisición y el estimador tienen implementación parcial y pruebas aisladas; todavía no constituyen una publicación oficial validada. La prueba con 2026-Q2 reproduce exactamente los totales nacionales al aplicar 15<=EDA<=98, pero identifica 13 estratos con una sola UPM: el tratamiento y su limitación deben quedar explícitos antes de publicar incertidumbre.
+La ampliación está definida en `docs/FINAL-RELEASE-PLAN.md` y ADR 0006. La adquisición y las estimaciones completas están aceptadas en Phases 1–2; los hallazgos y la publicación final todavía requieren sus gates. El contexto nacional usa 15<=EDA<=98, separado de la cohorte profesional de edad conocida 15–97. Los 13 estratos singleton de 2026-Q2 usan el ajuste del proyecto y conservan su limitación de precisión no oficial.
 
-R 4.6.1 y survey 4.5 están instalados en la caché ignorada como oráculo de validación, no como dependencia del producto Python. El prototipo concuerda en los casos probados; la contrastación versionada con la cohorte final de edad conocida y todos los criterios de Phase 2 sigue pendiente. La precisión con ajuste propio de estratos singleton siempre será explícitamente no oficial.
+R 4.6.1 y survey 4.5 están instalados en la caché ignorada como oráculo de validación, no como dependencia del producto Python. La contrastación versionada con la cohorte final, todos los trimestres y los criterios de Phase 2 pasó; la discrepancia de error estándar respecto de la referencia oficial permanece registrada sin ajuste oportunista. La precisión con ajuste propio de estratos singleton siempre será explícitamente no oficial.
 
 ## Constraints
 
@@ -58,10 +60,10 @@ R 4.6.1 y survey 4.5 están instalados en la caché ignorada como oráculo de va
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Hito v1.0.0 de investigación real, alcance completo | Corrección explícita del usuario al MVP | Activo |
-| Seguir recomendaciones GSD | Instrucción del usuario del 22 de septiembre | Primera fase completa con investigación, planes, revisiones, controles negativos, seguridad y verificación |
-| Cinco fases sustanciales con revisión de planes y verificación | Granularidad gruesa recomendada, sin recortar entregables | Roadmap activo; Phase 1 completa |
+| Seguir recomendaciones GSD | Instrucción del usuario del 22 de septiembre | Phases 1–2 completas con investigación, planes, revisiones, controles negativos, seguridad y verificación; Phase 3 en ejecución |
+| Cinco fases sustanciales con revisión de planes y verificación | Granularidad gruesa recomendada, sin recortar entregables | Roadmap activo; Phases 1–2 completas |
 | Cohorte principal CS_P13_1=7 y CS_P16=1, edad conocida 15–97 | No mezclar campo de licenciatura y posgrado ni edad desconocida | Contrato y reglas verificados en Phase 1 |
-| Intervalos 90%, CV y supresión | Incertidumbre interpretable y coherente con encuesta | Método y oráculo pendientes |
+| Intervalos 90%, CV y supresión | Incertidumbre interpretable y coherente con encuesta | Método y oráculo aceptados en Phase 2; precisión explícitamente no oficial |
 | Informe estático offline y datos exportables | Entrega útil dentro del alcance autorizado | Activo |
 
 ## Evolution
@@ -69,4 +71,4 @@ R 4.6.1 y survey 4.5 están instalados en la caché ignorada como oráculo de va
 Después de cada fase se actualizarán requisitos verificados, decisiones y límites, con referencias a la evidencia. Al cerrar el hito se revisarán alcance, utilidad prometida y resultados reales; ningún pendiente se convertirá en completo por existir documentación o una prueba aislada.
 
 ---
-*Last updated: 2026-09-22 after Phase 1 canonical completion; numerical and release acceptance remain pending.*
+*Last updated: 2026-09-23 after Phase 2 canonical completion and accepted Phase 3 profile/comparison waves; final findings, publication and release remain pending.*
