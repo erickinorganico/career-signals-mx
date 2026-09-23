@@ -69,9 +69,43 @@ Ninguna función necesaria para esta entrega se difiere por conveniencia. Nuevas
 
 ## Traceability
 
-Pendiente de asignación por gsd-roadmapper. Todos los requisitos están pendientes de verificación integral; los módulos y descargas existentes son evidencia de avance parcial.
+Todos los requisitos están pendientes de verificación integral. Los ocho ZIP adquiridos y los módulos de adquisición/encuesta existentes son evidencia de avance parcial, no de un gate cumplido.
 
-**Coverage:** 31 requisitos; deben asignarse exactamente una vez a las fases del roadmap.
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| SRC-01 | Phase 1 | Pending |
+| SRC-02 | Phase 1 | Pending |
+| SRC-03 | Phase 1 | Pending |
+| SRC-04 | Phase 1 | Pending |
+| CTR-01 | Phase 1 | Pending |
+| CTR-02 | Phase 1 | Pending |
+| STAT-01 | Phase 2 | Pending |
+| STAT-02 | Phase 2 | Pending |
+| STAT-03 | Phase 2 | Pending |
+| STAT-04 | Phase 2 | Pending |
+| STAT-05 | Phase 2 | Pending |
+| STAT-06 | Phase 2 | Pending |
+| ANA-01 | Phase 3 | Pending |
+| ANA-02 | Phase 3 | Pending |
+| ANA-03 | Phase 3 | Pending |
+| ANA-04 | Phase 3 | Pending |
+| ANA-05 | Phase 3 | Pending |
+| ANA-06 | Phase 3 | Pending |
+| PUB-01 | Phase 4 | Pending |
+| PUB-02 | Phase 4 | Pending |
+| PUB-03 | Phase 4 | Pending |
+| PUB-04 | Phase 4 | Pending |
+| PUB-05 | Phase 4 | Pending |
+| OPS-01 | Phase 4 | Pending |
+| OPS-02 | Phase 4 | Pending |
+| OPS-03 | Phase 4 | Pending |
+| REL-01 | Phase 5 | Pending |
+| REL-02 | Phase 5 | Pending |
+| REL-03 | Phase 5 | Pending |
+| REL-04 | Phase 5 | Pending |
+| GSD-01 | Phase 5 | Pending |
+
+**Coverage:** 31/31 v1 requirements assigned exactly once; 0 orphaned or duplicated.
 
 ---
 *Last updated: 2026-09-22 after research and explicit user authorization to follow GSD recommendations.*
