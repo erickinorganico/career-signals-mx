@@ -17,6 +17,7 @@ from .populations import (COMPLETED_PROFESSIONAL_KNOWN_AGE,
                           NATIONAL_15_PLUS_CONTEXT, POPULATION_DEFINITIONS)
 from .research_contract import GRAIN, _public_reason, validate_public_research_v2
 from .source_inventory import PERIODS
+from .source_inventory import _registry
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +30,13 @@ COMPUTED_REASONS = frozenset({"sample_size_below_30", "cv_at_least_30",
     "degenerate_interval", "zero_denominator", "zero_design_df",
     "nonpositive_denominator", "missing_standard_error", "invalid_cv",
     "empty_denominator"})
+EXPECTED_CODE_FILES = frozenset({
+    "scripts/accept_enoe_estimates.py", "scripts/enoe_survey_oracle.R",
+    "scripts/official_reconciliation.py", "brujula/acquisition.py",
+    "brujula/source_inventory.py", "brujula/enoe_adapter.py",
+    "brujula/populations.py", "brujula/metrics.py", "brujula/survey.py",
+    "brujula/estimates.py", "brujula/research_contract.py",
+})
 
 
 def _digest(value: object) -> str:
@@ -69,8 +77,8 @@ def _ledger_key(grain: tuple[str, ...]) -> str:
 
 def _check_codes(manifest: dict) -> None:
     hashes = manifest.get("code_sha256")
-    if not isinstance(hashes, dict) or not hashes:
-        raise ValueError("accepted Phase 2 code hash map is absent")
+    if not isinstance(hashes, dict) or set(hashes) != _required_code_files():
+        raise ValueError("accepted Phase 2 code hash inventory is incomplete")
     for name, expected in hashes.items():
         if not isinstance(name, str) or not isinstance(expected, str) or len(expected) != 64:
             raise ValueError("malformed accepted code hash")
@@ -80,6 +88,23 @@ def _check_codes(manifest: dict) -> None:
         actual = hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
         if actual != expected:
             raise ValueError(f"accepted Phase 2 code changed: {name}")
+
+
+def _required_code_files() -> frozenset[str]:
+    return EXPECTED_CODE_FILES
+
+
+def _approved_sources() -> dict[str, dict]:
+    """Read the independently approved Phase 1 source catalog, without ZIP access."""
+    _, sources = _registry(None)
+    return {name: {"sha256": item["expected_sha256"], "url": item["url"]}
+            for name, item in sources.items()}
+
+
+def _approved_public_pins() -> dict[str, str]:
+    """Phase 2 golden public content is independent of the caller's manifest."""
+    golden = json.loads((ROOT / "data/fixtures/enoe-aggregate-golden.json").read_text(encoding="utf-8"))
+    return golden["public_content_sha256_by_snapshot"]
 
 
 def _required_grains(snapshot: str, period: str, metrics: tuple[str, ...],
@@ -122,7 +147,11 @@ def index_public_estimates(public_by_snapshot: Mapping[str, dict],
         raise ValueError("metric manifest differs from accepted definitions")
     _check_codes(manifest)
     metrics = tuple(sorted(row["id"] for row in load_metric_manifest()["metrics"]))
+    approved_sources, approved_pins = _approved_sources(), _approved_public_pins()
+    if set(approved_sources) != set(snapshots) or set(approved_pins) != set(snapshots):
+        raise ValueError("approved source or public-pin inventory is incomplete")
     entries, by_grain, catalogs, evaluations, coverage = [], {}, {}, {}, {}
+    quarter_numeric_digests = {}
     ids = set()
     latest = PERIODS[-1]
     for period in PERIODS:
@@ -136,6 +165,17 @@ def index_public_estimates(public_by_snapshot: Mapping[str, dict],
         if (_digest(public) != pin.get("public_v2_digest")
                 or _content_digest(public) != pin.get("public_content_sha256")):
             raise ValueError(f"public payload differs from accepted hash: {snapshot}")
+        if pin["public_content_sha256"] != approved_pins[snapshot]:
+            raise ValueError("public content differs from independent Phase 2 golden pin")
+        if (public["sources"][0]["sha256"] != approved_sources[snapshot]["sha256"]
+                or public["sources"][0]["url"] != approved_sources[snapshot]["url"]):
+            raise ValueError("source differs from approved pinned snapshot catalog")
+        quarter_digest = _digest(public["records"])
+        if quarter_digest != pin.get("numeric_digest") or quarter_digest != audit.get("numeric_digest"):
+            raise ValueError("numeric record digest differs from accepted ledger")
+        if _digest(audit.get("public_records")) != quarter_digest:
+            raise ValueError("aggregate public records differ from accepted public payload")
+        quarter_numeric_digests[snapshot] = quarter_digest
         if (audit.get("snapshot_id") != snapshot or audit.get("period") != period
                 or audit.get("source_sha256") != public["sources"][0]["sha256"]
                 or audit.get("numeric_digest") != pin.get("numeric_digest")
@@ -170,6 +210,8 @@ def index_public_estimates(public_by_snapshot: Mapping[str, dict],
             raw_reason = evaluation.get("reason")
             if raw_reason == "Project singleton adjustment":
                 reason_ok = row["value"] is not None
+            elif raw_reason == "Synthetic fixture":
+                reason_ok = row["synthetic"] is True and row["value"] is not None
             else:
                 reason_ok = (isinstance(raw_reason, str) and bool(raw_reason)
                              and set(raw_reason.split(";")) <= COMPUTED_REASONS)
@@ -207,6 +249,8 @@ def index_public_estimates(public_by_snapshot: Mapping[str, dict],
                               ("sources", "populations", "fields_of_study", "occupations", "industries",
                                "geographies", "recorded_sexes", "periods", "metrics", "methods", "evidence")}
         coverage[snapshot] = deepcopy(audit.get("population_coverage"))
+    if _digest(quarter_numeric_digests) != manifest["numeric_content_digest"]:
+        raise ValueError("combined numeric content digest differs from accepted Phase 2 result")
     entries.sort(key=lambda item: item["grain"])
     return {"records": entries, "by_grain": by_grain, "evaluations": evaluations,
             "catalogs": catalogs, "coverage": coverage, "periods": tuple(PERIODS),
@@ -347,10 +391,28 @@ def build_profiles(index: dict, coverage_audits: Mapping[str, dict], *, latest_p
                 if duplicate is not None:
                     _redact_parent_if_complementary(duplicate, state_parts if sum(
                         part["value"] is None for part in state_parts) == 1 else sex_parts)
+    # This is the common downstream record source for comparison, claims and
+    # publication. The accepted input index is deliberately left private and
+    # unchanged; consumers must use this sanitized copy, keyed by stable ID.
+    record_index = {item["record_id"]: deepcopy(item) for item in index["records"]}
+    for cell in (*national, *named_fields):
+        if cell["reason"] != "complementary_suppression":
+            continue
+        item = record_index[cell["record_id"]]
+        row = item["record"]
+        row["value"] = None
+        row["status"] = "REVIEW"
+        row["reason"] = "review_required"  # valid public-v2 controlled reason
+        row["weighted_denominator"] = None
+        row["support"]["weighted_support_total"] = None
+        for name in SUPPRESSED_PRECISION:
+            row["precision"][name] = None
+        item["redaction_reason"] = "complementary_suppression"
     return {"accepted_numeric_digest": index["accepted_numeric_digest"],
             "population_labels": {name: POPULATION_DEFINITIONS[name]["label"] for name in
                                   (NATIONAL_15_PLUS_CONTEXT, COMPLETED_PROFESSIONAL_KNOWN_AGE)},
             "periods": list(index["periods"]), "metric_ids": list(metrics),
             "national": national, "latest_fields": named_fields,
             "latest_states": states, "latest_recorded_sexes": sexes,
+            "record_index": record_index,
             "latest_named_field_count": len(fields), "synthetic": all(item["record"]["synthetic"] for item in index["records"])}

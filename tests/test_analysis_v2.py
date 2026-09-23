@@ -25,14 +25,16 @@ def synthetic_inputs(monkeypatch, *, complementary=False):
         "content_sha256": GOLDEN["metric_manifest_sha256"],
         "metrics": [{"id": GOLDEN["metric_id"]}],
     })
+    monkeypatch.setattr(analysis_v2, "_required_code_files",
+                        lambda: frozenset({"brujula/research_contract.py"}))
     fields = GOLDEN["named_fields"]
     source_hash = GOLDEN["source_sha256"]
-    manifest = {"status": "PASS", "numeric_content_digest": "synthetic-eight-quarter-digest",
+    manifest = {"status": "PASS", "numeric_content_digest": None,
                 "metric_manifest_sha256": GOLDEN["metric_manifest_sha256"],
                 "code_sha256": {"brujula/research_contract.py": analysis_v2.hashlib.sha256(
                     (ROOT / "brujula/research_contract.py").read_bytes().replace(b"\r\n", b"\n")).hexdigest()},
                 "snapshots": {}}
-    publics, audits = {}, {}
+    publics, audits, approved_pins = {}, {}, {}
     for period in PERIODS:
         snapshot = analysis_v2._snapshot(period)
         year, quarter = period.split("-Q")
@@ -126,7 +128,8 @@ def synthetic_inputs(monkeypatch, *, complementary=False):
                  "method_version": method_version, "requested_cells": requested,
                  "evaluated_cells": evaluated, "population_coverage": population_coverage,
                  "request_comparison": {"status": "PASS"},
-                 "numeric_digest": "synthetic:" + snapshot,
+                 "numeric_digest": analysis_v2._digest(records),
+                 "public_records": copy.deepcopy(records),
                  "public_content_sha256": analysis_v2._content_digest(public)}
         manifest["snapshots"][snapshot] = {"public_v2_digest": analysis_v2._digest(public),
                                             "public_content_sha256": audit["public_content_sha256"],
@@ -134,6 +137,13 @@ def synthetic_inputs(monkeypatch, *, complementary=False):
                                             "requested_count": len(records)}
         publics[snapshot] = public
         audits[snapshot] = audit
+        approved_pins[snapshot] = audit["public_content_sha256"]
+    manifest["numeric_content_digest"] = analysis_v2._digest({
+        snapshot: audit["numeric_digest"] for snapshot, audit in audits.items()})
+    monkeypatch.setattr(analysis_v2, "_approved_sources", lambda: {
+        snapshot: {"sha256": source_hash, "url": public["sources"][0]["url"]}
+        for snapshot, public in publics.items()})
+    monkeypatch.setattr(analysis_v2, "_approved_public_pins", lambda: approved_pins)
     return publics, {"manifest": manifest, "audits": audits}
 
 
@@ -158,6 +168,11 @@ def test_synthetic_complete_grid_and_canonical_ids(monkeypatch):
         root["fields_of_study"].reverse()
     for snapshot, root in reordered.items():
         acceptance["manifest"]["snapshots"][snapshot]["public_v2_digest"] = analysis_v2._digest(root)
+        acceptance["manifest"]["snapshots"][snapshot]["numeric_digest"] = analysis_v2._digest(root["records"])
+        acceptance["audits"][snapshot]["numeric_digest"] = analysis_v2._digest(root["records"])
+        acceptance["audits"][snapshot]["public_records"] = copy.deepcopy(root["records"])
+    acceptance["manifest"]["numeric_content_digest"] = analysis_v2._digest({
+        snapshot: audit["numeric_digest"] for snapshot, audit in acceptance["audits"].items()})
     again = analysis_v2.index_public_estimates(reordered, acceptance)
     assert [entry["record_id"] for entry in index["records"]] == [entry["record_id"] for entry in again["records"]]
 
@@ -221,9 +236,78 @@ def test_profile_redaction_flows_to_downstream_record_index(monkeypatch):
     parent = next(row for row in packet["national"] if row["period_id"] == PERIODS[-1]
                   and row["field_of_study_id"] == "033100")
     assert parent["value"] is None and parent["reason"] == "complementary_suppression"
-    released = packet["record_index"][parent["record_id"]]["record"]
-    assert released["value"] is None and released["reason"] == "complementary_suppression"
+    downstream = packet["record_index"][parent["record_id"]]
+    released = downstream["record"]
+    assert downstream["redaction_reason"] == "complementary_suppression"
+    assert released["value"] is None and released["reason"] == "review_required"
     assert released["weighted_denominator"] is None
     assert released["support"]["weighted_support_total"] is None
     assert all(released["precision"][key] is None for key in analysis_v2.SUPPRESSED_PRECISION)
     assert source_index["by_grain"][parent["grain"]]["record"]["value"] == 3100.0
+    sanitized_root = copy.deepcopy(publics[analysis_v2._snapshot(PERIODS[-1])])
+    sanitized_root["records"] = [packet["record_index"]["v2r:" + analysis_v2._digest(
+        list(analysis_v2._grain(row)))]["record"]
+                                 for row in sanitized_root["records"]]
+    assert validate_public_research_v2(sanitized_root) == []
+
+
+def test_combined_digest_cannot_be_replaced(monkeypatch):
+    publics, acceptance = synthetic_inputs(monkeypatch)
+    acceptance["manifest"]["numeric_content_digest"] = "0" * 64
+    with pytest.raises(ValueError, match="combined numeric content digest"):
+        analysis_v2.index_public_estimates(publics, acceptance)
+
+
+def test_jointly_replaced_audit_and_manifest_record_digest_blocks(monkeypatch):
+    publics, acceptance = synthetic_inputs(monkeypatch)
+    snapshot = analysis_v2._snapshot(PERIODS[-1])
+    acceptance["audits"][snapshot]["numeric_digest"] = "0" * 64
+    acceptance["manifest"]["snapshots"][snapshot]["numeric_digest"] = "0" * 64
+    with pytest.raises(ValueError, match="numeric record digest"):
+        analysis_v2.index_public_estimates(publics, acceptance)
+
+
+def test_incomplete_accepted_code_inventory_blocks(monkeypatch):
+    publics, acceptance = synthetic_inputs(monkeypatch)
+    acceptance["manifest"]["code_sha256"].clear()
+    with pytest.raises(ValueError, match="code hash inventory"):
+        analysis_v2.index_public_estimates(publics, acceptance)
+
+
+def test_repinned_unapproved_source_hash_blocks(monkeypatch):
+    publics, acceptance = synthetic_inputs(monkeypatch)
+    snapshot = analysis_v2._snapshot(PERIODS[-1])
+    publics[snapshot]["sources"][0]["sha256"] = "b" * 64
+    acceptance["audits"][snapshot]["source_sha256"] = "b" * 64
+    new_content = analysis_v2._content_digest(publics[snapshot])
+    acceptance["manifest"]["snapshots"][snapshot]["public_v2_digest"] = analysis_v2._digest(publics[snapshot])
+    acceptance["manifest"]["snapshots"][snapshot]["public_content_sha256"] = new_content
+    monkeypatch.setattr(analysis_v2, "_approved_public_pins", lambda: {
+        snap: (new_content if snap == snapshot else pin["public_content_sha256"])
+        for snap, pin in acceptance["manifest"]["snapshots"].items()})
+    with pytest.raises(ValueError, match="approved pinned snapshot catalog"):
+        analysis_v2.index_public_estimates(publics, acceptance)
+
+
+def test_repinning_a_numeric_value_cannot_override_independent_golden(monkeypatch):
+    publics, acceptance = synthetic_inputs(monkeypatch, complementary=True)
+    snapshot = analysis_v2._snapshot(PERIODS[-1])
+    public = publics[snapshot]
+    row = next(item for item in public["records"] if item["field_of_study_id"] == "033100"
+               and item["geography_id"] == "mx" and item["recorded_sex_id"] == "all")
+    row["value"] = 3200.0
+    row["weighted_denominator"] = 3200.0
+    row["support"]["weighted_support_total"] = 3200.0
+    row["precision"].update(standard_error=160.0, coefficient_variation=5.0,
+                            ci90_lower=3000.0, ci90_upper=3400.0)
+    assert validate_public_research_v2(public) == []
+    audit = acceptance["audits"][snapshot]
+    pin = acceptance["manifest"]["snapshots"][snapshot]
+    audit["public_records"] = copy.deepcopy(public["records"])
+    audit["numeric_digest"] = pin["numeric_digest"] = analysis_v2._digest(public["records"])
+    audit["public_content_sha256"] = pin["public_content_sha256"] = analysis_v2._content_digest(public)
+    pin["public_v2_digest"] = analysis_v2._digest(public)
+    acceptance["manifest"]["numeric_content_digest"] = analysis_v2._digest({
+        snap: item["numeric_digest"] for snap, item in acceptance["audits"].items()})
+    with pytest.raises(ValueError, match="independent Phase 2 golden"):
+        analysis_v2.index_public_estimates(publics, acceptance)
