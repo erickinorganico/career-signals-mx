@@ -95,7 +95,7 @@ None. The scope scan found no TODO/FIXME/placeholder values in owned report, PDF
 
 ## Next Phase Readiness
 
-The local report renderer, paired assets, strict PDF path and visual evidence are ready for offline pipeline integration and release verification. Generated real-data files remain in ignored local staging; Phase 04-05/04-06 own promotion, full release gates, publication metadata and GitHub publication. The parent orchestrator owns STATE, ROADMAP and requirement status updates to avoid concurrent edits.
+The local report renderer, paired assets, strict PDF path and visual evidence are ready for offline pipeline integration and release verification. Generated real-data files remain in ignored local staging; Phase 04-05/04-06 own sealed local operation and integrated phase acceptance. Phase 05 owns final release and GitHub publication. The parent orchestrator owns STATE, ROADMAP and requirement status updates to avoid concurrent edits.
 
 ## Self-Check: PASSED
 
