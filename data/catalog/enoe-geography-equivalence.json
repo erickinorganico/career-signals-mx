@@ -10,39 +10,316 @@
     "ent_catalog_sha256": "ea2e8198df208d0b662c00766739eb39c5a6b9a198821903d1a9416cdf9c7c1a",
     "cve_ent_catalog_sha256": "f297f6856885a3da13f754749000e0a35d8c1745e7f2cf474a1e2adc01e07ddf"
   },
-  "native_aliases": {"ENT": "CVE_ENT", "CVE_ENT": "CVE_ENT"},
+  "native_aliases": {
+    "ENT": "CVE_ENT",
+    "CVE_ENT": "CVE_ENT"
+  },
   "states": [
-    {"code":"01","ent":"1","cve_ent":"01","name":"Aguascalientes"},
-    {"code":"02","ent":"2","cve_ent":"02","name":"Baja California"},
-    {"code":"03","ent":"3","cve_ent":"03","name":"Baja California Sur"},
-    {"code":"04","ent":"4","cve_ent":"04","name":"Campeche"},
-    {"code":"05","ent":"5","cve_ent":"05","name":"Coahuila de Zaragoza"},
-    {"code":"06","ent":"6","cve_ent":"06","name":"Colima"},
-    {"code":"07","ent":"7","cve_ent":"07","name":"Chiapas"},
-    {"code":"08","ent":"8","cve_ent":"08","name":"Chihuahua"},
-    {"code":"09","ent":"9","cve_ent":"09","name":"Ciudad de México"},
-    {"code":"10","ent":"10","cve_ent":"10","name":"Durango"},
-    {"code":"11","ent":"11","cve_ent":"11","name":"Guanajuato"},
-    {"code":"12","ent":"12","cve_ent":"12","name":"Guerrero"},
-    {"code":"13","ent":"13","cve_ent":"13","name":"Hidalgo"},
-    {"code":"14","ent":"14","cve_ent":"14","name":"Jalisco"},
-    {"code":"15","ent":"15","cve_ent":"15","name":"México"},
-    {"code":"16","ent":"16","cve_ent":"16","name":"Michoacán de Ocampo"},
-    {"code":"17","ent":"17","cve_ent":"17","name":"Morelos"},
-    {"code":"18","ent":"18","cve_ent":"18","name":"Nayarit"},
-    {"code":"19","ent":"19","cve_ent":"19","name":"Nuevo León"},
-    {"code":"20","ent":"20","cve_ent":"20","name":"Oaxaca"},
-    {"code":"21","ent":"21","cve_ent":"21","name":"Puebla"},
-    {"code":"22","ent":"22","cve_ent":"22","name":"Querétaro"},
-    {"code":"23","ent":"23","cve_ent":"23","name":"Quintana Roo"},
-    {"code":"24","ent":"24","cve_ent":"24","name":"San Luis Potosí"},
-    {"code":"25","ent":"25","cve_ent":"25","name":"Sinaloa"},
-    {"code":"26","ent":"26","cve_ent":"26","name":"Sonora"},
-    {"code":"27","ent":"27","cve_ent":"27","name":"Tabasco"},
-    {"code":"28","ent":"28","cve_ent":"28","name":"Tamaulipas"},
-    {"code":"29","ent":"29","cve_ent":"29","name":"Tlaxcala"},
-    {"code":"30","ent":"30","cve_ent":"30","name":"Veracruz de Ignacio de la Llave"},
-    {"code":"31","ent":"31","cve_ent":"31","name":"Yucatán"},
-    {"code":"32","ent":"32","cve_ent":"32","name":"Zacatecas"}
-  ]
+    {
+      "code": "01",
+      "ent": "1",
+      "cve_ent": "01",
+      "name": "Aguascalientes"
+    },
+    {
+      "code": "02",
+      "ent": "2",
+      "cve_ent": "02",
+      "name": "Baja California"
+    },
+    {
+      "code": "03",
+      "ent": "3",
+      "cve_ent": "03",
+      "name": "Baja California Sur"
+    },
+    {
+      "code": "04",
+      "ent": "4",
+      "cve_ent": "04",
+      "name": "Campeche"
+    },
+    {
+      "code": "05",
+      "ent": "5",
+      "cve_ent": "05",
+      "name": "Coahuila de Zaragoza"
+    },
+    {
+      "code": "06",
+      "ent": "6",
+      "cve_ent": "06",
+      "name": "Colima"
+    },
+    {
+      "code": "07",
+      "ent": "7",
+      "cve_ent": "07",
+      "name": "Chiapas"
+    },
+    {
+      "code": "08",
+      "ent": "8",
+      "cve_ent": "08",
+      "name": "Chihuahua"
+    },
+    {
+      "code": "09",
+      "ent": "9",
+      "cve_ent": "09",
+      "name": "Ciudad de México"
+    },
+    {
+      "code": "10",
+      "ent": "10",
+      "cve_ent": "10",
+      "name": "Durango"
+    },
+    {
+      "code": "11",
+      "ent": "11",
+      "cve_ent": "11",
+      "name": "Guanajuato"
+    },
+    {
+      "code": "12",
+      "ent": "12",
+      "cve_ent": "12",
+      "name": "Guerrero"
+    },
+    {
+      "code": "13",
+      "ent": "13",
+      "cve_ent": "13",
+      "name": "Hidalgo"
+    },
+    {
+      "code": "14",
+      "ent": "14",
+      "cve_ent": "14",
+      "name": "Jalisco"
+    },
+    {
+      "code": "15",
+      "ent": "15",
+      "cve_ent": "15",
+      "name": "México"
+    },
+    {
+      "code": "16",
+      "ent": "16",
+      "cve_ent": "16",
+      "name": "Michoacán de Ocampo"
+    },
+    {
+      "code": "17",
+      "ent": "17",
+      "cve_ent": "17",
+      "name": "Morelos"
+    },
+    {
+      "code": "18",
+      "ent": "18",
+      "cve_ent": "18",
+      "name": "Nayarit"
+    },
+    {
+      "code": "19",
+      "ent": "19",
+      "cve_ent": "19",
+      "name": "Nuevo León"
+    },
+    {
+      "code": "20",
+      "ent": "20",
+      "cve_ent": "20",
+      "name": "Oaxaca"
+    },
+    {
+      "code": "21",
+      "ent": "21",
+      "cve_ent": "21",
+      "name": "Puebla"
+    },
+    {
+      "code": "22",
+      "ent": "22",
+      "cve_ent": "22",
+      "name": "Querétaro"
+    },
+    {
+      "code": "23",
+      "ent": "23",
+      "cve_ent": "23",
+      "name": "Quintana Roo"
+    },
+    {
+      "code": "24",
+      "ent": "24",
+      "cve_ent": "24",
+      "name": "San Luis Potosí"
+    },
+    {
+      "code": "25",
+      "ent": "25",
+      "cve_ent": "25",
+      "name": "Sinaloa"
+    },
+    {
+      "code": "26",
+      "ent": "26",
+      "cve_ent": "26",
+      "name": "Sonora"
+    },
+    {
+      "code": "27",
+      "ent": "27",
+      "cve_ent": "27",
+      "name": "Tabasco"
+    },
+    {
+      "code": "28",
+      "ent": "28",
+      "cve_ent": "28",
+      "name": "Tamaulipas"
+    },
+    {
+      "code": "29",
+      "ent": "29",
+      "cve_ent": "29",
+      "name": "Tlaxcala"
+    },
+    {
+      "code": "30",
+      "ent": "30",
+      "cve_ent": "30",
+      "name": "Veracruz de Ignacio de la Llave"
+    },
+    {
+      "code": "31",
+      "ent": "31",
+      "cve_ent": "31",
+      "name": "Yucatán"
+    },
+    {
+      "code": "32",
+      "ent": "32",
+      "cve_ent": "32",
+      "name": "Zacatecas"
+    }
+  ],
+  "approved_snapshots": {
+    "enoe_2024_q3": {
+      "period": "2024-Q3",
+      "raw_sha256": "f384a1b8872e051856ed2241289400302b13a8701489b1c596390452c183cd01",
+      "source_id": "inegi_enoe",
+      "source_url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/2024/conjunto_de_datos_enoe_2024_3t_csv.zip",
+      "catalog_title": "2024|III Trimestre (ENOE)",
+      "native_geography_field": "ENT",
+      "dictionary_sha256": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
+      "field_catalog_sha256": "b521d2b5a07e3471da1bd6792183bb2c6864a38e022f74a6a919990c49f4a871",
+      "state_catalog_sha256": "ea2e8198df208d0b662c00766739eb39c5a6b9a198821903d1a9416cdf9c7c1a",
+      "revision_status": "sdem_bitacora_present",
+      "revision_sha256": "cc3101c01a94cd7e9e810f82bc1cd2d49f3cf867d4ee5fc9e0761f6e283d565e",
+      "edition_date": null
+    },
+    "enoe_2024_q4": {
+      "period": "2024-Q4",
+      "raw_sha256": "bb6d958c9bca11672d367d2c051cd08bf1654c471c2f32c8e21992c126a3b426",
+      "source_id": "inegi_enoe",
+      "source_url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/2024/conjunto_de_datos_enoe_2024_4t_csv.zip",
+      "catalog_title": "2024|IV Trimestre (ENOE)",
+      "native_geography_field": "ENT",
+      "dictionary_sha256": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
+      "field_catalog_sha256": "b521d2b5a07e3471da1bd6792183bb2c6864a38e022f74a6a919990c49f4a871",
+      "state_catalog_sha256": "ea2e8198df208d0b662c00766739eb39c5a6b9a198821903d1a9416cdf9c7c1a",
+      "revision_status": "sdem_bitacora_present",
+      "revision_sha256": "4716ded92c64ae5053e1f20c6d5df188eed8bf14e503ae88a86e7321cf4062e5",
+      "edition_date": null
+    },
+    "enoe_2025_q1": {
+      "period": "2025-Q1",
+      "raw_sha256": "3931e7c9242147da6ebf9badb1e2b9a59d43d95a9811e077232be406c4ce6691",
+      "source_id": "inegi_enoe",
+      "source_url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/2025/conjunto_de_datos_enoe_2025_1t_csv.zip",
+      "catalog_title": "2025|I Trimestre (ENOE)",
+      "native_geography_field": "ENT",
+      "dictionary_sha256": "410dff0ef72908a275e01be116e1bce949d79a38e17a403427840680c64cd51d",
+      "field_catalog_sha256": "b521d2b5a07e3471da1bd6792183bb2c6864a38e022f74a6a919990c49f4a871",
+      "state_catalog_sha256": "ea2e8198df208d0b662c00766739eb39c5a6b9a198821903d1a9416cdf9c7c1a",
+      "revision_status": "no_sdem_bitacora_member_found",
+      "revision_sha256": null,
+      "edition_date": null
+    },
+    "enoe_2025_q2": {
+      "period": "2025-Q2",
+      "raw_sha256": "9530a017e3defb0658418b73a47a6039eeb54abf11342fa10693374736515127",
+      "source_id": "inegi_enoe",
+      "source_url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/2025/conjunto_de_datos_enoe_2025_2t_csv.zip",
+      "catalog_title": "2025|II Trimestre (ENOE)",
+      "native_geography_field": "ENT",
+      "dictionary_sha256": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
+      "field_catalog_sha256": "b521d2b5a07e3471da1bd6792183bb2c6864a38e022f74a6a919990c49f4a871",
+      "state_catalog_sha256": "ea2e8198df208d0b662c00766739eb39c5a6b9a198821903d1a9416cdf9c7c1a",
+      "revision_status": "no_sdem_bitacora_member_found",
+      "revision_sha256": null,
+      "edition_date": null
+    },
+    "enoe_2025_q3": {
+      "period": "2025-Q3",
+      "raw_sha256": "7138b2bfabc740a9805b83b3fd0dae28287fc2aab3781a596a741b8fc7861566",
+      "source_id": "inegi_enoe",
+      "source_url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/2025/conjunto_de_datos_enoe_2025_3t_csv.zip",
+      "catalog_title": "2025|III Trimestre (ENOE)",
+      "native_geography_field": "CVE_ENT",
+      "dictionary_sha256": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+      "field_catalog_sha256": "b521d2b5a07e3471da1bd6792183bb2c6864a38e022f74a6a919990c49f4a871",
+      "state_catalog_sha256": "f297f6856885a3da13f754749000e0a35d8c1745e7f2cf474a1e2adc01e07ddf",
+      "revision_status": "no_sdem_bitacora_member_found",
+      "revision_sha256": null,
+      "edition_date": null
+    },
+    "enoe_2025_q4": {
+      "period": "2025-Q4",
+      "raw_sha256": "e4d4284cc9924a40c39544a5530715f320a5627cd81997214c0430827616d9d6",
+      "source_id": "inegi_enoe",
+      "source_url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/2025/conjunto_de_datos_enoe_2025_4t_csv.zip",
+      "catalog_title": "2025|IV Trimestre (ENOE)",
+      "native_geography_field": "CVE_ENT",
+      "dictionary_sha256": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+      "field_catalog_sha256": "b521d2b5a07e3471da1bd6792183bb2c6864a38e022f74a6a919990c49f4a871",
+      "state_catalog_sha256": "f297f6856885a3da13f754749000e0a35d8c1745e7f2cf474a1e2adc01e07ddf",
+      "revision_status": "no_sdem_bitacora_member_found",
+      "revision_sha256": null,
+      "edition_date": null
+    },
+    "enoe_2026_q1": {
+      "period": "2026-Q1",
+      "raw_sha256": "429c288af46e408de743e5dfb92750f668df7e42789be5824f7cdf1c5ff56580",
+      "source_id": "inegi_enoe",
+      "source_url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/2026/conjunto_de_datos_enoe_2026_1t_csv.zip",
+      "catalog_title": "2026|I Trimestre (ENOE)",
+      "native_geography_field": "CVE_ENT",
+      "dictionary_sha256": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+      "field_catalog_sha256": "b521d2b5a07e3471da1bd6792183bb2c6864a38e022f74a6a919990c49f4a871",
+      "state_catalog_sha256": "f297f6856885a3da13f754749000e0a35d8c1745e7f2cf474a1e2adc01e07ddf",
+      "revision_status": "no_sdem_bitacora_member_found",
+      "revision_sha256": null,
+      "edition_date": null
+    },
+    "enoe_2026_q2": {
+      "period": "2026-Q2",
+      "raw_sha256": "9ef8877c363f6097da1a04b2077cbda96300cc474b38f835c4963d1dd8f953df",
+      "source_id": "inegi_enoe",
+      "source_url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/2026/conjunto_de_datos_enoe_2026_2t_csv.zip",
+      "catalog_title": "2026|II Trimestre (ENOE)",
+      "native_geography_field": "CVE_ENT",
+      "dictionary_sha256": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+      "field_catalog_sha256": "b521d2b5a07e3471da1bd6792183bb2c6864a38e022f74a6a919990c49f4a871",
+      "state_catalog_sha256": "f297f6856885a3da13f754749000e0a35d8c1745e7f2cf474a1e2adc01e07ddf",
+      "revision_status": "no_sdem_bitacora_member_found",
+      "revision_sha256": null,
+      "edition_date": null
+    }
+  }
 }

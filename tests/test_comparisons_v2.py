@@ -95,7 +95,7 @@ def test_one_axis_slices_require_same_snapshot_and_reference(pair, registry):
     assert not compare_public_slices(male, female, axis="sex", registry=registry)["comparable"]
     left, right = pair("2026-Q2", geography="01"), pair("2026-Q2", geography="02")
     altered = deepcopy(registry)
-    altered["entity_reference_code"] = "01"
+    altered["entity_reference_code"] = "02"
     assert compare_public_slices(left, right, axis="entity", registry=altered)["comparable"]
     del altered["entity_reference_code"]
     assert "entity_reference_code" in compare_public_slices(left, right, axis="entity", registry=altered)["reasons"]
@@ -158,6 +158,17 @@ def test_missing_version_and_wrong_native_alias_are_blocked(pair, registry):
     altered = deepcopy(registry)
     del altered["suppression_policy_version"]
     assert "precision_policy" in compare_public_records(earlier, later, registry=altered)["reasons"]
+    altered = deepcopy(registry)
+    altered["suppression_policy_version"] = "changed-nonempty"
+    assert "precision_policy" in compare_public_records(earlier, later, registry=altered)["reasons"]
+    altered = deepcopy(registry)
+    altered["precision_policy_version"] = "changed-nonempty"
+    assert "precision_policy" in compare_public_records(earlier, later, registry=altered)["reasons"]
+    altered = deepcopy(registry)
+    altered["states"]["02"]["name"] = "Changed official name"
+    assert "geography_catalog" in compare_public_records(earlier, later, registry=altered)["reasons"]
+    with pytest.raises(ValueError, match="fixed"):
+        load_definition_registry(entity_reference_code="01")
 
 
 def test_reason_and_id_order_are_stable(pair, registry):
@@ -169,3 +180,30 @@ def test_reason_and_id_order_are_stable(pair, registry):
     second = compare_public_records(earlier, later, registry=registry)
     assert first["comparison_id"] == second["comparison_id"]
     assert first["reasons"] == second["reasons"] == sorted(set(first["reasons"]))
+
+
+def test_fully_missing_pair_ids_remain_unique_across_series_and_slots(pair, registry):
+    records = [pair("2024-Q3", metric="employment_rate"),
+               pair("2024-Q3", metric="unemployment_rate")]
+    for item in records:
+        item["record"]["metric_id"] = item["grain"][8]
+    profiles = {"periods": list(registry["periods"]),
+                "metric_ids": ["employment_rate", "unemployment_rate"],
+                "national": [{"record_id": x["record_id"], **x["record"]} for x in records],
+                "latest_states": [], "latest_recorded_sexes": [],
+                "record_index": {x["record_id"]: x for x in records}}
+    ledger = build_comparison_ledger(profiles, registry=registry)
+    assert len(ledger) == 22 and len({x["comparison_id"] for x in ledger}) == 22
+    assert all(not x["comparable"] and x["absolute_change"] is None for x in ledger)
+    assert sum(x["previous_record_id"] is None and x["current_record_id"] is None for x in ledger) > 0
+
+
+def test_missing_reference_emits_blocked_entity_slots(pair, registry):
+    left, right = pair("2026-Q2", geography="02"), pair("2026-Q2", geography="03")
+    profiles = {"periods": list(registry["periods"]), "metric_ids": ["employment_rate"],
+                "national": [], "latest_recorded_sexes": [],
+                "latest_states": [{"record_id": x["record_id"], **x["record"]} for x in (left, right)],
+                "record_index": {x["record_id"]: x for x in (left, right)}}
+    ledger = build_comparison_ledger(profiles, registry=registry)
+    entities = [x for x in ledger if x["comparison_type"] == "entity_slice"]
+    assert entities and all(not x["comparable"] and "entity_reference_code" in x["reasons"] for x in entities)

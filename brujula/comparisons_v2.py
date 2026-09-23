@@ -14,10 +14,14 @@ from pathlib import Path
 from .populations import POPULATION_DEFINITIONS
 from .metrics import load_metric_manifest
 from .research_contract import GRAIN
+from .resources import _resource
 from .source_inventory import PERIODS
 
 
 ROOT = Path(__file__).resolve().parents[1]
+REVIEWED_ENTITY_REFERENCE = "02"
+PRECISION_POLICY_VERSION = "normal/logit-90:CV15-30:singleton-adjust-v1"
+SUPPRESSION_POLICY_VERSION = "research-v2-public:precision-gate-v1:complementary-parent-v1"
 RAW_SHA256 = {
     "enoe_2024_q3": "f384a1b8872e051856ed2241289400302b13a8701489b1c596390452c183cd01",
     "enoe_2024_q4": "bb6d958c9bca11672d367d2c051cd08bf1654c471c2f32c8e21992c126a3b426",
@@ -52,6 +56,7 @@ ENT_CATALOG_SHA256 = "ea2e8198df208d0b662c00766739eb39c5a6b9a198821903d1a9416cdf
 CVE_CATALOG_SHA256 = "f297f6856885a3da13f754749000e0a35d8c1745e7f2cf474a1e2adc01e07ddf"
 GEO_ASSERTION = "reviewed_candidate_signature_2026-09-22"
 STATE_LIST_SHA256 = "0bda3e1035e65037524bebe92c02387851e85a43ed4830709e67dcbcf05df4ff"
+APPROVED_SNAPSHOTS_SHA256 = "2edea1c722262efc8ce3f43dc4f0418eb704f5575b9d08933e4c802bff581670"
 SNAPSHOT_IDS = tuple(RAW_SHA256)
 
 
@@ -66,10 +71,8 @@ def _period_snapshot(period: str) -> str:
 
 def load_definition_registry(*, entity_reference_code: str | None = None) -> dict:
     """Load the reviewed registry only after checking independent accepted pins."""
-    geo = json.loads((ROOT / "data/catalog/enoe-geography-equivalence.json").read_text(encoding="utf-8"))
-    metric = json.loads((ROOT / "data/catalog/enoe-metrics.json").read_text(encoding="utf-8"))
-    catalog = json.loads((ROOT / "data/catalog/enoe-snapshots.json").read_text(encoding="utf-8"))
-    inventory = json.loads((ROOT / ".cache/research/enoe-source-inventory.json").read_text(encoding="utf-8"))
+    geo = json.loads(_resource("catalog", "data/catalog", "enoe-geography-equivalence.json").read_text(encoding="utf-8"))
+    metric = load_metric_manifest()
     if (geo.get("concept_assertion") != GEO_ASSERTION or geo.get("review_status") != "REVIEW"
             or geo.get("evidence", {}).get("ent_catalog_sha256") != ENT_CATALOG_SHA256
             or geo.get("evidence", {}).get("cve_ent_catalog_sha256") != CVE_CATALOG_SHA256
@@ -85,43 +88,38 @@ def load_definition_registry(*, entity_reference_code: str | None = None) -> dic
     population_definitions = {k: dict(v) for k, v in POPULATION_DEFINITIONS.items()}
     if _digest(population_definitions) != POPULATION_SHA256:
         raise ValueError("population definitions differ from reviewed version")
-    canonical_metric = load_metric_manifest()
-    canonical_metric.pop("method_version")
-    if (metric != canonical_metric
-            or metric.get("content_sha256") != METRIC_MANIFEST_SHA256
+    if (metric.get("content_sha256") != METRIC_MANIFEST_SHA256
             or metric.get("version") != "enoe-metrics-2026-09-22"
             or set(metric.get("dictionary_refs", {})) != set(PERIODS)):
         raise ValueError("metric definitions differ from accepted manifest")
-    source_rows = {x["id"]: x for x in catalog.get("snapshots", [])}
-    inventories = {x["snapshot_id"]: x for x in inventory}
-    if set(source_rows) != set(RAW_SHA256) or set(inventories) != set(RAW_SHA256):
-        raise ValueError("source inventory differs from approved eight snapshots")
+    approved_snapshots = geo.get("approved_snapshots", {})
+    if (_digest(approved_snapshots) != APPROVED_SNAPSHOTS_SHA256
+            or set(approved_snapshots) != set(RAW_SHA256)):
+        raise ValueError("approved eight-snapshot source metadata differs from reviewed pins")
     snapshots = {}
     for i, period in enumerate(PERIODS):
         sid = _period_snapshot(period)
-        source, inv = source_rows[sid], inventories[sid]
+        approved = approved_snapshots[sid]
         native = "ENT" if i < 4 else "CVE_ENT"
-        revision = inv["revisions"]
-        revision_sha = revision["member"]["sha256"] if revision["member"] else None
-        if (source.get("expected_sha256") != RAW_SHA256[sid]
-                or inv.get("raw_sha256") != RAW_SHA256[sid]
-                or source.get("url") != inv.get("source_url")
-                or source.get("period") != period or inv.get("period") != period
-                or source.get("catalog_title") != inv.get("catalog_title")
-                or inv.get("source_id") != "inegi_enoe"
-                or source.get("catalog_title") != f"{period[:4]}|{('I', 'II', 'III', 'IV')[int(period[-1]) - 1]} Trimestre (ENOE)"
-                or inv.get("dictionary_member", {}).get("sha256") != DICTIONARY_SHA256[sid]
-                or inv.get("catalog_member", {}).get("sha256") != CATALOG_SHA256
-                or inv.get("geography_header") != native
+        revision_sha = approved.get("revision_sha256")
+        if (approved.get("raw_sha256") != RAW_SHA256[sid]
+                or approved.get("period") != period
+                or approved.get("source_id") != "inegi_enoe"
+                or approved.get("source_url") is None
+                or approved.get("catalog_title") != f"{period[:4]}|{('I', 'II', 'III', 'IV')[int(period[-1]) - 1]} Trimestre (ENOE)"
+                or approved.get("dictionary_sha256") != DICTIONARY_SHA256[sid]
+                or approved.get("field_catalog_sha256") != CATALOG_SHA256
+                or approved.get("native_geography_field") != native
+                or approved.get("state_catalog_sha256") != (ENT_CATALOG_SHA256 if native == "ENT" else CVE_CATALOG_SHA256)
                 or revision_sha != REVISION_SHA256.get(sid)
-                or revision.get("status") != ("sdem_bitacora_present" if sid in REVISION_SHA256
+                or approved.get("revision_status") != ("sdem_bitacora_present" if sid in REVISION_SHA256
                                               else "no_sdem_bitacora_member_found")):
             raise ValueError(f"unapproved source, dictionary, catalog or correction: {sid}")
         snapshots[sid] = {"period": period, "raw_sha256": RAW_SHA256[sid],
                           "source_family": "INEGI ENOE", "edition": "ENOE 15+ quarterly SDEM",
                           "edition_review": GEO_ASSERTION, "edition_date": None,
                           "correction_review": "reviewed_exact_snapshot_revision",
-                          "revision_sha256": revision_sha, "source_url": source["url"],
+                          "revision_sha256": revision_sha, "source_url": approved["source_url"],
                           "native_geography_field": native,
                           "dictionary_sha256": DICTIONARY_SHA256[sid],
                           "state_catalog_sha256": ENT_CATALOG_SHA256 if native == "ENT" else CVE_CATALOG_SHA256,
@@ -139,11 +137,11 @@ def load_definition_registry(*, entity_reference_code: str | None = None) -> dic
                 "method_version": METHOD_VERSION, "design_id": DESIGN_ID,
                 "precision_method": PRECISION_METHOD,
                 "estimator_version": "taylor_ultimate_cluster_wr_final_weights_v1",
-                "suppression_policy_version": "research-v2-public:precision-gate-v1:complementary-parent-v1",
-                "precision_policy_version": "normal/logit-90:CV15-30:singleton-adjust-v1"}
+                "suppression_policy_version": SUPPRESSION_POLICY_VERSION,
+                "precision_policy_version": PRECISION_POLICY_VERSION}
     if entity_reference_code is not None:
-        if entity_reference_code not in registry["states"]:
-            raise ValueError("entity reference must be one of approved state keys")
+        if entity_reference_code != REVIEWED_ENTITY_REFERENCE:
+            raise ValueError("reviewed entity reference is fixed to Baja California 02")
         registry["entity_reference_code"] = entity_reference_code
     return registry
 
@@ -161,10 +159,14 @@ def _signature(record: dict, provenance: dict, registry: dict) -> tuple[dict, li
         approved = {}
     elif provenance.get("snapshot_sha256") != RAW_SHA256[sid]:
         reasons.append("unapproved_snapshot")
+    expected_url = (f"https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/datosabiertos/"
+                    f"{sid[5:9]}/conjunto_de_datos_enoe_{sid[5:9]}_{sid[-1]}t_csv.zip") if sid in RAW_SHA256 else None
     if (approved.get("source_family") != "INEGI ENOE"
             or approved.get("edition") != "ENOE 15+ quarterly SDEM"
             or approved.get("edition_review") != GEO_ASSERTION
+            or approved.get("edition_date") is not None
             or approved.get("correction_review") != "reviewed_exact_snapshot_revision"
+            or approved.get("source_url") != expected_url
             or approved.get("revision_sha256") != REVISION_SHA256.get(sid)
             or approved.get("dictionary_sha256") != DICTIONARY_SHA256.get(sid)
             or approved.get("field_catalog_sha256") != CATALOG_SHA256):
@@ -197,12 +199,17 @@ def _signature(record: dict, provenance: dict, registry: dict) -> tuple[dict, li
             or not precision.get("ci_method")
             or type(precision.get("official_precision")) is not bool
             or registry.get("precision_method") != PRECISION_METHOD
-            or not registry.get("precision_policy_version")
-            or not registry.get("suppression_policy_version")):
+            or registry.get("precision_policy_version") != PRECISION_POLICY_VERSION
+            or registry.get("suppression_policy_version") != SUPPRESSION_POLICY_VERSION):
         reasons.append("precision_policy")
     geo = record.get("geography_id")
     native = approved.get("native_geography_field")
-    state = registry.get("states", {}).get(geo)
+    states = registry.get("states", {})
+    state = states.get(geo)
+    if (set(states) != {f"{n:02d}" for n in range(1, 33)}
+            or _digest([states[f"{n:02d}"] for n in range(1, 33)]
+                       if len(states) == 32 else []) != STATE_LIST_SHA256):
+        reasons.append("geography_catalog")
     if geo == "mx":
         geo_type, geo_key, geo_name = "national", "mx", "México"
     elif state and native in ("ENT", "CVE_ENT") and geo.isascii() and geo.isdigit():
@@ -264,6 +271,8 @@ def _result(left: dict | None, right: dict | None, registry: dict, *, axis: str 
         reasons.append("missing_previous_endpoint")
     if not right:
         reasons.append("missing_current_endpoint")
+    if axis == "entity" and registry.get("entity_reference_code") != REVIEWED_ENTITY_REFERENCE:
+        reasons.append("entity_reference_code")
     ls, le = _signature(a, left, registry) if left else ({}, [])
     rs, re = _signature(b, right, registry) if right else ({}, [])
     reasons.extend(le + re)
@@ -288,7 +297,7 @@ def _result(left: dict | None, right: dict | None, registry: dict, *, axis: str 
                     reasons.append("sex_axis")
             elif axis == "entity":
                 reference = registry.get("entity_reference_code")
-                if not reference or reference not in registry.get("states", {}):
+                if reference != REVIEWED_ENTITY_REFERENCE:
                     reasons.append("entity_reference_code")
                 if (ls.get("geography_type") != "entity" or rs.get("geography_type") != "entity"
                         or ls.get("geography_key") == rs.get("geography_key")
@@ -392,6 +401,8 @@ def build_comparison_ledger(profiles: dict, *, registry: dict) -> list[dict]:
                 entry = _result(left, right, registry, axis=None)
                 entry["comparison_type"] = label
                 entry["slot_periods"] = [periods[i], periods[i + offset]]
+                entry["comparison_id"] = "v2c:" + _digest([label, key, *entry["slot_periods"],
+                                                            entry["previous_record_id"], entry["current_record_id"]])
                 ledger.append(entry)
     latest = periods[-1]
     slice_keys = sorted({(c["population_id"], c["field_of_study_id"], c["occupation_id"],
@@ -405,17 +416,20 @@ def build_comparison_ledger(profiles: dict, *, registry: dict) -> list[dict]:
             entry = _result(left, right, registry, axis="sex")
             entry["comparison_type"] = "recorded_sex_slice"
             entry["slot_periods"] = [latest, latest]
+            entry["comparison_id"] = "v2c:" + _digest(["recorded_sex_slice", prefix, metric, latest,
+                                                        entry["previous_record_id"], entry["current_record_id"]])
             ledger.append(entry)
-        reference = registry.get("entity_reference_code")
-        if reference:
-            for state in sorted(registry["states"]):
-                if state == reference:
-                    continue
-                left = by_key.get((*prefix, reference, "all", metric, latest))
-                right = by_key.get((*prefix, state, "all", metric, latest))
-                if left or right:
-                    entry = _result(left, right, registry, axis="entity")
-                    entry["comparison_type"] = "entity_slice"
-                    entry["slot_periods"] = [latest, latest]
-                    ledger.append(entry)
+        for state in sorted(registry["states"]):
+            if state == REVIEWED_ENTITY_REFERENCE:
+                continue
+            left = by_key.get((*prefix, REVIEWED_ENTITY_REFERENCE, "all", metric, latest))
+            right = by_key.get((*prefix, state, "all", metric, latest))
+            if left or right:
+                entry = _result(left, right, registry, axis="entity")
+                entry["comparison_type"] = "entity_slice"
+                entry["slot_periods"] = [latest, latest]
+                entry["comparison_id"] = "v2c:" + _digest(["entity_slice", prefix, metric, latest,
+                                                            REVIEWED_ENTITY_REFERENCE, state,
+                                                            entry["previous_record_id"], entry["current_record_id"]])
+                ledger.append(entry)
     return ledger
