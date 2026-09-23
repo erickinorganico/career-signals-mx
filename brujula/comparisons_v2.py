@@ -55,6 +55,7 @@ CATALOG_SHA256 = "b521d2b5a07e3471da1bd6792183bb2c6864a38e022f74a6a919990c49f4a8
 ENT_CATALOG_SHA256 = "ea2e8198df208d0b662c00766739eb39c5a6b9a198821903d1a9416cdf9c7c1a"
 CVE_CATALOG_SHA256 = "f297f6856885a3da13f754749000e0a35d8c1745e7f2cf474a1e2adc01e07ddf"
 GEO_ASSERTION = "reviewed_candidate_signature_2026-09-22"
+GEOGRAPHY_CONCEPT = "ENOE national or 32 entity concepts under reviewed candidate signature"
 STATE_LIST_SHA256 = "0bda3e1035e65037524bebe92c02387851e85a43ed4830709e67dcbcf05df4ff"
 APPROVED_SNAPSHOTS_SHA256 = "2edea1c722262efc8ce3f43dc4f0418eb704f5575b9d08933e4c802bff581670"
 SNAPSHOT_IDS = tuple(RAW_SHA256)
@@ -136,7 +137,7 @@ def load_definition_registry(*, entity_reference_code: str | None = None) -> dic
                           "field_catalog_sha256": CATALOG_SHA256}
     registry = {"schema_version": "1.0", "grain": tuple(GRAIN), "periods": tuple(PERIODS),
                 "snapshots": snapshots, "states": {x["code"]: x for x in states},
-                "geography_concept": "ENOE national or 32 entity concepts under reviewed candidate signature",
+                "geography_concept": GEOGRAPHY_CONCEPT,
                 "geography_concept_assertion": GEO_ASSERTION,
                 "population_versions": {key: POPULATION_SHA256 for key in POPULATION_DEFINITIONS},
                 "classification_versions": {"field_of_study": "CMPE 2016:" + CATALOG_SHA256,
@@ -158,6 +159,8 @@ def load_definition_registry(*, entity_reference_code: str | None = None) -> dic
 
 def _signature(record: dict, provenance: dict, registry: dict) -> tuple[dict, list[str]]:
     reasons: list[str] = []
+    if registry.get("periods") not in (tuple(PERIODS), list(PERIODS)):
+        reasons.append("period_registry")
     expected_grain = tuple(record.get(key) for key in GRAIN)
     if (tuple(provenance.get("grain", ())) != expected_grain
             or provenance.get("record_id") != "v2r:" + _digest(list(expected_grain))):
@@ -240,7 +243,7 @@ def _signature(record: dict, provenance: dict, registry: dict) -> tuple[dict, li
         geo_type, geo_key, geo_name = None, None, None
         reasons.append("geography_alias_code_name")
     if (registry.get("geography_concept_assertion") != GEO_ASSERTION
-            or not registry.get("geography_concept")):
+            or registry.get("geography_concept") != GEOGRAPHY_CONCEPT):
         reasons.append("geography_concept_review")
     classifications = registry.get("classification_versions", {})
     if classifications.get("field_of_study") != "CMPE 2016:" + CATALOG_SHA256:
@@ -296,7 +299,7 @@ def _result(left: dict | None, right: dict | None, registry: dict, *, axis: str 
     if left and right:
         if axis is None:
             try:
-                pi, ci = registry["periods"].index(a.get("period_id")), registry["periods"].index(b.get("period_id"))
+                pi, ci = PERIODS.index(a.get("period_id")), PERIODS.index(b.get("period_id"))
                 if ci - pi not in (1, 4):
                     reasons.append("period_adjacency")
             except ValueError:
@@ -353,8 +356,8 @@ def _result(left: dict | None, right: dict | None, registry: dict, *, axis: str 
     limitations = (["descriptive_change_only", "quarterly_samples_may_overlap"]
                    if axis is None else ["descriptive_difference_only"])
     if axis is None and left and right:
-        limitations.append("seasonality_qoq" if registry["periods"].index(b["period_id"]) -
-                           registry["periods"].index(a["period_id"]) == 1 else "like_quarter_yoy") if "period_adjacency" not in reasons else None
+        limitations.append("seasonality_qoq" if PERIODS.index(b["period_id"]) -
+                           PERIODS.index(a["period_id"]) == 1 else "like_quarter_yoy") if "period_adjacency" not in reasons else None
     if (left and registry.get("snapshots", {}).get(a.get("source_snapshot_id"), {}).get("edition_date") is None
             or right and registry.get("snapshots", {}).get(b.get("source_snapshot_id"), {}).get("edition_date") is None):
         limitations.append("unknown_edition_date")
@@ -383,7 +386,9 @@ def compare_public_slices(left: dict, right: dict, *, axis: str, registry: dict)
 
 def build_comparison_ledger(profiles: dict, *, registry: dict) -> list[dict]:
     """Keep all expected time slots and available latest-quarter slice slots."""
-    periods = tuple(registry["periods"])
+    if registry.get("periods") not in (tuple(PERIODS), list(PERIODS)):
+        raise ValueError("period registry must match the exact accepted eight-quarter order")
+    periods = tuple(PERIODS)
     if set(profiles.get("periods", ())) != set(periods) or len(profiles.get("periods", ())) != len(periods):
         raise ValueError("profiles must declare the exact eight accepted quarters")
     index = profiles["record_index"]
