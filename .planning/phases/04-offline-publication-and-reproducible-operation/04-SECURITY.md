@@ -50,4 +50,4 @@ Initial plan-time register: 17 authored entries, all pending execution evidence.
 
 ## Resource implementation readback
 
-Plan04-01 now has concrete resource proof at a7ef126 and an independent bounded clean review in04-RESOURCE-REVIEW.md: wheel/resource/font/oracle hashes and forbidden-content inventory match; 12 focused controls pass; installed outside-checkout and Windows native PDF proof is recorded. This supplies evidence for T-04-01/T-04-02/T-04-SC. Entries remain pending final phase audit because later schemas, installed numerical code and actual report font selection still change this boundary. No authored threat is silently waived.
+Plan 04-01 now has concrete resource proof at a7ef126 and an independent bounded clean review in 04-RESOURCE-REVIEW.md: wheel/resource/font/oracle hashes and forbidden-content inventory match; 12 focused controls pass; installed outside-checkout and Windows native PDF proof is recorded. This supplies evidence for T-04-01/T-04-02/T-04-SC. Entries remain pending final phase audit because later schemas, installed numerical code and actual report font selection still change this boundary. No authored threat is silently waived.
