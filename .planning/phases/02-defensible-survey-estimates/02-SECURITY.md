@@ -48,3 +48,7 @@ The two no-install SC dispositions retain only their plan-time scope. They do no
 Initial root source/fixture inspection recorded 16 authored entries, 14 closed and two open. Independent core and acceptance reviews preserved the concrete findings. After corrective commits through `86406f6`, all 16 are closed. Canonical `02-REVIEW.md` is clean; full local regression passes 366 tests with no skips (115.25 seconds), and the unchanged Node suite has 18 passing controls, with affected numerical controls rechecked after the baseline changes.
 
 The active GSD `verify:post` hook enables `secure-phase`, ASVS level 1, and a high blocking threshold. The authored-register, zero-open-threat L1 short circuit applies; source/test inspection supplies the required depth, so no redundant security-agent scan is needed. No integrity or disclosure gap is accepted as risk. Final real numerical initialization/replay and independent goal verification remain separate pending gates.
+
+## Numerical follow-through
+
+The final initialization and unchanged replay now pass at the same implementation hash map. Both preserve all public pins, the immutable internal hashes, the raw official precision discrepancy and fail-closed receipt semantics. Exact attempts and digests are in `02-03-SUMMARY.md` and `docs/evidence/phase-02-numerical-acceptance.json`. This completes the previously pending numerical follow-through without changing the security findings; independent goal verification and later publication/release remain distinct gates.

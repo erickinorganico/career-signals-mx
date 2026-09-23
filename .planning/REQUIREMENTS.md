@@ -18,12 +18,12 @@ En este archivo v1 significa la entrega final 1.0.0. La demo sintética 0.1.0 es
 
 ### Validez estadística
 
-- [ ] **STAT-01**: El analista obtiene totales, proporciones y medias usando FAC_TRI, EST_D_TRI y UPM sobre el diseño completo, antes de restringir dominios.
-- [ ] **STAT-02**: Cada estimación informa n observado, UPM, estratos, grados de libertad, error estándar, IC90, CV, política de singleton y método; cualquier aproximación propia se distingue de la precisión oficial.
-- [ ] **STAT-03**: Valores con n<30, menos de dos UPM contribuyentes, CV>=30, denominador nulo o precisión degenerada quedan suprimidos con causa; n no se presenta como tamaño muestral efectivo.
-- [ ] **STAT-04**: Python reproduce puntos y errores estándar de un oráculo R survey independiente en datos reales y controles analíticos; la comparación oficial documenta discrepancias sin ajustar tolerancias para ocultarlas.
-- [ ] **STAT-05**: Los agregados nacionales y al menos una entidad se reconcilian con tablas oficiales de edición y universo compatibles, incluyendo una comparación explícita de precisión oficial.
-- [ ] **STAT-06**: Las métricas de empleo, participación, desocupación, ingreso positivo conocido, cobertura de ingreso, informalidad del trabajo principal, composición por sexo y condiciones laborales verificadas tienen numerador, denominador, unidad, no respuesta y reglas de sentinelas comprobados.
+- [x] **STAT-01**: El analista obtiene totales, proporciones y medias usando FAC_TRI, EST_D_TRI y UPM sobre el diseño completo, antes de restringir dominios.
+- [x] **STAT-02**: Cada estimación informa n observado, UPM, estratos, grados de libertad, error estándar, IC90, CV, política de singleton y método; cualquier aproximación propia se distingue de la precisión oficial.
+- [x] **STAT-03**: Valores con n<30, menos de dos UPM contribuyentes, CV>=30, denominador nulo o precisión degenerada quedan suprimidos con causa; n no se presenta como tamaño muestral efectivo.
+- [x] **STAT-04**: Python reproduce puntos y errores estándar de un oráculo R survey independiente en datos reales y controles analíticos; la comparación oficial documenta discrepancias sin ajustar tolerancias para ocultarlas.
+- [x] **STAT-05**: Los agregados nacionales y al menos una entidad se reconcilian con tablas oficiales de edición y universo compatibles, incluyendo una comparación explícita de precisión oficial.
+- [x] **STAT-06**: Las métricas de empleo, participación, desocupación, ingreso positivo conocido, cobertura de ingreso, informalidad del trabajo principal, composición por sexo y condiciones laborales verificadas tienen numerador, denominador, unidad, no respuesta y reglas de sentinelas comprobados.
 
 ### Investigación y análisis
 
@@ -79,12 +79,12 @@ Los requisitos SRC y CTR de la fase 1 tienen verificación independiente complet
 | SRC-04 | Phase 1 | Complete |
 | CTR-01 | Phase 1 | Complete |
 | CTR-02 | Phase 1 | Complete |
-| STAT-01 | Phase 2 | Pending |
-| STAT-02 | Phase 2 | Pending |
-| STAT-03 | Phase 2 | Pending |
-| STAT-04 | Phase 2 | Pending |
-| STAT-05 | Phase 2 | Pending |
-| STAT-06 | Phase 2 | Pending |
+| STAT-01 | Phase 2 | Complete |
+| STAT-02 | Phase 2 | Complete |
+| STAT-03 | Phase 2 | Complete |
+| STAT-04 | Phase 2 | Complete |
+| STAT-05 | Phase 2 | Complete |
+| STAT-06 | Phase 2 | Complete |
 | ANA-01 | Phase 3 | Pending |
 | ANA-02 | Phase 3 | Pending |
 | ANA-03 | Phase 3 | Pending |

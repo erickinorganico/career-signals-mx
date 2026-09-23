@@ -1,9 +1,9 @@
 ---
 phase: 2
 slug: defensible-survey-estimates
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: validated
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-09-22
 ---
 
@@ -24,16 +24,16 @@ Run affected tests after each task, full suite after each wave, then the real ad
 
 Each group is assigned to an executable plan/task. Phase 2 execution begins only after Phase 1 verification, including the completed v2 projection.
 
-| Verification group | Requirements | Automated command or evidence | Initial state |
+| Verification group | Requirements | Automated command or evidence | Verified state |
 |---|---|---|---|
-| Strict frame, aliases, lexical states and full design | STAT-01, STAT-06 | 02-01 Task 1: `pytest tests/test_enoe_adapter.py -q`; eight offline snapshots with source/member hashes and aggregate-only row/code counts | tests to create |
-| Metric numerators, denominators and sentinels | STAT-06 | 02-01 Task 2: `pytest tests/test_enoe_metrics.py -q`; CLASE1 PEA versus CLASE2 occupied, SUB_O/occupied, and DUR9C/HRSOCUP regression | tests to create |
-| Support, suppression and strict v2 projection | STAT-02, STAT-03 | 02-02 Tasks 1–2: `pytest tests/test_survey.py tests/test_estimates.py tests/test_research_contract.py -q`; serialized suppression sentinels | survey exists; additions pending |
-| Independent numerical oracle | STAT-04 | 02-03 Task 1: `pytest tests/test_survey_oracle.py -q`; explicit offline R replay with pinned versions/options and signed point/SE ledger | tests/script to create |
-| Official point and precision reconciliation | STAT-05 | 02-03 Task 2: `pytest tests/test_official_reconciliation.py -q`; six exact counts, separate rate rounding intervals and raw precision differences | tests/script to create |
-| Complete eight-period accepted estimates | STAT-01–06 | 02-03 Task 3: `pytest tests/test_enoe_integration.py -q`; then `.venv/Scripts/python.exe scripts/accept_enoe_estimates.py --output-root artifacts/enoe --audit-dir .cache/research/phase2-acceptance` against the approved local acquisition root | to create |
-| Complete Phase 3 request coverage | STAT-01–06 | 02-02 Task 2 and 02-03 Task 3: compare requested/evaluated/record grain sets for every metric in eight-quarter national context/cohort/focal three; latest national catalog-verified identifiable fields; latest 32 entities and two recorded-sex slices for cohort and each focal field separately. An absent computation or fabricated n<30 null fails. | tests and acceptance gate to create |
-| Phase 2 operational prohibitions | STAT-01–06 | 02-01 T3, 02-02 T3 and 02-03 T3: `node --test tests/phase2_prohibitions_01.test.cjs`, `_02.test.cjs`, `_03.test.cjs`; canonical `check prohibition-enforcement` for each of seven projected descriptors with bad and clean subjects | tests/fixtures to create; not yet green |
+| Strict frame, aliases, lexical states and full design | STAT-01, STAT-06 | 02-01 Task 1: `pytest tests/test_enoe_adapter.py -q`; eight offline snapshots with source/member hashes and aggregate-only row/code counts | PASS |
+| Metric numerators, denominators and sentinels | STAT-06 | 02-01 Task 2: `pytest tests/test_enoe_metrics.py -q`; CLASE1 PEA versus CLASE2 occupied, SUB_O/occupied, and DUR9C/HRSOCUP regression | PASS |
+| Support, suppression and strict v2 projection | STAT-02, STAT-03 | 02-02 Tasks 1–2: `pytest tests/test_survey.py tests/test_estimates.py tests/test_research_contract.py -q`; serialized suppression sentinels | PASS |
+| Independent numerical oracle | STAT-04 | 02-03 Task 1: `pytest tests/test_survey_oracle.py -q`; explicit offline R replay with pinned versions/options and signed point/SE ledger | PASS |
+| Official point and precision reconciliation | STAT-05 | 02-03 Task 2: `pytest tests/test_official_reconciliation.py -q`; six exact counts, separate rate rounding intervals and raw precision differences | PASS |
+| Complete eight-period accepted estimates | STAT-01–06 | 02-03 Task 3: `pytest tests/test_enoe_integration.py -q`; then `.venv/Scripts/python.exe scripts/accept_enoe_estimates.py --output-root artifacts/enoe --audit-dir .cache/research/phase2-acceptance` against the approved local acquisition root | PASS |
+| Complete Phase 3 request coverage | STAT-01–06 | 02-02 Task 2 and 02-03 Task 3: compare requested/evaluated/record grain sets for every metric in eight-quarter national context/cohort/focal three; latest national catalog-verified identifiable fields; latest 32 entities and two recorded-sex slices for cohort and each focal field separately. An absent computation or fabricated n<30 null fails. | PASS |
+| Phase 2 operational prohibitions | STAT-01–06 | 02-01 T3, 02-02 T3 and 02-03 T3: `node --test tests/phase2_prohibitions_01.test.cjs`, `_02.test.cjs`, `_03.test.cjs`; canonical `check prohibition-enforcement` for each of seven projected descriptors with bad and clean subjects | PASS |
 
 ## Wave 0 Requirements
 
@@ -56,17 +56,17 @@ Malformed required codes/weights, unexpected aliases, duplicate/missing headers 
 
 ## Validation Sign-Off
 
-- [ ] Every implemented task has a concrete automated check and traced requirement.
-- [ ] No three consecutive tasks lack verification.
-- [ ] All referenced tests exist and pass.
-- [ ] Eight pinned snapshots pass the real adapter audit.
-- [ ] Every Phase 3 requested metric/cell has a real evaluated estimate or computed support/suppression metadata; exact request/evaluation/record sets agree, and a missing computation never appears as a fabricated sparse null.
-- [ ] Final-cohort R replay passes with original tolerances.
-- [ ] Official counts reconcile; rate rounding and precision discrepancies remain explicit.
-- [ ] Full regression and strict v2 public validation pass.
-- [ ] Independent review confirms metric and design semantics.
-- [ ] Seven Phase 2 test-tier prohibitions are located and green under the canonical GSD producer, each with non-vacuous current pass, machine-proven bad-fixture red and clean-fixture green. Missing or failing planned controls block canonical completion.
-- [ ] `nyquist_compliant: true` set only after evidence exists.
+- [x] Every implemented task has a concrete automated check and traced requirement.
+- [x] No three consecutive tasks lack verification.
+- [x] All referenced tests exist and pass.
+- [x] Eight pinned snapshots pass the real adapter audit.
+- [x] Every Phase 3 requested metric/cell has a real evaluated estimate or computed support/suppression metadata; exact request/evaluation/record sets agree, and a missing computation never appears as a fabricated sparse null.
+- [x] Final-cohort R replay passes with original tolerances.
+- [x] Official counts reconcile; rate rounding and precision discrepancies remain explicit.
+- [x] Full regression and strict v2 public validation pass.
+- [x] Independent review confirms metric and design semantics.
+- [x] Seven Phase 2 test-tier prohibitions are located and green under the canonical GSD producer, each with non-vacuous current pass, machine-proven bad-fixture red and clean-fixture green. Missing or failing planned controls block canonical completion.
+- [x] `nyquist_compliant: true` set only after evidence exists.
 
 ## Edge Candidate Acceptance Map
 
@@ -103,4 +103,22 @@ The 30 applicable probes in `02-EDGE-PROBE.json` are lifted into explicit flat-s
 
 `02-CONTEXT.md` has no D-NN IDs; its implementation decisions are mapped by subject above. Deferred Phase 3 findings and Phase 4 publication/CLI are excluded as specified, with no feature loss inside STAT-01–06.
 
-The three plans carry seven operational prohibitions under `must_haves.prohibitions` as flat `statement`, `status: resolved`, `verification: test`, `check_kind: node-test`, `check_target`, `check_violation_fixture`, and `check_clean_fixture` scalars. The targets and JSON subjects are explicitly owned by executable tasks and will exercise current API outputs; they are **planned paths**, not present or green checks. The shared `projectProhibitions`/`descriptorFromProjection` contract makes the canonical producer locate them deterministically. Until implementation proves current/clean green and the known-bad subject red, `dispositionForProhibition` remains flagged-unverified and canonical phase completion is blocked. No descriptor merely attests success. Each plan names its output functions, fields, flags and artifact paths in `<artifacts_created>`.
+The three plans carry seven operational prohibitions with actual portable Node/Python targets and controlled clean/violation subjects. At frozen `86406f6` all seven canonical producer receipts report green, located=true, flagged=false and failFirstProof=violation-fixture. The tests inspect current computed results and reject the corresponding bad subject; these are verified enforcement descriptors.
+
+## Validation Audit 2026-09-23
+
+All nine tasks have automated checks; all six requirements and 30 plan-time edge candidates map to implemented behavioral tests and the real gate. Root inspected filenames/imports/test behavior; independent source review and goal-verifier focused tests supplied separate checks. The workflow's no-gaps branch applies: zero missing/partial requirements, zero manual-only items, no redundant test generation. Earlier discovered implementation/review gaps were corrected before this audit.
+
+| Metric | Count |
+|---|---|
+| Requirements covered | 6/6 |
+| Edge candidates covered | 30/30 |
+| Missing/partial verification groups | 0 |
+| Escalated manual-only checks | 0 |
+| Python regression passed / skipped | 366 / 0 |
+| Node suite passed | 18 |
+| Canonical Phase2 prohibition proofs | 7/7 |
+| Real quarters / cells | 8 / 6,739 |
+| R real / analytic cases | 26 / 4 |
+
+Real initialization and unchanged replay both pass at the identical source hash map and reproduce all per-quarter payload/numerical digests. The original R tolerances and official SE discrepancy remain. See 02-03-SUMMARY.md and docs/evidence/phase-02-numerical-acceptance.json for exact attempts and digest. This validates the numerical phase, not the analytical findings or public release.

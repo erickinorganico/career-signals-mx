@@ -9,7 +9,8 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 **Phase Numbering:** Integer phases are planned milestone work; decimal phases are reserved for urgent insertions.
 
 - [x] **Phase 1: Official Sources and Research Contract** - Eight immutable ENOE snapshots and explicit populations, dimensions, and method rules can be verified. (completed 2026-09-22)
-- [ ] **Phase 2: Defensible Survey Estimates** - Real-data estimates and precision states pass independent numerical and official reconciliation.
+- [x] **Phase 2: Defensible Survey Estimates** - Real-data estimates and precision states pass independent numerical and official reconciliation.
+ (completed 2026-09-23)
 - [ ] **Phase 3: Supported Labor Findings** - Readers can inspect field, time, sex, and territorial findings with comparable evidence and visible limits.
 - [ ] **Phase 4: Offline Publication and Reproducible Operation** - One validated public projection produces the editorial report, reusable data, and fail-closed replayable run.
 - [ ] **Phase 5: Independent Audit and v1.0.0 Release** - Clean reproduction and release review support a verifiable public research bundle.
@@ -47,11 +48,11 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
   3. A consumer sees null and a reason where support or precision fails, including n<30, fewer than two contributing UPM, CV>=30, null denominator, or degenerate precision, and never reads observed n as effective sample size.
   4. An independent reviewer can reproduce Python point estimates and errors against R survey on real and analytic controls and inspect untuned discrepancies against compatible official national and state totals and precision cells.
 
-**Plans**: 2/3 plans executed; 02-03 numerical acceptance is executing
+**Plans**: 3/3 plans executed; all-eight numerical replay and independent verification accepted
 
 - [x] 02-01-PLAN.md
 - [x] 02-02-PLAN.md
-- [ ] 02-03-PLAN.md
+- [x] 02-03-PLAN.md
 
 ### Phase 3: Supported Labor Findings
 
@@ -65,7 +66,7 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
   3. A reader can inspect supported differences by recorded sex and entity, with suppressed cells, missing coverage, response rates, and exclusions visible for each relevant period and field.
   4. A reviewer can trace each proposed finding to exact estimate, source, and method IDs; unsupported causal prose, new quantities, and personal recommendations fail the claim gate.
 
-**Plans**: 0/3 plans executed; targeted plan review passed, awaiting Phase 2 numerical acceptance
+**Plans**: 0/3 plans executed; targeted plan review and accepted upstream preflight passed, 03-01 executing
 
 - [ ] 03-01-PLAN.md
 - [ ] 03-02-PLAN.md
@@ -102,12 +103,12 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 
 ## Progress
 
-**Execution Order:** 1 → 2 → 3 → 4 → 5. Phase research is recommended before planning Phases 1–2 and 4; unresolved singleton-stratum precision remains a Phase 2 acceptance issue, not an assumed pass. No phase is complete merely because downloads or prototypes exist.
+**Execution Order:** 1 → 2 → 3 → 4 → 5. Phase research is recommended before planning Phases 1–2 and 4; singleton-stratum precision uses the explicitly nonofficial project adjustment verified in Phase 2. No phase is complete merely because downloads or prototypes exist.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Official Sources and Research Contract | 4/4 | Complete    | 2026-09-22 |
-| 2. Defensible Survey Estimates | 2/3 | Executing 02-03 | - |
-| 3. Supported Labor Findings | 0/3 | Plans reviewed; dependent on Phase 2 | - |
+| 2. Defensible Survey Estimates | 3/3 | Complete    | 2026-09-23 |
+| 3. Supported Labor Findings | 0/3 | Executing 03-01 | - |
 | 4. Offline Publication and Reproducible Operation | 0/TBD | Not started | - |
 | 5. Independent Audit and v1.0.0 Release | 0/TBD | Not started | - |
