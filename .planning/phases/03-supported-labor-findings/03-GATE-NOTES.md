@@ -9,3 +9,4 @@
 - Reviewed pinned editions and concept evidence define conditional comparability. Unknown publication dates remain a limitation; newly changed source hashes outside the reviewed set block automatic differences.
 - GSD frontmatter/structure checks passed. The 11-file scope warning for Plan 03 reflects small control fixtures within three tasks and was reviewed without splitting substantive work unnecessarily.
 - `03-COVERAGE.md` records the local-only integration boundary. Accepted Phase 2 implementation, actual interface readback and numerical gates are mandatory before Phase 3 execution.
+- The mandatory reviewed entity reference is fixed to Baja California (`02`) before final analytical output, using the existing official-reconciliation scope as a methodological anchor. All 32 state profiles remain visible; a suppressed reference blocks that contrast and is never replaced opportunistically. This does not imply state representativeness or a labor-market ranking.
