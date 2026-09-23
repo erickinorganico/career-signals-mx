@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "version": "enoe-metrics-2026-09-22",
+  "content_sha256": "0c6ef476f4aa6786c65cc1b06f286964b0258293c7b3bf3cacdf3774c2a8b638",
+  "source_id": "inegi_enoe",
+  "dictionary_refs": {
+    "2024-Q3": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
+    "2024-Q4": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
+    "2025-Q1": "410dff0ef72908a275e01be116e1bce949d79a38e17a403427840680c64cd51d",
+    "2025-Q2": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
+    "2025-Q3": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+    "2025-Q4": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+    "2026-Q1": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+    "2026-Q2": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe"
+  },
+  "general_rules": {
+    "frame": "R_DEF 0/00 and C_RES 1/3, all eligible rows before domain restrictions",
+    "missing": "blank or unsupported category is never observed zero",
+    "field": "CS_P14_C normalized to six ASCII digits and present in the bundled quarter catalog",
+    "price_basis": "nominal for INGOCUP; not_applicable otherwise"
+  },
+  "metrics": [
+    {"id":"population_total","operation":"total","numerator":"domain","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"EDA":"population-specific"},"sentinels":{"EDA":"98 operational unknown age only in national; 99 excluded"},"dictionary_refs":["EDA"]},
+    {"id":"occupied_total","operation":"total","numerator":"domain & CLASE2=1","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"CLASE2":[1]},"sentinels":{"CLASE2":"blank/unsupported excluded"},"dictionary_refs":["CLASE2"]},
+    {"id":"pea_total","operation":"total","numerator":"domain & CLASE1=1","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"CLASE1":[1]},"sentinels":{"CLASE1":"blank/unsupported excluded"},"dictionary_refs":["CLASE1"]},
+    {"id":"unemployed_total","operation":"total","numerator":"domain & CLASE2=2 & CLASE1=1","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"CLASE2":[2],"CLASE1":[1]},"sentinels":{"CLASE2":"blank/unsupported excluded"},"dictionary_refs":["CLASE1","CLASE2"]},
+    {"id":"employment_rate","operation":"ratio","numerator":"domain & CLASE2=1","denominator":"domain","unit":"percent","price_basis":"not_applicable","valid_categories":{"CLASE2":[1]},"sentinels":{"CLASE2":"unknown excluded from numerator"},"dictionary_refs":["CLASE2"]},
+    {"id":"participation_rate","operation":"ratio","numerator":"domain & CLASE1=1","denominator":"domain","unit":"percent","price_basis":"not_applicable","valid_categories":{"CLASE1":[1]},"sentinels":{"CLASE1":"unknown excluded from numerator"},"dictionary_refs":["CLASE1"]},
+    {"id":"unemployment_rate","operation":"ratio","numerator":"domain & CLASE1=1 & CLASE2=2","denominator":"domain & CLASE1=1","unit":"percent","price_basis":"not_applicable","valid_categories":{"CLASE1":[1],"CLASE2":[2]},"sentinels":{"CLASE2":"unknown excluded from numerator"},"dictionary_refs":["CLASE1","CLASE2"]},
+    {"id":"positive_income_mean","operation":"mean","numerator":"INGOCUP where domain & occupied & positive_known","denominator":"domain & occupied & positive_known","unit":"MXN/month","price_basis":"nominal","valid_categories":{"ING7C":[1,2,3,4,5],"INGOCUP":"1..999998"},"sentinels":{"INGOCUP":"0 and 999999 unknown; conflicting band/amount excluded","ING7C":"6 no income; 7 unspecified"},"dictionary_refs":["ING7C","INGOCUP","CLASE2"]},
+    {"id":"positive_income_coverage","operation":"ratio","numerator":"domain & occupied & positive_known","denominator":"domain & occupied","unit":"percent","price_basis":"not_applicable","valid_categories":{"ING7C":[1,2,3,4,5],"INGOCUP":"1..999998"},"sentinels":{"INGOCUP":"0 and 999999 excluded"},"dictionary_refs":["ING7C","INGOCUP","CLASE2"]},
+    {"id":"no_income_count","operation":"total","numerator":"domain & occupied & ING7C=6 & no positive amount","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"ING7C":[6]},"sentinels":{"INGOCUP":"positive amount with band 6 conflicts"},"dictionary_refs":["ING7C","INGOCUP"]},
+    {"id":"no_income_share","operation":"ratio","numerator":"domain & occupied & ING7C=6 & no positive amount","denominator":"domain & occupied & ING7C=1..7 consistent","unit":"percent","price_basis":"not_applicable","valid_categories":{"ING7C":[1,2,3,4,5,6,7]},"sentinels":{"INGOCUP":"conflicting states excluded"},"dictionary_refs":["ING7C","INGOCUP"]},
+    {"id":"unspecified_income_count","operation":"total","numerator":"domain & occupied & ING7C=7 & no positive amount","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"ING7C":[7]},"sentinels":{"INGOCUP":"positive amount with band 7 conflicts"},"dictionary_refs":["ING7C","INGOCUP"]},
+    {"id":"unspecified_income_share","operation":"ratio","numerator":"domain & occupied & ING7C=7 & no positive amount","denominator":"domain & occupied & ING7C=1..7 consistent","unit":"percent","price_basis":"not_applicable","valid_categories":{"ING7C":[1,2,3,4,5,6,7]},"sentinels":{"INGOCUP":"conflicting states excluded"},"dictionary_refs":["ING7C","INGOCUP"]},
+    {"id":"main_job_informality_rate","operation":"ratio","numerator":"domain & occupied & EMP_PPAL=1","denominator":"domain & occupied & EMP_PPAL in 1,2","unit":"percent","price_basis":"not_applicable","valid_categories":{"EMP_PPAL":[1,2]},"sentinels":{"EMP_PPAL":"0 and blank excluded; main job only, not TIL1 or sector"},"dictionary_refs":["EMP_PPAL"]},
+    {"id":"women_occupied_share","operation":"ratio","numerator":"domain & occupied & SEX=2","denominator":"domain & occupied & SEX in 1,2","unit":"percent","price_basis":"not_applicable","valid_categories":{"SEX":[1,2]},"sentinels":{"SEX":"blank/other excluded"},"dictionary_refs":["SEX","CLASE2"]},
+    {"id":"position_1_share","operation":"ratio","numerator":"domain & occupied & POS_OCU=1","denominator":"domain & occupied & POS_OCU in 1..4","unit":"percent","price_basis":"not_applicable","valid_categories":{"POS_OCU":[1,2,3,4]},"sentinels":{"POS_OCU":"0 no aplica; 5 unspecified"},"dictionary_refs":["POS_OCU"]},
+    {"id":"position_2_share","operation":"ratio","numerator":"domain & occupied & POS_OCU=2","denominator":"domain & occupied & POS_OCU in 1..4","unit":"percent","price_basis":"not_applicable","valid_categories":{"POS_OCU":[1,2,3,4]},"sentinels":{"POS_OCU":"0 no aplica; 5 unspecified"},"dictionary_refs":["POS_OCU"]},
+    {"id":"position_3_share","operation":"ratio","numerator":"domain & occupied & POS_OCU=3","denominator":"domain & occupied & POS_OCU in 1..4","unit":"percent","price_basis":"not_applicable","valid_categories":{"POS_OCU":[1,2,3,4]},"sentinels":{"POS_OCU":"0 no aplica; 5 unspecified"},"dictionary_refs":["POS_OCU"]},
+    {"id":"position_4_share","operation":"ratio","numerator":"domain & occupied & POS_OCU=4","denominator":"domain & occupied & POS_OCU in 1..4","unit":"percent","price_basis":"not_applicable","valid_categories":{"POS_OCU":[1,2,3,4]},"sentinels":{"POS_OCU":"0 no aplica; 5 unspecified"},"dictionary_refs":["POS_OCU"]},
+    {"id":"suboccupied_count","operation":"total","numerator":"domain & occupied & SUB_O=1","denominator":"none","unit":"people","price_basis":"not_applicable","valid_categories":{"SUB_O":[1]},"sentinels":{"SUB_O":"0 no aplica; never universal non-suboccupied"},"dictionary_refs":["SUB_O","CLASE2"]},
+    {"id":"suboccupied_rate","operation":"ratio","numerator":"domain & occupied & SUB_O=1","denominator":"domain & occupied","unit":"percent","price_basis":"not_applicable","valid_categories":{"SUB_O":[1]},"sentinels":{"SUB_O":"0 no aplica; not a universal binary category"},"dictionary_refs":["SUB_O","CLASE2"]},
+    {"id":"known_hours_mean","operation":"mean","numerator":"HRSOCUP where domain & occupied & ((1..168 and DUR9C 2..8) or (0 and DUR9C 1))","denominator":"same known-hours condition","unit":"hours/week","price_basis":"not_applicable","valid_categories":{"HRSOCUP":"0..168 conditional","DUR9C":[1,2,3,4,5,6,7,8]},"sentinels":{"DUR9C":"9 unspecified, including physical HRSOCUP 0","HRSOCUP":"169+ invalid"},"dictionary_refs":["HRSOCUP","DUR9C"]},
+    {"id":"known_hours_coverage","operation":"ratio","numerator":"domain & occupied & known_hours","denominator":"domain & occupied","unit":"percent","price_basis":"not_applicable","valid_categories":{"HRSOCUP":"0..168 conditional","DUR9C":[1,2,3,4,5,6,7,8]},"sentinels":{"DUR9C":"9 unknown even if physical HRSOCUP 0"},"dictionary_refs":["HRSOCUP","DUR9C"]}
+  ]
+}
