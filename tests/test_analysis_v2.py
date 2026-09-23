@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GOLDEN = json.loads((ROOT / "data/fixtures/analysis-v2-golden.json").read_text(encoding="utf-8"))
 
 
-def synthetic_inputs(monkeypatch):
+def synthetic_inputs(monkeypatch, *, complementary=False):
     """Generate small but complete Phase 3 synthetic public roots and audits."""
     monkeypatch.setattr(analysis_v2, "load_metric_manifest", lambda: {
         "content_sha256": GOLDEN["metric_manifest_sha256"],
@@ -78,11 +78,27 @@ def synthetic_inputs(monkeypatch):
                                  "singleton_policy": "fail", "official_precision": False},
                    "status": "UNKNOWN", "reason": "unknown", "value": None,
                    "evidence_refs": [snapshot + "_custody"], "synthetic": True}
+            if (complementary and period == PERIODS[-1]
+                    and population == COMPLETED_PROFESSIONAL_KNOWN_AGE
+                    and field == "033100" and sex == "all"
+                    and geography in {"mx", *analysis_v2.STATE_CODES[1:]}):
+                value = 3100.0 if geography == "mx" else 100.0
+                row.update(status="REVIEW", reason="synthetic_fixture", value=value,
+                           sample_size=40, weighted_denominator=value)
+                row["support"].update(n_psu_domain=4, n_strata_domain=2,
+                                      weighted_support_total=value)
+                row["precision"].update(standard_error=value * 0.05,
+                                        coefficient_variation=5.0,
+                                        ci90_lower=value * 0.9, ci90_upper=value * 1.1)
             records.append(row)
             grain = analysis_v2._ledger_key(tuple(row[key] for key in GRAIN))
             requested[grain] = True
-            evaluated[grain] = {"status": "UNKNOWN", "has_estimate": False, "reason": "sample_size_below_30",
-                                "coverage": {"domain_n": 0, "eligible_n": 0, "reason": "empty"},
+            visible = row["value"] is not None
+            evaluated[grain] = {"status": row["status"], "has_estimate": visible,
+                                "reason": "Synthetic fixture" if visible else "sample_size_below_30",
+                                "coverage": {"domain_n": row["sample_size"],
+                                             "eligible_n": row["sample_size"],
+                                             "reason": None if visible else "empty"},
                                 "exclusions": {"income_amount_unknown": 0},
                                 "method_version": method_version,
                                 "metric_version": "synthetic:" + GOLDEN["metric_manifest_sha256"],
@@ -196,3 +212,18 @@ def test_complementary_parent_cannot_reveal_one_suppressed_state():
     assert parent["weighted_denominator_estimate"] is None
     assert parent["support"]["weighted_support_total"] is None
     assert all(parent["precision"][key] is None for key in analysis_v2.SUPPRESSED_PRECISION)
+
+
+def test_profile_redaction_flows_to_downstream_record_index(monkeypatch):
+    publics, acceptance = synthetic_inputs(monkeypatch, complementary=True)
+    source_index = analysis_v2.index_public_estimates(publics, acceptance)
+    packet = analysis_v2.build_profiles(source_index, acceptance["audits"], latest_period_id=PERIODS[-1])
+    parent = next(row for row in packet["national"] if row["period_id"] == PERIODS[-1]
+                  and row["field_of_study_id"] == "033100")
+    assert parent["value"] is None and parent["reason"] == "complementary_suppression"
+    released = packet["record_index"][parent["record_id"]]["record"]
+    assert released["value"] is None and released["reason"] == "complementary_suppression"
+    assert released["weighted_denominator"] is None
+    assert released["support"]["weighted_support_total"] is None
+    assert all(released["precision"][key] is None for key in analysis_v2.SUPPRESSED_PRECISION)
+    assert source_index["by_grain"][parent["grain"]]["record"]["value"] == 3100.0
