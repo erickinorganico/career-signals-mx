@@ -74,6 +74,8 @@ Coverage review found no missing automated task checks after the five independen
 
 01-04 adds two tasks: executable controls and canonical descriptor enforcement. Both are COVERED: `node --test tests/phase1_prohibitions_*.test.cjs` passes six tests; all six named bad subjects fail, all clean controls pass, and the GSD producer returns six green, located, unflagged results with machine-proven violation fixtures. Full Python regression after this addition remains **254 passed, 0 skipped, 54.11 seconds**; the six Node controls are additional checks, not included in the 254 count. They are now included in the Windows/Ubuntu CI workflow. The harness selects a local platform-appropriate venv, an explicit `BRUJULA_TEST_PYTHON`, or CI's `python` on PATH. Linux execution remains independently observable in CI after push.
 
+Remote follow-up: [run 35818916393](https://github.com/erickinorganico/career-signals-mx/actions/runs/35818916393), commit `75f7db0`, passed Windows and Ubuntu, including each named prohibition-control CI step. These clean environments use synthetic fixtures; the real source inventory pass is local evidence and is not falsely attributed to CI.
+
 ## Planning Source Audit
 
 | Source | Required item | Plan | Status |

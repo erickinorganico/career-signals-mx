@@ -195,11 +195,11 @@ TO 'observations.parquet' (FORMAT PARQUET);
 | A2 | Final Phase 2/3 packets will expose stable versioned method, metric, claim and comparison identifiers needed by the editorial join. | Inspect accepted interfaces before plans; evolve v2 schema if missing. |
 | A3 | `weasyprint==70.0` installs with the selected dependencies and native rendering libraries on both systems. | Primary registry identity/hash verified; validate actual installation and render on clean Windows/Ubuntu. Optional slopcheck absence is recorded. |
 
-## Open Questions
+## Resolved Decisions and Execution Gates
 
-1. What are the accepted Phase 2/3 aggregate and claim packet signatures, and which exact precision/coverage keys become publishable? Inspect implementation and acceptance ledger before executable plans. [VERIFIED: `.planning/ROADMAP.md`; `03-CONTEXT.md`]
-2. What is the documented complementary-suppression policy when a public total and all but one subgroup reveal a suppressed cell? Set a deterministic rule before the export gate. [ASSUMED: unresolved policy]
-3. Is PDF semantic tagging sufficient for the final accessibility claim? The probe establishes visual/text rendering, not tagged-table accessibility; report the tested scope precisely. [VERIFIED: `.planning/research/PDF-PROBE.md`; CITED: https://www.w3.org/WAI/tutorials/tables/]
+1. **Resolved dependency rule:** inspect the accepted Phase 2/3 implementations and numerical/analysis acceptance ledger before executable Phase 4 sign-off. Bind all render/export adapters to those exact public interfaces; any missing precision/coverage/provenance key is an upstream gap to fix, not a renderer assumption. Acceptance of those phases is still pending. [VERIFIED: `.planning/ROADMAP.md`; `03-CONTEXT.md`; `04-CONTEXT.md`]
+2. **Resolved suppression scope:** the publisher must never fill a suppressed null by a complement or reconstruct an unsupported direct measure from other records. Displayed direct measures bind to supported public records; differences require the validated comparison contract. Tests inject a reconstructed complementary cell and require rejection across the output packet. The public-survey precision contract does not promise confidentiality or general resistance to algebraic inference from all released aggregates; do not invent that stronger requirement or silently claim it. [DECISION: `04-CONTEXT.md`; PUB-05 public-output boundary]
+3. **Resolved accessibility claim:** semantic HTML tables, alternatives, contrast/zoom and visually inspected/searchable PDF are required. Successful rendering does not establish PDF/UA certification or screen-reader conformance; make only the claims that receive explicit final tests. No formal PDF certification is assumed. [DECISION: `04-CONTEXT.md`; VERIFIED: `.planning/research/PDF-PROBE.md`; CITED: https://www.w3.org/WAI/tutorials/tables/]
 
 ## Environment Availability
 
