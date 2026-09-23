@@ -1,6 +1,7 @@
 """Fail-closed comparison contracts over sanitized public profile records."""
 
 from copy import deepcopy
+import hashlib
 import json
 from pathlib import Path
 
@@ -35,8 +36,10 @@ def pair(registry):
                "precision": {"method": registry["precision_method"],
                              "ci_method": "logit_delta_normal_90", "singleton_policy": "adjust",
                              "official_precision": False}, "evidence_refs": [snapshot + "_custody"]}
-        return {"record_id": "v2r:" + period + geography + sex + metric,
-                "grain": tuple(row[k] for k in registry["grain"]), "record": row,
+        grain = tuple(row[k] for k in registry["grain"])
+        record_id = "v2r:" + hashlib.sha256(json.dumps(list(grain), sort_keys=True,
+                            ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        return {"record_id": record_id, "grain": grain, "record": row,
                 "snapshot_sha256": snapshots[snapshot]["raw_sha256"],
                 "method_version": row["method_version"]}
     return item
@@ -115,3 +118,14 @@ def test_ledger_has_all_slots_in_stable_order(pair, registry):
     blocked = build_comparison_ledger(profiles, registry=registry)
     assert len(blocked) == 11
     assert any(not x["comparable"] and x["absolute_change"] is None for x in blocked)
+
+
+def test_ledger_rejects_record_index_identity_tamper(pair, registry):
+    records = [pair(p) for p in registry["periods"]]
+    profiles = {"periods": list(registry["periods"]), "metric_ids": ["employment_rate"],
+                "national": [{"record_id": x["record_id"], **x["record"]} for x in records],
+                "latest_states": [], "latest_recorded_sexes": [],
+                "record_index": {x["record_id"]: x for x in records}}
+    records[3]["record"]["population_id"] = "national_15_plus_context"
+    with pytest.raises(ValueError, match="grain"):
+        build_comparison_ledger(profiles, registry=registry)
