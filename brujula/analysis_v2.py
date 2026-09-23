@@ -223,7 +223,7 @@ def _coverage(index: dict, audits: Mapping[str, dict], grain: tuple[str, ...]) -
         raise ValueError("accepted aggregate coverage is missing or changed")
     if source.get("counts_nonexclusive") is not True:
         raise ValueError("exclusion counts must declare nonexclusive semantics")
-    return {"observed_n": evaluation["coverage"]["domain_n"],
+    result = {"observed_n": evaluation["coverage"]["domain_n"],
             "metric_eligible_n": evaluation["coverage"]["eligible_n"],
             "metric_exclusions": dict(sorted(evaluation["exclusions"].items())),
             "responding_resident_n": source["responding_resident_n"],
@@ -234,6 +234,27 @@ def _coverage(index: dict, audits: Mapping[str, dict], grain: tuple[str, ...]) -
             "denominator_keys": {"observed_n": "domain_n", "metric_eligible_n": "eligible_n",
                                  "population_eligible_n": "responding_resident_n"},
             "metric_id": metric}
+    if {"positive_income_mean", "positive_income_coverage"} <= set(index["metric_ids"]):
+        mean_grain = grain[:8] + ("positive_income_mean", grain[9])
+        coverage_grain = grain[:8] + ("positive_income_coverage", grain[9])
+        mean = index["by_grain"].get(mean_grain)
+        coverage = index["by_grain"].get(coverage_grain)
+        if mean is None or coverage is None:
+            raise ValueError("exact-income response computation is absent")
+        result["exact_income_response"] = _observed_response(
+            mean["record"]["sample_size"], coverage["record"]["sample_size"])
+    return result
+
+
+def _observed_response(responding_n: int, denominator_n: int) -> dict:
+    """Describe observed exact-income availability, never a weighted estimate."""
+    if (type(responding_n) is not int or type(denominator_n) is not int
+            or responding_n < 0 or denominator_n < 0 or responding_n > denominator_n):
+        raise ValueError("response count exceeds or invalidates occupied denominator")
+    return {"responding_n": responding_n, "denominator_n": denominator_n,
+            "observed_percent": 100.0 * responding_n / denominator_n if denominator_n else None,
+            "reason": None if denominator_n else "empty_denominator",
+            "denominator_key": "occupied_eligible_n"}
 
 
 def _cell(index: dict, audits: Mapping[str, dict], grain: tuple[str, ...]) -> dict:
@@ -255,6 +276,20 @@ def _cell(index: dict, audits: Mapping[str, dict], grain: tuple[str, ...]) -> di
             raise ValueError("suppressed numeric diagnostic leaked to profile")
     cell["coverage"] = _coverage(index, audits, grain)
     return cell
+
+
+def _redact_parent_if_complementary(parent: dict, parts: list[dict]) -> bool:
+    """Hide an otherwise visible parent when it isolates one suppressed part."""
+    if parent["value"] is None or sum(part["value"] is None for part in parts) != 1:
+        return False
+    parent["value"] = None
+    parent["status"] = "REVIEW"
+    parent["reason"] = "complementary_suppression"
+    parent["weighted_denominator_estimate"] = None
+    parent["support"]["weighted_support_total"] = None
+    for name in SUPPRESSED_PRECISION:
+        parent["precision"][name] = None
+    return True
 
 
 def build_profiles(index: dict, coverage_audits: Mapping[str, dict], *, latest_period_id: str) -> dict:
@@ -290,6 +325,28 @@ def build_profiles(index: dict, coverage_audits: Mapping[str, dict], *, latest_p
             for metric in metrics:
                 sexes.append(_cell(index, coverage_audits, (latest_snapshot, COMPLETED_PROFESSIONAL_KNOWN_AGE,
                              field, "all", "all", "mx", sex, latest_period_id, metric, METHOD_ID)))
+    # A visible all-sex or all-state parent and all but one visible part can
+    # reconstruct a hidden part. Keep both copies of a focal national cell in
+    # sync; the index remains an internal accepted-public input, not output.
+    parents = {(cell["field_of_study_id"], cell["metric_id"]): cell for cell in national
+               if cell["period_id"] == latest_period_id
+               and cell["population_id"] == COMPLETED_PROFESSIONAL_KNOWN_AGE}
+    field_copies = {(cell["field_of_study_id"], cell["metric_id"]): cell for cell in named_fields}
+    for field in ("all", *FOCAL_FIELDS):
+        for metric in metrics:
+            parent = parents[(field, metric)]
+            state_parts = [cell for cell in states if cell["field_of_study_id"] == field
+                           and cell["metric_id"] == metric]
+            sex_parts = [cell for cell in sexes if cell["field_of_study_id"] == field
+                         and cell["metric_id"] == metric]
+            if len(state_parts) != 32 or len(sex_parts) != 2:
+                raise ValueError("partition is incomplete for complementary suppression")
+            if (_redact_parent_if_complementary(parent, state_parts)
+                    or _redact_parent_if_complementary(parent, sex_parts)):
+                duplicate = field_copies.get((field, metric))
+                if duplicate is not None:
+                    _redact_parent_if_complementary(duplicate, state_parts if sum(
+                        part["value"] is None for part in state_parts) == 1 else sex_parts)
     return {"accepted_numeric_digest": index["accepted_numeric_digest"],
             "population_labels": {name: POPULATION_DEFINITIONS[name]["label"] for name in
                                   (NATIONAL_15_PLUS_CONTEXT, COMPLETED_PROFESSIONAL_KNOWN_AGE)},
