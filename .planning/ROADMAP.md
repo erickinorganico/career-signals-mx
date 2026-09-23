@@ -12,7 +12,9 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 - [x] **Phase 2: Defensible Survey Estimates** - Real-data estimates and precision states pass independent numerical and official reconciliation.
  (completed 2026-09-23)
 
-- [x] **Phase 3: Supported Labor Findings** - Readers can inspect field, time, sex, and territorial findings with comparable evidence and visible limits. (completed 2026-09-23)
+- [x] **Phase 3: Supported Labor Findings** - Readers can inspect field, time, sex, and territorial findings with comparable evidence and visible limits.
+ (completed 2026-09-23)
+
 - [ ] **Phase 4: Offline Publication and Reproducible Operation** - One validated public projection produces the editorial report, reusable data, and fail-closed replayable run.
 - [ ] **Phase 5: Independent Audit and v1.0.0 Release** - Clean reproduction and release review support a verifiable public research bundle.
 
@@ -67,7 +69,7 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
   3. A reader can inspect supported differences by recorded sex and entity, with suppressed cells, missing coverage, response rates, and exclusions visible for each relevant period and field.
   4. A reviewer can trace each proposed finding to exact estimate, source, and method IDs; unsupported causal prose, new quantities, and personal recommendations fail the claim gate.
 
-**Plans**: 2/3 plans executed; profiles and comparisons accepted, 03-03 findings executing
+**Plans**: 3/3 plans executed and independently verified; persisted analytical packet accepted
 
 - [x] 03-01-PLAN.md
 - [x] 03-02-PLAN.md
@@ -86,7 +88,72 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
   4. A deliberately suppressed internal cell remains absent as a number from all public tables, exports, figures, report text, PDF, and alternative text because each consumes the same validated public projection.
   5. An analyst can refresh and replay from the documented CLI; the same source snapshots reproduce numerical content, a sealed manifest and hashes precede current promotion, and acquisition/build failures leave receipts and invalidate dependent current access without erasing history.
 
-**Plans**: TBD
+**Plans**: 6 plans independently checked; four execution waves
+**Wave 1**
+
+- [ ] 04-01-PLAN.md — Installed resources and PDF capability (wave 1)
+- [ ] 04-03-PLAN.md — Public projection and joined exports (wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 04-02-PLAN.md — Installed numerical acceptance and replay (wave 2)
+- [ ] 04-04-PLAN.md — Editorial reports, figures and PDF (wave 2)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 04-05-PLAN.md — Sealed publication and installed CLI (wave 3)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
+- [ ] 04-06-PLAN.md — Integrated publication acceptance (wave 4)
+
+**Cross-cutting constraints:**
+
+- OPS-01 adjacency: Acquisition refresh, numerical acceptance, analytical build and publication replay retain separate source, acceptance and run identities.
+- OPS-01 empty: Missing approved snapshot/current receipt, R, benchmark or required package resource fails with a receipt and explicit reason, never a fixture fallback.
+- OPS-01 ordering: Replaying identical eight approved inputs preserves canonical numerical/public content regardless of run IDs and timestamps.
+- OPS-01 idempotency: Repeated installed CLI replay of the same frozen snapshots creates distinct immutable receipts with equal canonical numerical content.
+- OPS-01 concurrency: Competing or interrupted operations obey the documented source/output lock boundaries and cannot certify mixed-input content.
+- PUB-04 boundary: Zero, null and finite numeric precision round-trip distinctly through CSV, Parquet and DuckDB; nonfinite numbers are rejected.
+- PUB-04 adjacency: Stable v2 record keys join claims, comparisons and figures without conflating separate grain dimensions or duplicate profile appearances.
+- PUB-04 empty: Suppressed values and precision fields remain SQL/Parquet null and documented CSV nulls, with their status/reason retained.
+- PUB-04 encoding: UTF-8 labels and leading-zero field/entity codes round-trip; spreadsheet-formula prefixes are neutralized under a documented reversible text convention.
+- PUB-04 ordering: Export row order is canonical and deterministic under input permutation, and the data dictionary documents every public column and join.
+- PUB-04 precision: Numeric export values retain the canonical public precision independently of display rounding; weighted totals are not renamed observed sample counts.
+- PUB-04 concurrency: An export failure or interrupted write cannot leave a sealed manifest claiming successful CSV, Parquet or DuckDB output.
+- PUB-05 boundary: A deliberately suppressed numeric sentinel remains absent from every artifact, including hidden metadata, alternative text and PDF text.
+- PUB-05 adjacency: Complementary parent redactions propagate through every duplicate record appearance; the publisher rejects reconstructing a suppressed cell from other public cells.
+- PUB-05 empty: Null points, denominators and precision fields stay null everywhere and never use internal estimates or another format as fallback.
+- PUB-05 encoding: Serialized JSON/text/HTML/SVG and extracted PDF scans reject nested or encoded diagnostic sentinels while keeping ordinary safe public metadata.
+- PUB-05 ordering: Reordering public records cannot alter suppression, selected claims, plotted membership or export eligibility.
+- PUB-05 precision: Suppressed standard errors, coefficients of variation, intervals and weighted support never reappear as numerical values in another output.
+- PUB-01 boundary: Opening contains zero to three accepted claim IDs; a fourth, duplicated or unsupported opening claim blocks publication.
+- PUB-01 adjacency: Field, occupation, industry and population scopes remain distinct even when labels or numbers coincide; each sentence retains its accepted claim identity.
+- PUB-01 empty: An empty supported-opening set produces the accepted limitation; suppressed profile cells remain visible as unavailable with reason.
+- PUB-01 encoding: Official Spanish labels, accents and source text survive output encoding; HTML/Markdown escaping does not replace the underlying evidence identity.
+- PUB-01 ordering: Fixed question-led sections and field order are independent of input map order, and the eight quarterly sections remain chronological.
+- PUB-01 precision: Every displayed quantity uses a declared formatter over its exact public record or comparison, with nominal income, universe and nonofficial precision wording retained.
+- PUB-02 adjacency: HTML, Markdown and extracted PDF refer to the same section/claim/figure/record keys and carry the same supported values and limitations.
+- PUB-02 empty: Missing PDF capability, font or required local asset blocks the complete publication with a failure receipt; no blank-success or synthetic fallback.
+- PUB-02 encoding: Spanish accents and punctuation are searchable in the rendered PDF and match the semantic HTML/Markdown text.
+- PUB-02 ordering: Section order and repeated table headings remain correct across page breaks and match the common editorial representation.
+- PUB-02 concurrency: Interrupted or concurrent rendering never promotes an incomplete set of HTML/Markdown/PDF artifacts as current.
+- PUB-03 boundary: Actual desktop, mobile-width and 200 percent zoom HTML and A4 PDF remain legible without clipped prose or figure labels; wide tables use contained scrolling.
+- PUB-03 adjacency: Trend lines never bridge an unavailable point or incompatible adjacent period; supported intervals and table rows remain attached to the same record.
+- PUB-03 empty: Fully unavailable figure groups retain a clear unavailable explanation and complete semantic table, never an invented zero plot.
+- PUB-03 encoding: Figure titles, captions, alternatives and table header scopes preserve official Spanish labels, units, universe and source.
+- PUB-03 ordering: SVG, PNG and accompanying tables use stable figure keys and declared classification/period order rather than an implicit outcome ranking.
+- PUB-03 precision: Plot points and intervals equal supported public values before formatting; null precision stays unavailable and no difference interval is inferred.
+- OPS-02 adjacency: Exact artifact inventory and final receipt are sealed before current promotion; failure at any promotion boundary leaves current invalid.
+- OPS-02 empty: Empty, partial or corrupted receipt/manifest inventories cannot resolve as a successful publication.
+- OPS-02 ordering: Fault injection across input, export, PDF, receipt, manifest, pointer and final index stages verifies the prescribed write order and preserved history.
+- OPS-02 idempotency: A repeated attempt never overwrites an immutable historical run or receipt; reused/colliding run IDs are rejected.
+- OPS-02 concurrency: A crash or concurrent builder cannot expose a partly sealed run as current; lock and recovery behavior are tested locally.
+- OPS-03 adjacency: Each current publication binds the exact required eight source acquisitions; an unrelated successful snapshot cannot authorize it.
+- OPS-03 empty: Missing source acquisition, missing artifact, bad hash or absent immutable success receipt blocks current resolution.
+- OPS-03 ordering: A later failed required acquisition invalidates previously successful current access; historical bundles remain historical and do not become fresh success.
+- OPS-03 idempotency: Repeated resolution verifies current dependencies and artifact hashes again, with no stale success cache across changed inputs.
+- OPS-03 concurrency: Source or manifest changes during resolution are detected before a report/export path is returned as current.
 
 ### Phase 5: Independent Audit and v1.0.0 Release
 
@@ -111,5 +178,5 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 | 1. Official Sources and Research Contract | 4/4 | Complete    | 2026-09-22 |
 | 2. Defensible Survey Estimates | 3/3 | Complete    | 2026-09-23 |
 | 3. Supported Labor Findings | 3/3 | Complete    | 2026-09-23 |
-| 4. Offline Publication and Reproducible Operation | 0/TBD | Not started | - |
+| 4. Offline Publication and Reproducible Operation | 0/6 | Planned | - |
 | 5. Independent Audit and v1.0.0 Release | 0/TBD | Not started | - |

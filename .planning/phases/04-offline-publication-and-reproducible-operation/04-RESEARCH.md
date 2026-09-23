@@ -86,7 +86,18 @@ The project-local PDF probe has already rendered Spanish text, inline SVG, an 80
 | WeasyPrint | **70.0, Phase 4 addition** | Local HTML to printable PDF; custom restricted fetcher | [VERIFIED: `.planning/research/PDF-PROBE.md`; CITED: https://doc.courtbouillon.org/weasyprint/stable/api_reference.html] |
 | pytest | pinned `9.0.3`, test extra | Cross-format and crash tests | [VERIFIED: `pyproject.toml`] |
 
-**Package legitimacy audit (refreshed 2026-09-22):** Direct [PyPI version metadata](https://pypi.org/pypi/weasyprint/70.0/json) and the [official release](https://github.com/Kozea/WeasyPrint/releases/tag/v70.0) confirm `weasyprint==70.0`, Python >=3.10, BSD licensing, the Kozea source repository and a non-yanked release. The wheel SHA-256 is `5043e55e38d2a2af2b2b871e869697b1f65dad5f8b4a3677961d04ceacf9c5fe`; sdist SHA-256 is `c263abf0e86c747b12af678b67f85f4abbfb97d18a20503031e7ba94e4b8cf8c`. The registry identity/provenance gate is satisfied by primary evidence. Optional `slopcheck` is unavailable; that is not an additional authorization gate. Actual installation must use the explicit project interpreter/uv and verify downloaded artifacts; dependency resolution and clean Windows/Ubuntu PDF behavior remain execution checks.
+**Package legitimacy audit (refreshed 2026-09-22):** Direct [PyPI version metadata](https://pypi.org/pypi/weasyprint/70.0/json) and the [official release](https://github.com/Kozea/WeasyPrint/releases/tag/v70.0) confirm `weasyprint==70.0`, Python >=3.10, BSD licensing, the Kozea source repository and a non-yanked release. The wheel SHA-256 is `5043e55e38d2a2af2b2b871e869697b1f65dad5f8b4a3677961d04ceacf9c5fe`; sdist SHA-256 is `c263abf0e86c747b12af678b67f85f4abbfb97d18a20503031e7ba94e4b8cf8c`. The registry identity/provenance gate is satisfied by primary evidence. The initial probe lacked `slopcheck`; the required registry/name scan was completed on 2026-09-23 as recorded below. Actual installation must use the explicit project interpreter/uv and verify downloaded artifacts; dependency resolution and clean Windows/Ubuntu PDF behavior remain execution checks.
+
+## Package Legitimacy Audit
+
+Refreshed 2026-09-23 using verified `slopcheck==0.6.1` in a disposable local environment. The wheel hash is `46c4e41f7f82897311309a65fc40bd16c4f43d56cca6aa0f1d33f17bd47ca903`, checked against [the Python registry](https://pypi.org/pypi/slopcheck/0.6.1/json). Its documented read-only `--pkg pypi --json` and requirements-file scan are used instead of `slopcheck install`, separating package identity verification from the planned product installation. No global hook, auto-fix, replacement package or inference service was installed.
+
+| Package | Registry | Age | Downloads | Source Repo | slopcheck | Disposition |
+|---|---|---|---|---|---|---|
+| `weasyprint==70.0` | PyPI, exact version metadata verified | First public upload 2011-10-28, verified in current PyPI release history | Not measured | `github.com/Kozea/WeasyPrint` | OK, no flags | Approved for local installation; runtime/native/PDF acceptance still required |
+| Existing project and resolved PDF dependencies (34 unique names including WeasyPrint) | PyPI | Not remeasured individually | Not measured | See dependency/license inventory | All 34 OK, no flags | Existing pins and reviewed PDF environment; verify actual resolved versions/hashes during install |
+
+The structured [audit receipt](../../../docs/evidence/phase-04-dependency-legitimacy.json) lists each observed package verdict. The scan exited 0, with no SLOP/SUS/error verdicts. No packages were removed or substituted. The [dependency/license inventory](../../../docs/research/DEPENDENCY-LICENSE-INVENTORY.md) remains the license evidence; this name/registry heuristic is not a vulnerability audit or a guarantee about package code. Source authenticity, downloaded artifact hashes and clean Windows/Ubuntu rendering are separate checks. [VERIFIED: direct PyPI metadata, read-only slopcheck run, local dependency inventory]
 
 The Windows probe used a verified official onedir build solely as a DLL source and a separate Python 3.12.13 `weasyprint==70.0` environment; document a bounded `WEASYPRINT_DLL_DIRECTORIES`/Fontconfig setup or official MSYS2/Pango setup. Ubuntu needs a clean Pango install and PDF render gate. Do not change machine-wide PATH or silently depend on Codex's PDF interpreter. [VERIFIED: `.planning/research/PDF-PROBE.md`; CITED: https://doc.courtbouillon.org/weasyprint/latest/first_steps.html]
 
@@ -195,7 +206,7 @@ TO 'observations.parquet' (FORMAT PARQUET);
 |---|---|---|
 | A1 | Proposed `numerical_content_sha256` canonicalization and v2 manifest keys are new design choices. | Define/version exact canonical bytes before replay tests or implementations diverge. |
 | A2 | Final Phase 2/3 packets will expose stable versioned method, metric, claim and comparison identifiers needed by the editorial join. | Inspect accepted interfaces before plans; evolve v2 schema if missing. |
-| A3 | `weasyprint==70.0` installs with the selected dependencies and native rendering libraries on both systems. | Primary registry identity/hash verified; validate actual installation and render on clean Windows/Ubuntu. Optional slopcheck absence is recorded. |
+| A3 | `weasyprint==70.0` installs with the selected dependencies and native rendering libraries on both systems. | Primary registry identity/hash verified; validate actual installation and render on clean Windows/Ubuntu. The 2026-09-23 slopcheck registry/name scan reports OK for all 34 unique current/PDF dependency names. |
 
 ## Resolved Decisions and Execution Gates
 

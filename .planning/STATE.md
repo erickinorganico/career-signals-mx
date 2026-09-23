@@ -4,15 +4,15 @@ milestone: v1.0.0
 milestone_name: Release
 current_phase: 04
 current_phase_name: Offline Publication and Reproducible Operation
-status: planning
-stopped_at: Phase 3 accepted without warnings; transitioned to Phase 4 planning.
-last_updated: "2026-09-23T18:47:27.037Z"
+status: executing
+stopped_at: Phase 4 plans independently checked; ready for typed execution.
+last_updated: "2026-09-23T19:25:00.815Z"
 last_activity: 2026-09-23
 last_activity_desc: Phase 3 complete, transitioned to Phase 04
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 10
+  total_plans: 16
   completed_plans: 10
   percent: 60
 ---
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-09-22)
 ## Current Position
 
 Phase: 04 — Offline Publication and Reproducible Operation
-Plan: Not started
-Status: Ready to plan
+Plan: 0/6 complete; 04-01 ready
+Status: Ready to execute
 Last activity: 2026-09-23 — Phase 3 complete, transitioned to Phase 04
 
-Progress: 3/5 phases accepted; 10/10 planned execution plans implemented. This is not release completion.
+Progress: 3/5 phases accepted; 10/16 planned execution plans implemented. This is not release completion.
 
 ## Performance Metrics
 
@@ -72,5 +72,5 @@ None. The full real-data scope remains in v1.0.0.
 ## Session Continuity
 
 Last session: 2026-09-23
-Stopped at: Phase 3 accepted without warnings; Phase 4 is ready to plan.
+Stopped at: Phase 3 accepted without warnings; Phase 4 plans are checked and ready for execution.
 Resume file: None
