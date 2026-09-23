@@ -33,6 +33,7 @@ key-decisions:
   - "Exclude unknown labor and SUB_O states from rate denominators with explicit counts."
   - "Keep known ING7C bands with unavailable amounts in income-state shares, but outside the positive-known income mean."
   - "Hash the canonical metric definitions into method_version; retain only one cached domain state per frame."
+  - "Bind real frames to the quarter's official dictionary SHA; mark custom fixtures synthetic and include their digest in method identity."
 requirements-completed: [STAT-01, STAT-06]
 coverage:
   - id: frame
@@ -83,12 +84,14 @@ status: complete
 - `load_snapshot_frame(snapshot_id, output_root, registry_path=None)` checks Phase 1 current/attempt/raw/member custody, verifies dictionary and period catalog, decodes the exact Latin-1 SDEM member once, and returns a `Frame` of read-only NumPy columns plus an aggregate-only audit. `audit_all_snapshots(output_root, registry_path=None)` repeats this for all eight approved periods.
 - `load_metric_manifest()` validates the catalog's canonical SHA-256 and returns `method_version=enoe-metrics-2026-09-22:2ee87c8b7bfae9addcdf224ae93071023b918a5a22012e1355b9378b73e5827e`. `metric_vectors(frame, population_id, domain, metric_id)` returns `numerator`, `denominator`, `domain`, `coverage`, `exclusions`, and `method_version`. Arrays retain full-frame alignment; empty denominators have null weighted coverage and an explicit reason.
 - Both Phase 2 prohibitions have portable Node/Python checks over current APIs. Synthetic bad subjects independently trigger the named failure, clean subjects pass, and the canonical GSD producer returned `status=green`, `located=true`, `flagged=false`, `failFirstProof=violation-fixture` for each.
+- A post-plan conceptual review closed three boundary gaps: metric vectors verify the real quarter dictionary hash, public manifest reads cannot mutate cached definitions, and frames/audits carry explicit provenance. The frame also exposes read-only official CMPE labels from the verified quarter catalog.
 
 ## Validation Results
 
 - Focused Python controls: 83 passed after the denominator/cache changes; 21 adapter/metric tests passed after the final catalog lookup optimization.
 - Full Python regression at final implementation HEAD `b6c2fcc`, run by the integration owner: 275 passed, 0 skipped, with only the established duplicate-ZIP fixture warning.
 - Node prohibition controls at final HEAD: 2 passed. Both bad subjects failed only their matching named test; clean/default subjects passed. Canonical producer proved both fail-first controls and returned green.
+- After the conceptual review fix at `2936905`, 94 focused adapter, metric, population and estimate tests passed; both Node controls passed. A real 2026-Q2 smoke test loaded 407107 rows with `synthetic=false`, `provenance=approved_pinned_snapshot`, `dictionary_binding=official_verified`, an exact quarter dictionary SHA match, and the verified “Derecho” label.
 - All eight real cached ZIPs matched the Phase 1 aggregate audit on response/resident frame count, strata, PSUs, singleton strata and SDEM SHA-256:
 
 | Quarter | Frame rows | Strata | PSUs | Singleton strata |
@@ -108,6 +111,7 @@ status: complete
 2. **Task 2 — metric definitions:** `c279ad9` RED, `d7d8a9f` GREEN, `cb2d0b1` denominator/cache correction.
 3. **Task 3 — prohibition controls:** `ae8cc8d` Node/fixture control, `4626a87` current API runner. The content scanner itself was corrected before the GREEN commit.
 4. **Cross-task real-source performance:** `b6c2fcc` validates CMPE keys once and performs equivalent O(1) row lookup; focused parity test passed.
+5. **Post-plan metric audit repair:** `2936905` binds the real dictionary SHA, isolates cached manifest definitions from caller mutation, and marks synthetic provenance; it also exposes verified CMPE labels.
 
 ## Files Created and Modified
 
@@ -124,6 +128,9 @@ status: complete
 2. **[Rule 2 - Correctness] Unknown CLASE1/CLASE2 and SUB_O states could appear as denominator zeros.** Rate denominators now include only known status codes, and exclusions report unsupported states. Commit: `cb2d0b1`.
 3. **[Rule 1 - Bug] Known ING7C 1..5 bands with unknown exact amount were excluded from income-state share denominators.** They now remain in state shares and stay excluded from the positive-known amount mean. Commit: `cb2d0b1`.
 4. **[Rule 3 - Blocking performance] Revalidating approximately 185 CMPE catalog keys per person made the first all-eight audit impractical.** The stopped run was replaced by one-time validation plus a parity-tested normalized lookup. The complete rerun matched all eight quarters. Commit: `b6c2fcc`.
+5. **[Rule 2 - Correctness] The declared official dictionary digest was not checked at metric evaluation.** Real frames now fail before vector construction on a quarter dictionary mismatch. Explicitly synthetic fixtures remain labeled and receive a distinct digest-bearing method identity. Commit: `2936905`.
+6. **[Rule 1 - Bug] A caller could mutate the cached manifest after its content hash had been checked.** Public manifest reads now return deep copies; metric evaluation uses a private validated cache. Commit: `2936905`.
+7. **[Rule 2 - Correctness] Custom fixture frames lacked a visible origin, and verified CMPE labels were not available to downstream packets.** Unmarked custom snapshots without the approved pinned identity fail closed; explicitly marked fixtures carry synthetic provenance in the frame and aggregate audit. The verified quarter catalog supplies immutable labels. Commit: `2936905`.
 
 ## Known Limits
 
