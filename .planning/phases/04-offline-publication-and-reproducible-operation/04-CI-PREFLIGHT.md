@@ -70,3 +70,7 @@ The two preparation questions above are resolved; actual CI execution remains pe
 - Configure local Fontconfig against installed bundled DejaVu faces, then run real Spanish PDF generation and text/font readback on both systems. Registry/docs verification is preparation evidence; it cannot be recorded as a successful Ubuntu or CI render.
 
 Plan04-06 requires a small explicit scope addition for these existing acceptance requirements: `.github/workflows/verify.yml` and a portable installed-runtime verification script under `scripts/`. It must update the prohibition collection, build/install the current wheel, use only reviewed dependency versions, and retain actual result artifacts. Do not freeze the intermediate 04-01 wheel or resource count as the final package inventory.
+
+## Portable PDF readback dependency
+
+Real PDF text/font inspection must not depend on the Codex bundled interpreter. The bounded test-only candidate is `pypdf==6.19.0`, verified from its official PyPI registry with BSD-3-Clause license, Python>=3.9 and wheel SHA-256 `7e5d6e730e7dae87d560a2cee218b852f6498c8be61966f3cd02ead971e48d14`; the existing slopcheck name/registry scan returns OK with no flags. See docs/evidence/phase-04-pdf-audit-dependency.json. Declare it in the appropriate test/audit dependency set when implementing PDF checks, verify installation/hash, and test actual emitted text/fonts. This is preparation only, with no vulnerability or runtime certification inferred.
