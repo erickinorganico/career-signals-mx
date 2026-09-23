@@ -274,3 +274,26 @@ def test_adjust_is_never_official_precision():
     assert result["singleton_policy"] == "adjust"
     assert result["official_precision"] is False
     assert result["status"] == "REVIEW"
+
+
+@pytest.mark.parametrize("cv,visible", [(14.999, True), (15.0, True), (29.999, True), (30.0, False)])
+def test_cv_adjacent_thresholds(cv, visible):
+    design = SurveyDesign(np.ones(40), np.ones(40, dtype=int), np.repeat([1, 2], 20))
+    result = design.ratio(np.repeat([100 - cv, 100 + cv], 20), np.ones(40))
+    assert result["coefficient_variation"] == pytest.approx(cv)
+    assert (result["value"] is not None) is visible
+    assert result["status"] == ("MEASURED" if cv < 15 else "REVIEW")
+
+
+def test_one_contributing_psu_and_zero_design_df_suppress():
+    one_domain = SurveyDesign([1] * 40, [1] * 40, [1] * 20 + [2] * 20)
+    result = one_domain.ratio([9, 11] * 10 + [0] * 20, [1] * 20 + [0] * 20)
+    assert result["sample_size"] == 20 and result["n_psu_domain"] == 1
+    assert result["value"] is None
+    assert "fewer_than_two_domain_psus" in result["suppression_reason"]
+    zero_df = SurveyDesign([1] * 40, [1] * 20 + [2] * 20,
+                           [1] * 20 + [2] * 20, singleton_policy="adjust")
+    result = zero_df.ratio([9, 11] * 20, [1] * 40)
+    assert result["sample_size"] == 40 and result["n_psu_domain"] == 2
+    assert result["design_df"] == 0 and result["value"] is None
+    assert "zero_design_df" in result["suppression_reason"]

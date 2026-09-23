@@ -47,6 +47,11 @@ def test_inventory_includes_distinct_latest_slices():
     assert any(d["field_of_study_id"] == "033100" and d["geography_id"] == "01" for d in domains)
     assert any(d["field_of_study_id"] == "033100" and d["recorded_sex_id"] == "2" for d in domains)
     assert len(domains) == len({tuple(sorted(d.items())) for d in domains})
+    assert len(domains) == 5 + 4 * (32 + 2)
+    assert all(d["geography_id"] == "mx" or d["recorded_sex_id"] == "all" for d in domains)
+    historical = required_estimation_domains("enoe_2025_q1", latest_snapshot_id="enoe_2025_q2",
+                                              field_ids=["033100"])
+    assert len(historical) == 5
 
 
 def test_snapshot_evaluates_each_metric_and_strict_public_projection(monkeypatch, tmp_path):
