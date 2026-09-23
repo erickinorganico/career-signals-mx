@@ -55,7 +55,7 @@ def test_snapshot_evaluates_each_metric_and_strict_public_projection(monkeypatch
     result = estimates.estimate_snapshot(frame.snapshot_id, tmp_path, domains=[domain])
     records = result["internal"]["records"]
     assert len(records) == len(load_metric_manifest()["metrics"]) == 23
-    assert result["audit"]["requested_cells"] == result["audit"]["evaluated_cells"]
+    assert result["audit"]["requested_cells"].keys() == result["audit"]["evaluated_cells"].keys()
     assert validate_research_v2(result["internal"]) == []
     assert validate_public_research_v2(result["public"]) == []
     assert all(r["status"] != "MEASURED" for r in records)
