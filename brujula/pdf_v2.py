@@ -85,7 +85,11 @@ class LocalOnlyFetcher:
     def __call__(self, url: str, *args, **kwargs):
         from weasyprint.urls import URLFetcherResponse
         path = self.resolve(url)
-        return URLFetcherResponse(path.as_uri(), path.read_bytes(),
+        content = path.read_bytes()
+        key = path.relative_to(self.root).as_posix()
+        if hashlib.sha256(content).hexdigest() != self.allowed[key]:
+            raise ValueError(f'PDF asset changed during read: {key}')
+        return URLFetcherResponse(path.as_uri(), content,
                                   {'Content-Type': mimetypes.guess_type(path.name)[0] or 'application/octet-stream'})
 
 
@@ -106,9 +110,15 @@ class _ResourceErrors(logging.Handler):
 
 def render_pdf(html_path: str | Path, asset_root: str | Path, pdf_path: str | Path, *, allowed_assets) -> Path:
     """Render only a complete staged report; fail on any missing/altered resource."""
-    root = Path(asset_root).resolve(strict=True)
-    fetcher = LocalOnlyFetcher(root, allowed_assets)
-    html = Path(html_path).resolve(strict=True)
+    root_candidate = Path(asset_root)
+    if root_candidate.is_symlink():
+        raise ValueError('Symlink PDF stage root')
+    root = root_candidate.resolve(strict=True)
+    fetcher = LocalOnlyFetcher(root_candidate, allowed_assets)
+    html_candidate = Path(html_path)
+    if html_candidate.is_symlink():
+        raise ValueError('Symlink PDF HTML')
+    html = html_candidate.resolve(strict=True)
     if html != fetcher.resolve(html.as_uri()):
         raise ValueError('HTML outside declared PDF asset inventory')
     for name in FONT_NAMES:
@@ -123,11 +133,16 @@ def render_pdf(html_path: str | Path, asset_root: str | Path, pdf_path: str | Pa
     if weasyprint.__version__ != '70.0':
         raise RuntimeError('WeasyPrint 70.0 required')
     HTML = weasyprint.HTML
+    response = fetcher(html.as_uri())
+    try:
+        verified_html = response.read().decode('utf-8')
+    finally:
+        response.close()
     logger = logging.getLogger('weasyprint')
     errors = _ResourceErrors()
     logger.addHandler(errors)
     try:
-        result = HTML(filename=str(html), url_fetcher=fetcher).write_pdf()
+        result = HTML(string=verified_html, base_url=html.as_uri(), url_fetcher=fetcher).write_pdf()
     finally:
         logger.removeHandler(errors)
     if errors.messages:
@@ -138,6 +153,8 @@ def render_pdf(html_path: str | Path, asset_root: str | Path, pdf_path: str | Pa
     target = Path(pdf_path)
     if target.exists() and target.is_symlink():
         raise ValueError('Symlink PDF destination')
+    if any(parent.is_symlink() for parent in target.parents if parent != root):
+        raise ValueError('Symlink PDF destination parent')
     if not target.parent.exists() or not target.parent.resolve(strict=True).is_relative_to(root):
         raise ValueError('PDF destination outside stage')
     fd, temp_name = tempfile.mkstemp(prefix='.report-', suffix='.pdf', dir=target.parent)
