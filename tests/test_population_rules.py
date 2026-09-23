@@ -56,8 +56,9 @@ def test_professional_exclusions_are_distinct(education, completion, reason):
     assert result["eligible"] is False and reason in result["exclusion_reasons"]
 
 
-def test_unknown_field_is_visible_without_inventing_named_field():
-    result = classify_eligibility(row(cs_p14_c="999999"), COMPLETED_PROFESSIONAL_KNOWN_AGE)
+@pytest.mark.parametrize("field", ["999999", " 999999", "", "  ", None, "３１３００"])
+def test_unknown_field_is_visible_without_inventing_named_field(field):
+    result = classify_eligibility(row(cs_p14_c=field), COMPLETED_PROFESSIONAL_KNOWN_AGE)
     assert result["eligible"] is True
     assert result["field_unknown"] is True
     assert result["exclusion_reasons"] == []
