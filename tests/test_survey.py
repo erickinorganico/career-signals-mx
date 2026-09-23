@@ -237,3 +237,39 @@ def test_zero_mean_with_positive_variance_has_no_false_precision_grade():
     assert result["value"] is None
     assert result["status"] == "REVIEW"
     assert "undefined_cv_at_zero" in result["suppression_reason"]
+
+
+def test_design_and_domain_support_are_distinct():
+    design = SurveyDesign([1] * 40, [1] * 20 + [2] * 20, list(range(40)))
+    denominator = [1] * 20 + [0] * 20
+    result = design.ratio([2] * 20 + [0] * 20, denominator)
+    assert result["n_psu_design"] == 40
+    assert result["n_strata_design"] == 2
+    assert result["design_df"] == 38
+    assert result["n_psu_domain"] == 20
+    assert result["n_strata_domain"] == 1
+
+
+def test_two_domain_psus_count_even_when_numerator_zero():
+    design = SurveyDesign([1] * 40, [1] * 40, [1] * 20 + [2] * 20)
+    result = design.ratio([1] * 20 + [0] * 20, [1] * 40, percent=True)
+    assert result["sample_size"] == 40
+    assert result["n_psu_domain"] == 2
+    assert result["n_strata_domain"] == 1
+    assert result["value"] is not None
+
+
+def test_support_failures_have_stable_order():
+    design = SurveyDesign([1] * 40, [1] * 40, [1] * 20 + [2] * 20)
+    result = design.ratio([0] * 40, [0] * 40)
+    assert result["suppression_reason"] == (
+        "zero_denominator;sample_size_below_30;fewer_than_two_domain_psus"
+    )
+
+
+def test_adjust_is_never_official_precision():
+    design = SurveyDesign([1] * 40, [1] * 39 + [2], list(range(40)), singleton_policy="adjust")
+    result = design.ratio([9, 11] * 20, [1] * 40)
+    assert result["singleton_policy"] == "adjust"
+    assert result["official_precision"] is False
+    assert result["status"] == "REVIEW"
