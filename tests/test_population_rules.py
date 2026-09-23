@@ -7,7 +7,10 @@ from brujula.populations import (
     NATIONAL_15_PLUS_CONTEXT,
     POPULATION_DEFINITIONS,
     classify_eligibility,
+    classify_income_state,
+    normalize_cmpe_key,
     summarize_denominators,
+    summarize_measure_denominator,
 )
 
 
@@ -78,3 +81,66 @@ def test_definition_and_summary_keep_counts_and_weights_separate():
 def test_unknown_population_rejected():
     with pytest.raises(ValueError):
         classify_eligibility(BASE, "not_a_population")
+
+
+CATALOG = ("31300", "32100", "33100")
+
+
+@pytest.mark.parametrize("raw,expected", [
+    ("31300", "031300"), (" 32100 ", "032100"), ("33100", "033100"),
+    ("999999", None), (None, None), (" ", None), ("99999", None),
+    ("３１３００", None), ("31300.0", None), (31300, None),
+])
+def test_cmpe_requires_supplied_period_catalog_and_ascii_digits(raw, expected):
+    assert normalize_cmpe_key(raw, CATALOG) == expected
+
+
+@pytest.mark.parametrize("keys", [(), ("31300", "031300"), ("31300", "abc"), ("999999",), (" 31300",)])
+def test_bad_catalog_rejected(keys):
+    with pytest.raises(ValueError):
+        normalize_cmpe_key("31300", keys)
+
+
+@pytest.mark.parametrize("ing7c,amount,state", [
+    ("2", "1000", "positive_known"), ("6", "0", "no_income"),
+    ("7", "0", "unspecified"), ("7", "", "unspecified"),
+    ("2", "0", "amount_unknown"), ("2", "999999", "amount_unknown"),
+    ("6", "1000", "conflicting"), ("7", "1000", "conflicting"),
+    ("0", "0", "not_applicable"), ("", "0", "unknown_income_state"),
+])
+def test_income_sentinels_do_not_invent_zero_wage(ing7c, amount, state):
+    result = classify_income_state(row(ing7c=ing7c, ingocup=amount))
+    assert result["state"] == state
+    assert result["positive_known"] is (state == "positive_known")
+    assert result.get("income_amount") is None or state == "positive_known"
+
+
+def test_measure_denominators_keep_employment_and_positive_income_distinct():
+    rows = [
+        row(clase2="1", ing7c="2", ingocup="100", fac_tri="2"),
+        row(clase2="1", ing7c="6", ingocup="0", fac_tri="3"),
+        row(clase2="1", ing7c="7", ingocup="0", fac_tri="4"),
+        row(clase2="2", ing7c="0", ingocup="0", fac_tri="5"),
+        row(clase2="4", ing7c="0", ingocup="0", fac_tri="6"),
+    ]
+    employment = summarize_measure_denominator(rows, "employment")
+    income = summarize_measure_denominator(rows, "positive_known_income")
+    assert employment["observed_valid_n"] == 5
+    assert employment["observed_occupied_n"] == 3
+    assert employment["weighted_denominator"] == 20
+    assert income["observed_valid_n"] == 1
+    assert income["weighted_denominator"] == 2
+    assert income["excluded_counts"]["no_income"] == 1
+    assert income["excluded_counts"]["unspecified"] == 1
+    assert income["excluded_counts"]["not_occupied"] == 2
+    assert summarize_measure_denominator([], "positive_known_income")["weighted_denominator"] is None
+    assert summarize_measure_denominator([row(clase2="1", ing7c="7", ingocup="0")], "positive_known_income")["weighted_denominator"] is None
+
+
+def test_weight_validation_and_finite_accumulation():
+    assert summarize_measure_denominator([row(clase2="1", fac_tri="0.1"), row(clase2="1", fac_tri="0.2")], "employment")["weighted_denominator"] == pytest.approx(0.3)
+    for invalid in (float("nan"), float("inf"), -1, True, "1e2", "１２", 0):
+        with pytest.raises(ValueError):
+            summarize_measure_denominator([row(clase2="1", fac_tri=invalid)], "employment")
+    with pytest.raises(ValueError, match="overflow"):
+        summarize_measure_denominator([row(clase2="1", fac_tri=1e308), row(clase2="1", fac_tri=1e308)], "employment")
