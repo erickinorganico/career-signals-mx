@@ -1,7 +1,7 @@
 # Phase 3: Supported Labor Findings - Pattern Map
 
-**Mapped:** 2026-09-22  
-**Files analyzed:** 8 planned/inferred analysis and test files  
+**Mapped:** 2026-09-22
+**Files analyzed:** 8 planned/inferred analysis and test files
 **Analogs found:** 8 / 8 (role/data-flow analogs; Phase 3 v2 analysis modules are new)
 
 Phase 3 must consume only the accepted Phase 2 public v2 projection. Phase 2 is not implemented yet, so every Phase 2 interface below is provisional and must be rechecked against the completed modules and eight-period acceptance ledger before Phase 3 execution. Do not extend the v1 synthetic comparison or insight behavior to real v2 findings by assumption.
@@ -112,7 +112,7 @@ Before Phase 3 execution, inspect the implemented `brujula/enoe_adapter.py`, `br
 
 ## Metadata
 
-**Analog search scope:** `brujula/{data,quality,insights,agents,pipeline,report,research_contract,populations}.py`, `tests/`, v2 schemas, Phase 2 plans, and Phase 3 context/research.  
-**Files scanned:** 18 relevant source, test, schema, and planning files.  
-**Pattern extraction date:** 2026-09-22.  
+**Analog search scope:** `brujula/{data,quality,insights,agents,pipeline,report,research_contract,populations}.py`, `tests/`, v2 schemas, Phase 2 plans, and Phase 3 context/research.
+**Files scanned:** 18 relevant source, test, schema, and planning files.
+**Pattern extraction date:** 2026-09-22.
 **Read-only note:** no source files or tests were modified.

@@ -1,7 +1,7 @@
 # Phase 4: Offline Publication and Reproducible Operation - Pattern Map
 
-**Mapped:** 2026-09-22  
-**Scope:** preparatory map only; Phase 2 numerical acceptance and Phase 3 claim/comparison packets are pending.  
+**Mapped:** 2026-09-22
+**Scope:** preparatory map only; Phase 2 numerical acceptance and Phase 3 claim/comparison packets are pending.
 **Source edits:** none.
 
 ## File Classification
@@ -147,6 +147,6 @@ Phase 2 currently has active adapter/metrics code, while Phase 3 is planned. Bef
 
 ## Metadata
 
-**Analog search scope:** `brujula/{report,export,warehouse,pipeline,runlock,cli,resources,acquisition,research_contract}.py`, `tests/{test_report,test_export,test_pipeline,test_runlock,test_cli,test_acquisition}.py`, `pyproject.toml`, and the Phase 4 context/research/editorial documents.  
-**Files classified:** 12 proposed/modified files. **With analog:** 12/12 by role or integration seam; four new capabilities above have no direct existing implementation.  
+**Analog search scope:** `brujula/{report,export,warehouse,pipeline,runlock,cli,resources,acquisition,research_contract}.py`, `tests/{test_report,test_export,test_pipeline,test_runlock,test_cli,test_acquisition}.py`, `pyproject.toml`, and the Phase 4 context/research/editorial documents.
+**Files classified:** 12 proposed/modified files. **With analog:** 12/12 by role or integration seam; four new capabilities above have no direct existing implementation.
 **Pattern extraction date:** 2026-09-22.

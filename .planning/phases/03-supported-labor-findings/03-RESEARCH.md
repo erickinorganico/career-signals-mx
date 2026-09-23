@@ -1,7 +1,7 @@
 # Phase 3: Supported Labor Findings — Research
 
-**Researched:** 2026-09-22  
-**Domain:** deterministic ENOE analysis, comparison and evidence-bound claims  
+**Researched:** 2026-09-22
+**Domain:** deterministic ENOE analysis, comparison and evidence-bound claims
 **Confidence:** MEDIUM (phase 2 estimates and final interfaces are pending)
 
 <user_constraints>
@@ -206,5 +206,5 @@ ASVS V2 authentication and V3 sessions do not apply to this local batch phase. V
 
 ## Metadata
 
-**Confidence breakdown:** stack HIGH (local verified); architecture HIGH for current contracts, MEDIUM for Phase 2 pending interfaces; geography alias candidate MEDIUM pending ANA-03 signature; pitfalls HIGH from locked decisions and current code.  
+**Confidence breakdown:** stack HIGH (local verified); architecture HIGH for current contracts, MEDIUM for Phase 2 pending interfaces; geography alias candidate MEDIUM pending ANA-03 signature; pitfalls HIGH from locked decisions and current code.
 **Valid until:** 2026-10-22 or sooner if Phase 2 schema/metric definitions change.
