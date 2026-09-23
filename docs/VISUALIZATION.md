@@ -1,12 +1,29 @@
 # Reportes estáticos
 
-Estado: especificación de salida; implementación pendiente. El módulo de
-reportes está ausente en el checkpoint auditado. No hay una demo verificada.
+Estado: implementación local offline. El módulo `brujula.report` genera
+documentos estáticos y figuras desde un payload ya validado; no hay servidor ni
+dependencia de navegador.
 
-La API prevista `brujula.report.render_report(payload, output_dir)` debe generar `report.md`, `report.html` y figuras SVG/PNG desde un payload ya validado. No inicia un servidor, no descarga fuentes y no interpreta ausencias como cero.
+La API `brujula.report.render_report(payload, output_dir)` genera `report.md`,
+`report.html` y pares SVG/PNG deterministas. Su resultado contiene rutas
+relativas: `{markdown:"report.md", html:"report.html", charts:[...]}`. No
+inicia un servidor, no descarga fuentes y no interpreta ausencias como cero.
 
-Las barras deberán comparar el último periodo nacional disponible para cada métrica. La tendencia deberá mostrar ingreso mensual medio por campo; `null`, `UNKNOWN`, `BLOCKED` y pares no comparables rompen la línea. Cada figura imprime fuente, periodo, unidad, universo y advertencia de precisión.
+Las barras comparan el último periodo nacional disponible por métrica. La
+tendencia muestra ingreso mensual medio por campo y geografía; `null`,
+`UNKNOWN`, `BLOCKED` y pares sin una comparación declarada compatible rompen la
+línea. Cada figura muestra fuente, periodo, geografía, unidad, universo,
+precisión y el aviso persistente **DATOS SINTÉTICOS ILUSTRATIVOS**. Cada figura
+tiene una tabla equivalente en Markdown y HTML.
 
-El reporte deberá conservar el aviso **DATOS SINTÉTICOS ILUSTRATIVOS**, separa campo de estudio de ocupación, presenta frescura del periodo de negocio separada del timestamp de ejecución, y lista términos/licencias/estado de las fuentes. Si el payload está bloqueado, crea únicamente un reporte de bloqueo sin cifras ni gráficas.
+El reporte conserva el aviso **DATOS SINTÉTICOS ILUSTRATIVOS**, separa campo de
+estudio de ocupación, presenta frescura del periodo de negocio separada del
+timestamp de ejecución, y lista términos/licencias/estado de las fuentes. Si el
+payload está bloqueado, crea únicamente un diagnóstico sin cifras, tablas de
+datos ni gráficas.
 
-La salida deberá ser determinista para el mismo payload, salvo los campos de receipt que pertenezcan al payload de entrada. Las URLs se muestran como texto en el Markdown; el HTML escapa todo contenido de payload y no ejecuta scripts.
+La salida es determinista para el mismo payload, salvo los campos de receipt
+que pertenezcan al payload de entrada. Matplotlib usa el backend no interactivo
+`Agg`, un `svg.hashsalt` fijo y metadatos estables. Las URLs se muestran como
+texto en el Markdown; el HTML escapa todo contenido de payload y no emite
+scripts, estilos remotos ni recursos de red.
