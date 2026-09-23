@@ -63,6 +63,7 @@ class SurveyDesign:
         if self.singleton_strata_count and singleton_policy == "fail":
             raise ValueError("full design has a singleton stratum; official treatment required")
         self.n_strata_design = len(self._stratum_counts)
+        self.n_psu_design = self._cluster_count
         self.design_df = self._cluster_count - self.n_strata_design
         self.weights.setflags(write=False)
 
@@ -122,9 +123,13 @@ class SurveyDesign:
 
     def _result(self, estimate, variance, support, weighted_denominator, *, proportion=False):
         n = int(np.count_nonzero(support))
-        psus = int(len(np.unique(self._cluster_index[support])))
+        contributing = np.unique(self._cluster_index[support])
+        psus = int(len(contributing))
+        strata = int(len(np.unique(self._cluster_strata[contributing])))
         se = math.sqrt(variance) if variance is not None else None
         cv = 100 * se / abs(estimate) if estimate not in (None, 0) else None
+        if cv is not None and not math.isfinite(cv):
+            raise ValueError("nonfinite coefficient of variation")
         boundary = proportion and estimate is not None and estimate in (0.0, 100.0)
         lower = upper = None
         ci_method = "logit_delta_normal_90" if proportion else "normal_wald_90"
@@ -144,6 +149,8 @@ class SurveyDesign:
                 upper = 100 * expit(logit + Z90 * logit_se)
             else:
                 lower, upper = estimate - Z90 * se, estimate + Z90 * se
+            if not math.isfinite(lower) or not math.isfinite(upper):
+                raise ValueError("nonfinite confidence interval")
         reasons = []
         if estimate is None:
             reasons.append("zero_denominator")
@@ -151,6 +158,8 @@ class SurveyDesign:
             reasons.append("sample_size_below_30")
         if psus < 2:
             reasons.append("fewer_than_two_domain_psus")
+        if self.design_df <= 0:
+            reasons.append("zero_design_df")
         if boundary:
             reasons.append("proportion_boundary")
         if se == 0:
@@ -159,9 +168,13 @@ class SurveyDesign:
             reasons.append("undefined_cv_at_zero")
         if cv is not None and cv >= 30:
             reasons.append("cv_at_least_30")
+        if estimate is not None and se is None:
+            reasons.append("missing_standard_error")
+        if estimate is not None and not boundary and se is not None and (lower is None or upper is None or lower >= upper):
+            reasons.append("degenerate_interval")
         if estimate is None or n < 30 or psus < 2:
             status = "UNKNOWN"
-        elif reasons or (cv is not None and cv >= 15) or self.singleton_strata_count:
+        elif reasons or (cv is not None and cv >= 15) or self.singleton_policy == "adjust":
             status = "REVIEW"
         else:
             status = "MEASURED"
@@ -176,10 +189,13 @@ class SurveyDesign:
             "ci_method": ci_method,
             "variance_method": VARIANCE_METHOD + ("_singleton_adjust" if self.singleton_policy == "adjust" else ""),
             "singleton_policy": self.singleton_policy,
+            "official_precision": False,
             "singleton_strata_count": self.singleton_strata_count,
             "precision_note": "Project variance approximation; not official INEGI precision." if self.singleton_strata_count else None,
             "design_df": self.design_df,
             "n_psu_domain": psus,
+            "n_strata_domain": strata,
+            "n_psu_design": self.n_psu_design,
             "n_strata_design": self.n_strata_design,
             "sample_size": n,
             "weighted_denominator": weighted_denominator,

@@ -256,7 +256,8 @@ def test_two_domain_psus_count_even_when_numerator_zero():
     assert result["sample_size"] == 40
     assert result["n_psu_domain"] == 2
     assert result["n_strata_domain"] == 1
-    assert result["value"] is not None
+    assert result["value"] is None
+    assert "cv_at_least_30" in result["suppression_reason"]
 
 
 def test_support_failures_have_stable_order():
