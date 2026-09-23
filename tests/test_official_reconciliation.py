@@ -4,7 +4,7 @@ import hashlib
 
 import pytest
 
-from scripts.official_reconciliation import (
+from brujula.official_reconciliation import (
     compare_official_cells, workbook_cells, reconcile, check_2026_pdf_benchmark,
 )
 
@@ -52,7 +52,7 @@ def test_official_workbook_missing_or_bad_hash(tmp_path):
 
 
 def test_official_source_hash_and_pdf_hash_fail_closed(monkeypatch, tmp_path):
-    from scripts import official_reconciliation as official
+    from brujula import official_reconciliation as official
 
     source = tmp_path / "source.zip"
     source.write_bytes(b"synthetic source")
@@ -68,7 +68,7 @@ def test_official_source_hash_and_pdf_hash_fail_closed(monkeypatch, tmp_path):
 
 @pytest.mark.parametrize("mutation", ["period_id", "occupation_id", "industry_id", "method_id"])
 def test_official_wrong_period_universe_or_method_fails(monkeypatch, tmp_path, mutation):
-    from scripts import official_reconciliation as official
+    from brujula import official_reconciliation as official
 
     source = tmp_path / "source.zip"
     source.write_bytes(b"synthetic source")
@@ -86,7 +86,7 @@ def test_official_wrong_period_universe_or_method_fails(monkeypatch, tmp_path, m
 
 
 def test_pdf_duplicate_metric_fails(monkeypatch, tmp_path):
-    from scripts import official_reconciliation as official
+    from brujula import official_reconciliation as official
 
     pdf = tmp_path / "synthetic.pdf"
     pdf.write_bytes(b"disposable synthetic PDF bytes")
