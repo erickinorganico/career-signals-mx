@@ -5,10 +5,10 @@ milestone_name: Release
 current_phase: 02
 current_phase_name: Defensible Survey Estimates
 status: executing
-stopped_at: Phase 2 plan 02-03 executing final-cohort R, official reconciliation and eight-quarter acceptance.
-last_updated: "2026-09-23T06:07:21.365132Z"
+stopped_at: Phase 2 pre-review full numerical gate passed; independent review corrections and final frozen replay pending.
+last_updated: "2026-09-23T06:41:49.319123+00:00"
 last_activity: 2026-09-22
-last_activity_desc: Final upstream regression passes 319 tests and ten Node controls; 02-03 numerical acceptance is executing
+last_activity_desc: Frozen pre-review gate passes 6,739 cells and 30 R controls; review corrections precede final acceptance
 progress:
   total_phases: 5
   completed_phases: 1
@@ -31,7 +31,7 @@ See: .planning/PROJECT.md (updated 2026-09-22)
 Phase: 02 — Defensible Survey Estimates
 Plan: 3 of 3 (02-03, executing)
 Status: executing
-Last activity: 2026-09-22 — Final upstream regression passes 319 tests and ten Node controls; 02-03 numerical acceptance is executing
+Last activity: 2026-09-22 — Frozen pre-review gate passes 6,739 cells and 30 R controls; review corrections precede final acceptance
 
 Progress: 1/5 phases accepted; 6/10 currently planned execution plans implemented. This is not release completion.
 
@@ -69,5 +69,5 @@ None. The full real-data scope remains in v1.0.0.
 ## Session Continuity
 
 Last session: 2026-09-22
-Stopped at: Phase 2 plan 02-03 executing final-cohort R, official reconciliation and eight-quarter acceptance.
+Stopped at: Phase 2 pre-review full numerical gate passed; independent review corrections and final frozen replay pending.
 Resume file: None
