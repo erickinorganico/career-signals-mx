@@ -3,7 +3,7 @@
 Baseline: 2026-09-22. Este plan convierte [PRD.md](PRD.md) en tareas pequeñas y
 verificables. El paquete de planeación M0 está **aceptado** y la
 implementación/runtime del MVP sintético está **verificada localmente**. La
-publicación del release y su revisión final siguen pendientes.
+publicación del release 0.1.0 y su revisión final están verificadas.
 
 ## Resultado del release inicial
 
@@ -50,11 +50,10 @@ integrador revisa el diff y repite los checks afectados. “Archivo creado”,
 | Auditoría de fuentes | `DOCUMENTED` | `SOURCES.md` y `source-research.json`; documentar candidatos no activa datos numéricos reales |
 | Planeación y specs | `PLANNING COMPLETE` | M0 fue revisado como baseline documental; no acredita implementación ni release |
 | Implementación local | `VERIFIED` | Suite integrada y replay offline PASS; fixture sintético y artefactos trazables |
-| Release reproducible | `PENDING` | Verificación local PASS; publicación y cierre del integrador pendientes |
+| Release reproducible | `RELEASED` | Tests, replay limpio, revisión, Windows/Linux CI y publicación PASS; [recibo](evidence/release-receipt.json) |
 
-Ledger actual: `TASK-001`–`TASK-014` están completos y verificados localmente;
-`TASK-015` queda pendiente de revisión/publicación del release; `TASK-016`–
-`TASK-018` son condicionales de M6 y requieren activar una fuente oficial.
+Ledger actual: `TASK-001`–`TASK-015` están completos y verificados;
+`TASK-016`–`TASK-018` son condicionales de M6 y requieren activar una fuente oficial.
 
 ## Backlog ordenado
 

@@ -1,7 +1,7 @@
 # Documentación de Brújula Laboral MX
 
 El repositorio entrega un MVP sintético local verificable y su documentación de
-contratos. La publicación del release continúa pendiente; [STATUS](STATUS.md)
+contratos. El release 0.1.0 está publicado y verificado; [STATUS](STATUS.md)
 es la referencia de verificación y conserva el recibo histórico M0 separado del
 estado actual.
 
@@ -21,8 +21,8 @@ estado actual.
 | Saber qué está probado | [STATUS](STATUS.md) | Resultados actuales, bloqueadores y límites |
 | Revisar la planeación | [PLANNING-REVIEW](PLANNING-REVIEW.md) | Hallazgos adversariales y resolución, con alcance documental |
 | Verificar la entrega | [Recibo M0](evidence/planning-receipt.json) | Commit remoto, hashes documentales, checks y límites de la entrega |
-| Revisar implementación | [IMPLEMENTATION-REVIEW](IMPLEMENTATION-REVIEW.md) | Revisión Astra y hallazgos corregidos; pendiente si el archivo aún no se incorpora |
-| Consultar evals | [EVALS](EVALS.md) | Casos y resultados de evaluación; pendiente si el archivo aún no se incorpora |
+| Revisar implementación | [IMPLEMENTATION-REVIEW](IMPLEMENTATION-REVIEW.md) | Revisión independiente PASS y cinco hallazgos corregidos |
+| Consultar evals | [EVALS](EVALS.md) | Doce casos deterministas PASS |
 | Preparar release | [RELEASE](RELEASE.md) | Checklist de publicación; lo creará el integrador |
 | Ver fixture sintético | [Ejemplo sintético](../examples/synthetic/README.md) | Atribución y límites del fixture; lo creará el integrador |
 | Coordinar agentes | [ORCHESTRATION](ORCHESTRATION.md), [eficiencia](../PROJECT-EFFICIENCY.md) | Routing efectivo y condiciones para Laya |

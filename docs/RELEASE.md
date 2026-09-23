@@ -1,5 +1,7 @@
 # Release 0.1.0 — piloto sintético
 
+[Publicado en GitHub como v0.1.0](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.1.0).
+
 El primer release implementa M1–M5: validación, comparabilidad, trazabilidad,
 DuckDB, exportaciones, reportes estáticos y propuestas deterministas de agentes.
 Todas las cifras incluidas son **sintéticas**. No son estimaciones del mercado
@@ -43,6 +45,10 @@ archivo `.whl` del release con `pip install --no-deps <archivo.whl>`.
 Tras instalar, `python -m brujula demo` funciona fuera del checkout sin red.
 
 ## Evidencia de aceptación
+
+89 tests y 12 evals PASS. CI PASS en Windows y Linux sobre el commit de la
+etiqueta; wheel ejecutado fuera del checkout e integridad remota de assets
+confirmada por SHA-256.
 
 El [recibo de release](evidence/release-receipt.json) registra los resultados,
 hashes, commits y enlaces de publicación. El recibo distingue la verificación

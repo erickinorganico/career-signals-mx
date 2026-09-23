@@ -11,7 +11,7 @@ cambia con evidencia revisada; archivos presentes o trabajo parcial no bastan.
 | M2 — Integridad, comparabilidad y trazabilidad | Quality gate, freshness, comparisons, receipts, DuckDB y exports locales | REQ-006–REQ-011 | M1 aceptado | Casos verdes y rojos pasan; fallo invalida current; warehouse y exports preservan semántica | `VERIFIED` |
 | M3 — Reportes y briefs estáticos | Markdown/HTML, gráficas, tablas alternativas e insights auditables | REQ-012–REQ-014 | M2 aceptado | Render determinista; nulos son gaps; cada claim resuelve evidencia y muestra límites | `VERIFIED` |
 | M4 — Agentes read-only y evals | Roles estructurados para fuentes, calidad, insights y visualización sin autoridad de mutación | REQ-015–REQ-016 | M2 aceptado; M3 disponible para eval E2E | 12/12 evals; propuestas sin autoridad de mutación | `VERIFIED` |
-| M5 — Release reproducible | Instalación limpia, replay offline, tests/E2E, revisión adversarial y publicación verificada | REQ-017–REQ-018 | M1–M4 aceptados | Suite local PASS, clean source offline PASS y revisión Astra PASS; publicación pendiente | `VERIFIED LOCALLY; PUBLICATION PENDING` |
+| M5 — Release reproducible | Instalación limpia, replay offline, tests/E2E, revisión adversarial y publicación verificada | REQ-017–REQ-018 | M1–M4 aceptados | Suite local, replay limpio, revisión, CI y publicación PASS | `RELEASED` |
 | M6 — ENOE real para México | Primer snapshot real nacional con ponderación, diseño muestral y precisión validados | Requisitos nuevos después de M5 | M5 aceptado y source activation aprobada | Términos, CMPE, factor/estrato/UPM, varianza, atribución, hash y comparabilidad revisados | `CONDITIONAL` |
 
 ## M0 — Planeación y publicación inicial
@@ -21,7 +21,7 @@ creación del repositorio autorizado y la auditoría primaria de fuentes. El
 integrador principal revisó el paquete documental y sus IDs canónicos, por lo
 que M0 queda `PLANNING COMPLETE`. Esa marca no implica runtime, demo, release
 analítico ni definición de terminado; M1–M4 están verificados localmente y M5
-tiene verificación local PASS, con publicación del release pendiente.
+está publicado como v0.1.0, con verificación local y CI PASS.
 
 ## M1 — Contrato y slice sintético
 
@@ -87,3 +87,7 @@ Un cambio de alcance crea o actualiza requisitos antes de iniciar trabajo. Una
 fuente nueva no pasa de candidata a activa por propuesta de agente. Un hito
 condicional no se promueve hasta resolver su gate; el resto del trabajo
 autorizado continúa si no depende de esa decisión.
+
+El cierre de M5 corresponde a [v0.1.0](RELEASE.md): 89 tests y 12 evals PASS,
+CI Windows/Linux, revisión independiente, wheel aislado y assets publicados con
+hashes remotos verificados. M6 permanece condicional y fuera de este release.

@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "version": "0.1.0",
-  "checked_at": "2026-09-23T01:10:05.041479+00:00",
-  "status": "VERIFIED_LOCALLY_PUBLICATION_PENDING",
+  "checked_at": "2026-09-23T01:17:23.796564+00:00",
+  "status": "RELEASED",
   "scope": "synthetic_only",
   "runtime": {
     "python": "3.12.13",
@@ -37,7 +37,25 @@
       "findings_closed": 5
     },
     "ci": {
-      "status": "PENDING"
+      "status": "PASS",
+      "source_commit": "8171ec15a95f49b069dcba8335baf88b7bf425c2",
+      "url": "https://github.com/erickinorganico/career-signals-mx/actions/runs/35805363117",
+      "jobs": [
+        {
+          "name": "verify (ubuntu-latest)",
+          "status": "success",
+          "url": "https://github.com/erickinorganico/career-signals-mx/actions/runs/35805363117/job/107004850680",
+          "tests_passed": 89,
+          "evals_passed": 12
+        },
+        {
+          "name": "verify (windows-latest)",
+          "status": "success",
+          "url": "https://github.com/erickinorganico/career-signals-mx/actions/runs/35805363117/job/107004850978",
+          "tests_passed": 89,
+          "evals_passed": 12
+        }
+      ]
     }
   },
   "installed_wheel": {
@@ -124,9 +142,39 @@
     "scan_scope": "Heuristic credentials/private-path scan over source, docs and generated text; manual synthetic/license review. Not a proof of absence of all defects."
   },
   "publication": {
-    "status": "PENDING",
+    "status": "VERIFIED",
     "repository": "https://github.com/erickinorganico/career-signals-mx",
-    "authorized_owner": "erickinorganico"
+    "authorized_owner": "erickinorganico",
+    "visibility": "public",
+    "release": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/erickinorganico/career-signals-mx/releases/download/v0.1.0/brujula-laboral-mx-0.1.0-synthetic.zip",
+          "digest": "sha256:df49f61e1b805be986ad5cf8287e9cc31c5cb81304f76e44a172e307fade25f8",
+          "name": "brujula-laboral-mx-0.1.0-synthetic.zip",
+          "size": 311976,
+          "state": "uploaded"
+        },
+        {
+          "browser_download_url": "https://github.com/erickinorganico/career-signals-mx/releases/download/v0.1.0/career_signals_mx-0.1.0-py3-none-any.whl",
+          "digest": "sha256:1117e9b788271c1ef3ad855104520be4afdbf1f8d67d8ea8331da1586fe68410",
+          "name": "career_signals_mx-0.1.0-py3-none-any.whl",
+          "size": 43260,
+          "state": "uploaded"
+        }
+      ],
+      "draft": false,
+      "html_url": "https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.1.0",
+      "id": 394225474,
+      "prerelease": false,
+      "published_at": "2026-09-23T01:15:53Z",
+      "tag_name": "v0.1.0",
+      "target_commitish": "8171ec15a95f49b069dcba8335baf88b7bf425c2"
+    },
+    "tag_commit": "8171ec15a95f49b069dcba8335baf88b7bf425c2",
+    "remote_main_verified_at_release": "8171ec15a95f49b069dcba8335baf88b7bf425c2",
+    "git_blob_integrity": "PASS: packaged runtime, canonical LF fixture and every example file match source Git blobs",
+    "note": "This post-release receipt is committed after the immutable tag. Later documentation-only commits do not change the tagged runtime or downloadable assets."
   },
   "limits": [
     "All figures are synthetic; REVIEW means labelled research artifacts, not measured Mexican estimates.",

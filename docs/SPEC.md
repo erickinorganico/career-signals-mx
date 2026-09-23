@@ -1,6 +1,6 @@
 # Especificación implementable
 
-Versión: 1.0 · Fecha: 2026-09-22 · Estado: baseline documental aceptado para implementación.
+Versión: 1.0 · Fecha: 2026-09-22 · Estado: implementado y verificado en el MVP sintético 0.1.0.
 
 Esta especificación traduce REQ-001..REQ-018 a contratos verificables. La matriz
 señala implementación local y evidencia disponible; no declara por sí sola un
@@ -29,24 +29,24 @@ python -m brujula report --output DIR --format html|markdown
 
 | SPEC | REQ | Contrato | Estado auditado | Evidencia de aceptación |
 |---|---|---|---|---|
-| SPEC-001 | REQ-001 | Catálogo candidato separado de fuentes activas | Implementado localmente | `data/catalog/sources.json`, `brujula/scout.py`, `tests/test_scout.py` |
-| SPEC-002 | REQ-002 | Schemas versionados, strict y sin campos extra | Implementado localmente | dataset/insight/agent-run/run pasan positivos y rechazan negativos; `tests/test_data.py`, `tests/test_agents.py`, `tests/test_pipeline.py` |
-| SPEC-003 | REQ-003 | Slice 3 campos×3 periodos×2 geos×3 métricas | Implementado localmente | 54 grains, con nulos/estado explícitos; `tests/test_data.py` |
-| SPEC-004 | REQ-004 | Dimensiones separadas y bridges `REVIEW` | Implementado localmente | `tests/test_data.py`, `tests/test_warehouse.py` |
-| SPEC-005 | REQ-005 | `null` no es cero; estados públicos uppercase | Implementado localmente | `tests/test_quality.py`, `tests/test_report.py` |
-| SPEC-006 | REQ-006 | Gate de schema, refs, grain, rangos y coherencia | Implementado localmente | `tests/test_data.py`, `tests/test_quality.py` |
-| SPEC-007 | REQ-007 | Freshness usa fin del periodo de negocio | Implementado localmente | `tests/test_quality.py` |
-| SPEC-008 | REQ-008 | Delta solo entre observaciones compatibles | Implementado localmente | `tests/test_quality.py`, `tests/test_pipeline.py` |
-| SPEC-009 | REQ-009 | Raw content-addressed y receipt por intento | Implementado localmente | `tests/test_pipeline.py`, `tests/test_runlock.py` |
-| SPEC-010 | REQ-010 | DuckDB normalizado por run | Implementado localmente | `tests/test_warehouse.py` |
-| SPEC-011 | REQ-011 | CSV/Parquet solo tras gates | Implementado localmente | `tests/test_export.py`, `tests/test_pipeline.py` |
-| SPEC-012 | REQ-012 | Reportes MD/HTML + PNG/SVG accesibles | Implementado localmente | `brujula/report.py`; `tests/test_report.py` |
-| SPEC-013 | REQ-013 | Null=gaps; incompatibles no conectados | Implementado localmente | `tests/test_report.py` |
-| SPEC-014 | REQ-014 | Insight packet strict y evidence-bound | Implementado localmente | `tests/test_insights.py`, `tests/test_agents.py` |
-| SPEC-015 | REQ-015 | Seis roles read-only sin mutación | Implementado localmente | `contracts/agent-run.schema.json`, `brujula/agents.py`, `tests/test_agents.py` |
-| SPEC-016 | REQ-016 | Evals verdes/rojos contractuales | Implementado localmente | `tests/test_evals.py`, `docs/EVALS.md` |
-| SPEC-017 | REQ-017 | Instalación y E2E offline reproducibles | Verificado localmente | suite integrada y clean source offline PASS; publicación pendiente |
-| SPEC-018 | REQ-018 | Release con revisión secreto/licencia/método | Verificado localmente; publicación pendiente | `IMPLEMENTATION-REVIEW.md`, `pip-audit`, matriz y receipt final |
+| SPEC-001 | REQ-001 | Catálogo candidato separado de fuentes activas | Verificado | `data/catalog/sources.json`, `brujula/scout.py`, `tests/test_scout.py` |
+| SPEC-002 | REQ-002 | Schemas versionados, strict y sin campos extra | Verificado | dataset/insight/agent-run/run pasan positivos y rechazan negativos; `tests/test_data.py`, `tests/test_agents.py`, `tests/test_pipeline.py` |
+| SPEC-003 | REQ-003 | Slice 3 campos×3 periodos×2 geos×3 métricas | Verificado | 54 grains, con nulos/estado explícitos; `tests/test_data.py` |
+| SPEC-004 | REQ-004 | Dimensiones separadas y bridges `REVIEW` | Verificado | `tests/test_data.py`, `tests/test_warehouse.py` |
+| SPEC-005 | REQ-005 | `null` no es cero; estados públicos uppercase | Verificado | `tests/test_quality.py`, `tests/test_report.py` |
+| SPEC-006 | REQ-006 | Gate de schema, refs, grain, rangos y coherencia | Verificado | `tests/test_data.py`, `tests/test_quality.py` |
+| SPEC-007 | REQ-007 | Freshness usa fin del periodo de negocio | Verificado | `tests/test_quality.py` |
+| SPEC-008 | REQ-008 | Delta solo entre observaciones compatibles | Verificado | `tests/test_quality.py`, `tests/test_pipeline.py` |
+| SPEC-009 | REQ-009 | Raw content-addressed y receipt por intento | Verificado | `tests/test_pipeline.py`, `tests/test_runlock.py` |
+| SPEC-010 | REQ-010 | DuckDB normalizado por run | Verificado | `tests/test_warehouse.py` |
+| SPEC-011 | REQ-011 | CSV/Parquet solo tras gates | Verificado | `tests/test_export.py`, `tests/test_pipeline.py` |
+| SPEC-012 | REQ-012 | Reportes MD/HTML + PNG/SVG accesibles | Verificado | `brujula/report.py`; `tests/test_report.py` |
+| SPEC-013 | REQ-013 | Null=gaps; incompatibles no conectados | Verificado | `tests/test_report.py` |
+| SPEC-014 | REQ-014 | Insight packet strict y evidence-bound | Verificado | `tests/test_insights.py`, `tests/test_agents.py` |
+| SPEC-015 | REQ-015 | Seis roles read-only sin mutación | Verificado | `contracts/agent-run.schema.json`, `brujula/agents.py`, `tests/test_agents.py` |
+| SPEC-016 | REQ-016 | Evals verdes/rojos contractuales | Verificado | `tests/test_evals.py`, `docs/EVALS.md` |
+| SPEC-017 | REQ-017 | Instalación y E2E offline reproducibles | Verificado | 89 tests, clean source offline y wheel PASS; CI Windows/Linux; recibo de release |
+| SPEC-018 | REQ-018 | Release con revisión secreto/licencia/método | Verificado y publicado | `IMPLEMENTATION-REVIEW.md`, inventario/licencias, matriz y [receipt final](evidence/release-receipt.json) |
 
 ## Dataset, SQL y cardinalidad
 
@@ -132,7 +132,7 @@ concepto/tipo, fuente, población, geo, métrica, unidad, método, base de preci
 synthetic flag, periodos distintos/ordenados y valores disponibles. El orden se
 deriva de `dim_period.start/end` ISO, no del texto de `period_id`; para comparar,
 `current.start > previous.end`. Como las filas no contienen fechas, la firma
-la API implementada es `compare_observations(previous,current,periods_by_id)` y
+de la API implementada es `compare_observations(previous,current,periods_by_id)` y
 `pipeline.make_comparisons` le entrega el mapa validado de periodos. Si falla,
 `comparable=false` y deltas `null`. Base cero admite delta absoluto y relative
 change `null`.
@@ -147,7 +147,7 @@ bloqueado produce diagnóstico sin cifras ni gráficas.
 
 ## Agentes y Laya
 
-Firma target: `run_agents(dataset,quality,comparisons,catalog)->dict`;
+Firma implementada: `run_agents(dataset,quality,comparisons,catalog)->dict`;
 `validate_agent_run(...)->list[str]`. El contrato canónico se llama exactamente
 `contracts/agent-run.schema.json`; todas las referencias `$ref` se resuelven
 desde ese archivo hacia `insight.schema.json`. Los seis roles de

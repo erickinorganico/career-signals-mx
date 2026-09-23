@@ -1,8 +1,9 @@
 # Brújula Laboral MX — estado verificable
 
-Fecha local: 2026-09-22. **MVP sintético 0.1.0 verificado localmente; publicación y CI pendientes.**
-M0 conserva su aceptación documental. M1–M4 están verificados; M5 tiene revisión
-y replay aprobados, pendiente de completar la publicación autorizada.
+Fecha local: 2026-09-22. **MVP sintético 0.1.0 terminado y publicado; CI PASS en Windows y Linux.**
+M0 conserva su aceptación documental. M1–M5 están completos dentro del alcance
+sintético. [Release público v0.1.0](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.1.0),
+con wheel y bundle cuyos hashes remotos coinciden con los artefactos verificados.
 
 | Superficie | Evidencia verificada |
 |---|---|
@@ -13,7 +14,7 @@ y replay aprobados, pendiente de completar la publicación autorizada.
 | Almacén y exports | DuckDB normalizado; CSV/Parquet/JSON con provenance y sin agregación por bridges |
 | Reportes | Markdown/HTML offline; cuatro gráficas PNG/SVG, tablas equivalentes y tres insights REVIEW |
 | Agentes | Seis roles deterministas de solo lectura; doce evals sin violaciones críticas |
-| Integración | 89 tests PASS; replay de una copia limpia y wheel instalado fuera del checkout |
+| Integración | 89 tests PASS locales y en Windows/Linux CI; replay limpio y wheel fuera del checkout |
 | Revisión independiente | PASS; cinco hallazgos corregidos y reproducidos |
 | Dependencias | 23 paquetes fijados; licencia identificada y cero vulnerabilidades conocidas al escanear |
 | Datos oficiales | BLOCKED BY DESIGN: official_snapshot requiere source_activation de M6 |
