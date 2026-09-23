@@ -96,7 +96,7 @@ def _catalog(archive: zipfile.ZipFile, member: str) -> frozenset[str]:
     # an eligible field key for the population normalizer.
     valid_keys = [key for key in keys if key != "999999"]
     normalize_cmpe_key("", valid_keys)
-    return frozenset(valid_keys)
+    return frozenset(key.zfill(6) for key in valid_keys)
 
 
 def _dictionary(archive: zipfile.ZipFile, member: str, required: set[str]) -> None:
@@ -107,6 +107,15 @@ def _dictionary(archive: zipfile.ZipFile, member: str, required: set[str]) -> No
         names = Counter((row.get("NEMÓNICO") or "").lower() for row in reader)
     if any(names[name] != 1 for name in required):
         raise AcquisitionError("SDEM dictionary lacks a unique required field")
+
+
+def _cmpe_key(value: str | None, catalog: frozenset[str]) -> str | None:
+    if value is None or value == "999999":
+        return None
+    if len(value) > 6:
+        raise AcquisitionError("CS_P14_C exceeds official six-digit width")
+    candidate = value.zfill(6)
+    return candidate if candidate in catalog else None
 
 
 def load_snapshot_frame(snapshot_id: str, output_root: Path, registry_path: Path | None = None) -> tuple[Frame, dict]:
@@ -159,7 +168,9 @@ def load_snapshot_frame(snapshot_id: str, output_root: Path, registry_path: Path
                                 raise AcquisitionError("FAC_TRI must be positive and finite")
                             value = weight
                         elif field == "cs_p14_c":
-                            value = normalize_cmpe_key(value, catalog)
+                            # The official catalog was validated once; this
+                            # lookup retains Phase 1 normalization semantics.
+                            value = _cmpe_key(value, catalog)
                         elif field in NUMERIC:
                             value = int(value) if value is not None else -1
                         buffers[field].append(value)

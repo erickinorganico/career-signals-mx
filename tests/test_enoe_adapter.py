@@ -7,6 +7,7 @@ import zipfile
 
 import numpy as np
 import pytest
+from brujula.populations import normalize_cmpe_key
 
 from brujula.acquisition import AcquisitionError
 from brujula.enoe_adapter import load_snapshot_frame
@@ -98,6 +99,13 @@ def test_weight_overflow_fails_before_estimation(tmp_path):
     sid, root, registry = fixture(tmp_path, rows=[giant, ROWS[1], ROWS[2]])
     with pytest.raises(AcquisitionError):
         load_snapshot_frame(sid, root, registry)
+
+
+def test_cmpe_lookup_matches_phase1_normalizer(tmp_path):
+    sid, root, registry = fixture(tmp_path)
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    for raw, actual in ((" 33100", frame.cmpe[0]), ("999999", frame.cmpe[1]), ("31300", frame.cmpe[2])):
+        assert actual == normalize_cmpe_key(raw, frame.cmpe_catalog_keys)
     sid, root, registry = fixture(tmp_path / "failed")
     current = root / "acquisitions" / sid / "current.json"
     receipt = json.loads(current.read_text()); receipt["status"] = "FAILED"; current.write_text(json.dumps(receipt))
