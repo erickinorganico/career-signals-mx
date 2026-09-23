@@ -36,7 +36,7 @@ def research_fixture():
                      "support": {"n_psu_design": 16, "n_strata_design": 8, "n_psu_domain": 10, "n_strata_domain": 6,
                                  "design_df": 8, "weighted_support_total": 120.0},
                      "precision": {"standard_error": 3.0, "coefficient_variation": 2.5, "ci90_lower": 115.0,
-                                   "ci90_upper": 125.0, "method": "taylor_linearized", "level": 0.90,
+                                   "ci90_upper": 125.0, "method": "taylor_linearized", "ci_method": "normal_wald_90", "level": 0.90,
                                    "singleton_policy": "fail", "official_precision": False},
                      "status": "REVIEW", "reason": "Synthetic fixture", "estimate": 120.0, "value": 120.0,
                      "evidence_refs": ["source_receipt"], "synthetic": True}],
