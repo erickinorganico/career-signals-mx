@@ -1,0 +1,65 @@
+"""Synthetic metric semantics and sentinel controls."""
+
+import numpy as np
+import pytest
+
+from brujula.enoe_adapter import load_snapshot_frame
+from brujula.metrics import load_metric_manifest, metric_vectors
+from brujula.populations import NATIONAL_15_PLUS_CONTEXT, COMPLETED_PROFESSIONAL_KNOWN_AGE
+from test_enoe_adapter import fixture, ROWS
+
+
+def vectors(tmp_path, metric, rows=ROWS, population=NATIONAL_15_PLUS_CONTEXT, domain=None):
+    sid, root, registry = fixture(tmp_path, rows=rows)
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    return metric_vectors(frame, population, domain or {}, metric)
+
+
+def test_manifest_hash_and_all_metrics():
+    manifest = load_metric_manifest()
+    assert len(manifest["metrics"]) >= 18
+    assert len(manifest["content_sha256"]) == 64
+    for entry in manifest["metrics"]:
+        assert {"id", "operation", "numerator", "denominator", "unit", "price_basis", "sentinels", "dictionary_refs"} <= set(entry)
+
+
+def test_occupied_pea_and_suboccupation_are_distinct(tmp_path):
+    occupied = vectors(tmp_path / "occupied", "occupied_total")
+    pea = vectors(tmp_path / "pea", "pea_total")
+    sub = vectors(tmp_path / "sub", "suboccupied_rate")
+    assert occupied["numerator"].tolist() == [1., 0., 1.]
+    assert pea["numerator"].tolist() == [1., 1., 1.]
+    assert sub["numerator"].tolist() == [1., 0., 0.]
+    assert sub["denominator"].tolist() == [1., 0., 1.]
+    assert all(x.shape == (3,) for x in (sub["numerator"], sub["denominator"], sub["domain"]))
+
+
+def test_income_and_hours_states(tmp_path):
+    income = vectors(tmp_path / "income", "positive_income_mean")
+    hours = vectors(tmp_path / "hours", "known_hours_mean")
+    assert income["numerator"].tolist() == [100., 0., 0.]
+    assert income["denominator"].tolist() == [1., 0., 0.]
+    assert hours["numerator"].tolist() == [40., 0., 0.]
+    assert hours["denominator"].tolist() == [1., 0., 1.]
+    assert hours["coverage"]["eligible_n"] == 2
+    assert income["coverage"]["eligible_n"] == 1
+    assert income["exclusions"]["no_income"] == 1
+
+
+def test_unknown_age_field_and_empty_denominators(tmp_path):
+    focal = vectors(tmp_path / "focal", "population_total", population=COMPLETED_PROFESSIONAL_KNOWN_AGE,
+                    domain={"field_of_study": "033100"})
+    assert focal["domain"].tolist() == [True, False, False]
+    empty = vectors(tmp_path / "empty", "positive_income_mean", domain={"field_of_study": "032100"})
+    assert empty["coverage"]["eligible_n"] == 0
+    assert empty["coverage"]["weighted_denominator"] is None
+    assert not np.any(empty["numerator"])
+
+
+@pytest.mark.parametrize("metric", ["positive_income_mean", "known_hours_mean", "suboccupied_rate", "unemployment_rate"])
+def test_row_order_preserves_aggregate_vectors(tmp_path, metric):
+    a = vectors(tmp_path / "a", metric)
+    b = vectors(tmp_path / "b", metric, rows=list(reversed(ROWS)))
+    assert sorted(a["numerator"].tolist()) == sorted(b["numerator"].tolist())
+    assert sorted(a["denominator"].tolist()) == sorted(b["denominator"].tolist())
+    assert a["coverage"] == b["coverage"]
