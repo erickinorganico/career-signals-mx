@@ -83,6 +83,10 @@ def _semantic_checks(payload: Mapping[str, object], public: bool) -> list[dict]:
         for source_id in method["source_snapshot_ids"]:
             if source_id not in tables["sources"]:
                 checks.append(_fail("method_source", f"{method['id']} has unknown source:{source_id}"))
+    for metric in payload["metrics"]:
+        basis = "nominal" if metric["unit"] == "MXN/month" else "not_applicable"
+        if metric["price_basis"] != basis:
+            checks.append(_fail("unit_price_basis", f"{metric['id']} has incompatible price basis"))
     for evidence in payload["evidence"]:
         if evidence["source_snapshot_id"] not in tables["sources"]:
             checks.append(_fail("evidence_source", f"{evidence['id']} has unknown source:{evidence['source_snapshot_id']}"))
@@ -115,6 +119,8 @@ def _semantic_checks(payload: Mapping[str, object], public: bool) -> list[dict]:
             checks.append(_fail("method_compatibility", f"records[{index}] method/design/source mismatch"))
         if metric and (record["unit"] != metric["unit"] or record["price_basis"] != metric["price_basis"]):
             checks.append(_fail("metric_compatibility", f"records[{index}] unit or price basis mismatch"))
+        if record["value"] is not None and (record["value"] < 0 or record["unit"] == "percent" and record["value"] > 100):
+            checks.append(_fail("value_range", f"records[{index}] value outside metric range"))
         for ref in record["evidence_refs"]:
             item = tables["evidence"].get(ref)
             if item is None or item["source_snapshot_id"] != record["source_snapshot_id"]:
@@ -136,6 +142,20 @@ def _semantic_checks(payload: Mapping[str, object], public: bool) -> list[dict]:
             checks.append(_fail("review_reason", f"records[{index}] REVIEW requires a reason"))
         if record["value"] is not None and record["weighted_denominator"] is None:
             checks.append(_fail("denominator", f"records[{index}] visible value lacks weighted denominator"))
+        lower, upper = precision["ci90_lower"], precision["ci90_upper"]
+        if lower is not None and upper is not None and (lower > upper or record["value"] is not None and not lower <= record["value"] <= upper):
+            checks.append(_fail("precision_interval", f"records[{index}] invalid interval ordering"))
+        if record["value"] is not None:
+            cv = precision["coefficient_variation"]
+            se = precision["standard_error"]
+            if (record["sample_size"] < 30 or support["n_psu_domain"] < 2 or support["design_df"] < 1 or
+                    record["weighted_denominator"] is None or record["weighted_denominator"] <= 0 or
+                    se is None or se <= 0 or cv is None or cv >= 30 or
+                    lower is None or upper is None or lower == upper or record["value"] == 0 or
+                    record["unit"] == "percent" and record["value"] == 100):
+                checks.append(_fail("precision_gate", f"records[{index}] unsupported value must be null"))
+            elif record["status"] == "MEASURED" and cv >= 15:
+                checks.append(_fail("precision_grade", f"records[{index}] CV requires REVIEW"))
         if public:
             if record["value"] is None and (record["weighted_denominator"] is not None or support["weighted_support_total"] is not None or
                                                any(precision[name] is not None for name in ("standard_error", "coefficient_variation", "ci90_lower", "ci90_upper"))):
@@ -145,8 +165,7 @@ def _semantic_checks(payload: Mapping[str, object], public: bool) -> list[dict]:
             value = record["value"]
             if value is not None and (estimate is None or value != estimate):
                 checks.append(_fail("value_estimate", f"records[{index}] public value must match exact gated estimate"))
-            lower, upper = precision["ci90_lower"], precision["ci90_upper"]
-            if lower is not None and upper is not None and (lower > upper or estimate is not None and not lower <= estimate <= upper):
+            if value is None and lower is not None and upper is not None and (lower > upper or estimate is not None and not lower <= estimate <= upper):
                 checks.append(_fail("precision_interval", f"records[{index}] invalid interval ordering"))
     return sorted(checks, key=lambda x: (x["id"], x["message"]))
 
@@ -172,5 +191,43 @@ def validate_public_research_v2(payload: Mapping[str, object]) -> list[dict]:
 
 
 def public_research_projection(payload: Mapping[str, object]) -> dict:
-    """Project only validated records through the public allowlist."""
-    raise NotImplementedError("public projection is established by Plan 01-03 Task 2")
+    """Project only validated records through a public allowlist, then validate."""
+    failures = validate_research_v2(payload)
+    if failures:
+        raise ValueError(f"invalid internal research v2: {failures}")
+    catalog_fields = {
+        "sources": ("id", "period_id", "url", "sha256", "terms_url", "authority", "acquired_at"),
+        "populations": ("id",),
+        "fields_of_study": ("id", "label"),
+        "occupations": ("id", "label"),
+        "industries": ("id", "label"),
+        "geographies": ("id", "label"),
+        "recorded_sexes": ("id", "label"),
+        "periods": ("id", "label", "start", "end"),
+        "metrics": ("id", "label", "unit", "price_basis"),
+        "methods": ("id", "design_id", "version", "source_snapshot_ids"),
+        "evidence": ("id", "source_snapshot_id", "label", "url", "kind"),
+    }
+    result: dict = {"schema_version": "2.0"}
+    for table, fields in catalog_fields.items():
+        result[table] = [{key: list(item[key]) if key == "source_snapshot_ids" else item[key] for key in fields}
+                         for item in payload[table]]
+    record_fields = (*GRAIN, "unit", "price_basis", "method_version", "design_id", "sample_size",
+                     "status", "reason", "value", "evidence_refs", "synthetic")
+    support_fields = ("n_psu_design", "n_strata_design", "n_psu_domain", "n_strata_domain", "design_df")
+    precision_fields = ("method", "ci_method", "level", "singleton_policy", "official_precision")
+    result["records"] = []
+    for row in payload["records"]:
+        suppressed = row["value"] is None
+        projected = {key: list(row[key]) if key == "evidence_refs" else row[key] for key in record_fields}
+        projected["weighted_denominator"] = None if suppressed else row["weighted_denominator"]
+        projected["support"] = {key: row["support"][key] for key in support_fields}
+        projected["support"]["weighted_support_total"] = None if suppressed else row["support"]["weighted_support_total"]
+        projected["precision"] = {key: row["precision"][key] for key in precision_fields}
+        for key in ("standard_error", "coefficient_variation", "ci90_lower", "ci90_upper"):
+            projected["precision"][key] = None if suppressed else row["precision"][key]
+        result["records"].append(projected)
+    failures = validate_public_research_v2(result)
+    if failures:
+        raise ValueError(f"invalid public research v2: {failures}")
+    return result

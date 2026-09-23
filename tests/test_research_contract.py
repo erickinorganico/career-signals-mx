@@ -93,13 +93,56 @@ def test_empty_catalog_and_blank_ids_fail():
     assert failures(fixture)
 
 
+def test_rounding_unit_and_singleton_claims_fail_closed():
+    fixture = research_fixture()
+    fixture["records"][0]["value"] = 119.9
+    assert "value_estimate" in failures(fixture)
+    fixture = research_fixture()
+    fixture["metrics"][0]["price_basis"] = "nominal"
+    fixture["records"][0]["price_basis"] = "nominal"
+    assert "unit_price_basis" in failures(fixture)
+    fixture = research_fixture()
+    fixture["records"][0]["precision"].update(singleton_policy="adjust", official_precision=True)
+    assert "singleton_precision" in failures(fixture)
+    fixture = research_fixture()
+    fixture["metrics"][0]["unit"] = "percent"
+    fixture["records"][0].update(unit="percent", value=120.0)
+    assert "value_range" in failures(fixture)
+
+
+@pytest.mark.parametrize("change", [
+    lambda r: r.update(sample_size=29),
+    lambda r: r["support"].update(n_psu_domain=1, n_strata_domain=1),
+    lambda r: r.update(weighted_denominator=0),
+    lambda r: r["precision"].update(standard_error=0),
+    lambda r: r["precision"].update(coefficient_variation=30),
+    lambda r: r["precision"].update(ci90_upper=None),
+])
+def test_unsupported_visible_values_fail_precision_gate(change):
+    fixture = research_fixture()
+    change(fixture["records"][0])
+    assert "precision_gate" in failures(fixture)
+
+
+def test_review_value_allows_cv_20_or_project_singleton_but_measured_does_not():
+    fixture = research_fixture()
+    record = fixture["records"][0]
+    record["precision"]["coefficient_variation"] = 20
+    assert validate_research_v2(fixture) == []
+    record.update(status="MEASURED", reason=None, synthetic=False)
+    assert "precision_grade" in failures(fixture)
+    record.update(status="REVIEW", reason="Project singleton adjustment")
+    record["precision"].update(singleton_policy="adjust", official_precision=False)
+    assert validate_research_v2(fixture) == []
+
+
 def test_suppressed_projection_never_leaks_value_equivalent_sentinels():
     fixture = research_fixture()
     record = fixture["records"][0]
     record.update(status="BLOCKED", reason="precision", value=None, estimate=123456.789,
                   weighted_denominator=123456.789)
     record["support"]["weighted_support_total"] = 123456.789
-    record["precision"].update(standard_error=987654.321, ci90_lower=987654.321,
+    record["precision"].update(standard_error=987654.321, ci90_lower=100000.0,
                                ci90_upper=987654.321, coefficient_variation=987654.321)
     public = public_research_projection(fixture)
     assert validate_public_research_v2(public) == []
