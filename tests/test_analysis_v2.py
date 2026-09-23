@@ -311,3 +311,32 @@ def test_repinning_a_numeric_value_cannot_override_independent_golden(monkeypatc
         snap: item["numeric_digest"] for snap, item in acceptance["audits"].items()})
     with pytest.raises(ValueError, match="independent Phase 2 golden"):
         analysis_v2.index_public_estimates(publics, acceptance)
+
+
+@pytest.mark.parametrize("target,value", [
+    ("responding_resident_n", 999999999),
+    ("population_eligible_n", 999999999),
+    ("domain_n", 999999999),
+    ("population_exclusion", -1),
+    ("metric_exclusion", "1"),
+    ("responding_resident_n", float("nan")),
+    ("responding_resident_n", True),
+])
+def test_coverage_cannot_change_independently_of_accepted_inputs(monkeypatch, target, value):
+    publics, acceptance = synthetic_inputs(monkeypatch)
+    snapshot = analysis_v2._snapshot(PERIODS[0])
+    audit = acceptance["audits"][snapshot]
+    population = next(iter(audit["population_coverage"].values()))
+    evaluated = next(iter(audit["evaluated_cells"].values()))
+    if target in ("responding_resident_n", "population_eligible_n"):
+        population[target] = value
+    elif target == "domain_n":
+        evaluated["coverage"][target] = value
+    elif target == "population_exclusion":
+        population["exclusions"]["unknown_field"] = value
+    else:
+        evaluated["exclusions"]["income_amount_unknown"] = value
+    # A caller-controlled extra hash does not approve different coverage.
+    acceptance["manifest"]["snapshots"][snapshot]["coverage_sha256"] = "0" * 64
+    with pytest.raises(ValueError, match="coverage"):
+        analysis_v2.index_public_estimates(publics, acceptance)
