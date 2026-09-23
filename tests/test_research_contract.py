@@ -152,6 +152,23 @@ def test_cv_must_agree_with_se_and_value_with_documented_rounding_tolerance():
     assert "precision_gate" in failures(fixture)
 
 
+def test_contributing_psus_cannot_exceed_observed_people_even_when_suppressed():
+    fixture = research_fixture()
+    record = fixture["records"][0]
+    record["sample_size"] = 30
+    record["support"].update(n_psu_domain=31, n_psu_design=31, n_strata_design=8, design_df=23)
+    assert "support" in failures(fixture)
+    record.update(status="BLOCKED", reason="precision", value=None)
+    assert "support" in failures(fixture)
+
+
+@pytest.mark.parametrize("weighted_support", [None, 0, 121])
+def test_visible_value_requires_positive_contributing_weight_within_denominator(weighted_support):
+    fixture = research_fixture()
+    fixture["records"][0]["support"]["weighted_support_total"] = weighted_support
+    assert "precision_gate" in failures(fixture)
+
+
 def test_suppressed_projection_never_leaks_value_equivalent_sentinels():
     fixture = research_fixture()
     record = fixture["records"][0]

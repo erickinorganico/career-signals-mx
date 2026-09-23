@@ -71,6 +71,13 @@ ausente o no positivo, error estándar ausente o cero, CV ausente o al menos
 0/100. `MEASURED` exige además CV menor que 15%; CV de 15% a menos de 30%
 puede ser `REVIEW` con motivo. Un ajuste singleton del proyecto también puede
 ser `REVIEW` con valor y `official_precision=false` si supera los demás gates.
+Las UPM del dominio contribuyente no pueden superar `sample_size` observado,
+incluso si el valor está suprimido. Para un valor visible,
+`weighted_support_total` es la suma positiva de pesos de personas que
+contribuyen a la medida; no puede superar `weighted_denominator`, la suma
+de pesos de la población elegible usada como denominador. Las dos sumas
+pueden coincidir para un total o una media calculada sobre el mismo conjunto,
+pero no se exige igualdad para proporciones con numerador subconjunto.
 Estas comprobaciones validan diagnósticos provistos; fase 2 calcula las
 estimaciones y varianzas y contrasta su precisión con R e INEGI.
 Para un valor visible positivo, CV debe coincidir con

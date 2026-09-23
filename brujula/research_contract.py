@@ -131,6 +131,7 @@ def _semantic_checks(payload: Mapping[str, object], public: bool) -> list[dict]:
                 checks.append(_fail("evidence_ref", f"records[{index}] orphan or wrong-source evidence:{ref}"))
         support = record["support"]
         if (support["n_psu_domain"] > support["n_psu_design"] or
+                support["n_psu_domain"] > record["sample_size"] or
                 support["n_strata_domain"] > support["n_strata_design"] or
                 support["n_strata_domain"] > support["n_psu_domain"] or
                 support["design_df"] != support["n_psu_design"] - support["n_strata_design"]):
@@ -155,6 +156,8 @@ def _semantic_checks(payload: Mapping[str, object], public: bool) -> list[dict]:
             calculated_cv = 100 * (se / record["value"]) if se is not None and record["value"] > 0 else None
             if (record["sample_size"] < 30 or support["n_psu_domain"] < 2 or support["design_df"] < 1 or
                     record["weighted_denominator"] is None or record["weighted_denominator"] <= 0 or
+                    support["weighted_support_total"] is None or support["weighted_support_total"] <= 0 or
+                    support["weighted_support_total"] > record["weighted_denominator"] or
                     se is None or se <= 0 or cv is None or cv >= 30 or calculated_cv is None or
                     not math.isfinite(calculated_cv) or calculated_cv >= 30 or
                     lower is None or upper is None or lower == upper or record["value"] == 0 or
