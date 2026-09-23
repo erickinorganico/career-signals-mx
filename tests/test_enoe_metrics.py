@@ -102,6 +102,25 @@ def test_missing_entity_does_not_enter_valid_entity_domain(tmp_path):
     assert float(result["numerator"].sum()) == 0.0
 
 
+@pytest.mark.parametrize("entity,geography", [(2, 3), ("02", "03"), (2, "03")])
+def test_conflicting_geography_aliases_fail_before_vectors(tmp_path, entity, geography):
+    sid, root, registry = fixture(tmp_path)
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    with pytest.raises(ValueError, match="conflict"):
+        metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT,
+                       {"entity": entity, "geography": geography}, "occupied_total")
+    assert frame.metric_cache.get("domain_state") is None
+
+
+@pytest.mark.parametrize("entity,geography", [(2, "02"), ("02", 2)])
+def test_equivalent_geography_aliases_share_one_domain(tmp_path, entity, geography):
+    sid, root, registry = fixture(tmp_path)
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    result = metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT,
+                            {"entity": entity, "geography": geography}, "occupied_total")
+    assert result["domain"].tolist() == [True, True, False]
+
+
 def test_unknown_labor_status_does_not_become_rate_zero(tmp_path):
     row = ROWS[0].replace(",2,1,1,1,100,", ",2,1,9,1,100,")
     employment = vectors(tmp_path / "employment", "employment_rate", rows=[row, ROWS[1], ROWS[2]])

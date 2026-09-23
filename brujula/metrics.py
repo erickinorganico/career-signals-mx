@@ -77,12 +77,18 @@ def _domain(frame: Frame, population_id: str, selector: Mapping) -> np.ndarray:
         if type(sex) is not int or sex not in (1, 2):
             raise ValueError("sex selector requires official recorded code 1 or 2")
         mask &= frame.sex == sex
-    entity = selector.get("entity", selector.get("geography"))
-    if entity is not None:
-        if isinstance(entity, str) and entity.strip(" ").isascii() and entity.strip(" ").isdigit():
-            entity = int(entity.strip(" "))
-        if type(entity) is not int or not 1 <= entity <= 32:
+    def official_entity(value):
+        if isinstance(value, str) and value.strip(" ").isascii() and value.strip(" ").isdigit():
+            value = int(value.strip(" "))
+        if type(value) is not int or not 1 <= value <= 32:
             raise ValueError("entity selector must be an official 01..32 code")
+        return value
+
+    aliases = [official_entity(selector[key]) for key in ("entity", "geography") if key in selector]
+    if len(aliases) == 2 and aliases[0] != aliases[1]:
+        raise ValueError("entity and geography selectors conflict")
+    entity = aliases[0] if aliases else None
+    if entity is not None:
         mask &= frame.columns[frame.inventory["geography_header"].lower()] == entity
     return mask
 
