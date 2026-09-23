@@ -69,7 +69,7 @@ Ninguna función necesaria para esta entrega se difiere por conveniencia. Nuevas
 
 ## Traceability
 
-Todos los requisitos están pendientes de verificación integral. Los ocho ZIP adquiridos y los módulos de adquisición/encuesta existentes son evidencia de avance parcial, no de un gate cumplido.
+Los requisitos SRC y CTR de la fase 1 tienen verificación independiente completa. Las fases posteriores permanecen pendientes hasta sus gates respectivos; la adquisición de ZIP y la presencia de módulos por sí solas no acreditan aceptación numérica ni publicación final.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
