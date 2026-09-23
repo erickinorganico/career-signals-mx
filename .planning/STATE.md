@@ -5,10 +5,10 @@ milestone_name: Release
 current_phase: 04
 current_phase_name: Offline Publication and Reproducible Operation
 status: executing
-stopped_at: 04-01 and 04-03 verified; beginning 04-02 installed numerical acceptance
-last_updated: "2026-09-23T20:39:33.358Z"
+stopped_at: 04-02 source review clean at ab01b14; installed eight-ZIP acceptance running, full recomputation replay and reference rebind still required
+last_updated: "2026-09-23T21:28:19.317Z"
 last_activity: 2026-09-23
-last_activity_desc: Wave 1 verified; 04-02 installed numerical acceptance begins
+last_activity_desc: "Wave 1 verified: 476 tests passed and independent export review clean; installed numerical migration begins"
 progress:
   total_phases: 5
   completed_phases: 3
@@ -71,6 +71,6 @@ None. The full real-data scope remains in v1.0.0.
 
 ## Session Continuity
 
-Last session: 2026-09-23T20:39:33.332Z
-Stopped at: 04-01 and 04-03 verified; beginning 04-02 installed numerical acceptance
+Last session: 2026-09-23T21:28:19.283Z
+Stopped at: 04-02 source review clean at ab01b14; installed eight-ZIP acceptance running, full recomputation replay and reference rebind still required
 Resume file: None
