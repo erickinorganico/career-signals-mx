@@ -27,8 +27,11 @@ def normalize_cmpe_code(raw_code: str | None, coding: dict) -> str | None:
         return None
     if raw_code == "999999":
         return None
-    selected = coding.get("focus_codes", {}).get(raw_code)
-    return selected["code"] if selected else None
+    normalized = raw_code.zfill(6)
+    if normalized not in {code.zfill(6) for code in FOCUS_CODES}:
+        return None
+    return normalized if any(item.get("code") == normalized
+                             for item in coding.get("focus_codes", {}).values()) else None
 
 
 def _registry(path: Path | None) -> tuple[dict, dict[str, dict]]:

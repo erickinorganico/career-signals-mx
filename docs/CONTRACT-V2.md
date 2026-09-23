@@ -140,3 +140,6 @@ numérico de ingresos siguen en fase 2 (`STAT-01`/`STAT-06`). La reconciliación
 de errores estándar con R e INEGI y la política singleton siguen siendo gates
 numéricos posteriores. Los ocho paquetes y sus miembros están documentados en
 [SOURCES.md](SOURCES.md).
+El helper de códigos CMPE reconoce las tres carreras foco verificadas tanto
+en el léxico original de cinco dígitos como en su forma SDEM de seis dígitos
+con cero inicial; claves ajenas, mal formadas o desconocidas devuelven null.

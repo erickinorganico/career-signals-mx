@@ -197,10 +197,12 @@ def test_catalog_encoding_alias_and_provenance_fail_closed(tmp_path):
 def test_unknown_cmpe_code_is_null(tmp_path):
     root, registry = _cache(tmp_path)
     item = inventory_snapshot("enoe_2025_q2", root, registry)
-    assert normalize_cmpe_code("31300", item["coding"]) == "031300"
-    assert normalize_cmpe_code("999999", item["coding"]) is None
-    assert normalize_cmpe_code(None, item["coding"]) is None
-    assert normalize_cmpe_code("99999", item["coding"]) is None
+    for raw in ("31300", "32100", "33100"):
+        normalized = raw.zfill(6)
+        assert normalize_cmpe_code(raw, item["coding"]) == normalized
+        assert normalize_cmpe_code(normalized, item["coding"]) == normalized
+    for unknown in ("999999", "99999", "12345", "", "31 300", "٣١٣٠٠", "0313000", None):
+        assert normalize_cmpe_code(unknown, item["coding"]) is None
 
 
 def test_newer_failed_attempt_cannot_hide_behind_successful_current(tmp_path):
