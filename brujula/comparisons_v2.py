@@ -58,6 +58,16 @@ GEO_ASSERTION = "reviewed_candidate_signature_2026-09-22"
 STATE_LIST_SHA256 = "0bda3e1035e65037524bebe92c02387851e85a43ed4830709e67dcbcf05df4ff"
 APPROVED_SNAPSHOTS_SHA256 = "2edea1c722262efc8ce3f43dc4f0418eb704f5575b9d08933e4c802bff581670"
 SNAPSHOT_IDS = tuple(RAW_SHA256)
+_PINNED_SNAPSHOT_IDENTITY = {
+    "enoe_2024_q3": ("2024-Q3", "ENT", ENT_CATALOG_SHA256),
+    "enoe_2024_q4": ("2024-Q4", "ENT", ENT_CATALOG_SHA256),
+    "enoe_2025_q1": ("2025-Q1", "ENT", ENT_CATALOG_SHA256),
+    "enoe_2025_q2": ("2025-Q2", "ENT", ENT_CATALOG_SHA256),
+    "enoe_2025_q3": ("2025-Q3", "CVE_ENT", CVE_CATALOG_SHA256),
+    "enoe_2025_q4": ("2025-Q4", "CVE_ENT", CVE_CATALOG_SHA256),
+    "enoe_2026_q1": ("2026-Q1", "CVE_ENT", CVE_CATALOG_SHA256),
+    "enoe_2026_q2": ("2026-Q2", "CVE_ENT", CVE_CATALOG_SHA256),
+}
 
 
 def _digest(value: object) -> str:
@@ -154,6 +164,7 @@ def _signature(record: dict, provenance: dict, registry: dict) -> tuple[dict, li
         reasons.append("grain_identity")
     sid = record.get("source_snapshot_id")
     approved = registry.get("snapshots", {}).get(sid)
+    pinned_identity = _PINNED_SNAPSHOT_IDENTITY.get(sid)
     if sid not in RAW_SHA256 or not approved or approved.get("raw_sha256") != RAW_SHA256.get(sid):
         reasons.append("unapproved_snapshot")
         approved = {}
@@ -171,8 +182,14 @@ def _signature(record: dict, provenance: dict, registry: dict) -> tuple[dict, li
             or approved.get("dictionary_sha256") != DICTIONARY_SHA256.get(sid)
             or approved.get("field_catalog_sha256") != CATALOG_SHA256):
         reasons.append("edition_revision")
-    if approved.get("period") != record.get("period_id"):
+    if (not pinned_identity
+            or approved.get("period") != pinned_identity[0]
+            or record.get("period_id") != pinned_identity[0]):
         reasons.append("period_provenance")
+    if (pinned_identity
+            and (approved.get("native_geography_field") != pinned_identity[1]
+                 or approved.get("state_catalog_sha256") != pinned_identity[2])):
+        reasons.append("geography_snapshot_identity")
     population = record.get("population_id")
     if registry.get("population_versions", {}).get(population) != POPULATION_SHA256:
         reasons.append("population_version")
