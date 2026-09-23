@@ -26,6 +26,10 @@ CATALOG_REFS = {
     "metric_id": "metrics", "method_id": "methods",
 }
 
+# CV is reported in percentage points. Allow rounding to two decimal places,
+# while always grading against the CV calculated from the supplied SE.
+CV_ABS_TOLERANCE_PP = 0.005
+
 
 @lru_cache(maxsize=2)
 def _validator(public: bool) -> Draft202012Validator:
@@ -148,13 +152,17 @@ def _semantic_checks(payload: Mapping[str, object], public: bool) -> list[dict]:
         if record["value"] is not None:
             cv = precision["coefficient_variation"]
             se = precision["standard_error"]
+            calculated_cv = 100 * (se / record["value"]) if se is not None and record["value"] > 0 else None
             if (record["sample_size"] < 30 or support["n_psu_domain"] < 2 or support["design_df"] < 1 or
                     record["weighted_denominator"] is None or record["weighted_denominator"] <= 0 or
-                    se is None or se <= 0 or cv is None or cv >= 30 or
+                    se is None or se <= 0 or cv is None or cv >= 30 or calculated_cv is None or
+                    not math.isfinite(calculated_cv) or calculated_cv >= 30 or
                     lower is None or upper is None or lower == upper or record["value"] == 0 or
                     record["unit"] == "percent" and record["value"] == 100):
                 checks.append(_fail("precision_gate", f"records[{index}] unsupported value must be null"))
-            elif record["status"] == "MEASURED" and cv >= 15:
+            elif not math.isclose(cv, calculated_cv, rel_tol=0, abs_tol=CV_ABS_TOLERANCE_PP):
+                checks.append(_fail("precision_cv", f"records[{index}] CV disagrees with standard error and value"))
+            elif record["status"] == "MEASURED" and (cv >= 15 or calculated_cv >= 15):
                 checks.append(_fail("precision_grade", f"records[{index}] CV requires REVIEW"))
         if public:
             if record["value"] is None and (record["weighted_denominator"] is not None or support["weighted_support_total"] is not None or

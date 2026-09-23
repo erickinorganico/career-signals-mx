@@ -73,6 +73,13 @@ puede ser `REVIEW` con motivo. Un ajuste singleton del proyecto también puede
 ser `REVIEW` con valor y `official_precision=false` si supera los demás gates.
 Estas comprobaciones validan diagnósticos provistos; fase 2 calcula las
 estimaciones y varianzas y contrasta su precisión con R e INEGI.
+Para un valor visible positivo, CV debe coincidir con
+`100 × error_estándar / valor` dentro de 0.005 puntos porcentuales
+(redondeo a dos decimales). Los umbrales de 15% y 30% se aplican tanto
+al CV declarado como al calculado; la tolerancia nunca permite cruzarlos.
+La validación completa de los extremos del IC90 contra `ci_method` queda
+para el gate numérico de fase 2; aquí se verifican presencia, orden y
+contención del valor.
 
 Cuando el valor es null, la proyección pone null en denominador ponderado,
 total ponderado de soporte, error estándar, CV y ambos extremos del IC90.

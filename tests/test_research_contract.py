@@ -128,12 +128,28 @@ def test_review_value_allows_cv_20_or_project_singleton_but_measured_does_not():
     fixture = research_fixture()
     record = fixture["records"][0]
     record["precision"]["coefficient_variation"] = 20
+    record["precision"]["standard_error"] = 24
     assert validate_research_v2(fixture) == []
     record.update(status="MEASURED", reason=None, synthetic=False)
     assert "precision_grade" in failures(fixture)
     record.update(status="REVIEW", reason="Project singleton adjustment")
     record["precision"].update(singleton_policy="adjust", official_precision=False)
     assert validate_research_v2(fixture) == []
+
+
+def test_cv_must_agree_with_se_and_value_with_documented_rounding_tolerance():
+    fixture = research_fixture()
+    precision = fixture["records"][0]["precision"]
+    precision["standard_error"] = 1000.0
+    assert "precision_gate" in failures(fixture)
+    precision["standard_error"] = 3.0
+    precision["coefficient_variation"] = 2.5049
+    assert validate_research_v2(fixture) == []
+    precision["coefficient_variation"] = 2.5051
+    assert "precision_cv" in failures(fixture)
+    precision["standard_error"] = 36.0
+    precision["coefficient_variation"] = 29.999
+    assert "precision_gate" in failures(fixture)
 
 
 def test_suppressed_projection_never_leaks_value_equivalent_sentinels():
