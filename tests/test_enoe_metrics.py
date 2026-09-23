@@ -3,6 +3,7 @@
 import numpy as np
 import pytest
 import brujula.metrics as metrics_module
+from dataclasses import replace
 
 from brujula.enoe_adapter import load_snapshot_frame
 from brujula.metrics import load_metric_manifest, metric_vectors
@@ -44,7 +45,9 @@ def test_real_frame_dictionary_mismatch_fails_before_metric(tmp_path):
     sid, root, registry = fixture(tmp_path)
     frame, _ = load_snapshot_frame(sid, root, registry)
     object.__setattr__(frame, "synthetic", False)
-    frame.inventory["dictionary_member"]["sha256"] = "0" * 64
+    inventory = dict(frame.inventory)
+    inventory["dictionary_member"] = {"sha256": "0" * 64}
+    frame = replace(frame, synthetic=False, inventory=inventory)
     with pytest.raises(ValueError, match="dictionary"):
         metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {}, "occupied_total")
 
@@ -109,7 +112,7 @@ def test_conflicting_geography_aliases_fail_before_vectors(tmp_path, entity, geo
     with pytest.raises(ValueError, match="conflict"):
         metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT,
                        {"entity": entity, "geography": geography}, "occupied_total")
-    assert frame.metric_cache.get("domain_state") is None
+    assert frame._metric_cache.get("domain_state") is None
 
 
 @pytest.mark.parametrize("entity,geography", [(2, "02"), ("02", 2)])
@@ -170,7 +173,21 @@ def test_frame_reuses_masks_for_metrics_in_same_domain(tmp_path, monkeypatch):
     assert counts == {"domain": 1, "states": 1}
     metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {"entity": 2}, "occupied_total")
     assert counts == {"domain": 2, "states": 2}
-    assert set(frame.metric_cache) == {"base", "domain_state"}
+    assert set(frame._metric_cache) == {"base", "domain_state"}
+
+
+def test_replaced_frame_rebuilds_cached_masks(tmp_path):
+    sid, root, registry = fixture(tmp_path)
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    before = metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {}, "occupied_total")
+    assert before["numerator"].tolist() == [1.0, 0.0, 1.0]
+    columns = dict(frame.columns)
+    columns["clase2"] = np.array([2, 2, 2])
+    transformed = replace(frame, columns=columns)
+    assert transformed._metric_cache == {}
+    after = metric_vectors(transformed, NATIONAL_15_PLUS_CONTEXT, {}, "occupied_total")
+    assert after["numerator"].tolist() == [0.0, 0.0, 0.0]
+    assert before["numerator"].tolist() == [1.0, 0.0, 1.0]
 
 
 def test_unknown_suboccupation_excluded_from_rate_denominator(tmp_path):

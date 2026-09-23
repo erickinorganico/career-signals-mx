@@ -4,6 +4,7 @@ import hashlib
 import io
 import json
 import zipfile
+from dataclasses import FrozenInstanceError
 
 import numpy as np
 import pytest
@@ -79,6 +80,21 @@ def test_complete_frame_design_and_order(tmp_path):
     _, reverse_audit = load_snapshot_frame(sid2, root2, registry2)
     assert audit["design"] == reverse_audit["design"]
     assert audit["frame_rows"] == reverse_audit["frame_rows"]
+
+
+def test_frame_column_and_nested_custody_mappings_are_immutable(tmp_path):
+    sid, root, registry = fixture(tmp_path)
+    frame, audit = load_snapshot_frame(sid, root, registry)
+    with pytest.raises(TypeError):
+        frame.columns["clase2"] = np.array([2, 2, 2])
+    with pytest.raises(TypeError):
+        frame.inventory["dictionary_member"]["sha256"] = "0" * 64
+    with pytest.raises(TypeError):
+        frame.inventory["sdem_header"][0] = "changed"
+    with pytest.raises(FrozenInstanceError):
+        frame.inventory = {}
+    assert frame.columns["clase2"].tolist() == [1, 2, 1]
+    assert json.loads(json.dumps(audit))["frame_rows"] == 3
 
 
 @pytest.mark.parametrize("snapshot_id,geography_field", [

@@ -41,13 +41,20 @@ class Frame:
     snapshot_id: str
     period: str
     source_id: str
-    inventory: dict
+    inventory: Mapping
     cmpe_catalog_keys: frozenset[str]
-    columns: dict[str, np.ndarray]
+    columns: Mapping[str, np.ndarray]
     synthetic: bool | None = None
     provenance: str = "unclassified"
     cmpe_catalog_labels: Mapping[str, str] = field(default_factory=lambda: MappingProxyType({}))
-    metric_cache: dict = field(default_factory=dict, repr=False, compare=False)
+    _metric_cache: dict = field(default_factory=dict, init=False, repr=False, compare=False)
+
+    def __post_init__(self) -> None:
+        # Copy the mapping boundaries: a caller cannot replace a column or
+        # change nested custody metadata after masks have been cached.
+        object.__setattr__(self, "columns", MappingProxyType(dict(self.columns)))
+        object.__setattr__(self, "inventory", _freeze_metadata(self.inventory))
+        object.__setattr__(self, "cmpe_catalog_labels", MappingProxyType(dict(self.cmpe_catalog_labels)))
 
     def __len__(self) -> int:
         return len(self.columns["fac_tri"])
@@ -69,6 +76,14 @@ class Frame:
     @property
     def cmpe(self) -> np.ndarray:
         return self.columns["cs_p14_c"]
+
+
+def _freeze_metadata(value):
+    if isinstance(value, Mapping):
+        return MappingProxyType({key: _freeze_metadata(item) for key, item in value.items()})
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_metadata(item) for item in value)
+    return value
 
 
 def _lex(raw: str | None, field: str, counts: Counter) -> str | None:

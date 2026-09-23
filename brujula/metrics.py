@@ -94,7 +94,7 @@ def _domain(frame: Frame, population_id: str, selector: Mapping) -> np.ndarray:
 
 
 def _base_states(frame: Frame) -> dict[str, np.ndarray]:
-    cached = frame.metric_cache.get("base")
+    cached = frame._metric_cache.get("base")
     if cached is not None:
         return cached
     occupied = frame.clase2 == 1
@@ -119,7 +119,7 @@ def _base_states(frame: Frame) -> dict[str, np.ndarray]:
     duration = frame.dur9c
     known_hours = occupied & (((hour >= 1) & (hour <= 168) & (duration >= 2) & (duration <= 8)) | ((hour == 0) & (duration == 1)))
     base = {key: value for key, value in locals().items() if isinstance(value, np.ndarray) and value.dtype == np.bool}
-    frame.metric_cache["base"] = base
+    frame._metric_cache["base"] = base
     return base
 
 
@@ -174,7 +174,7 @@ def metric_vectors(frame: Frame, population_id: str, domain: dict, metric_id: st
         raise ValueError("frame dictionary SHA-256 does not match official quarter definition")
     dictionary_binding = "synthetic_fixture" if frame.synthetic else "official_verified"
     selector_key = (population_id, tuple(sorted(domain.items())))
-    cached = frame.metric_cache.get("domain_state")
+    cached = frame._metric_cache.get("domain_state")
     if cached is not None and cached[0] == selector_key:
         d, state = cached[1], cached[2]
     else:
@@ -182,7 +182,7 @@ def metric_vectors(frame: Frame, population_id: str, domain: dict, metric_id: st
         state = _states(frame, d)
         # Only the latest domain is kept: bounded memory across hundreds of
         # entity/field/sex cells, with per-frame base masks reused throughout.
-        frame.metric_cache["domain_state"] = (selector_key, d, state)
+        frame._metric_cache["domain_state"] = (selector_key, d, state)
     o = state["occupied"]
     pea = state["pea"]
     unemployed = state["unemployed"]

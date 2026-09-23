@@ -75,6 +75,9 @@ def test_snapshot_evaluates_each_metric_and_strict_public_projection(monkeypatch
             assert all(public["precision"][key] is None for key in
                        ("standard_error", "coefficient_variation", "ci90_lower", "ci90_upper"))
     assert "cs_p14_c" not in json.dumps(result["audit"])
+    json.dumps(result["internal"])
+    json.dumps(result["public"])
+    json.dumps(result["audit"])
 
 
 def test_unverified_field_rejected(monkeypatch, tmp_path):
