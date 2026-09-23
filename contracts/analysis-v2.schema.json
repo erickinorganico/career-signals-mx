@@ -18,9 +18,8 @@
             "code_sha256": {"type": "object", "additionalProperties": {"$ref": "#/$defs/hash"}},
             "snapshots": {"type": "object", "minProperties": 8, "maxProperties": 8,
               "additionalProperties": {"type": "object", "additionalProperties": false,
-                "required": ["public_v2_digest", "public_content_sha256", "numeric_digest", "requested_count"],
-                "properties": {"public_v2_digest": {"$ref": "#/$defs/hash"},
-                  "public_content_sha256": {"$ref": "#/$defs/hash"}, "numeric_digest": {"$ref": "#/$defs/hash"},
+                "required": ["public_content_sha256", "numeric_digest", "requested_count"],
+                "properties": {"public_content_sha256": {"$ref": "#/$defs/hash"}, "numeric_digest": {"$ref": "#/$defs/hash"},
                   "requested_count": {"type": "integer", "minimum": 0}}}}
           }},
         "sources": {"type": "object", "minProperties": 8, "maxProperties": 8,

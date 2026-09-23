@@ -13,7 +13,7 @@ from brujula.publication_v2 import build_publication_model
 from tests.publication_v2_support import pinned_synthetic_packet
 
 
-PACKET = Path(__file__).resolve().parents[1] / ".cache/research/phase3-analysis/analysis.json"
+PACKET = Path(__file__).resolve().parents[1] / ".cache/research/phase4-analysis/analysis.json"
 
 
 @pytest.fixture
@@ -29,7 +29,7 @@ def model(synthetic_packet):
 @pytest.fixture(scope="module")
 def real_packet():
     if not PACKET.is_file():
-        pytest.skip("optional persisted real Phase 3 packet is unavailable")
+        pytest.skip("fresh installed Phase 4 packet is unavailable")
     return json.loads(PACKET.read_text(encoding="utf-8"))
 
 

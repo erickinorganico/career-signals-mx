@@ -193,10 +193,9 @@ def check_2026_pdf_benchmark(pdf: Path, records: list[dict]) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-root", type=Path, default=Path("artifacts/enoe"))
-    parser.add_argument("--workbook", type=Path, default=Path(".cache/research/precision_2025q2.xlsx"))
-    parser.add_argument("--records", type=Path,
-                        default=Path(".cache/research/phase2-acceptance/enoe_2025_q2-public-v2.json"),
+    parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--workbook", type=Path, required=True)
+    parser.add_argument("--records", type=Path, required=True,
                         help="Ignored local accepted aggregate research-v2 payload")
     parser.add_argument("--ledger", type=Path, required=True)
     args = parser.parse_args()

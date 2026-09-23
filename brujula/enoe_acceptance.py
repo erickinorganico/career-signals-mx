@@ -1,9 +1,7 @@
-"""Offline eight-quarter numerical acceptance; writes aggregate ledgers only.
+"""Installed eight-quarter numerical acceptance and immutable offline replay.
 
-An intentional public baseline change requires an evidence-reviewed manual
-update of the aggregate golden fixture from verified public payloads. The
---generate-golden option only initializes internal diagnostic hashes and
-cannot replace the pinned public, source, oracle, or official evidence.
+Golden authoring is outside this ordinary acceptance service. Every run checks
+the independently pinned public and internal aggregate content.
 """
 
 from __future__ import annotations
@@ -33,7 +31,9 @@ from .populations import COMPLETED_PROFESSIONAL_KNOWN_AGE, NATIONAL_15_PLUS_CONT
 from .research_contract import GRAIN, validate_public_research_v2, validate_research_v2
 from .source_inventory import FOCUS_CODES, inventory_all
 from .survey import SurveyDesign
-from .resources import aggregate_golden_path, snapshot_catalog_path, oracle_script_path, authored_resource_digests
+from .resources import (_bundled, aggregate_golden_path, contract_path,
+                        metric_catalog_path, snapshot_catalog_path, oracle_script_path,
+                        require_installed_package_path)
 from .runlock import BuildLock
 
 RTOL = 1e-10
@@ -48,6 +48,30 @@ CODE_FILES = frozenset({
 })
 GOLDEN_LF_SHA256 = "86bf44b6ab70b78c3b40f03c7366188912d0e7d4de81e87a6b4773b7e7f6764d"
 NUMERIC_DIGEST = "8db575e9d664864d1513e3b9658bd9b060c4cb3bed8b51561f208adeb97b9a00"
+NUMERIC_RESOURCES = frozenset({
+    "catalog/enoe-snapshots.json", "catalog/enoe-metrics.json",
+    "catalog/enoe-geography-equivalence.json", "fixtures/enoe-aggregate-golden.json",
+    "oracle/enoe_survey_oracle.R", "contracts/research-v2.schema.json",
+    "contracts/research-v2-public.schema.json",
+})
+
+
+def _numeric_resource_digests() -> dict[str, str]:
+    paths = {
+        "catalog/enoe-snapshots.json": snapshot_catalog_path(),
+        "catalog/enoe-metrics.json": metric_catalog_path(),
+        "catalog/enoe-geography-equivalence.json": _bundled(
+            "catalog", "enoe-geography-equivalence.json"),
+        "fixtures/enoe-aggregate-golden.json": aggregate_golden_path(),
+        "oracle/enoe_survey_oracle.R": oracle_script_path(),
+        "contracts/research-v2.schema.json": contract_path("research-v2.schema.json"),
+        "contracts/research-v2-public.schema.json": contract_path("research-v2-public.schema.json"),
+    }
+    if set(paths) != NUMERIC_RESOURCES:
+        raise AssertionError("numeric resource inventory drift")
+    return {name: hashlib.sha256(require_installed_package_path(path).read_bytes()
+                                 .replace(b"\r\n", b"\n")).hexdigest()
+            for name, path in sorted(paths.items())}
 
 
 def _digest(value: object) -> str:
@@ -174,17 +198,9 @@ def _run_attempt_locked(audit_dir: Path, operation, context: dict) -> dict:
     except Exception as exc:
         result = {"status": "BLOCKED", "reason": f"{type(exc).__name__}: {exc}"}
     result = {**context, **result, "attempt_id": attempt_id}
-    receipt = {"attempt_id": attempt_id, "started_at": started_at,
+    receipt = {**result, "started_at": started_at,
                "completed_at": datetime.now(timezone.utc).isoformat(),
-               "status": result["status"], "reason": result.get("reason"),
-               "numeric_content_digest": result.get("numeric_content_digest"),
-               "source_root": result.get("source_root"), "output_root": result.get("output_root"),
-               "audit_dir": str(audit_dir), "source_receipt_ids": result.get("source_receipt_ids"),
-               "code_sha256": result.get("code_sha256"),
-               "resource_sha256": result.get("resource_sha256"),
-               "rscript": result.get("rscript"), "rscript_version": result.get("rscript_version"),
-               "r_home": result.get("r_home"), "r_lib": result.get("r_lib"),
-               "official": result.get("official"), "pdf_2026_q2": result.get("pdf_2026_q2")}
+               "audit_dir": str(audit_dir)}
     receipts = audit_dir / "attempts"
     receipts.mkdir(parents=True, exist_ok=True)
     with (receipts / f"{attempt_id}.json").open("x", encoding="utf-8") as stream:
@@ -331,8 +347,25 @@ def _r_runtime(rscript: Path | None, r_home: Path | None, r_lib: Path | None) ->
                              text=True, timeout=30, env=env)
     if version.returncode != 0 or "version" not in version.stdout + version.stderr:
         raise ValueError("Rscript version check failed")
-    return {"rscript": str(executable), "r_home": str(r_home) if r_home else None,
-            "r_lib": str(library), "version": (version.stdout + version.stderr).strip(), "env": env}
+    expression = ('lib <- Sys.getenv("BRUJULA_R_LIB"); '
+                  'for (p in c("survey", "jsonlite")) { '
+                  'path <- find.package(p, lib.loc=lib, quiet=TRUE); '
+                  'if (length(path) != 1) quit(status=3); '
+                  'cat(p, as.character(packageVersion(p, lib.loc=lib)), '
+                  'normalizePath(path, winslash="/"), sep="\\t"); cat("\\n") }')
+    packages = subprocess.run([str(executable), "--vanilla", "-e", expression],
+                              capture_output=True, text=True, timeout=30, env=env)
+    lines = [line.split("\t") for line in packages.stdout.splitlines() if line.strip()]
+    if (packages.returncode != 0 or len(lines) != 2
+            or {parts[0] for parts in lines if len(parts) == 3} != {"survey", "jsonlite"}
+            or any(not Path(parts[2]).resolve().is_relative_to(library) for parts in lines if len(parts) == 3)):
+        raise ValueError("explicit R library lacks survey/jsonlite packages")
+    package_versions = {name: {"version": pkg_version, "path": path}
+                        for name, pkg_version, path in lines}
+    return {"rscript": str(executable), "rscript_sha256": hashlib.sha256(executable.read_bytes()).hexdigest(),
+            "r_home": str(r_home) if r_home else None,
+            "r_lib": str(library), "version": (version.stdout + version.stderr).strip(),
+            "packages": package_versions, "env": env}
 
 
 def _execute_r(frame_path: Path, cases_path: Path, ledger_path: Path, runtime: dict) -> dict:
@@ -475,21 +508,6 @@ def _semantic_audit(frame, frame_audit: dict) -> dict:
             "dictionary_sha256": frame.inventory["dictionary_member"]["sha256"]}
 
 
-def _prior_semantic_baseline() -> dict:
-    """Seed only from the prior independent aggregate audit; never row data."""
-    path = ROOT / ".cache/research/eight-quarter-audit.json"
-    prior = json.loads(path.read_text(encoding="utf-8"))
-    if prior.get("status") != "PASS" or len(prior.get("snapshots", [])) != 8:
-        raise ValueError("prior independent aggregate audit unavailable")
-    fields = ("occupied_rows_clase2_eq_1", "pea_rows_clase1_eq_1", "sub_o_by_clase2",
-              "hours_duration_joint_occupied", "principal_cohort", "n_psus", "n_strata",
-              "singleton_strata")
-    return {item["snapshot_id"]: {**{name: item["numeric"][name] for name in fields},
-                                  "source_member_sha256": item["source_member_sha256"],
-                                  "dictionary_sha256": item["dictionary_sha256"]}
-            for item in prior["snapshots"]}
-
-
 def quarter_claim_guard(quarter_outputs: list[dict]) -> dict:
     """Keep each quarter as a separate accepted estimate, without panel claims."""
     ids = [item["snapshot_id"] for item in quarter_outputs]
@@ -515,19 +533,19 @@ def _accept_unlocked(output_root: Path, audit_dir: Path, *, source_root: Path,
     )
     if generate_golden:
         raise ValueError("ordinary installed acceptance cannot generate golden")
-    output_root, audit_dir, source_root = (Path(path).resolve() for path in (output_root, audit_dir, source_root))
-    if len({output_root, audit_dir, source_root}) != 3:
-        raise ValueError("source, output and audit roots must be distinct")
+    output_root, audit_dir, source_root = _separate_roots(output_root, audit_dir, source_root)
+    if any(path.name != ".build.lock" for path in output_root.iterdir()):
+        raise FileExistsError("acceptance output root already contains historical artifacts")
     if hashlib.sha256(Path(workbook).read_bytes()).hexdigest() != WORKBOOK_SHA256:
         raise ValueError("official workbook SHA-256 mismatch")
     if hashlib.sha256(Path(pdf).read_bytes()).hexdigest() != PDF_2026_Q2_SHA256:
         raise ValueError("2026-Q2 official PDF SHA-256 mismatch")
     output_root.mkdir(parents=True, exist_ok=True)
     audit_dir.mkdir(parents=True, exist_ok=True)
-    golden_path = aggregate_golden_path()
+    golden_path = require_installed_package_path(aggregate_golden_path())
     if hashlib.sha256(golden_path.read_bytes().replace(b"\r\n", b"\n")).hexdigest() != GOLDEN_LF_SHA256:
         raise ValueError("independent package golden digest differs")
-    resources = authored_resource_digests()
+    resources = _numeric_resource_digests()
     runtime = _r_runtime(rscript, r_home, r_lib)
     started = time.monotonic()
     entry_code_hashes = _code_hashes()
@@ -653,6 +671,12 @@ def _accept_unlocked(output_root: Path, audit_dir: Path, *, source_root: Path,
     claim_guard = quarter_claim_guard([{"snapshot_id": key, **value} for key, value in quarter_ledgers.items()])
     if inventory_all(source_root) != inventory:
         raise ValueError("approved source current changed during numerical acceptance")
+    if _numeric_resource_digests() != resources:
+        raise ValueError("numerical package resource changed during acceptance")
+    final_runtime = _r_runtime(rscript, r_home, r_lib)
+    if any(final_runtime[key] != runtime[key] for key in
+           ("rscript_sha256", "version", "packages")):
+        raise ValueError("R executable or explicit survey library changed during acceptance")
     if _code_hashes() != entry_code_hashes:
         raise ValueError("acceptance code changed during run; results are exploratory only")
     manifest = {"status": "PASS", "snapshots": quarter_ledgers,
@@ -660,8 +684,11 @@ def _accept_unlocked(output_root: Path, audit_dir: Path, *, source_root: Path,
                 "audit_dir": str(audit_dir),
                 "source_receipt_ids": {item["snapshot_id"]: item["receipt_run_id"] for item in inventory},
                 "resource_sha256": resources,
+                "rscript_sha256": runtime["rscript_sha256"],
+                "workbook_path": str(Path(workbook).resolve()), "pdf_path": str(Path(pdf).resolve()),
                 "rscript": runtime["rscript"], "r_home": runtime["r_home"],
                 "r_lib": runtime["r_lib"], "rscript_version": runtime["version"],
+                "r_packages": runtime["packages"],
                 "runtime": {"python": platform.python_version(), "numpy": np.__version__},
                 "metric_manifest_sha256": metric_manifest["content_sha256"],
                 "code_sha256": entry_code_hashes,
@@ -677,14 +704,24 @@ def _accept_unlocked(output_root: Path, audit_dir: Path, *, source_root: Path,
                 "no_distinct_person_sum": claim_guard["no_distinct_person_sum"],
                 "no_independent_quarter_significance": claim_guard["no_independent_quarter_significance"],
                 "official_precision": False}
+    if manifest["numeric_content_digest"] != NUMERIC_DIGEST:
+        raise ValueError("canonical numerical digest differs from accepted content")
     return manifest
 
 
-def accept(output_root: Path, audit_dir: Path, *, source_root: Path,
-           workbook: Path, pdf: Path, rscript: Path | None = None,
-           r_home: Path | None = None, r_lib: Path | None = None,
-           generate_golden: bool = False) -> dict:
-    output_root = Path(output_root).resolve()
+def _separate_roots(output_root: Path, audit_dir: Path, source_root: Path) -> tuple[Path, Path, Path]:
+    roots = tuple(Path(path).resolve() for path in (output_root, audit_dir, source_root))
+    if any(a.is_relative_to(b) or b.is_relative_to(a)
+           for i, a in enumerate(roots) for b in roots[i + 1:]):
+        raise ValueError("source, output and audit roots must not overlap")
+    return roots
+
+
+def _accept_operation(output_root: Path, audit_dir: Path, *, source_root: Path,
+                      workbook: Path, pdf: Path, rscript: Path | None = None,
+                      r_home: Path | None = None, r_lib: Path | None = None,
+                      generate_golden: bool = False) -> dict:
+    output_root, audit_dir, source_root = _separate_roots(output_root, audit_dir, source_root)
     output_root.mkdir(parents=True, exist_ok=True)
     with BuildLock(output_root):
         return _accept_unlocked(output_root, audit_dir, source_root=source_root,
@@ -693,19 +730,29 @@ def accept(output_root: Path, audit_dir: Path, *, source_root: Path,
                                 generate_golden=generate_golden)
 
 
-def replay(source_root: Path, sealed_run: Path, audit_dir: Path, *,
-           rscript: Path | None = None, r_home: Path | None = None,
-           r_lib: Path | None = None) -> dict:
+def _replay_operation(source_root: Path, sealed_run: Path, audit_dir: Path, *,
+                      rscript: Path | None = None, r_home: Path | None = None,
+                      r_lib: Path | None = None) -> dict:
     """Read-only source and content proof over an existing sealed acceptance."""
-    sealed = json.loads(Path(sealed_run).read_text(encoding="utf-8"))
+    source_root, sealed_run, audit_dir = (Path(path).resolve() for path in
+                                          (source_root, sealed_run, audit_dir))
+    if audit_dir.is_relative_to(source_root) or source_root.is_relative_to(audit_dir):
+        raise ValueError("replay audit and source roots overlap")
+    if sealed_run.is_relative_to(audit_dir):
+        raise ValueError("replay audit cannot contain the sealed baseline")
+    if sealed_run.parent.name != "attempts":
+        raise ValueError("replay requires an immutable acceptance attempt receipt")
+    sealed = json.loads(sealed_run.read_text(encoding="utf-8"))
     if sealed.get("status") != "PASS" or sealed.get("numeric_content_digest") != NUMERIC_DIGEST:
         raise ValueError("sealed numerical acceptance is unavailable or changed")
     if sealed.get("code_sha256") != _code_hashes():
         raise ValueError("sealed executing code inventory changed")
-    if sealed.get("resource_sha256") != authored_resource_digests():
+    if sealed.get("resource_sha256") != _numeric_resource_digests():
         raise ValueError("sealed resource inventory changed")
     runtime = _r_runtime(rscript, r_home, r_lib)
-    if runtime["version"] != sealed.get("rscript_version"):
+    if (runtime["version"] != sealed.get("rscript_version")
+            or runtime["packages"] != sealed.get("r_packages")
+            or runtime["rscript_sha256"] != sealed.get("rscript_sha256")):
         raise ValueError("Rscript identity changed")
     inventory = inventory_all(source_root)
     if {item["snapshot_id"]: item["receipt_run_id"] for item in inventory} != sealed.get("source_receipt_ids"):
@@ -724,12 +771,65 @@ def replay(source_root: Path, sealed_run: Path, audit_dir: Path, *,
             raise ValueError(f"independent public pin changed: {sid}")
     if _digest({sid: sealed["snapshots"][sid]["numeric_digest"] for sid in sorted(sealed["snapshots"])}) != NUMERIC_DIGEST:
         raise ValueError("canonical numerical content digest changed")
+    replay_id = str(uuid.uuid4())
+    replay_audit = audit_dir / "replay-runs" / replay_id
+    output_root = audit_dir.parent / f"{audit_dir.name}-replay-outputs" / replay_id
+    _separate_roots(output_root, replay_audit, source_root)
+    prior_output = Path(sealed["output_root"]).resolve()
+    if output_root.is_relative_to(prior_output) or prior_output.is_relative_to(output_root):
+        raise ValueError("replay output overlaps sealed accepted output")
+    recomputed = _accept_operation(output_root, replay_audit, source_root=source_root,
+                                   workbook=Path(sealed["workbook_path"]),
+                                   pdf=Path(sealed["pdf_path"]), rscript=rscript,
+                                   r_home=r_home, r_lib=r_lib)
+    if recomputed["numeric_content_digest"] != sealed["numeric_content_digest"]:
+        raise ValueError("recomputed numerical digest differs from sealed acceptance")
+    for sid in sorted(sealed["snapshots"]):
+        old = json.loads(Path(sealed["snapshots"][sid]["public_v2_path"]).read_text(encoding="utf-8"))
+        fresh = json.loads(Path(recomputed["snapshots"][sid]["public_v2_path"]).read_text(encoding="utf-8"))
+        if fresh["records"] != old["records"] or fresh != old:
+            raise ValueError(f"recomputed public rows differ from sealed acceptance: {sid}")
+    if recomputed["oracle"] != sealed["oracle"] or recomputed["official"] != sealed["official"]:
+        raise ValueError("recomputed independent R or official gate differs")
     return {"status": "PASS", "operation": "read_only_replay",
             "source_root": str(Path(source_root).resolve()), "audit_dir": str(Path(audit_dir).resolve()),
-            "sealed_run": str(Path(sealed_run).resolve()), "numeric_content_digest": NUMERIC_DIGEST,
+            "sealed_run": str(sealed_run), "output_root": str(output_root),
+            "replay_audit": str(replay_audit),
+            "recomputed_manifest": recomputed, "numeric_content_digest": NUMERIC_DIGEST,
             "source_receipt_ids": sealed["source_receipt_ids"], "code_sha256": sealed["code_sha256"],
             "resource_sha256": sealed["resource_sha256"], "rscript": runtime["rscript"],
-            "rscript_version": runtime["version"], "r_home": runtime["r_home"], "r_lib": runtime["r_lib"]}
+            "rscript_sha256": runtime["rscript_sha256"],
+            "rscript_version": runtime["version"], "r_packages": runtime["packages"],
+            "official": recomputed["official"], "pdf_2026_q2": recomputed["pdf_2026_q2"],
+            "r_home": runtime["r_home"], "r_lib": runtime["r_lib"]}
+
+
+def accept(output_root: Path, audit_dir: Path, *, source_root: Path,
+           workbook: Path, pdf: Path, rscript: Path | None = None,
+           r_home: Path | None = None, r_lib: Path | None = None,
+           generate_golden: bool = False) -> dict:
+    """Run frozen acceptance with a current pointer and immutable full receipt."""
+    context = {"source_root": str(Path(source_root).resolve()),
+               "output_root": str(Path(output_root).resolve()),
+               "workbook_path": str(Path(workbook).resolve()),
+               "pdf_path": str(Path(pdf).resolve()),
+               "rscript": str(Path(rscript).resolve()) if rscript else None}
+    return run_attempt(audit_dir, lambda: _accept_operation(
+        output_root, audit_dir, source_root=source_root, workbook=workbook, pdf=pdf,
+        rscript=rscript, r_home=r_home, r_lib=r_lib,
+        generate_golden=generate_golden), context=context)
+
+
+def replay(source_root: Path, sealed_run: Path, audit_dir: Path, *,
+           rscript: Path | None = None, r_home: Path | None = None,
+           r_lib: Path | None = None) -> dict:
+    """Recompute frozen inputs and seal a separate immutable replay receipt."""
+    context = {"source_root": str(Path(source_root).resolve()),
+               "sealed_run": str(Path(sealed_run).resolve()),
+               "rscript": str(Path(rscript).resolve()) if rscript else None}
+    return run_attempt(audit_dir, lambda: _replay_operation(
+        source_root, sealed_run, audit_dir, rscript=rscript, r_home=r_home,
+        r_lib=r_lib), context=context)
 
 
 def main() -> int:
@@ -746,21 +846,15 @@ def main() -> int:
     parser.add_argument("--generate-golden", action="store_true")
     args = parser.parse_args()
     if args.replay:
-        operation = lambda: replay(args.source_root, args.replay, args.audit_dir,
-                                   rscript=args.rscript, r_home=args.r_home, r_lib=args.r_lib)
+        result = replay(args.source_root, args.replay, args.audit_dir,
+                        rscript=args.rscript, r_home=args.r_home, r_lib=args.r_lib)
     else:
         if args.output_root is None or args.workbook is None or args.pdf is None:
             parser.error("--output-root, --workbook and --pdf are required for acceptance")
-        operation = lambda: accept(args.output_root, args.audit_dir, source_root=args.source_root,
-                                   workbook=args.workbook, pdf=args.pdf, rscript=args.rscript,
-                                   r_home=args.r_home, r_lib=args.r_lib,
-                                   generate_golden=args.generate_golden)
-    context = {"source_root": str(args.source_root.resolve()),
-               "output_root": str(args.output_root.resolve()) if args.output_root else None,
-               "workbook": str(args.workbook.resolve()) if args.workbook else None,
-               "pdf": str(args.pdf.resolve()) if args.pdf else None,
-               "rscript": str(args.rscript.resolve()) if args.rscript else None}
-    result = run_attempt(args.audit_dir, operation, context=context)
+        result = accept(args.output_root, args.audit_dir, source_root=args.source_root,
+                        workbook=args.workbook, pdf=args.pdf, rscript=args.rscript,
+                        r_home=args.r_home, r_lib=args.r_lib,
+                        generate_golden=args.generate_golden)
     print(json.dumps({"status": result["status"], "reason": result.get("reason"),
                       "current": str(args.audit_dir / "current.json")}), flush=True)
     return 0 if result["status"] == "PASS" else 1

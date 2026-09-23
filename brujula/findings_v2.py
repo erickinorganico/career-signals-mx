@@ -16,7 +16,7 @@ from .claims_v2 import (METRIC_LABELS, POPULATION_LABELS, make_claim,
 from .comparisons_v2 import build_comparison_ledger, load_definition_registry
 from .estimates import FOCAL_FIELDS
 from .research_contract import GRAIN
-from .resources import _resource, contract_path
+from .resources import analysis_reference_path, contract_path, require_installed_package_path
 from .source_inventory import PERIODS
 
 
@@ -37,7 +37,7 @@ VALID_LIMITATIONS = {
 
 
 def _load_reference() -> dict:
-    return json.loads(_resource("fixtures", "data/fixtures", "enoe-analysis-reference.json").read_text(encoding="utf-8"))
+    return json.loads(require_installed_package_path(analysis_reference_path()).read_text(encoding="utf-8"))
 
 
 def _reference_from_packet(packet: dict) -> dict:
@@ -51,7 +51,9 @@ def _reference_from_packet(packet: dict) -> dict:
 
 
 def _source_manifest(index: dict, acceptance: Mapping[str, object]) -> dict:
-    fields = ("public_v2_digest", "public_content_sha256", "numeric_digest", "requested_count")
+    # The raw payload digest is verified by index_public_estimates but includes
+    # the acquisition clock. Analytical identity binds canonical content.
+    fields = ("public_content_sha256", "numeric_digest", "requested_count")
     snapshots = {sid: {key: acceptance["snapshots"][sid][key] for key in fields} for sid in SNAPSHOTS}
     sources = {}
     for sid in SNAPSHOTS:

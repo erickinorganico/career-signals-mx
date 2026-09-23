@@ -50,6 +50,14 @@ def _bundled(directory: str, filename: str) -> Path:
     return resource
 
 
+def require_installed_package_path(path: Path) -> Path:
+    """For installed evidence, reject a resource resolved outside this package."""
+    resolved = Path(path).resolve()
+    if CHECKOUT_ROOT is None and not resolved.is_relative_to(PACKAGE_ROOT):
+        raise FileNotFoundError(f"Installed resource escaped package: {path}")
+    return resolved
+
+
 def snapshot_catalog_path() -> Path:
     return _bundled("catalog", "enoe-snapshots.json")
 

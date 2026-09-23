@@ -63,15 +63,11 @@
                 "type": "object",
                 "additionalProperties": false,
                 "required": [
-                  "public_v2_digest",
                   "public_content_sha256",
                   "numeric_digest",
                   "requested_count"
                 ],
                 "properties": {
-                  "public_v2_digest": {
-                    "$ref": "#/$defs/hash"
-                  },
                   "public_content_sha256": {
                     "$ref": "#/$defs/hash"
                   },

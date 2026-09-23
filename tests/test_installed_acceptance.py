@@ -21,6 +21,10 @@ def test_new_package_inventory_is_exact_and_rejects_old_scripts():
            value for name, value in actual.items()}
     with pytest.raises(ValueError, match="inventory"):
         _check_codes({"code_sha256": old})
+    changed = dict(actual)
+    changed["brujula/enoe_acceptance.py"] = "0" * 64
+    with pytest.raises(ValueError, match="code changed"):
+        _check_codes({"code_sha256": changed})
 
 
 def test_package_golden_has_independent_content_hash():
@@ -31,19 +35,32 @@ def test_package_golden_has_independent_content_hash():
     assert "fixtures/enoe-aggregate-golden.json" in service.NUMERIC_RESOURCES
 
 
+def test_altered_golden_and_outside_package_resource_fail(monkeypatch, tmp_path):
+    from brujula import analysis_v2, resources
+
+    bad = tmp_path / "enoe-aggregate-golden.json"
+    bad.write_text('{"tampered":true}', encoding="utf-8")
+    monkeypatch.setattr(analysis_v2, "aggregate_golden_path", lambda: bad)
+    with pytest.raises(ValueError, match="independent package golden"):
+        analysis_v2._approved_public_pins()
+    monkeypatch.setattr(resources, "CHECKOUT_ROOT", None)
+    with pytest.raises(FileNotFoundError, match="escaped package"):
+        resources.require_installed_package_path(bad)
+
+
 def test_missing_r_or_sources_leave_distinct_failed_receipts(tmp_path):
     source = tmp_path / "source"
     output = tmp_path / "output"
     audit = tmp_path / "audit"
-    first = service.run_attempt(audit, lambda: service.accept(
+    first = service.accept(
         output, audit, source_root=source, workbook=tmp_path / "missing.xlsx",
         pdf=tmp_path / "missing.pdf", rscript=tmp_path / "missing-rscript",
-        r_lib=tmp_path / "missing-lib"))
+        r_lib=tmp_path / "missing-lib")
     assert first["status"] == "BLOCKED"
     assert "missing.xlsx" in first["reason"]
-    second = service.run_attempt(audit, lambda: service.accept(
+    second = service.accept(
         output, audit, source_root=source, workbook=tmp_path / "missing.xlsx",
-        pdf=tmp_path / "missing.pdf", rscript=Path(__file__), r_lib=tmp_path / "missing-lib"))
+        pdf=tmp_path / "missing.pdf", rscript=Path(__file__), r_lib=tmp_path / "missing-lib")
     assert second["status"] == "BLOCKED"
     assert first["attempt_id"] != second["attempt_id"]
     receipts = sorted((audit / "attempts").glob("*.json"))
@@ -54,18 +71,18 @@ def test_missing_r_or_sources_leave_distinct_failed_receipts(tmp_path):
 
 
 def test_golden_generation_is_rejected_before_any_source_read(tmp_path):
-    with pytest.raises(ValueError, match="cannot generate golden"):
-        service.accept(tmp_path / "out", tmp_path / "audit", source_root=tmp_path / "source",
-                       workbook=tmp_path / "workbook", pdf=tmp_path / "pdf",
-                       generate_golden=True)
+    result = service.accept(tmp_path / "out", tmp_path / "audit", source_root=tmp_path / "source",
+                            workbook=tmp_path / "workbook", pdf=tmp_path / "pdf",
+                            generate_golden=True)
+    assert result["status"] == "BLOCKED" and "cannot generate golden" in result["reason"]
 
 
 def test_nested_roots_are_rejected_before_output_creation(tmp_path):
     source = tmp_path / "source"
     nested_output = source / "output"
-    with pytest.raises(ValueError, match="must not overlap"):
-        service.accept(nested_output, tmp_path / "audit", source_root=source,
-                       workbook=tmp_path / "workbook", pdf=tmp_path / "pdf")
+    result = service.accept(nested_output, tmp_path / "audit", source_root=source,
+                            workbook=tmp_path / "workbook", pdf=tmp_path / "pdf")
+    assert result["status"] == "BLOCKED" and "must not overlap" in result["reason"]
     assert not nested_output.exists()
 
 
@@ -74,9 +91,9 @@ def test_existing_acceptance_artifacts_are_immutable(tmp_path):
     output.mkdir()
     historical = output / "enoe_2024_q3-public-v2.json"
     historical.write_text("historical", encoding="utf-8")
-    with pytest.raises(FileExistsError, match="historical artifacts"):
-        service.accept(output, tmp_path / "audit", source_root=tmp_path / "source",
-                       workbook=tmp_path / "workbook", pdf=tmp_path / "pdf")
+    result = service.accept(output, tmp_path / "audit", source_root=tmp_path / "source",
+                            workbook=tmp_path / "workbook", pdf=tmp_path / "pdf")
+    assert result["status"] == "BLOCKED" and "historical artifacts" in result["reason"]
     assert historical.read_text(encoding="utf-8") == "historical"
 
 

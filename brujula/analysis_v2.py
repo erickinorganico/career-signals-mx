@@ -18,7 +18,9 @@ from .populations import (COMPLETED_PROFESSIONAL_KNOWN_AGE,
 from .research_contract import GRAIN, _public_reason, validate_public_research_v2
 from .source_inventory import PERIODS
 from .source_inventory import _registry
-from .resources import _resource
+from .resources import (aggregate_golden_path, coverage_pins_path, oracle_script_path,
+                        require_installed_package_path)
+from .enoe_acceptance import CODE_FILES, GOLDEN_LF_SHA256
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,13 +33,7 @@ COMPUTED_REASONS = frozenset({"sample_size_below_30", "cv_at_least_30",
     "degenerate_interval", "zero_denominator", "zero_design_df",
     "nonpositive_denominator", "missing_standard_error", "invalid_cv",
     "empty_denominator"})
-EXPECTED_CODE_FILES = frozenset({
-    "scripts/accept_enoe_estimates.py", "scripts/enoe_survey_oracle.R",
-    "scripts/official_reconciliation.py", "brujula/acquisition.py",
-    "brujula/source_inventory.py", "brujula/enoe_adapter.py",
-    "brujula/populations.py", "brujula/metrics.py", "brujula/survey.py",
-    "brujula/estimates.py", "brujula/research_contract.py",
-})
+EXPECTED_CODE_FILES = CODE_FILES
 
 
 def _digest(value: object) -> str:
@@ -83,8 +79,10 @@ def _check_codes(manifest: dict) -> None:
     for name, expected in hashes.items():
         if not isinstance(name, str) or not isinstance(expected, str) or len(expected) != 64:
             raise ValueError("malformed accepted code hash")
-        path = (ROOT / name).resolve()
-        if not path.is_relative_to(ROOT) or not path.is_file():
+        package_root = Path(__file__).resolve().parent
+        path = require_installed_package_path(oracle_script_path()) if name == "brujula/oracle/enoe_survey_oracle.R" else (
+            package_root / name.removeprefix("brujula/"))
+        if not path.resolve().is_relative_to(package_root) or not path.is_file():
             raise ValueError("accepted code path is unavailable")
         actual = hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
         if actual != expected:
@@ -104,13 +102,17 @@ def _approved_sources() -> dict[str, dict]:
 
 def _approved_public_pins() -> dict[str, str]:
     """Phase 2 golden public content is independent of the caller's manifest."""
-    golden = json.loads((ROOT / "data/fixtures/enoe-aggregate-golden.json").read_text(encoding="utf-8"))
+    path = require_installed_package_path(aggregate_golden_path())
+    digest = hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    if digest != GOLDEN_LF_SHA256:
+        raise ValueError("independent package golden digest differs")
+    golden = json.loads(path.read_text(encoding="utf-8"))
     return golden["public_content_sha256_by_snapshot"]
 
 
 def _approved_coverage_pins() -> dict[str, str]:
     """Load independent accepted aggregate coverage references from package data."""
-    path = _resource("fixtures", "data/fixtures", "enoe-analysis-coverage-pins.json")
+    path = require_installed_package_path(coverage_pins_path())
     return json.loads(path.read_text(encoding="utf-8"))["coverage_sha256_by_snapshot"]
 
 

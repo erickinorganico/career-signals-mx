@@ -48,6 +48,22 @@ def test_saved_json_packet_remains_valid_after_round_trip(monkeypatch):
     assert loaded == packet
 
 
+def test_acquisition_clock_is_verified_but_not_analytical_identity(monkeypatch):
+    packet, publics, accepted, registry = _synthetic_packet(monkeypatch)
+    changed = deepcopy(publics)
+    sid = sorted(changed)[0]
+    changed[sid]["sources"][0]["acquired_at"] = "2026-09-24T00:00:00Z"
+    accepted["manifest"]["snapshots"][sid]["public_v2_digest"] = _digest(changed[sid])
+    replayed = findings_v2.build_analysis_packet(changed, accepted["manifest"],
+                                                  accepted["audits"], registry)
+    assert replayed == packet
+    assert findings_v2.validate_analysis_packet(replayed) == []
+    accepted["manifest"]["snapshots"][sid]["public_v2_digest"] = "0" * 64
+    with pytest.raises(ValueError, match="accepted hash"):
+        findings_v2.build_analysis_packet(changed, accepted["manifest"],
+                                          accepted["audits"], registry)
+
+
 @pytest.mark.parametrize("target", ["source", "record", "label", "coverage", "comparison",
                                      "opening", "limitations", "claim"])
 def test_coherently_rehashed_packet_tampering_fails(monkeypatch, target):
@@ -95,10 +111,11 @@ def test_cyclic_or_nonfinite_packet_is_a_validation_error():
 
 
 def test_real_accepted_aggregate_packet(monkeypatch):
-    base = ROOT / ".cache/research/phase2-acceptance"
-    if not (base / "final-replay-pass.json").is_file():
-        pytest.skip("accepted local aggregate cache unavailable")
-    manifest = json.loads((base / "final-replay-pass.json").read_text(encoding="utf-8"))
+    base = ROOT / ".cache/research/phase4-acceptance/output"
+    sealed = ROOT / ".cache/research/phase4-acceptance/audit/current.json"
+    if not sealed.is_file():
+        pytest.skip("fresh installed aggregate acceptance unavailable")
+    manifest = json.loads(sealed.read_text(encoding="utf-8"))
     publics = {sid: json.loads(path.read_text(encoding="utf-8")) for sid in manifest["snapshots"]
                for path in [base / f"{sid}-public-v2.json"]}
     audits = {sid: json.loads((base / f"{sid}-aggregate.json").read_text(encoding="utf-8"))
