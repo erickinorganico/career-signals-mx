@@ -157,6 +157,13 @@ status: complete
 - **Verification:** Focused fixed-reference and missing-reference tests passed.
 - **Committed in:** `9ed3244`.
 
+## CR-01 Fix Evidence
+
+- **Issue fixed:** Comparison signatures now independently pin each source snapshot to its exact quarter, native geography field, and state-catalog hash from the snapshot ID. A caller-supplied registry cannot coherently move an old quarter to `CVE_ENT`, move a new quarter back to `ENT`, or alter national metadata while preserving a supported delta.
+- **Regression coverage:** Added RED cases for old-quarter alias/catalog tampering, reverse new-quarter tampering, and the same metadata tamper on national records. All require `BLOCKED` with null deltas; the existing valid 2025-Q2→Q3 ENT→CVE boundary remains comparable.
+- **Commits:** `7569f83` (RED tests), `79dbd25` (GREEN fix).
+- **Verification:** `.venv\\Scripts\\python.exe -m pytest -q tests/test_comparisons_v2.py` — **21 passed**; `node --test tests/phase3_prohibitions_02.test.cjs` — **2 passed**.
+
 ## Known Stubs
 
 None. Null endpoint values and absent relative percentages are contracted findings, not placeholders.
