@@ -27,8 +27,9 @@ def _member_paths(period):
 
 def _zip(period, extra=None, omit=()):
     person, dictionary, catalog = _member_paths(period)
+    geo = "CVE_AGEB,CVE_ENT,CVE_LOC,CVE_MUN,CVEGEO" if period >= "2025-Q3" else "AGEB,ENT,LOC,MUN"
     members = {
-        person: b"ENT,CS_P14_C\n01,31300\n",
+        person: f"{geo},CS_P14_C\n".encode(),
         dictionary: "NOMBRE_CAMPO,LONGITUD,TIPO,NEMÓNICO,CATÁLOGO,RANGO_CLAVES\nCampo,6,C,cs_p14_c,cs_p14_c,\n".encode(),
         catalog: "CVE,DESCRIP\n31300,Ciencias políticas\n32100,Comunicación y periodismo\n33100,Derecho\n".encode(),
     }
@@ -81,9 +82,9 @@ def test_inventory_is_ordered_read_only_and_exact_member(tmp_path):
     assert first == second
     assert [item["period"] for item in first] == PERIODS
     assert first[0]["sdem_member"]["path"] == _member_paths("2024-Q3")[0]
-    assert first[0]["sdem_member"]["sha256"] == hashlib.sha256(b"ENT,CS_P14_C\n01,31300\n").hexdigest()
+    assert first[0]["sdem_member"]["sha256"] == hashlib.sha256(b"AGEB,ENT,LOC,MUN,CS_P14_C\n").hexdigest()
     assert sorted(str(p) for p in root.rglob("*")) == before
-    assert "01,31300" not in json.dumps(first)
+    assert "person record" not in json.dumps(first)
 
 
 def test_failed_or_running_current_and_missing_attempt_block(tmp_path):
