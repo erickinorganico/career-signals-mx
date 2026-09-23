@@ -6,7 +6,8 @@ import json
 
 import pytest
 
-from brujula.claims_v2 import make_claim, select_opening_claims, validate_claim
+from brujula.claims_v2 import (METRIC_LABELS, POPULATION_LABELS, make_claim,
+                               select_opening_claims, validate_claim)
 
 
 def _item(field="031300", unit="percent", value=48.25):
@@ -27,8 +28,8 @@ def _item(field="031300", unit="percent", value=48.25):
     return {"record_id": rid, "grain": grain, "record": row,
             "snapshot_sha256": "a" * 64, "method_version": "method:v1",
             "display": {"field": "Derecho" if field == "031300" else "Comunicación y periodismo",
-                        "population": "personas residentes con estudios profesionales terminados y edad conocida",
-                        "metric": "tasa de ocupación", "geography": "México",
+                        "population": POPULATION_LABELS["completed_professional_known_age"],
+                        "metric": METRIC_LABELS["employment_rate"], "geography": "México",
                         "recorded_sex": "todos los sexos registrados", "period": "2026-Q2"}}
 
 
@@ -67,7 +68,8 @@ def test_suppressed_record_and_boundary_selection():
     with pytest.raises(ValueError):
         make_claim("observation", item["record_id"], public_index={item["record_id"]: item}, comparison_ledger={})
     assert select_opening_claims([]) == []
-    candidates = [{"claim_id": f"v2k:{i}", "kind": "observation", "metric_id": "employment_rate",
+    candidates = [{"claim_id": f"v2k:{i}", "kind": "observation",
+                   "metric_id": ["employment_rate", "positive_income_coverage", "positive_income_mean", "main_job_informality_rate"][i],
                    "record_ids": [str(i)], "coverage_n": 40} for i in range(4)]
     assert len(select_opening_claims(candidates[:3])) == 3
     with pytest.raises(ValueError):
