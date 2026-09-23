@@ -8,7 +8,7 @@ import zipfile
 import pytest
 
 from brujula import acquisition
-from brujula.source_inventory import inventory_all, inventory_snapshot
+from brujula.source_inventory import inventory_all, inventory_snapshot, normalize_cmpe_code
 
 
 PERIODS = [f"{year}-Q{quarter}" for year, quarters in ((2024, (3, 4)), (2025, (1, 2, 3, 4)), (2026, (1, 2))) for quarter in quarters]
@@ -33,6 +33,11 @@ def _zip(period, extra=None, omit=()):
         dictionary: "NOMBRE_CAMPO,LONGITUD,TIPO,NEMÓNICO,CATÁLOGO,RANGO_CLAVES\nCampo,6,C,cs_p14_c,cs_p14_c,\n".encode(),
         catalog: "CVE,DESCRIP\n31300,Ciencias políticas\n32100,Comunicación y periodismo\n33100,Derecho\n".encode(),
     }
+    if period in ("2024-Q3", "2024-Q4"):
+        year, quarter = period.split("-Q")
+        root = f"conjunto_de_datos_sdem_enoe_{year}_{quarter}t/conjunto_de_datos"
+        fields = ["cs_p14_c"] * 4 if quarter == "3" else ["cs_p14_c"] * 5 + ["par_c", "cs_p20a_c"] + ["cs_p20b_c"] * 2
+        members[f"{root}/sdem_enoe_{year}_{quarter}t_bitacora_de_cambios.csv"] = ("Nombre de campo,Fecha de modificación\n" + "".join(f"{field},27/05/2025\n" for field in fields)).encode()
     for name in omit:
         members.pop(name)
     members.update(extra or {})
@@ -134,3 +139,70 @@ def test_missing_exact_member_fails_even_with_similar_csv(tmp_path):
     (receipt_path.parent / "attempts" / f"run_{sid}.json").write_text(json.dumps(receipt))
     with pytest.raises(acquisition.AcquisitionError):
         inventory_snapshot(sid, root, registry)
+
+
+def test_revision_log_is_required_and_exact_for_2024(tmp_path):
+    root, registry = _cache(tmp_path)
+    sid = "enoe_2024_q3"
+    assert inventory_snapshot(sid, root, registry)["revisions"]["fields"] == {"cs_p14_c": 4}
+    _replace_zip(tmp_path, root, registry, "2024-Q3", _zip("2024-Q3", omit=(
+        "conjunto_de_datos_sdem_enoe_2024_3t/conjunto_de_datos/sdem_enoe_2024_3t_bitacora_de_cambios.csv",)))
+    with pytest.raises(acquisition.AcquisitionError, match="bitácora"):
+        inventory_snapshot(sid, root, registry)
+
+
+def _replace_zip(tmp_path, root, registry, period, payload):
+    sid = "enoe_" + period.lower().replace("-", "_")
+    digest = hashlib.sha256(payload).hexdigest()
+    (root / "raw" / f"{digest}.zip").write_bytes(payload)
+    config = json.loads(registry.read_text(encoding="utf-8"))
+    item = next(x for x in config["snapshots"] if x["id"] == sid)
+    item["expected_sha256"] = digest
+    registry.write_text(json.dumps(config), encoding="utf-8")
+    current = root / "acquisitions" / sid / "current.json"
+    receipt = json.loads(current.read_text())
+    receipt["sha256"] = digest
+    current.write_text(json.dumps(receipt))
+    (current.parent / "attempts" / f"run_{sid}.json").write_text(json.dumps(receipt))
+
+
+def test_catalog_encoding_alias_and_provenance_fail_closed(tmp_path):
+    root, registry = _cache(tmp_path)
+    period = "2025-Q3"
+    sid = "enoe_2025_q3"
+    catalog = _member_paths(period)[2]
+    _replace_zip(tmp_path, root, registry, period, _zip(period, extra={catalog: b"CVE,DESCRIP\n31300,\xff\n"}))
+    with pytest.raises(acquisition.AcquisitionError, match="UTF-8"):
+        inventory_snapshot(sid, root, registry)
+    person = _member_paths(period)[0]
+    _replace_zip(tmp_path, root, registry, period, _zip(period, extra={person: b"ENT,CVE_ENT,CS_P14_C\n"}))
+    with pytest.raises(acquisition.AcquisitionError, match="geography"):
+        inventory_snapshot(sid, root, registry)
+    config = json.loads(registry.read_text())
+    config["terms_url"] = ""
+    registry.write_text(json.dumps(config))
+    with pytest.raises(acquisition.AcquisitionError, match="terms_url"):
+        inventory_snapshot(sid, root, registry)
+
+
+def test_unknown_cmpe_code_is_null(tmp_path):
+    root, registry = _cache(tmp_path)
+    item = inventory_snapshot("enoe_2025_q2", root, registry)
+    assert normalize_cmpe_code("31300", item["coding"]) == "031300"
+    assert normalize_cmpe_code("999999", item["coding"]) is None
+    assert normalize_cmpe_code(None, item["coding"]) is None
+    assert normalize_cmpe_code("99999", item["coding"]) is None
+
+
+def test_all_eight_cached_offline_when_present():
+    from pathlib import Path
+    root = Path("artifacts/enoe")
+    if not root.exists():
+        pytest.skip("local eight-package cache absent; offline acceptance remains incomplete")
+    items = inventory_all(root)
+    assert [x["period"] for x in items] == PERIODS
+    assert [x["sdem_column_count"] for x in items] == [114] * 4 + [115] * 4
+    assert [x["geography_header"] for x in items] == ["ENT"] * 4 + ["CVE_ENT"] * 4
+    assert [x["revisions"]["count"] for x in items[:2]] == [4, 9]
+    assert [x["revisions"]["date"] for x in items[:2]] == ["2025-05-27"] * 2
+    assert all(x["terms_url"] and x["acquired_at"] and x["sdem_member"]["sha256"] for x in items)
