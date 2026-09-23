@@ -143,6 +143,10 @@ None. Empty dictionaries/lists are input accumulation, no-finding output or nega
 
 Phase 4 can consume the validated analytical packet and its exact claim IDs. Publication/current promotion, report formatting and release audit remain Phase 4 work. The parent phase gate owns STATE.md, ROADMAP.md and final cross-plan verification.
 
+## Final persisted handoff correction
+
+Independent final review found that `metric_dictionary_refs` was emitted as a Python tuple, while persisted JSON reload produced a list. The packet validated in memory but the reloaded comparison ledger failed. RED `159cbcb` adds a synthetic save/load/validate regression and makes the real integration validate after JSON round trip. GREEN `a6696a1` emits a JSON-native list. Integration/comparison checks pass 41/41; root and independent reviewer both validate the original saved file successfully. Its file SHA-256 `9bbb5af3091c4cb02bec98d499ac522d77715f3a1316a30f906364fcc4c6537d` and content digest above are unchanged. No numerical recomputation, reference repinning or validation bypass was used.
+
 ## Self-Check: PASSED
 
 All 12 created plan files, the cached accepted packet and its receipt exist. All eight task/fix commit hashes resolve to Git commits. The final full regression, real aggregate integration, clean/bad Node controls and three canonical p5–p7 proof files support the results above.

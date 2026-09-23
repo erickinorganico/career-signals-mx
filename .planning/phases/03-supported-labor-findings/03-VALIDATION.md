@@ -1,9 +1,9 @@
 ---
 phase: 3
 slug: supported-labor-findings
-status: planned
-nyquist_compliant: false
-wave_0_complete: false
+status: validated
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-09-22
 ---
 
@@ -66,10 +66,54 @@ The plans carry seven operational prohibitions in structured `must_haves.prohibi
 
 `03-CONTEXT.md` contains locked decisions without D-NN IDs, so the audit maps each decision group by subject. Deferred Phase 4 formatting/exports/current and out-of-scope causal modeling, personal advice and deflation are excluded as specified. No ANA requirement or research feature is silently omitted.
 
+## Executed Nyquist audit — 2026-09-23
+
+The following map uses the 31 exact categories in `03-EDGE-PROBE.json`. Each reference names an executable assertion over a constructed public aggregate, comparator result, claim, or saved packet. The eight tests in `tests/test_phase3_edge_acceptance.py` were added by this audit; all other listed tests were created during Plans 03-01–03. A prior green test does not substitute for the final run after the JSON serialization correction.
+
+| Requirement / edge | Observable behavior | Behavioral test evidence |
+|---|---|---|
+| ANA-01 adjacency | A matching field, occupation and industry code retains separate ten-key identities and field-only profiles | `test_phase3_edge_acceptance.py::test_same_catalog_code_keeps_field_occupation_and_industry_separate` |
+| ANA-01 empty | A computed null remains visible; deleting its evaluation blocks construction | `test_analysis_v2.py::test_synthetic_complete_grid_and_canonical_ids`; `::test_missing_computation_blocks_instead_of_becoming_sparse` |
+| ANA-01 encoding | Blank and `999999` cannot become named CMPE fields; accepted catalog labels remain attached to field cells | `test_phase3_edge_acceptance.py::test_unknown_cmpe_key_cannot_become_a_named_field`; `test_analysis_v2.py::test_synthetic_complete_grid_and_canonical_ids` |
+| ANA-01 ordering | Record and field-catalog permutation preserves every profile cell and public record ID | `test_phase3_edge_acceptance.py::test_reordering_public_records_and_catalog_preserves_entire_profile_grid` |
+| ANA-02 boundary | An eight-period series yields seven adjacent and four annual slots; a forged period window cannot authorize reverse time | `test_comparisons_v2.py::test_ledger_has_all_slots_in_stable_order`; `::test_mutated_period_registry_cannot_authorize_a_different_window` |
+| ANA-02 adjacency | Adjacent pairs carry seasonality/overlap; annual pairs carry like-quarter/overlap | `test_comparisons_v2.py::test_temporal_pairs_keep_specific_seasonality_and_overlap_limits` |
+| ANA-02 empty | Missing quarter endpoints still yield all 11 blocked slots with unique IDs and null deltas | `test_comparisons_v2.py::test_fully_missing_pair_ids_remain_unique_across_series_and_slots` |
+| ANA-02 ordering | Reversed input periods and records produce the same chronological slot sequence | `test_comparisons_v2.py::test_ledger_has_all_slots_in_stable_order` |
+| ANA-02 precision | Rate change uses percentage points; income uses nominal MXN; zero prior has null relative percent | `test_comparisons_v2.py::test_approved_signatures_and_cross_boundary`; `::test_zero_prior_has_no_relative_percent_and_income_is_nominal` |
+| ANA-03 boundary | Changed source, population, sex, concept, metric, unit, basis, method or policy blocks with null deltas | `test_comparisons_v2.py::test_signature_mismatch_blocks`; `::test_missing_version_and_wrong_native_alias_are_blocked`; `::test_geography_concept_cannot_be_coherently_replaced` |
+| ANA-03 adjacency | Reviewed `ENT`→`CVE_ENT` code `02` passes; coherent native-alias/catalog tampering blocks | `test_comparisons_v2.py::test_approved_signatures_and_cross_boundary`; `::test_coherent_native_alias_and_catalog_tamper_is_blocked` |
+| ANA-03 empty | Suppressed endpoint, missing version or absent fixed entity reference produces blocked reason and null deltas | `test_comparisons_v2.py::test_suppression_and_missing_policy_block`; `::test_missing_reference_emits_blocked_entity_slots` |
+| ANA-03 encoding | Old native `ENT` and new `CVE_ENT` retain approved snapshot provenance while normalizing to `02`; a wrong alias is rejected | `test_comparisons_v2.py::test_approved_signatures_and_cross_boundary`; `::test_missing_version_and_wrong_native_alias_are_blocked` |
+| ANA-03 ordering | Metadata-key permutation leaves comparison ID and sorted reason set unchanged | `test_comparisons_v2.py::test_reason_and_id_order_are_stable` |
+| ANA-03 precision | Ledger omits change SE/p-value and the rotating-sample control rejects invented delta precision | `test_comparisons_v2.py::test_ledger_has_all_slots_in_stable_order`; `phase3_prohibitions_02.test.cjs` p4 |
+| ANA-04 boundary | Latest profiles contain every `01`–`32` state and both recorded-sex slots for cohort and three focal fields | `test_analysis_v2.py::test_synthetic_complete_grid_and_canonical_ids`; `phase3_prohibitions_01.test.cjs` p1 |
+| ANA-04 adjacency | State and sex sections remain separate; one-axis same-period contrasts pass and second-axis changes block | `test_analysis_v2.py::test_synthetic_complete_grid_and_canonical_ids`; `test_comparisons_v2.py::test_one_axis_slices_require_same_snapshot_and_reference` |
+| ANA-04 empty | Sparse state/sex cells stay present, null, reasoned and without weighted/precision diagnostics | `phase3_prohibitions_01.test.cjs` p1; `test_analysis_v2.py::test_profile_redaction_flows_to_downstream_record_index` |
+| ANA-04 ordering | Each field has ordered state codes and sex codes, independent of source order | `phase3_prohibitions_01.test.cjs` p1; `test_phase3_edge_acceptance.py::test_reordering_public_records_and_catalog_preserves_entire_profile_grid` |
+| ANA-04 precision | A visible cell retains support; complementary suppression clears parent value and uncertainty in the downstream index | `test_phase3_edge_acceptance.py::test_observed_support_is_not_replaced_by_a_weighted_population_estimate`; `test_analysis_v2.py::test_profile_redaction_flows_to_downstream_record_index` |
+| ANA-05 boundary | Exact-income response gives null at denominator zero, 50% at partial, 100% at full, and rejects over-response | `test_analysis_v2.py::test_observed_exact_income_response_has_explicit_denominator_and_empty_state` |
+| ANA-05 adjacency | Overlapping age/field exclusions remain distinct keyed nonexclusive counts, even when their sum exceeds the responding count | `test_phase3_edge_acceptance.py::test_overlapping_exclusions_survive_audit_permutation_without_additive_total` |
+| ANA-05 empty | Zero denominator yields null and `empty_denominator`; missing accepted coverage blocks | `test_analysis_v2.py::test_observed_exact_income_response_has_explicit_denominator_and_empty_state`; `::test_coverage_cannot_change_independently_of_accepted_inputs` |
+| ANA-05 ordering | Reordered aggregate-audit entries and exclusion keys leave displayed profile coverage unchanged | `test_phase3_edge_acceptance.py::test_overlapping_exclusions_survive_audit_permutation_without_additive_total` |
+| ANA-05 precision | Observed n remains separate from weighted population; complementary totals cannot reveal a suppressed part | `test_phase3_edge_acceptance.py::test_observed_support_is_not_replaced_by_a_weighted_population_estimate`; `test_analysis_v2.py::test_complementary_parent_cannot_reveal_one_suppressed_state` |
+| ANA-06 boundary | Zero, one, two and three supported openings succeed; a fourth is rejected | `test_claims_v2.py::test_suppressed_record_and_boundary_selection`; `test_phase3_edge_acceptance.py::test_one_or_two_supported_opening_claims_are_retained` |
+| ANA-06 adjacency | Equal displayed values from different fields cannot swap evidence IDs | `test_claims_v2.py::test_equal_values_from_different_fields_are_not_interchangeable` |
+| ANA-06 empty | No eligible synthetic claim yields no opening IDs and an explicit empty-finding limitation | `test_analysis_integration.py::test_synthetic_packet_has_complete_public_only_shape` |
+| ANA-06 encoding | Exact accented Spanish label and a Cyrillic lookalike substitution are checked; altered prose is rejected | `test_claims_v2.py::test_observation_has_exact_evidence_and_canonical_spanish`; `::test_equal_values_from_different_fields_are_not_interchangeable` |
+| ANA-06 ordering | Candidate permutation keeps opening IDs and relevance order; repeated packet assembly is identical | `test_claims_v2.py::test_opening_selection_is_stable_under_reorder_and_uses_distinct_themes`; `test_analysis_integration.py::test_synthetic_packet_has_complete_public_only_shape` |
+| ANA-06 precision | Changed typed amount, source/method metadata, invented significance and unsupported prose fail validation | `test_claims_v2.py::test_supported_descriptive_templates_and_exact_metadata`; `::test_observation_has_exact_evidence_and_canonical_spanish`; `phase3_prohibitions_03.test.cjs` p6 |
+
+The six requirement gates are: **ANA-01** accepted eight-snapshot index and expected profiles (`test_analysis_v2.py`, real `test_analysis_integration.py`); **ANA-02** complete descriptive time ledger (`test_comparisons_v2.py`, real packet); **ANA-03** strict signature and reviewed geography controls (`test_comparisons_v2.py`); **ANA-04** full state/sex grids and one-axis contrasts (`test_analysis_v2.py`, `test_comparisons_v2.py`, p1); **ANA-05** denominator, exclusions and disclosure continuity (`test_analysis_v2.py`, new edge tests); **ANA-06** exact claim regeneration, opening selection and strict packet validation (`test_claims_v2.py`, `test_analysis_integration.py`, p5–p7). The real integration must execute, not skip, and must read only accepted aggregate JSON.
+
+The new edge suite ran with `.venv/Scripts/python.exe -m pytest tests/test_phase3_edge_acceptance.py -q`: **8 passed in 4.19 s**. A strengthened collision fixture initially failed its independent coverage pin after two additional evaluated rows; correcting that test fixture yielded the passing run. This was fixture setup, not an implementation assertion failure.
+
+The final `.venv/Scripts/python.exe -m pytest -q` run after the JSON-native comparison-signature correction recorded **443 passed, 0 skipped in 151.46 s** in `.cache/research/phase3-final-controls/junit.xml`. The additional observed-support edge test was added after that run's collection and passed in the focused eight-test run; therefore this is **443 whole-suite passes plus a separate passing focused check**, representing 444 distinct current tests, not a claim of 444 passes in one run. The real accepted-aggregate integration executed in the whole suite. All seven refreshed `.cache/research/phase3-final-controls/p1-proof.json` through `p7-proof.json` have `status: green`, `located: true`, `flagged: false`, and evidence entries with `failFirst: true`, `passed: true`, `failFirstProof: violation-fixture`. The persisted `.cache/research/phase3-analysis/analysis.json` was reloaded and accepted by `validate_analysis_packet` with zero errors; its SHA-256 and content digest stayed unchanged. The direct readback is recorded in `.cache/research/phase3-analysis/persisted-validation.json`. The packet contains 6,739 sanitized records, 4,209 comparison slots, 38 exact claims and three opening IDs, with content digest `d2f28f26f993d052fb5f246db3262ad00b776081a663d608e0427962745a0c79`. No raw ZIP or R estimation was rerun. Independent review in `03-REVIEW.md` closed **CLEAN with zero open findings** after checking comparison signatures, geography evidence, Spanish claims, packet scope and final controls.
+
 ## Sign-off
 
-- [ ] Phase 2 real numerical acceptance and all eight public v2 roots verified before Phase 3 execution.
-- [ ] All new focused tests, full suite and real aggregate-only integration pass.
-- [ ] Thirty-one edge checks have specific evidence; all seven test-tier prohibitions have canonical GSD producer `green`, `located:true`, bad red, clean green and `flagged:false` results. Missing or failing controls block completion.
-- [ ] Independent reviewer checks all comparison signatures, geography evidence, canonical prose and full expected-cell counts.
-- [ ] `nyquist_compliant: true` only after implementation evidence exists.
+- [x] Phase 2 real numerical acceptance and all eight public v2 roots verified before Phase 3 execution.
+- [x] All new focused tests, full suite and real aggregate-only integration pass.
+- [x] Thirty-one edge checks have specific evidence; all seven test-tier prohibitions have canonical GSD producer `green`, `located:true`, bad red, clean green and `flagged:false` results.
+- [x] Independent reviewer checks all comparison signatures, geography evidence, canonical prose and full expected-cell counts (`03-REVIEW.md`: CLEAN, zero open findings).
+- [x] `nyquist_compliant: true` set only after executed behavioral, persisted-readback and prohibition evidence existed.

@@ -179,3 +179,10 @@ All eight implementation/control files and this summary exist. All six task hash
 ---
 *Phase: 03-supported-labor-findings*  
 *Completed: 2026-09-23*
+
+
+## Final integration corrections — axis semantics and independent chronology
+
+Root readback and independent claims review found same-period slices inherited temporal change/overlap caveats. RED `80f5b39` reproduces both sex/entity cases; GREEN `d1515e6` uses `descriptive_difference_only` for slices and preserves change, rotation and seasonal/like-quarter caveats only for longitudinal pairs. Numeric values, comparator IDs and source inputs are unchanged.
+
+A further adversarial reproduction reversed caller registry periods and obtained a supported Q3-to-Q2 backward change. Independently, the reviewer changed the geographic concept string and obtained a supported state comparison. RED `76ed82a` covers reversed/missing/duplicate windows and an altered concept. GREEN `11ae33b` checks the exact accepted period order, computes offsets from authoritative `PERIODS`, and pins the reviewed geography concept before endpoint equality. The ledger rejects an invalid period registry. All **28 comparison tests** and **two current Node controls** pass. Final Phase 3 full-suite, canonical refresh and real packet acceptance are recorded by the final integration gate; the earlier 403-test result predates these changes.

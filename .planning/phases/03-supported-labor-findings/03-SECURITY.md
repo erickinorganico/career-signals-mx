@@ -1,8 +1,8 @@
 ---
 phase: 3
 slug: supported-labor-findings
-status: in_progress
-threats_open: 4
+status: verified
+threats_open: 0
 asvs_level: 1
 register_authored_at_plan_time: true
 created: 2026-09-23
@@ -10,7 +10,7 @@ created: 2026-09-23
 
 # Phase 3 — Security verification
 
-This register carries the actual threat models authored in Plans 03-01, 03-02 and 03-03 into execution. It is not a passing security assessment. The configured threshold is high, with ASVS level 1 scoped to this local aggregate analysis pipeline; authentication and sessions do not apply.
+This register carries the actual threat models authored in Plans 03-01, 03-02 and 03-03 into execution. All 15 authored dispositions are now verified against the final implementation and behavioral controls. The configured threshold is high, with ASVS level 1 scoped to this local aggregate analysis pipeline; authentication and sessions do not apply.
 
 ## Trust boundaries
 
@@ -32,11 +32,11 @@ Plans did not assign severities; integrity and disclosure threats are conservati
 | 02 / T-03-07 | blocked delta | high | mitigate | Stable ordered endpoint IDs, all reason codes and null numeric fields. | CLOSED — full series/period slot IDs, stable sorted reasons and null blocked deltas; multiple fully missing series test and all 4,209 real IDs unique. |
 | 02 / T-03-08 | sparse pair | high | mitigate | Public-only endpoints; no diagnostic fallback or delta from null. | CLOSED — null/redaction endpoints block, fixed BC 02 reference cannot be replaced, absent reference retains blocked entity slots; focused controls pass. |
 | 02 / T-03-SC | dependency install | low | accept | No new package install in this plan. | CLOSED — no new dependency installation; approved source metadata is authored package JSON. |
-| 03 / T-03-09 | claim evidence IDs | high | mitigate | Resolve exact record/comparison/source/method refs and reject swapped-grain fixtures. | OPEN — verify implementation and behavioral controls |
-| 03 / T-03-10 | canonical prose | high | mitigate | Rebuild text from typed template and compare exact output; extra-number/label tests. | OPEN — verify implementation and behavioral controls |
-| 03 / T-03-11 | packet/claim text | high | mitigate | Public-only input, strict schema and nested/complementary suppression sentinels. | OPEN — verify implementation and behavioral controls |
-| 03 / T-03-12 | analytical finding | high | mitigate | Stable claim ID, evidence refs, content digest and explicit limitations. | OPEN — verify implementation and behavioral controls |
-| 03 / T-03-SC | dependency install | low | accept | No new package install in this plan. | plan-time acceptance; verify unchanged dependencies |
+| 03 / T-03-09 | claim evidence IDs | high | mitigate | Resolve exact record/comparison/source/method refs and reject swapped-grain fixtures. | CLOSED — exact record/comparison IDs, source SHA-256, method and evidence refs regenerate through make_claim/validate_claim; swapped equal-valued field, source/method/unit/quantity controls reject in tests/test_claims_v2.py. |
+| 03 / T-03-10 | canonical prose | high | mitigate | Rebuild text from typed template and compare exact output; extra-number/label tests. | CLOSED — canonical Spanish title/observation/interpretation/limitation regenerate in full; causal, advice, additional quantity, significance and Unicode changes reject. p5/p6 current canonical producers prove bad-red/clean-green content causation. |
+| 03 / T-03-11 | packet/claim text | high | mitigate | Public-only input, strict schema and nested/complementary suppression sentinels. | CLOSED — independent hash-only accepted pins, strict analysis-v2 schema, sanitized record_index, nested/complementary suppression and coherent rehash negatives. p7 separately rejects source activation and restored suppressed claims. CR-02 persisted JSON defect is fixed at a6696a1 with synthetic and real round-trip tests; root and independent persisted-artifact readbacks both return zero errors. |
+| 03 / T-03-12 | analytical finding | high | mitigate | Stable claim ID, evidence refs, content digest and explicit limitations. | CLOSED — stable v2k IDs, exact references, canonical digest/openings/limitations; altered openings, comparison caveats and caller-rehashed accepted input fail independent validation. Actual eight-snapshot packet contains 38 claims with supported record refs. |
+| 03 / T-03-SC | dependency install | low | accept | No new package install in this plan. | CLOSED — Plan03 added Python modules, schema, hash-only reference and synthetic controls; pyproject.toml/requirements.txt have no Phase3 dependency additions. |
 
 ## Acceptance gate
 
@@ -53,3 +53,7 @@ Plan 03-02 follow-through: another five entries closed at 9ed3244/1e741d2, with 
 Independent core review reopened T-03-06: the original negative changed only an alias and missed a coherent matching catalog-hash change. `03-CORE-REVIEW.md` records the executed reproduction; a scoped fix and independent recheck are in progress. The earlier 403-test result remains historical evidence, not closure of CR-01.
 
 CR-01 closure: independent reviewer rechecked original reproduction and the 21 comparison/two Node controls after 79dbd25; `03-CORE-REVIEW.md` is clean with its resolved history retained. Canonical p1–p4 proofs were refreshed against current code in `.cache/research/phase3-final-controls/`; all are green, located and not flagged with bad/clean content proof. Plan 03-03 and final phase review remain pending.
+
+Plan03 mitigation readback: all 15 authored dispositions now have concrete implementation and behavioral evidence; no high integrity/disclosure risk is accepted. Register remains in_progress until final independent review, Nyquist gap checks and persisted-artifact validation close. CR-02 does not justify repinning caller content or disabling standalone validation.
+
+Final closure at a6696a1: independent 03-REVIEW.md is clean (29 files, zero open findings), including CR-01 and CR-02 readbacks. The full regression passes 443 cases with no skips; the final eight-case edge suite covers one additional case beyond that collection. All seven refreshed canonical controls are green, located and not flagged with bad/clean proof. All 15 authored entries are closed, threats_open=0; dependency additions remain zero. This verifies the Phase3 analytical boundary, not Phase4 rendering or final release safety.
