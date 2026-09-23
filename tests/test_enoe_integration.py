@@ -1,6 +1,7 @@
 """Synthetic inventory and failure-state acceptance controls."""
 
 import json
+from copy import deepcopy
 from unittest.mock import patch
 
 import pytest
@@ -8,7 +9,8 @@ import pytest
 from brujula import estimates
 from brujula.metrics import load_metric_manifest
 from scripts.accept_enoe_estimates import (
-    compare_inventory, expected_acceptance_domains, verify_acceptance_domains,
+    _canonical_research_content, _digest, compare_inventory, compare_pinned_numeric_content,
+    expected_acceptance_domains, initialize_internal_golden, verify_acceptance_domains,
     write_attempt, run_attempt, _verify_result,
 )
 from test_estimates import synthetic_frame
@@ -43,6 +45,71 @@ def test_explicit_baja_california_context_domains_are_required():
         with pytest.raises(ValueError, match="complete acceptance domain inventory mismatch"):
             verify_acceptance_domains([d for d in required if not (
                 d["population_id"] == "national_15_plus_context" and d["geography_id"] == "02")], required)
+
+
+def _numeric_pin_fixture():
+    snapshot = "enoe_2024_q3"  # outside the latest R and official cases
+    public = {
+        "schema_version": "2.0", "sources": [{"id": snapshot}],
+        "fields_of_study": [{"id": "all"}], "geographies": [{"id": "mx"}],
+        "metrics": [{"id": "known_hours_mean"}],
+        "methods": [{"id": "enoe_taylor_project_adjust", "version": "adapter:old"}],
+        "records": [{"source_snapshot_id": snapshot, "metric_id": "known_hours_mean",
+                     "method_version": "adapter:old", "value": 42.5, "sample_size": 100,
+                     "weighted_denominator": 1000.0, "support": {"weighted_support_total": 1000.0},
+                     "precision": {"standard_error": 0.5}, "status": "REVIEW",
+                     "reason": "project_singleton_adjustment"}],
+    }
+    internal = deepcopy(public)
+    internal["records"][0]["estimate"] = 42.5
+    golden = {"metric_manifest_sha256": "metric-digest",
+              "public_content_sha256_by_snapshot": {snapshot: _digest(_canonical_research_content(public))},
+              "internal_content_sha256_by_snapshot": {snapshot: _digest(_canonical_research_content(internal))}}
+    return snapshot, public, internal, golden
+
+
+def test_non_oracle_older_quarter_metric_change_blocks_public_pin():
+    snapshot, public, internal, golden = _numeric_pin_fixture()
+    assert compare_pinned_numeric_content(public, internal, golden, snapshot, "metric-digest")
+    changed = deepcopy(public)
+    changed["records"][0]["value"] = 43.5
+    with pytest.raises(ValueError, match="pinned public numeric content"):
+        compare_pinned_numeric_content(changed, internal, golden, snapshot, "metric-digest")
+
+
+def test_suppressed_internal_only_diagnostic_change_blocks_hash_pin():
+    snapshot, public, internal, golden = _numeric_pin_fixture()
+    public["records"][0]["value"] = None
+    public["records"][0]["weighted_denominator"] = None
+    public["records"][0]["precision"]["standard_error"] = None
+    internal["records"][0]["value"] = None
+    internal["records"][0]["estimate"] = 42.5
+    golden["public_content_sha256_by_snapshot"][snapshot] = _digest(_canonical_research_content(public))
+    golden["internal_content_sha256_by_snapshot"][snapshot] = _digest(_canonical_research_content(internal))
+    changed = deepcopy(internal)
+    changed["records"][0]["estimate"] = 43.5
+    with pytest.raises(ValueError, match="pinned internal numeric diagnostics"):
+        compare_pinned_numeric_content(public, changed, golden, snapshot, "metric-digest")
+
+
+def test_method_source_hash_change_does_not_change_numeric_pin():
+    snapshot, public, internal, golden = _numeric_pin_fixture()
+    for document in (public, internal):
+        document["methods"][0]["version"] = "adapter:new"
+        document["records"][0]["method_version"] = "adapter:new"
+    assert compare_pinned_numeric_content(public, internal, golden, snapshot, "metric-digest")
+    with pytest.raises(ValueError, match="metric manifest"):
+        compare_pinned_numeric_content(public, internal, golden, snapshot, "wrong-metric-digest")
+
+
+def test_internal_initialization_cannot_rewrite_public_baseline():
+    snapshot, _, _, golden = _numeric_pin_fixture()
+    prior = {key: value for key, value in golden.items() if key != "internal_content_sha256_by_snapshot"}
+    assert initialize_internal_golden(prior, golden) == golden
+    changed = deepcopy(golden)
+    changed["public_content_sha256_by_snapshot"][snapshot] = "replacement"
+    with pytest.raises(ValueError, match="would change approved public"):
+        initialize_internal_golden(prior, changed)
 
 
 def test_failure_invalidates_previous_success(tmp_path):

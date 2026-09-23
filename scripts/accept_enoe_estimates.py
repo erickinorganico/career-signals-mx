@@ -1,4 +1,10 @@
-"""Offline eight-quarter numerical acceptance; writes aggregate ledgers only."""
+"""Offline eight-quarter numerical acceptance; writes aggregate ledgers only.
+
+An intentional public baseline change requires an evidence-reviewed manual
+update of the aggregate golden fixture from verified public payloads. The
+--generate-golden option only initializes internal diagnostic hashes and
+cannot replace the pinned public, source, oracle, or official evidence.
+"""
 
 from __future__ import annotations
 
@@ -13,6 +19,7 @@ import subprocess
 import sys
 import time
 import uuid
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
@@ -41,6 +48,41 @@ R_SCRIPT = ROOT / "scripts/enoe_survey_oracle.R"
 def _digest(value: object) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
                                      ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
+
+
+def _canonical_research_content(document: dict) -> dict:
+    """Keep all research content except the adapter-source method version."""
+    content = deepcopy(document)
+    for row in content["records"]:
+        row.pop("method_version", None)
+    for method in content["methods"]:
+        method.pop("version", None)  # root catalog copy of method_version
+    return content
+
+
+def compare_pinned_numeric_content(public: dict, internal: dict, golden: dict,
+                                   snapshot: str, metric_manifest_sha256: str,
+                                   *, require_internal: bool = True) -> dict:
+    """Compare complete public content and hash-only internal diagnostics."""
+    if golden.get("metric_manifest_sha256") != metric_manifest_sha256:
+        raise ValueError("pinned metric manifest digest differs from current definitions")
+    public_pin = golden.get("public_content_sha256_by_snapshot", {}).get(snapshot)
+    public_digest = _digest(_canonical_research_content(public))
+    if public_pin != public_digest:
+        raise ValueError(f"pinned public numeric content differs for {snapshot}")
+    internal_digest = _digest(_canonical_research_content(internal))
+    if require_internal and golden.get("internal_content_sha256_by_snapshot", {}).get(snapshot) != internal_digest:
+        raise ValueError(f"pinned internal numeric diagnostics differ for {snapshot}")
+    return {"public_content_sha256": public_digest, "internal_content_sha256": internal_digest}
+
+
+def initialize_internal_golden(prior: dict, candidate: dict) -> dict:
+    """Add internal hashes only; every approved public/official pin stays fixed."""
+    without_internal = lambda value: {key: item for key, item in value.items()
+                                      if key != "internal_content_sha256_by_snapshot"}
+    if without_internal(prior) != without_internal(candidate):
+        raise ValueError("golden initialization would change approved public or official evidence")
+    return {**prior, "internal_content_sha256_by_snapshot": candidate["internal_content_sha256_by_snapshot"]}
 
 
 def _code_hashes() -> dict[str, str]:
@@ -435,8 +477,9 @@ def accept(output_root: Path, audit_dir: Path, *, generate_golden: bool = False)
     quarter_ledgers = {}
     oracle = official = pdf_benchmark = None
     golden_cases = {}
-    prior_golden = None if generate_golden else json.loads(GOLDEN.read_text(encoding="utf-8"))
-    semantic_baseline = _prior_semantic_baseline() if generate_golden else prior_golden["semantic_baseline"]
+    prior_golden = json.loads(GOLDEN.read_text(encoding="utf-8"))
+    semantic_baseline = prior_golden["semantic_baseline"]
+    internal_digests = {}
     for item in inventory:
         snapshot = item["snapshot_id"]
         period = item["period"]
@@ -460,6 +503,10 @@ def accept(output_root: Path, audit_dir: Path, *, generate_golden: bool = False)
         coverage = _verify_result(result, domains, metrics, snapshot, period, required_domains)
         audit = result["audit"]
         public = result["public"]
+        pinned = compare_pinned_numeric_content(public, result["internal"], prior_golden,
+                                                snapshot, metric_manifest["content_sha256"],
+                                                require_internal=not generate_golden)
+        internal_digests[snapshot] = pinned["internal_content_sha256"]
         counts = {}
         for row in public["records"]:
             category = f"{row['metric_id']}|{row['status']}|{row['reason']}"
@@ -474,6 +521,8 @@ def accept(output_root: Path, audit_dir: Path, *, generate_golden: bool = False)
                   "requested_count": audit["requested_count"], "evaluated_count": audit["evaluated_count"],
                   "metric_status_counts": dict(sorted(counts.items())),
                   "public_records": public["records"], "numeric_digest": _digest(public["records"]),
+                  "public_content_sha256": pinned["public_content_sha256"],
+                  "internal_content_sha256": pinned["internal_content_sha256"],
                   "elapsed_seconds": round(time.monotonic() - mark, 3)}
         ledger_path = audit_dir / f"{snapshot}-aggregate.json"
         public_path = audit_dir / f"{snapshot}-public-v2.json"
@@ -483,6 +532,8 @@ def accept(output_root: Path, audit_dir: Path, *, generate_golden: bool = False)
                                           allow_nan=False, indent=2) + "\n", encoding="utf-8")
         quarter_ledgers[snapshot] = {"path": str(ledger_path), "public_v2_path": str(public_path),
                                      "public_v2_digest": _digest(public), "numeric_digest": ledger["numeric_digest"],
+                                     "public_content_sha256": pinned["public_content_sha256"],
+                                     "internal_content_sha256": pinned["internal_content_sha256"],
                                      "requested_count": ledger["requested_count"], "elapsed_seconds": ledger["elapsed_seconds"]}
         for row in result["internal"]["records"]:
             key = "|".join((snapshot, row["population_id"], row["field_of_study_id"],
@@ -521,16 +572,19 @@ def accept(output_root: Path, audit_dir: Path, *, generate_golden: bool = False)
               "oracle_cases": golden_cases,
               "official_cells": official["cells"],
               "semantic_baseline": semantic_baseline,
+              "metric_manifest_sha256": metric_manifest["content_sha256"],
+              "public_content_sha256_by_snapshot": prior_golden["public_content_sha256_by_snapshot"],
+              "internal_content_sha256_by_snapshot": internal_digests,
               "national_population_se_relative_difference":
                   official["cells"]["mx|population_total"]["se_relative_difference"]}
-    if generate_golden:
-        GOLDEN.parent.mkdir(parents=True, exist_ok=True)
-        GOLDEN.write_text(json.dumps(golden, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    elif json.loads(GOLDEN.read_text(encoding="utf-8")) != golden:
+    initialized = initialize_internal_golden(prior_golden, golden) if generate_golden else None
+    if not generate_golden and prior_golden != golden:
         raise ValueError("aggregate golden fixture differs from approved numeric content")
     claim_guard = quarter_claim_guard([{"snapshot_id": key, **value} for key, value in quarter_ledgers.items()])
     if _code_hashes() != entry_code_hashes:
         raise ValueError("acceptance code changed during run; results are exploratory only")
+    if initialized is not None:
+        GOLDEN.write_text(json.dumps(initialized, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     manifest = {"status": "PASS", "snapshots": quarter_ledgers,
                 "runtime": {"python": platform.python_version(), "numpy": np.__version__},
                 "metric_manifest_sha256": metric_manifest["content_sha256"],
@@ -554,7 +608,8 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", type=Path, default=Path("artifacts/enoe"))
     parser.add_argument("--audit-dir", type=Path, default=Path(".cache/research/phase2-acceptance"))
-    parser.add_argument("--generate-golden", action="store_true")
+    parser.add_argument("--generate-golden", action="store_true",
+                        help="initialize internal hashes after all existing public and official pins match")
     args = parser.parse_args()
     args.audit_dir.mkdir(parents=True, exist_ok=True)
     result = run_attempt(args.audit_dir, lambda: accept(args.output_root, args.audit_dir,
