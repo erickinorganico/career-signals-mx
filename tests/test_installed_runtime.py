@@ -33,6 +33,7 @@ def test_packaged_oracle_is_byte_identical_to_authored_script():
 
 
 def test_missing_resource_fails_closed(monkeypatch, tmp_path):
-    monkeypatch.setattr(resources, "PACKAGE_ROOT", tmp_path)
+    monkeypatch.setattr(resources, "files", lambda _package: tmp_path)
+    monkeypatch.setattr(resources, "CHECKOUT_ROOT", None)
     with pytest.raises(FileNotFoundError, match="enoe-snapshots.json"):
         resources.snapshot_catalog_path()
