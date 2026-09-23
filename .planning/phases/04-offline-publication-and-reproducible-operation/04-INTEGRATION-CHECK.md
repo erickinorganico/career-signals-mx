@@ -48,3 +48,31 @@ Checked the subsequent `04-04`, `04-05` and `04-06` plan edits on 2026-09-23. **
 - `04-04` now preserves canonical `figure:` IDs in metadata and returned mappings, maps them to portable ASCII filenames by stripping only that fixed prefix, and requires collision rejection. Task 1 invokes the exact artifact contract. This changes file representation only; it does not create new figure identities or reduce paired SVG/PNG/table coverage.
 
 Static plan review only. Execution must still produce the specified installed real-data, test, fault and visual evidence before Phase 4 can pass its implementation gate.
+
+## Targeted sealed-input and reconstruction replay check
+
+Checked the subsequent `04-05-PLAN.md` seal/replay edits on 2026-09-23 against the accepted Phase 3 packet, `build_publication_model`, `validate_analysis_packet`, `export_public_tables`, and the Phase 2 acceptance receipt shape. This check excludes the unfinished report renderer.
+
+The new sealed `analysis.json` is feasible: the accepted packet schema contains sanitized records, profiles, coverage, comparisons, claims and a canonical content digest, without private output-root paths. `build_publication_model(packet)` revalidates its independent reference and derives deterministic figure links. The exporter accepts that validated model and emits a fresh directory; logical table comparisons can distinguish content from DuckDB/Parquet/PDF container bytes. The revised plan places build receipts/current under the publication output root, treats the numerical audit as read-only, and makes `research-replay` reconstruct aggregate reports/exports in a separate attempt with before/after source and baseline checks. This preserves the full-survey role of `enoe-replay`.
+
+**Result: ISSUES FOUND — 1 BLOCKER, 0 WARNING.** The packet and selected numerical acceptance are each checked, but their relationship is not an explicit build/seal condition.
+
+1. **BLOCKER — key_links_planned / cross_plan_data_contracts, Plan 04-05 Task 1.** `validate_analysis_packet` proves the packet matches independent Phase 3 pins; it does not compare that packet to the *particular* immutable Phase 2 acceptance receipt selected by `research-build`. The plan seals `analysis.json` and an acceptance attempt ID/SHA side by side, yet no task says to compare the packet's `source_manifest.acceptance` and `source_manifest.sources` with the selected receipt and live eight-source identities before seal. A separately valid packet can therefore be attributed to a different acceptance attempt without a declared content/lineage equivalence check. **Fix:** in Task 1, require exact cross-checks of numerical digest, metric/code identities, each snapshot's public/numeric digest and requested count, and source SHA/URL/method between the persisted packet, selected immutable/current acceptance and live source receipts. Reject a mismatch before sealing and add a mismatched-packet-versus-receipt negative control. Do not require an `operation` field on the success receipt or copy private paths into the public run.
+
+```yaml
+issues:
+  - plan: "04-05"
+    task: 1
+    dimension: key_links_planned
+    severity: BLOCKER
+    description: "No explicit cross-check binds sealed analysis.json content/source manifest to the selected immutable numerical acceptance receipt."
+    fix_hint: "Compare canonical acceptance and eight-source fields across packet, selected receipt and live sources before seal; test mismatched valid inputs."
+```
+
+## Final packet-to-acceptance binding recheck
+
+Checked the final targeted `04-05-PLAN.md` revision on 2026-09-23. **Result: PASS; the sealed-input BLOCKER above is resolved.** The earlier issue remains as revision history and does not apply to the current plan.
+
+The revised readback and Task 1 explicitly compare the sealed packet's `source_manifest.acceptance` to the selected immutable numerical receipt before promotion. The named fields match `findings_v2._source_manifest`: `status`, `numeric_content_digest`, `metric_manifest_sha256`, fixed `code_sha256`, and for each of eight snapshots `public_content_sha256`, `numeric_digest`, `requested_count`. The packet's source `period_id`, `sha256`, `url` and `method_version` are compared with accepted catalogs and live custody. The sanitized summary retains acceptance attempt ID and receipt SHA separately from canonical content, and Task 2 cross-checks the sealed `analysis.json` on current resolution; reconstruction replay repeats that check. Mismatched packet/receipt association and altered summary are explicit negative tests.
+
+The distinction between canonical content and acquisition attempts is correct: a newly accepted attempt with identical approved content can reproduce the same analysis packet while its source/current and acceptance attempt identities are still verified and recorded separately. Raw payload digests and acquisition clocks are intentionally outside the analytical identity. This remains a static plan verdict; implementation and real installed replay evidence are still required.
