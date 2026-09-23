@@ -50,9 +50,13 @@ class Frame:
     _metric_cache: dict = field(default_factory=dict, init=False, repr=False, compare=False)
 
     def __post_init__(self) -> None:
-        # Copy the mapping boundaries: a caller cannot replace a column or
-        # change nested custody metadata after masks have been cached.
-        object.__setattr__(self, "columns", MappingProxyType(dict(self.columns)))
+        # Own each array as well as the mapping. A replacement frame may be
+        # built from caller-owned writable columns; those aliases must not
+        # change a mask after it has been cached.
+        columns = {name: np.array(values, copy=True) for name, values in self.columns.items()}
+        for values in columns.values():
+            values.flags.writeable = False
+        object.__setattr__(self, "columns", MappingProxyType(columns))
         object.__setattr__(self, "inventory", _freeze_metadata(self.inventory))
         object.__setattr__(self, "cmpe_catalog_labels", MappingProxyType(dict(self.cmpe_catalog_labels)))
 

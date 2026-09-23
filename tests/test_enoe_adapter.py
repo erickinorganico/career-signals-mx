@@ -11,7 +11,7 @@ import pytest
 from brujula.populations import normalize_cmpe_key
 
 from brujula.acquisition import AcquisitionError
-from brujula.enoe_adapter import load_snapshot_frame
+from brujula.enoe_adapter import Frame, load_snapshot_frame
 from test_source_inventory import _cache, _member_paths
 
 
@@ -95,6 +95,20 @@ def test_frame_column_and_nested_custody_mappings_are_immutable(tmp_path):
         frame.inventory = {}
     assert frame.columns["clase2"].tolist() == [1, 2, 1]
     assert json.loads(json.dumps(audit))["frame_rows"] == 3
+
+
+def test_frame_constructor_owns_caller_arrays(tmp_path):
+    sid, root, registry = fixture(tmp_path)
+    loaded, _ = load_snapshot_frame(sid, root, registry)
+    caller_status = np.array([2, 2, 2])
+    columns = {**loaded.columns, "clase2": caller_status}
+    frame = Frame(loaded.snapshot_id, loaded.period, loaded.source_id, loaded.inventory,
+                  loaded.cmpe_catalog_keys, columns, synthetic=loaded.synthetic,
+                  provenance=loaded.provenance, cmpe_catalog_labels=loaded.cmpe_catalog_labels)
+    caller_status[:] = 1
+    assert frame.clase2.tolist() == [2, 2, 2]
+    with pytest.raises(ValueError):
+        frame.clase2[:] = 1
 
 
 @pytest.mark.parametrize("snapshot_id,geography_field", [

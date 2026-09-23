@@ -182,11 +182,17 @@ def test_replaced_frame_rebuilds_cached_masks(tmp_path):
     before = metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {}, "occupied_total")
     assert before["numerator"].tolist() == [1.0, 0.0, 1.0]
     columns = dict(frame.columns)
-    columns["clase2"] = np.array([2, 2, 2])
+    replacement_status = np.array([2, 2, 2])
+    columns["clase2"] = replacement_status
     transformed = replace(frame, columns=columns)
     assert transformed._metric_cache == {}
     after = metric_vectors(transformed, NATIONAL_15_PLUS_CONTEXT, {}, "occupied_total")
     assert after["numerator"].tolist() == [0.0, 0.0, 0.0]
+    replacement_status[:] = 1
+    assert transformed.columns["clase2"].tolist() == [2, 2, 2]
+    assert metric_vectors(transformed, NATIONAL_15_PLUS_CONTEXT, {}, "occupied_total")["numerator"].tolist() == [0.0, 0.0, 0.0]
+    with pytest.raises(ValueError):
+        transformed.columns["clase2"][:] = 1
     assert before["numerator"].tolist() == [1.0, 0.0, 1.0]
 
 
