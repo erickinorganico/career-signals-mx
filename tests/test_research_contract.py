@@ -6,6 +6,7 @@ import json
 import pytest
 
 from brujula.research_contract import validate_research_v2, validate_public_research_v2, public_research_projection
+from brujula.resources import contract_path
 
 
 def research_fixture():
@@ -133,4 +134,32 @@ def test_public_rejects_diagnostic_and_suppression_leaks():
     assert validate_public_research_v2(leaked)
     leaked = copy.deepcopy(public)
     leaked["records"][0]["field_of_study_id"] = "missing"
+    assert validate_public_research_v2(leaked)
+
+
+def test_distinct_packaged_public_schema_and_hours_unit():
+    internal = json.loads(contract_path("research-v2.schema.json").read_text(encoding="utf-8"))
+    public_schema = json.loads(contract_path("research-v2-public.schema.json").read_text(encoding="utf-8"))
+    assert internal["$id"] != public_schema["$id"]
+    assert "estimate" in internal["$defs"]["record"]["required"]
+    assert "estimate" not in public_schema["$defs"]["record"]["properties"]
+    fixture = research_fixture()
+    fixture["metrics"][0].update(unit="hours/week", price_basis="not_applicable")
+    fixture["records"][0].update(unit="hours/week", price_basis="not_applicable")
+    assert validate_research_v2(fixture) == []
+    assert validate_public_research_v2(public_research_projection(fixture)) == []
+
+
+def test_suppressed_public_schema_rejects_nested_interval_and_weighted_total():
+    fixture = research_fixture()
+    fixture["records"][0].update(status="UNKNOWN", reason="unsupported", value=None)
+    public = public_research_projection(fixture)
+    leaked = copy.deepcopy(public)
+    leaked["records"][0]["support"]["weighted_support_total"] = 120.0
+    assert validate_public_research_v2(leaked)
+    leaked = copy.deepcopy(public)
+    leaked["records"][0]["precision"]["ci90_upper"] = 125.0
+    assert validate_public_research_v2(leaked)
+    leaked = copy.deepcopy(public)
+    leaked["records"][0]["precision"]["standard_error"] = float("inf")
     assert validate_public_research_v2(leaked)
