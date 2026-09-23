@@ -461,12 +461,15 @@ def analyze_acceptance(source_root: Path, acceptance_receipt: Path,
             or analysis_output.is_relative_to(numerical_audit)
             or analysis_output.is_relative_to(audit_dir)):
         raise ValueError("analysis output overlaps input or already exists")
-    accepted, accepted_sha = _accepted(numerical_audit, acceptance_receipt)
-    accepted_output = Path(accepted["output_root"]).resolve()
-    _strict_roots(source_root, audit_dir, numerical_audit, accepted_output)
-    if analysis_output.is_relative_to(accepted_output):
-        raise ValueError("analysis output overlaps accepted output")
+    stage = "acceptance"
     try:
+        accepted, accepted_sha = _accepted(numerical_audit, acceptance_receipt)
+        accepted_output = Path(accepted["output_root"]).resolve()
+        stage = "roots"
+        _strict_roots(source_root, audit_dir, numerical_audit, accepted_output)
+        if analysis_output.is_relative_to(accepted_output):
+            raise ValueError("analysis output overlaps accepted output")
+        stage = "inputs"
         sources = _sources(source_root)
         publics, audits = _accepted_payloads(accepted, sources)
         from .comparisons_v2 import load_definition_registry
@@ -497,8 +500,9 @@ def analyze_acceptance(source_root: Path, acceptance_receipt: Path,
                       "comparison_count": len(packet["comparisons"]),
                       "claim_count": len(packet["claims"])})
     except Exception as exc:
-        _operation_receipt(audit_dir, {"status": "BLOCKED", "operation": "research_analyze",
-                           "error": {"code": type(exc).__name__[:60], "reason": "analysis stage failed"}})
+        if stage != "roots":
+            _operation_receipt(audit_dir, {"status": "BLOCKED", "operation": "research_analyze",
+                               "error": {"code": type(exc).__name__[:60], "reason": "analysis stage failed"}})
         raise
 
 

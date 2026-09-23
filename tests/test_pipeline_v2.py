@@ -222,6 +222,16 @@ def test_analysis_failure_receipt_is_separate_and_bounded(monkeypatch, tmp_path)
     assert not numerical.exists() and not output.exists()
 
 
+def test_missing_accepted_receipt_seals_analysis_failure(tmp_path):
+    receipt = tmp_path / "numerical" / "attempts" / ("a" * 36 + ".json")
+    audit = tmp_path / "analysis-audit"
+    with pytest.raises(FileNotFoundError):
+        p.analyze_acceptance(tmp_path / "source", receipt, tmp_path / "fresh.json", audit)
+    current = json.loads((audit / "current.json").read_text(encoding="utf-8"))
+    assert current["status"] == "BLOCKED"
+    assert (audit / "attempts" / (current["attempt_id"] + ".json")).is_file()
+
+
 def test_replay_reconstructs_and_keeps_baseline_immutable(monkeypatch, tmp_path):
     source, audit = tmp_path / "sources", tmp_path / "replay-audit"
     sealed = tmp_path / "publication" / "runs" / "20260923T120000-aaaaaaaaaaaa"
