@@ -189,7 +189,11 @@ def estimate_snapshot(snapshot_id: str, output_root: Path, *, domains: list[dict
     manifest = load_metric_manifest()
     method_version = _method_version(manifest)
     evidence_id = f"{snapshot_id}_custody"
-    synthetic = bool(frame_audit.get("synthetic", False))
+    if type(frame_audit.get("synthetic")) is not bool or type(frame.synthetic) is not bool:
+        raise ValueError("verified frame audit must declare synthetic provenance")
+    if frame_audit["synthetic"] != frame.synthetic or frame_audit.get("provenance") != frame.provenance:
+        raise ValueError("frame and audit synthetic provenance disagree")
+    synthetic = frame_audit["synthetic"]
     records = []
     requested = {}
     evaluated = {}
@@ -221,7 +225,8 @@ def estimate_snapshot(snapshot_id: str, output_root: Path, *, domains: list[dict
                      "sha256": inventory["raw_sha256"], "terms_url": inventory["terms_url"],
                      "authority": inventory["authority"], "acquired_at": inventory["acquired_at"]}],
         "populations": [{"id": name} for name in sorted({row["population_id"] for row in records})],
-        "fields_of_study": [{"id": name, "label": name if name != "all" else "All fields"} for name in fields],
+        "fields_of_study": [{"id": name, "label": frame.cmpe_catalog_labels[name] if name != "all" else "Todos los campos"}
+                            for name in fields],
         "occupations": [{"id": "all", "label": "All occupations"}],
         "industries": [{"id": "all", "label": "All industries"}],
         "geographies": [{"id": name, "label": "Mexico" if name == "mx" else f"Entity {name}"}
@@ -245,6 +250,7 @@ def estimate_snapshot(snapshot_id: str, output_root: Path, *, domains: list[dict
     if failures:
         raise ValueError(f"invalid public research v2: {failures[:5]}")
     audit = {"snapshot_id": snapshot_id, "period": frame.period, "raw_sha256": inventory["raw_sha256"],
+             "synthetic": synthetic, "provenance": frame.provenance,
              "design": {"n_psu_design": design.n_psu_design, "n_strata_design": design.n_strata_design,
                         "design_df": design.design_df, "singleton_strata": design.singleton_strata_count},
              "requested_cells": requested, "evaluated_cells": evaluated,

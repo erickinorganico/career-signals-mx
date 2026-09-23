@@ -1,6 +1,7 @@
 """Synthetic-only integration tests for the strict estimate boundary."""
 
 import json
+from dataclasses import replace
 
 import numpy as np
 import pytest
@@ -31,8 +32,10 @@ def synthetic_frame(n=40):
         "authority": "INEGI", "acquired_at": "2026-09-22T00:00:00Z",
         "receipt_run_id": "synthetic", "dictionary_member": {"sha256": "b" * 64},
     }
-    return Frame("enoe_2025_q2", "2025-Q2", "inegi_enoe", inventory,
-                 frozenset({"033100"}), columns)
+    return Frame(snapshot_id="enoe_2025_q2", period="2025-Q2", source_id="inegi_enoe",
+                 synthetic=True, provenance="declared_synthetic_fixture", inventory=inventory,
+                 cmpe_catalog_keys=frozenset({"033100"}), cmpe_catalog_labels={"033100": "Derecho"},
+                 columns=columns)
 
 
 def test_inventory_includes_distinct_latest_slices():
@@ -49,7 +52,7 @@ def test_inventory_includes_distinct_latest_slices():
 def test_snapshot_evaluates_each_metric_and_strict_public_projection(monkeypatch, tmp_path):
     from brujula import estimates
     frame = synthetic_frame()
-    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (frame, {"synthetic": True}))
+    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (frame, {"synthetic": True, "provenance": frame.provenance}))
     domain = {"population_id": "completed_professional_known_age", "field_of_study_id": "033100",
               "geography_id": "mx", "recorded_sex_id": "all"}
     result = estimates.estimate_snapshot(frame.snapshot_id, tmp_path, domains=[domain])
@@ -71,7 +74,8 @@ def test_snapshot_evaluates_each_metric_and_strict_public_projection(monkeypatch
 
 def test_unverified_field_rejected(monkeypatch, tmp_path):
     from brujula import estimates
-    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (synthetic_frame(), {}))
+    frame = synthetic_frame()
+    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (frame, {"synthetic": True, "provenance": frame.provenance}))
     with pytest.raises(ValueError, match="verified|catalog"):
         estimates.estimate_snapshot("enoe_2025_q2", tmp_path,
                                     domains=[{"population_id": "completed_professional_known_age",
@@ -82,7 +86,7 @@ def test_unverified_field_rejected(monkeypatch, tmp_path):
 def test_ratio_support_includes_known_zero_outcomes(monkeypatch, tmp_path):
     from brujula import estimates
     frame = synthetic_frame()
-    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (frame, {"synthetic": True}))
+    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (frame, {"synthetic": True, "provenance": frame.provenance}))
     domain = {"population_id": "completed_professional_known_age", "field_of_study_id": "033100",
               "geography_id": "mx", "recorded_sex_id": "all"}
     rows = estimates.estimate_snapshot(frame.snapshot_id, tmp_path, domains=[domain])["internal"]["records"]
@@ -106,12 +110,21 @@ def test_method_version_normalizes_platform_line_endings(monkeypatch, tmp_path):
 def test_catalogued_field_with_zero_observed_rows_is_evaluated(monkeypatch, tmp_path):
     from brujula import estimates
     frame = synthetic_frame()
-    frame = Frame(frame.snapshot_id, frame.period, frame.source_id, frame.inventory,
-                  frozenset({"033100", "031300"}), frame.columns)
-    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (frame, {"synthetic": True}))
+    frame = replace(frame, cmpe_catalog_keys=frozenset({"033100", "031300"}),
+                    cmpe_catalog_labels={"033100": "Derecho", "031300": "Ciencias políticas"})
+    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (frame, {"synthetic": True, "provenance": frame.provenance}))
     domain = {"population_id": "completed_professional_known_age", "field_of_study_id": "031300",
               "geography_id": "mx", "recorded_sex_id": "all"}
     result = estimates.estimate_snapshot(frame.snapshot_id, tmp_path, domains=[domain])
     assert result["audit"]["requested_count"] == result["audit"]["evaluated_count"] == 23
     assert all(row["sample_size"] == 0 and row["value"] is None and row["reason"]
                for row in result["internal"]["records"])
+
+
+def test_missing_synthetic_provenance_fails_closed(monkeypatch, tmp_path):
+    from brujula import estimates
+    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (synthetic_frame(), {}))
+    domain = {"population_id": "completed_professional_known_age", "field_of_study_id": "033100",
+              "geography_id": "mx", "recorded_sex_id": "all"}
+    with pytest.raises(ValueError, match="synthetic provenance"):
+        estimates.estimate_snapshot("enoe_2025_q2", tmp_path, domains=[domain])
