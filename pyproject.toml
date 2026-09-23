@@ -12,7 +12,7 @@ license = "MIT"
 dependencies = ["duckdb==1.4.4", "jsonschema==4.26.0", "matplotlib==3.10.8", "numpy==2.5.3"]
 
 [project.optional-dependencies]
-test = ["pytest==9.0.3"]
+test = ["pytest==9.0.3", "pypdf==6.19.0"]
 pdf = ["weasyprint==70.0"]
 
 [project.scripts]

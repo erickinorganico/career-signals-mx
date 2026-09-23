@@ -15,9 +15,11 @@ Para 0.1.0 se revisaron los metadatos de los 23 paquetes fijados, sin entradas
 carentes de información de licencia. El [inventario](docs/evidence/dependency-licenses.json)
 conserva expresiones SPDX o metadatos/clasificadores del paquete instalado.
 Los avisos completos permanecen con cada distribución. El wheel del proyecto
-solo incluye código, contratos, catálogo y fixture propios; no redistribuye
-las dependencias. El [resultado de pip-audit](docs/evidence/dependency-audit.json)
-no encontró vulnerabilidades conocidas en ese conjunto durante la revisión.
+incluye también recursos authored y cuatro fuentes DejaVu con su licencia
+íntegra; no redistribuye los paquetes Python dependientes. El
+[resultado histórico de pip-audit](docs/evidence/dependency-audit.json)
+no encontró vulnerabilidades conocidas en el conjunto de 0.1.0 revisado
+entonces; no constituye una auditoría nueva de esta edición.
 
 El [catálogo de fuentes](docs/SOURCES.md) documenta condiciones de INEGI,
 OLA/STPS, Data México e IMCO. La auditoría pública conserva enlaces y notas
@@ -29,3 +31,11 @@ producto específico, periodo, fecha de consulta/actualización, metadatos y una
 nota de transformación que no implique aval de INEGI. La revisión debe hacerse
 sobre los términos vigentes del dataset y snapshot seleccionado, no solo sobre
 esta nota de planificación.
+
+La prueba y auditoría del PDF usan `pypdf==6.19.0` (BSD-3-Clause, copyright
+de sus contribuyentes); no forma parte del motor de generación de PDF.
+Identidad, wheel y SHA-256 revisados: [auditoría de dependencia](docs/evidence/phase-04-pdf-audit-dependency.json).
+El PDF se genera con `weasyprint==70.0`, declarado como extra `pdf`; se aplican
+las licencias y avisos de su propia distribución y dependencias nativas.
+Los cuatro archivos DejaVu TTF se distribuyen con su `LICENSE_DEJAVU` completo
+en cada publicación y wheel.
