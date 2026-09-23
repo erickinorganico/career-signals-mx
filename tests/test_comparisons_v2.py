@@ -58,6 +58,33 @@ def test_approved_signatures_and_cross_boundary(pair, registry):
     assert result["source_sha256s"] == [earlier["snapshot_sha256"], later["snapshot_sha256"]]
 
 
+@pytest.mark.parametrize("period, native, catalog_hash", [
+    ("2025-Q2", "CVE_ENT", "f297f6856885a3da13f754749000e0a35d8c1745e7f2cf474a1e2adc01e07ddf"),
+    ("2025-Q3", "ENT", "ea2e8198df208d0b662c00766739eb39c5a6b9a198821903d1a9416cdf9c7c1a"),
+])
+def test_coherent_native_alias_and_catalog_tamper_is_blocked(pair, registry, period, native, catalog_hash):
+    earlier, later = pair("2025-Q2", geography="02"), pair("2025-Q3", geography="02", value=42)
+    altered = deepcopy(registry)
+    altered["snapshots"]["enoe_" + period.lower().replace("-", "_")].update(
+        native_geography_field=native, state_catalog_sha256=catalog_hash)
+    result = compare_public_records(earlier, later, registry=altered)
+    assert not result["comparable"]
+    assert result["absolute_change"] is None and result["relative_change_pct"] is None
+    assert "geography_snapshot_identity" in result["reasons"]
+
+
+def test_coherent_native_alias_and_catalog_tamper_is_blocked_for_national_metadata(pair, registry):
+    earlier, later = pair("2025-Q2"), pair("2025-Q3", value=42)
+    altered = deepcopy(registry)
+    altered["snapshots"]["enoe_2025_q2"].update(
+        native_geography_field="CVE_ENT",
+        state_catalog_sha256="f297f6856885a3da13f754749000e0a35d8c1745e7f2cf474a1e2adc01e07ddf")
+    result = compare_public_records(earlier, later, registry=altered)
+    assert not result["comparable"]
+    assert result["absolute_change"] is None and result["relative_change_pct"] is None
+    assert "geography_snapshot_identity" in result["reasons"]
+
+
 @pytest.mark.parametrize("mutation,reason", [
     (lambda x: x["record"].update(population_id="national_15_plus_context"), "population_id"),
     (lambda x: x["record"].update(recorded_sex_id="1"), "recorded_sex_id"),
