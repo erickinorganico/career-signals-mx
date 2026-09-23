@@ -31,3 +31,12 @@ def test_oracle_tolerance_neighbor_and_signed_precision():
     assert result["status"] == "BLOCKED"
     assert result["cases"]["a"]["point_signed_difference"] > 0
     assert result["cases"]["a"]["se_signed_difference"] < 0
+
+
+def test_oracle_relative_tolerance_and_duplicate_expected():
+    expected = [{"id": "large", "estimate": 1_000_000_000.0, "standard_error": 1_000_000.0}]
+    inside = [{"id": "large", "estimate": 1_000_000_000.09, "standard_error": 1_000_000.00009}]
+    outside = [{"id": "large", "estimate": 1_000_000_000.11, "standard_error": 1_000_000.00011}]
+    assert compare_oracle_cases(expected, inside)["status"] == "PASS"
+    assert compare_oracle_cases(expected, outside)["status"] == "BLOCKED"
+    assert compare_oracle_cases(expected * 2, inside)["status"] == "BLOCKED"
