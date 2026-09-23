@@ -350,7 +350,8 @@ def _result(left: dict | None, right: dict | None, registry: dict, *, axis: str 
     unit = a.get("unit") if left else b.get("unit")
     display = ("percentage points" if unit == "percent" else
                "nominal MXN/month" if unit == "MXN/month" else unit)
-    limitations = ["descriptive_change_only", "quarterly_samples_may_overlap"]
+    limitations = (["descriptive_change_only", "quarterly_samples_may_overlap"]
+                   if axis is None else ["descriptive_difference_only"])
     if axis is None and left and right:
         limitations.append("seasonality_qoq" if registry["periods"].index(b["period_id"]) -
                            registry["periods"].index(a["period_id"]) == 1 else "like_quarter_yoy") if "period_adjacency" not in reasons else None
