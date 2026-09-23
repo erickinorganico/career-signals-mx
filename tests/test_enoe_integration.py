@@ -50,11 +50,16 @@ def test_explicit_baja_california_context_domains_are_required():
 def _numeric_pin_fixture():
     snapshot = "enoe_2024_q3"  # outside the latest R and official cases
     public = {
-        "schema_version": "2.0", "sources": [{"id": snapshot}],
+        "schema_version": "2.0", "sources": [{"id": snapshot, "sha256": "source-sha",
+                                                "acquired_at": "2026-09-22T00:00:00Z"}],
         "fields_of_study": [{"id": "all"}], "geographies": [{"id": "mx"}],
         "metrics": [{"id": "known_hours_mean"}],
         "methods": [{"id": "enoe_taylor_project_adjust", "version": "adapter:old"}],
-        "records": [{"source_snapshot_id": snapshot, "metric_id": "known_hours_mean",
+        "records": [{"source_snapshot_id": snapshot,
+                     "population_id": "national_15_plus_context", "field_of_study_id": "all",
+                     "occupation_id": "all", "industry_id": "all", "geography_id": "mx",
+                     "recorded_sex_id": "all", "period_id": "2024-Q3",
+                     "metric_id": "known_hours_mean", "method_id": "enoe_taylor_project_adjust",
                      "method_version": "adapter:old", "value": 42.5, "sample_size": 100,
                      "weighted_denominator": 1000.0, "support": {"weighted_support_total": 1000.0},
                      "precision": {"standard_error": 0.5}, "status": "REVIEW",
@@ -100,6 +105,32 @@ def test_method_source_hash_change_does_not_change_numeric_pin():
     assert compare_pinned_numeric_content(public, internal, golden, snapshot, "metric-digest")
     with pytest.raises(ValueError, match="metric manifest"):
         compare_pinned_numeric_content(public, internal, golden, snapshot, "wrong-metric-digest")
+
+
+def test_acquisition_clock_and_catalog_order_do_not_change_numeric_pin():
+    snapshot, public, internal, golden = _numeric_pin_fixture()
+    for document in (public, internal):
+        document["sources"][0]["acquired_at"] = "2026-09-23T01:02:03Z"
+        document["metrics"].append({"id": "occupied_total"})
+        other = deepcopy(document["records"][0])
+        other["metric_id"] = "occupied_total"
+        document["records"].append(other)
+    golden["public_content_sha256_by_snapshot"][snapshot] = _digest(_canonical_research_content(public))
+    golden["internal_content_sha256_by_snapshot"][snapshot] = _digest(_canonical_research_content(internal))
+    full_payload_digest = _digest(public)
+    for document in (public, internal):
+        document["sources"][0]["acquired_at"] = "2026-09-24T04:05:06Z"
+        document["metrics"].reverse()
+        document["records"].reverse()
+    assert _digest(public) != full_payload_digest  # exact custody still records the new clock/order
+    assert compare_pinned_numeric_content(public, internal, golden, snapshot, "metric-digest")
+
+
+def test_changed_source_hash_still_blocks_numeric_pin():
+    snapshot, public, internal, golden = _numeric_pin_fixture()
+    public["sources"][0]["sha256"] = "changed-source"
+    with pytest.raises(ValueError, match="pinned public numeric content"):
+        compare_pinned_numeric_content(public, internal, golden, snapshot, "metric-digest")
 
 
 def test_internal_initialization_cannot_rewrite_public_baseline():

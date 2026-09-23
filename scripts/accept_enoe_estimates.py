@@ -51,12 +51,20 @@ def _digest(value: object) -> str:
 
 
 def _canonical_research_content(document: dict) -> dict:
-    """Keep all research content except the adapter-source method version."""
+    """Hash identity-sorted content without operational clock or code hash."""
     content = deepcopy(document)
     for row in content["records"]:
         row.pop("method_version", None)
     for method in content["methods"]:
         method.pop("version", None)  # root catalog copy of method_version
+    for source in content["sources"]:
+        source.pop("acquired_at", None)  # successful acquisition receipt clock
+    content["records"].sort(key=lambda row: tuple(row[key] for key in GRAIN))
+    for catalog in ("sources", "populations", "fields_of_study", "occupations",
+                    "industries", "geographies", "recorded_sexes", "periods",
+                    "metrics", "methods", "evidence"):
+        if catalog in content:
+            content[catalog].sort(key=lambda item: item["id"])
     return content
 
 
