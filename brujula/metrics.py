@@ -255,7 +255,7 @@ def metric_vectors(frame: Frame, population_id: str, domain: dict, metric_id: st
     }
     return {
         "numerator": numerator, "denominator": denominator, "domain": d.copy(),
-        "coverage": coverage, "exclusions": state["exclusions"],
+        "coverage": coverage, "exclusions": state["exclusions"].copy(),
         "method_version": manifest["method_version"] if not frame.synthetic else f"{manifest['method_version']}:synthetic:{actual_dictionary}",
         "synthetic": frame.synthetic, "dictionary_binding": dictionary_binding,
     }

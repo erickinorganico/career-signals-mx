@@ -196,6 +196,18 @@ def test_replaced_frame_rebuilds_cached_masks(tmp_path):
     assert before["numerator"].tolist() == [1.0, 0.0, 1.0]
 
 
+def test_returned_exclusions_cannot_poison_cached_domain_state(tmp_path):
+    sid, root, registry = fixture(tmp_path)
+    frame, _ = load_snapshot_frame(sid, root, registry)
+    first = metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {}, "occupied_total")
+    expected = first["exclusions"].copy()
+    first["exclusions"]["no_income"] = 999
+    first["exclusions"]["injected"] = 1
+    second = metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {}, "occupied_total")
+    assert second["exclusions"] == expected
+    assert "injected" not in frame._metric_cache["domain_state"][2]["exclusions"]
+
+
 def test_unknown_suboccupation_excluded_from_rate_denominator(tmp_path):
     unknown_sub = ROWS[0].replace(",1,1,1,2,40,", ",1,1,9,2,40,")
     result = vectors(tmp_path, "suboccupied_rate", rows=[unknown_sub, ROWS[1], ROWS[2]])
