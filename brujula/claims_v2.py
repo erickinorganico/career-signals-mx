@@ -37,7 +37,7 @@ METRIC_LABELS = {
     "known_hours_coverage": "cobertura de horas semanales conocidas entre personas ocupadas",
 }
 POPULATION_LABELS = {
-    "national_15_plus_context": "personas residentes en el contexto nacional operativo de 15 años o más (edad 98 operativamente desconocida)",
+    "national_15_plus_context": "personas residentes en el contexto nacional operativo de 15 años o más (código 98: edad operativamente desconocida)",
     "completed_professional_known_age": "personas residentes con estudios profesionales terminados y edad conocida de 15 años o más (código 97: 97 años o más; edad no especificada excluida; excluye estudios técnicos, de posgrado e incompletos)",
 }
 
@@ -141,7 +141,8 @@ def make_claim(kind: str, subject_id: str, *, public_index: dict, comparison_led
     unit = UNITS[last["unit"]]
     title = f"{last_item['display']['metric']} · {last_item['display']['field']}"
     if comparison is None:
-        observation = f"En {scope}, la {last_item['display']['metric']} fue {_number(last['value'])} {unit}."
+        observation = (f"En {scope}, el valor de «{last_item['display']['metric']}» fue "
+                       f"{_number(last['value'])} {unit}.")
         interpretation = "Estimación descriptiva de la población y medida indicadas; el campo de estudio no identifica la ocupación ejercida."
         quantities = {"value": last["value"], "unit": last["unit"]}
     else:
@@ -149,7 +150,7 @@ def make_claim(kind: str, subject_id: str, *, public_index: dict, comparison_led
         delta_unit = "puntos porcentuales" if last["unit"] == "percent" else unit
         qualifier = {"qoq": "entre trimestres adyacentes", "yoy": "entre trimestres equivalentes de años consecutivos",
                      "sex": "entre sexos registrados del mismo trimestre", "entity": "entre entidades del mismo trimestre"}[kind]
-        observation = (f"En {scope}, la {last_item['display']['metric']} fue {_number(last['value'])} {unit}; "
+        observation = (f"En {scope}, el valor de «{last_item['display']['metric']}» fue {_number(last['value'])} {unit}; "
                        f"el contraste descriptivo {qualifier} frente a {_scope(first, first_item)} fue "
                        f"{_number(comparison['absolute_change'])} {delta_unit}.")
         noun = "cambio" if kind in ("qoq", "yoy") else "contraste"

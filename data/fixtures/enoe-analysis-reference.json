@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "source_manifest_sha256": "a381f17e804cc3a68306a63bc6fefe3bccd7fe5c13bd64f5d9dec7d43df44894",
-  "record_index_sha256": "39aa36b49a7652446002ec0d69b89c19b811f7f7352d453b9da711ef7563d576",
+  "record_index_sha256": "4b63eb8c099ed61c2a4864b33156d84123d4117f1b91efa7f46f8df8f5f56b49",
   "profiles_sha256": "e25a1e348837c5fc85da47bbbdf628cc63bccfd5bea5f51bd7fea0f5a4532675",
   "coverage_sha256": "ac239d649b53868b2d0d419f4d5c85e1cdf61a60ad4703c70f88de25e027589c",
   "accepted_numeric_digest": "8db575e9d664864d1513e3b9658bd9b060c4cb3bed8b51561f208adeb97b9a00",

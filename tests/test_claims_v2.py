@@ -157,3 +157,21 @@ def test_opening_selection_is_stable_under_reorder_and_uses_distinct_themes():
     chosen = select_opening_claims(candidates)
     assert [x["claim_id"] for x in chosen] == [x["claim_id"] for x in select_opening_claims(list(reversed(candidates)))]
     assert [x["metric_id"] for x in chosen] == ["positive_income_coverage", "employment_rate", "positive_income_mean"]
+
+
+def test_income_and_plural_metric_use_neutral_grammar_and_nominal_caveat():
+    income = _changed(_item(), metric_id="positive_income_mean", unit="MXN/month",
+                      price_basis="nominal", value=12450.5)
+    income["display"]["metric"] = METRIC_LABELS["positive_income_mean"]
+    claim = make_claim("observation", income["record_id"],
+                       public_index={income["record_id"]: income}, comparison_ledger={})
+    assert "el valor de «ingreso mensual medio positivo conocido» fue" in claim["observation"]
+    assert "MXN mensuales nominales" in claim["observation"]
+    assert "condicionado a ocupación e ingreso positivo" in claim["limitation"]
+    assert validate_claim(claim, public_index={income["record_id"]: income}, comparison_ledger={}) == []
+    people = _changed(_item(), metric_id="occupied_total", unit="people", value=12450.5)
+    people["display"]["metric"] = METRIC_LABELS["occupied_total"]
+    claim = make_claim("observation", people["record_id"],
+                       public_index={people["record_id"]: people}, comparison_ledger={})
+    assert "el valor de «personas ocupadas estimadas» fue" in claim["observation"]
+    assert "código 98: edad operativamente desconocida" in POPULATION_LABELS["national_15_plus_context"]
