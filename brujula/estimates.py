@@ -143,21 +143,33 @@ def _population_coverage(frame, domain: dict) -> dict:
         "technical_education": professional_population & (frame.cs_p13_1 == 6),
         "postgraduate_education": professional_population & np.isin(frame.cs_p13_1, [8, 9]),
         "unknown_education": professional_population & np.isin(frame.cs_p13_1, [-1, 99]),
-        "other_education": professional_population & (frame.cs_p13_1 == 0),
+        # Catalog levels 0..5 are known education responses outside the
+        # professional cohort; they are not unknown education.
+        "other_education": professional_population & np.isin(frame.cs_p13_1, [0, 1, 2, 3, 4, 5]),
         "incomplete_education": professional_population & (frame.cs_p16 == 2),
         "unknown_completion": professional_population & np.isin(frame.cs_p16, [-1, 9]),
         "unknown_field": frame.cs_p14_c == None,  # noqa: E711 - NumPy object array comparison
     }
-    counts = {name: int(np.count_nonzero(scope & mask)) for name, mask in masks.items()}
-    counts["unknown_field_eligible_professional"] = int(np.count_nonzero(
-        scope & age_eligible & professional & masks["unknown_field"]))
+    counts = {name: int(np.count_nonzero(scope & mask)) for name, mask in masks.items()
+              if name != "unknown_field"}
+    observed_category_counts = {
+        "unknown_field": int(np.count_nonzero(scope & masks["unknown_field"])),
+        "unknown_field_eligible_professional": int(np.count_nonzero(
+            scope & age_eligible & professional & masks["unknown_field"]))
+    }
+    if not professional_population:
+        observed_category_counts["age_unknown_operational_included_n"] = int(
+            np.count_nonzero(scope & (frame.eda == 98)))
     if field != "all":
         counts["other_known_field"] = int(np.count_nonzero(
             population_eligible & (frame.cs_p14_c != None) & (frame.cs_p14_c != field)))  # noqa: E711
+        counts["unknown_field"] = int(np.count_nonzero(
+            population_eligible & masks["unknown_field"]))
     return {
         "responding_resident_n": int(np.count_nonzero(scope)),
         "population_eligible_n": int(np.count_nonzero(population_eligible)),
         "counts_nonexclusive": True,
+        "observed_category_counts": observed_category_counts,
         "exclusions": counts,
     }
 

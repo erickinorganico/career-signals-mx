@@ -58,6 +58,28 @@ def test_professional_exclusions_are_distinct(education, completion, reason):
     assert result["eligible"] is False and reason in result["exclusion_reasons"]
 
 
+@pytest.mark.parametrize("education,reason", [
+    (str(code), "other_education") for code in range(0, 6)
+] + [
+    ("06", "technical_education"), ("08", "postgraduate_education"),
+    ("09", "postgraduate_education"), ("99", "unknown_education"),
+    ("-1", "unknown_education"),
+])
+def test_official_education_categories_have_stable_classifier_reasons(education, reason):
+    result = classify_eligibility(row(cs_p13_1=education, cs_p16="1"), COMPLETED_PROFESSIONAL_KNOWN_AGE)
+    assert result["eligible"] is False
+    assert result["exclusion_reasons"] == [reason]
+
+
+@pytest.mark.parametrize("completion,reason", [
+    ("1", None), ("2", "incomplete_education"), ("9", "unknown_completion"),
+    ("-1", "unknown_completion"),
+])
+def test_official_completion_categories_match_adapter_sentinels(completion, reason):
+    result = classify_eligibility(row(cs_p16=completion), COMPLETED_PROFESSIONAL_KNOWN_AGE)
+    assert (result["eligible"], result["exclusion_reasons"]) == ((reason is None), [] if reason is None else [reason])
+
+
 @pytest.mark.parametrize("age", ["-1", -1, "99", " "])
 def test_missing_age_is_unknown_not_under_15(age):
     result = classify_eligibility(row(eda=age), COMPLETED_PROFESSIONAL_KNOWN_AGE)

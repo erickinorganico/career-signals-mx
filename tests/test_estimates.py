@@ -162,7 +162,8 @@ def test_aggregate_audit_keeps_distinct_exclusions_without_weighted_leaks(monkey
     assert population["counts_nonexclusive"] is True
     assert all(population["exclusions"][key] == 1 for key in
                ("age_unknown", "technical_education", "postgraduate_education",
-                "incomplete_education", "unknown_field_eligible_professional"))
+                "incomplete_education"))
+    assert population["observed_category_counts"]["unknown_field_eligible_professional"] == 1
     income_key = next(key for key in audit["evaluated_cells"] if "|positive_income_mean|" in key)
     assert audit["evaluated_cells"][income_key]["exclusions"]["income_amount_unknown"] >= 1
     assert audit["evaluated_cells"][income_key]["coverage"]["eligible_n"] > 0
@@ -196,6 +197,7 @@ def test_population_coverage_matches_age_and_education_sentinels():
     assert national["exclusions"]["age_below_15"] == 1
     assert national["exclusions"]["technical_education"] == 0
     assert national["exclusions"]["other_education"] == 0
+    assert national["observed_category_counts"]["age_unknown_operational_included_n"] == 1
 
     # The known-age professional cohort excludes 98 and applies education
     # exclusions; catalog value 0 is known other education.
@@ -205,3 +207,18 @@ def test_population_coverage_matches_age_and_education_sentinels():
     assert professional["exclusions"]["other_education"] == 1
     assert professional["exclusions"]["unknown_education"] == 2
     assert professional["exclusions"]["technical_education"] == 1
+
+
+def test_population_coverage_counts_all_known_nonprofessional_education_codes():
+    from brujula import estimates
+
+    frame = synthetic_frame()
+    columns = dict(frame.columns)
+    columns["cs_p13_1"] = columns["cs_p13_1"].copy()
+    columns["cs_p13_1"][:6] = [0, 1, 2, 3, 4, 5]
+    frame = replace(frame, columns=columns)
+    coverage = estimates._population_coverage(frame, {
+        "population_id": "completed_professional_known_age", "field_of_study_id": "all",
+        "geography_id": "mx", "recorded_sex_id": "all",
+    })
+    assert coverage["exclusions"]["other_education"] == 6

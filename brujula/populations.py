@@ -100,7 +100,8 @@ def classify_eligibility(row: Mapping[str, object], population_id: str) -> dict:
                 reasons.append("other_education")
         completion = _row_code(row, "cs_p16", 1)
         if completion != "1":
-            if _blank(row.get("cs_p16")) or completion == "9":
+            raw_completion = row.get("cs_p16")
+            if _blank(raw_completion) or raw_completion in (-1, "-1") or completion == "9":
                 reasons.append("unknown_completion")
             elif completion == "2":
                 reasons.append("incomplete_education")
