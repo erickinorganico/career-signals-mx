@@ -69,6 +69,18 @@ def _check_p7(subject: dict) -> None:
                         if item.get("redaction_reason") == "complementary_suppression")
         if subject["case"] == "p7":
             assert subject["mutation"] == "activate_source_restore_suppressed"
+            source_only = deepcopy(packet)
+            source_only["source_manifest"]["sources"][redacted["record"]["source_snapshot_id"]]["status"] = "active"
+            source_only["content_digest"] = _digest({key: value for key, value in source_only.items()
+                                                       if key != "content_digest"})
+            assert findings_v2.validate_analysis_packet(source_only)
+            suppressed_only = deepcopy(packet)
+            suppressed_only["record_index"][redacted["record_id"]]["record"]["value"] = 3100.0
+            suppressed_only["claims"].append({"claim_id": "v2k:proposal", "record_ids": [redacted["record_id"]],
+                                              "observation": "Cifra recuperada: 3 100 personas."})
+            suppressed_only["content_digest"] = _digest({key: value for key, value in suppressed_only.items()
+                                                           if key != "content_digest"})
+            assert findings_v2.validate_analysis_packet(suppressed_only)
             source = packet["source_manifest"]["sources"][redacted["record"]["source_snapshot_id"]]
             source["status"] = "active"
             packet["claims"].append({"claim_id": "v2k:proposal", "record_ids": [redacted["record_id"]],
