@@ -38,7 +38,7 @@ METRIC_LABELS = {
 }
 POPULATION_LABELS = {
     "national_15_plus_context": "personas residentes en el contexto nacional operativo de 15 años o más (edad 98 operativamente desconocida)",
-    "completed_professional_known_age": "personas residentes con estudios profesionales terminados y edad conocida (15 a 97; excluye estudios técnicos, de posgrado e incompletos)",
+    "completed_professional_known_age": "personas residentes con estudios profesionales terminados y edad conocida de 15 años o más (código 97: 97 años o más; edad no especificada excluida; excluye estudios técnicos, de posgrado e incompletos)",
 }
 
 
@@ -103,7 +103,10 @@ def _extra_limit(rows: list[dict], comparison: dict | None) -> str:
     elif metric == "positive_income_coverage":
         parts.append("Cobertura entre personas ocupadas; los ingresos sin monto exacto permanecen fuera del numerador.")
     if comparison:
-        parts.append("Contraste descriptivo; las muestras trimestrales pueden solaparse y no se calculó precisión del cambio.")
+        if comparison["comparison_type"] in ("adjacent_quarter", "like_quarter_annual"):
+            parts.append("Cambio descriptivo; las muestras trimestrales pueden solaparse y no se calculó precisión del cambio.")
+        else:
+            parts.append("Contraste descriptivo del mismo trimestre; no se calculó precisión de la diferencia entre grupos.")
         if "seasonality_qoq" in comparison.get("limitations", []):
             parts.append("Trimestres adyacentes: la estacionalidad puede influir.")
         if "unknown_edition_date" in comparison.get("limitations", []):
@@ -149,7 +152,9 @@ def make_claim(kind: str, subject_id: str, *, public_index: dict, comparison_led
         observation = (f"En {scope}, la {last_item['display']['metric']} fue {_number(last['value'])} {unit}; "
                        f"el contraste descriptivo {qualifier} frente a {_scope(first, first_item)} fue "
                        f"{_number(comparison['absolute_change'])} {delta_unit}.")
-        interpretation = "Los extremos usan la misma definición revisada; el cambio no establece efecto causal ni significancia estadística."
+        noun = "cambio" if kind in ("qoq", "yoy") else "contraste"
+        interpretation = ("Los extremos usan la misma definición revisada; el " + noun
+                          + " no establece efecto causal ni significancia estadística.")
         quantities = {"previous_value": first["value"], "current_value": last["value"],
                       "absolute_change": comparison["absolute_change"], "unit": last["unit"],
                       "display_unit": comparison["display_unit"]}

@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -18,6 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def _synthetic_packet(monkeypatch, *, complementary=False):
     publics, accepted = synthetic_inputs(monkeypatch, complementary=complementary)
     registry = load_definition_registry(entity_reference_code="02")
+    registry["metric_manifest_sha256"] = accepted["manifest"]["metric_manifest_sha256"]
+    monkeypatch.setattr(findings_v2, "load_definition_registry", lambda **_kwargs: deepcopy(registry))
     packet = findings_v2._assemble(publics, accepted["manifest"], accepted["audits"], registry)
     frozen = findings_v2._reference_from_packet(packet)
     monkeypatch.setattr(findings_v2, "_load_reference", lambda: deepcopy(frozen))
@@ -34,8 +37,8 @@ def test_synthetic_packet_has_complete_public_only_shape(monkeypatch):
                            "limitations", "content_digest"}
     assert packet["coverage"]["expected_cells"]["national"] == 8 * 5
     assert packet["opening_claim_ids"] == []
-    assert "no_supported_opening_claim" in packet["limitations"]
-    assert "estimate" not in json.dumps(packet)
+    assert findings_v2.VALID_LIMITATIONS["empty"] in packet["limitations"]
+    assert '"estimate":' not in json.dumps(packet)
 
 
 @pytest.mark.parametrize("target", ["source", "record", "label", "coverage", "comparison",
@@ -77,6 +80,13 @@ def test_complementary_parent_stays_null_everywhere(monkeypatch):
     assert findings_v2.validate_analysis_packet(packet) == []
 
 
+def test_cyclic_or_nonfinite_packet_is_a_validation_error():
+    cyclic = {}
+    cyclic["self"] = cyclic
+    assert findings_v2.validate_analysis_packet(cyclic)[0]["id"] == "json_scalars"
+    assert findings_v2.validate_analysis_packet({"value": float("nan")})[0]["id"] == "json_scalars"
+
+
 def test_real_accepted_aggregate_packet(monkeypatch):
     base = ROOT / ".cache/research/phase2-acceptance"
     if not (base / "final-replay-pass.json").is_file():
@@ -94,3 +104,18 @@ def test_real_accepted_aggregate_packet(monkeypatch):
     assert len(packet["opening_claim_ids"]) <= 3
     assert all(packet["record_index"][rid]["record"]["value"] is not None
                for claim in packet["claims"] for rid in claim["record_ids"])
+    destination = os.environ.get("BRUJULA_SAVE_ACCEPTED_PACKET")
+    if destination:
+        output = Path(destination)
+        output.mkdir(parents=True, exist_ok=True)
+        (output / "analysis.json").write_text(
+            json.dumps(packet, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+        receipt = {"schema_version": "1.0", "status": "PASS", "synthetic": False,
+                   "accepted_numeric_digest": manifest["numeric_content_digest"],
+                   "analysis_content_digest": packet["content_digest"],
+                   "source_snapshot_ids": sorted(publics), "record_count": len(packet["record_index"]),
+                   "comparison_count": len(packet["comparisons"]), "claim_count": len(packet["claims"]),
+                   "opening_claim_ids": packet["opening_claim_ids"],
+                   "profile_cells": packet["coverage"]["expected_cells"]}
+        (output / "receipt.json").write_text(
+            json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")

@@ -33,6 +33,26 @@ def _item(field="031300", unit="percent", value=48.25):
                         "recorded_sex": "todos los sexos registrados", "period": "2026-Q2"}}
 
 
+def _changed(item, **updates):
+    changed = deepcopy(item)
+    changed["record"].update(updates)
+    grain_keys = ("source_snapshot_id", "population_id", "field_of_study_id", "occupation_id",
+                  "industry_id", "geography_id", "recorded_sex_id", "period_id", "metric_id", "method_id")
+    grain = tuple(changed["record"][key] for key in grain_keys)
+    changed["grain"] = grain
+    changed["record_id"] = "v2r:" + hashlib.sha256(json.dumps(list(grain), sort_keys=True,
+                                      ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+    changed["display"]["period"] = changed["record"]["period_id"]
+    if changed["record"]["geography_id"] == "02":
+        changed["display"]["geography"] = "Baja California"
+    elif changed["record"]["geography_id"] == "01":
+        changed["display"]["geography"] = "Aguascalientes"
+    changed["display"]["recorded_sex"] = {"all": "todos los sexos registrados",
+                                              "1": "hombres registrados", "2": "mujeres registradas"}[
+                                                  changed["record"]["recorded_sex_id"]]
+    return changed
+
+
 def test_observation_has_exact_evidence_and_canonical_spanish():
     item = _item()
     index = {item["record_id"]: item}
@@ -89,3 +109,51 @@ def test_descriptive_comparison_requires_supported_pair():
     with pytest.raises(ValueError):
         make_claim("entity", "v2c:pair", public_index=index,
                    comparison_ledger={"v2c:pair": comparison})
+
+
+@pytest.mark.parametrize("kind,comparison_type,left_changes,right_changes", [
+    ("qoq", "adjacent_quarter", {"period_id": "2026-Q1", "source_snapshot_id": "enoe_2026_q1"}, {}),
+    ("yoy", "like_quarter_annual", {"period_id": "2025-Q2", "source_snapshot_id": "enoe_2025_q2"}, {}),
+    ("sex", "recorded_sex_slice", {"recorded_sex_id": "1"}, {"recorded_sex_id": "2"}),
+    ("entity", "entity_slice", {"geography_id": "02"}, {"geography_id": "01"}),
+])
+def test_supported_descriptive_templates_and_exact_metadata(kind, comparison_type, left_changes, right_changes):
+    base = _item()
+    left = _changed(base, value=40.0, **left_changes)
+    right = _changed(base, value=48.25, **right_changes)
+    index = {x["record_id"]: x for x in (left, right)}
+    comparison = {"comparison_id": "v2c:pair", "comparison_type": comparison_type,
+                  "previous_record_id": left["record_id"], "current_record_id": right["record_id"],
+                  "comparable": True, "status": "REVIEW", "absolute_change": 8.25,
+                  "relative_change_pct": 20.625, "reasons": [],
+                  "limitations": (["descriptive_change_only", "quarterly_samples_may_overlap",
+                                   "seasonality_qoq" if kind == "qoq" else "like_quarter_yoy"]
+                                  if kind in ("qoq", "yoy") else
+                                  ["descriptive_difference_only", "same_period_descriptive_slice"]),
+                  "evidence_refs": sorted(set(left["record"]["evidence_refs"] + right["record"]["evidence_refs"])),
+                  "source_snapshot_ids": [left["record"]["source_snapshot_id"], right["record"]["source_snapshot_id"]],
+                  "source_sha256s": [left["snapshot_sha256"], right["snapshot_sha256"]],
+                  "display_unit": "percentage points"}
+    ledger = {"v2c:pair": comparison}
+    claim = make_claim(kind, "v2c:pair", public_index=index, comparison_ledger=ledger)
+    assert validate_claim(claim, public_index=index, comparison_ledger=ledger) == []
+    assert ("el cambio" in claim["interpretation"]) == (kind in ("qoq", "yoy"))
+    assert ("el contraste" in claim["interpretation"]) == (kind in ("sex", "entity"))
+    assert ("muestras trimestrales pueden solaparse" in claim["limitation"]) == (kind in ("qoq", "yoy"))
+    assert ("diferencia entre grupos" in claim["limitation"]) == (kind in ("sex", "entity"))
+    assert "no establece efecto causal" in claim["interpretation"]
+    assert "código 97: 97 años o más" in claim["observation"]
+    for field in ("source_snapshot_ids", "source_sha256s", "method_versions", "evidence_refs", "quantities"):
+        changed = deepcopy(claim)
+        changed[field] = [] if field != "quantities" else {"absolute_change": 999}
+        assert validate_claim(changed, public_index=index, comparison_ledger=ledger)
+
+
+def test_opening_selection_is_stable_under_reorder_and_uses_distinct_themes():
+    candidates = [{"claim_id": f"v2k:{i}", "kind": "observation", "subject_id": f"v2r:{i}",
+                   "metric_id": metric, "record_ids": [f"v2r:{i}"], "sample_sizes": [40]}
+                  for i, metric in enumerate(("employment_rate", "positive_income_coverage",
+                                              "positive_income_mean", "main_job_informality_rate"))]
+    chosen = select_opening_claims(candidates)
+    assert [x["claim_id"] for x in chosen] == [x["claim_id"] for x in select_opening_claims(list(reversed(candidates)))]
+    assert [x["metric_id"] for x in chosen] == ["positive_income_coverage", "employment_rate", "positive_income_mean"]
