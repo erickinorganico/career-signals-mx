@@ -4,11 +4,11 @@ milestone: v1.0.0
 milestone_name: Release
 current_phase: 02
 current_phase_name: Defensible Survey Estimates
-status: planning
-stopped_at: Phase 1 canonically complete; Phase 2 plans receiving executable prohibition controls before execution.
-last_updated: "2026-09-23T04:33:20.292Z"
+status: executing
+stopped_at: Phase 2 plan 02-01 executing strict full-frame adapter and metric definitions.
+last_updated: "2026-09-23T04:47:19.752Z"
 last_activity: 2026-09-22
-last_activity_desc: Phase 1 complete, transitioned to Phase 02
+last_activity_desc: Phase 2 final plan review passed; adapter and metrics implementation started
 progress:
   total_phases: 5
   completed_phases: 1
@@ -29,9 +29,9 @@ See: .planning/PROJECT.md (updated 2026-09-22)
 ## Current Position
 
 Phase: 02 — Defensible Survey Estimates
-Plan: Not started
-Status: Plans reviewed; final prohibition-control revision precedes execution
-Last activity: 2026-09-22 — Phase 1 complete, transitioned to Phase 02
+Plan: 1 of 3 (02-01)
+Status: executing
+Last activity: 2026-09-22 — Phase 2 final plan review passed; adapter and metrics implementation started
 
 Progress: 1/5 phases accepted; 4/10 currently planned execution plans implemented. This is not release completion.
 
@@ -54,7 +54,7 @@ Decisions are logged in PROJECT.md. The active milestone is a complete real-data
 
 ### Pending Todos
 
-Finish the Phase 2/3 planned prohibition-control revision and targeted checker, then execute Phase 2 sequential waves. Full real-data numerical, analytical, publication and release gates remain.
+Execute Phase 2 sequential waves. Phase 3 targeted plan review passed; execution awaits Phase 2 numerical acceptance. Full real-data numerical, analytical, publication and release gates remain.
 
 ### Blockers/Concerns
 
@@ -69,5 +69,5 @@ None. The full real-data scope remains in v1.0.0.
 ## Session Continuity
 
 Last session: 2026-09-22
-Stopped at: Phase 1 complete; Phase 2 final plan revision/check precedes numerical implementation.
+Stopped at: Phase 2 plan 02-01 executing; full-frame adapter and metric definitions.
 Resume file: None

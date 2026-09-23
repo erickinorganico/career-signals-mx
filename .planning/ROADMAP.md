@@ -28,11 +28,12 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
   3. An analyst can identify the exact national and completed-professional-study populations, eligibility exclusions, and denominators, including treatment of postgraduate study, age, and unknown fields.
   4. A consumer can validate a strict v2 research record with distinct dimensions, evidence, and precision state while the v1 synthetic regression contract still rejects invalid inputs.
 
-**Plans**: 3/3 plans executed
+**Plans**: 4/4 plans executed and independently verified
 
 - [x] 01-01-PLAN.md
 - [x] 01-02-PLAN.md
 - [x] 01-03-PLAN.md
+- [x] 01-04-PLAN.md (mechanical prohibition controls)
 
 ### Phase 2: Defensible Survey Estimates
 
@@ -64,7 +65,11 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
   3. A reader can inspect supported differences by recorded sex and entity, with suppressed cells, missing coverage, response rates, and exclusions visible for each relevant period and field.
   4. A reviewer can trace each proposed finding to exact estimate, source, and method IDs; unsupported causal prose, new quantities, and personal recommendations fail the claim gate.
 
-**Plans**: TBD
+**Plans**: 0/3 plans executed; targeted plan review passed, awaiting Phase 2 numerical acceptance
+
+- [ ] 03-01-PLAN.md
+- [ ] 03-02-PLAN.md
+- [ ] 03-03-PLAN.md
 
 ### Phase 4: Offline Publication and Reproducible Operation
 
@@ -102,7 +107,7 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Official Sources and Research Contract | 4/4 | Complete    | 2026-09-22 |
-| 2. Defensible Survey Estimates | 0/3 | Planned    |  |
-| 3. Supported Labor Findings | 0/TBD | Not started | - |
+| 2. Defensible Survey Estimates | 0/3 | Executing 02-01 | - |
+| 3. Supported Labor Findings | 0/3 | Plans reviewed; dependent on Phase 2 | - |
 | 4. Offline Publication and Reproducible Operation | 0/TBD | Not started | - |
 | 5. Independent Audit and v1.0.0 Release | 0/TBD | Not started | - |

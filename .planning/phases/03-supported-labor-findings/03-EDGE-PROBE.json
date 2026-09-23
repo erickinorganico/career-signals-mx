@@ -1,0 +1,293 @@
+{
+  "items": [
+    {
+      "requirement_id": "ANA-01",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-01 adjacency: a catalog field code shared with an occupation or industry ID remains a separate field-of-study concept.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "ANA-01",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-01 empty: no accepted public record produces a visible missing cell with reason rather than an invented field value.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "ANA-01",
+      "category": "encoding",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-01 encoding: official CMPE labels and normalized six-digit keys remain linked; blank and 999999 stay unknown, never named fields.",
+      "reason": null,
+      "probe": "Whose definition of length/equality applies — bytes, code points, grapheme clusters, or normalized form?"
+    },
+    {
+      "requirement_id": "ANA-01",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-01 ordering: reordering public records or catalog rows leaves the complete profile grid and canonical IDs unchanged.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "ANA-02",
+      "category": "boundary",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-02 boundary: pair generator creates exactly q→q+1 and q→q+4 inside the eight-quarter window, never a ninth or reversed pair.",
+      "reason": null,
+      "probe": "What happens exactly at each min/max/threshold — and one step either side?"
+    },
+    {
+      "requirement_id": "ANA-02",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-02 adjacency: touching adjacent quarters receive seasonality caveat; same-quarter year pairs receive like-quarter label and no independent-sample claim.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "ANA-02",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-02 empty: a series with missing quarter emits its expected pair slot blocked with null deltas rather than silently shortening the series.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "ANA-02",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-02 ordering: shuffled periods/records yield the same chronologically ordered pair IDs and verdicts.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "ANA-02",
+      "category": "precision",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-02 precision: rate differences use percentage points; income differences are nominal; a zero prior value gives null relative percent without false infinity.",
+      "reason": null,
+      "probe": "Where can precision loss, overflow, or rounding/tie-breaking occur — and what is the exact contract (e.g. half-up vs half-to-even, ceil/floor/truncate)?"
+    },
+    {
+      "requirement_id": "ANA-03",
+      "category": "boundary",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-03 boundary: every source-family/edition, population/version, normalized geography, sex, concept/classification, metric/denominator/version, unit, price basis, estimator/design/method and precision-policy mismatch blocks with null deltas.",
+      "reason": null,
+      "probe": "What happens exactly at each min/max/threshold — and one step either side?"
+    },
+    {
+      "requirement_id": "ANA-03",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-03 adjacency: 2025-Q2 ENT and 2025-Q3 CVE_ENT state keys compare only when normalized code, official name and reviewed concept evidence all match.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "ANA-03",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-03 empty: missing definition version, incompatible revision evidence or suppressed endpoint blocks the pair rather than defaulting to equivalence.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "ANA-03",
+      "category": "encoding",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-03 encoding: old state codes 1..32 and new 01..32 normalize to two ASCII digits while native aliases and raw source identity remain provenance.",
+      "reason": null,
+      "probe": "Whose definition of length/equality applies — bytes, code points, grapheme clusters, or normalized form?"
+    },
+    {
+      "requirement_id": "ANA-03",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-03 ordering: mismatch reasons and endpoint IDs have stable order under metadata permutation.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "ANA-03",
+      "category": "precision",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-03 precision: no comparison SE, CI, p-value or significance claim is computed from marginal quarter intervals.",
+      "reason": null,
+      "probe": "Where can precision loss, overflow, or rounding/tie-breaking occur — and what is the exact contract (e.g. half-up vs half-to-even, ceil/floor/truncate)?"
+    },
+    {
+      "requirement_id": "ANA-04",
+      "category": "boundary",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-04 boundary: latest-quarter state grid has exactly 32 keys 01..32 and exactly two recorded-sex selections for each focal field and cohort.",
+      "reason": null,
+      "probe": "What happens exactly at each min/max/threshold — and one step either side?"
+    },
+    {
+      "requirement_id": "ANA-04",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-04 adjacency: state and sex slices remain separate even where a source record could satisfy both selectors.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "ANA-04",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-04 empty: an unsupported entity/sex cell stays present with null, precision state and reason; absent coverage never becomes zero.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "ANA-04",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-04 ordering: all 32 state and both sex slots sort by canonical codes independent of source input order.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "ANA-04",
+      "category": "precision",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-04 precision: available values retain their public support and uncertainty, while sparse cells expose no hidden weighted denominator or confidence limits.",
+      "reason": null,
+      "probe": "Where can precision loss, overflow, or rounding/tie-breaking occur — and what is the exact contract (e.g. half-up vs half-to-even, ceil/floor/truncate)?"
+    },
+    {
+      "requirement_id": "ANA-05",
+      "category": "boundary",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-05 boundary: observed n, response denominator and exact-income response coverage use their own named denominator at zero/full/partial coverage.",
+      "reason": null,
+      "probe": "What happens exactly at each min/max/threshold — and one step either side?"
+    },
+    {
+      "requirement_id": "ANA-05",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-05 adjacency: age unknown, field unknown, technical, postgraduate, incomplete and income-unavailable exclusions remain distinct even when one person meets multiple reasons.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "ANA-05",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-05 empty: unavailable audit bucket or zero denominator yields null coverage with reason, not a zero percent.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "ANA-05",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-05 ordering: exclusion and coverage counts are keyed and stable under audit entry permutation.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "ANA-05",
+      "category": "precision",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-05 precision: weighted population estimates are never presented as observed n or effective sample size, and complementary cells cannot disclose suppressed values.",
+      "reason": null,
+      "probe": "Where can precision loss, overflow, or rounding/tie-breaking occur — and what is the exact contract (e.g. half-up vs half-to-even, ceil/floor/truncate)?"
+    },
+    {
+      "requirement_id": "ANA-06",
+      "category": "boundary",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-06 boundary: selecting zero, one, two or three supported opening claims succeeds; a fourth is rejected.",
+      "reason": null,
+      "probe": "What happens exactly at each min/max/threshold — and one step either side?"
+    },
+    {
+      "requirement_id": "ANA-06",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-06 adjacency: identical displayed numbers from different grains or units remain bound to their exact record/comparison IDs and labels.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "ANA-06",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-06 empty: no eligible finding produces an empty opening list with a visible limitation, not an invented finding.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "ANA-06",
+      "category": "encoding",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-06 encoding: canonical Spanish text preserves exact official labels, accents and units and rejects altered Unicode/lookalike or injected text.",
+      "reason": null,
+      "probe": "Whose definition of length/equality applies — bytes, code points, grapheme clusters, or normalized form?"
+    },
+    {
+      "requirement_id": "ANA-06",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-06 ordering: permuting public records or candidate claims leaves canonical claim IDs, text and opening selection unchanged.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "ANA-06",
+      "category": "precision",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "ANA-06 precision: extra numerals, rounded quantities outside the sanctioned formatter, changed uncertainty labels and endpoint-derived false certainty fail the claim gate.",
+      "reason": null,
+      "probe": "Where can precision loss, overflow, or rounding/tie-breaking occur — and what is the exact contract (e.g. half-up vs half-to-even, ceil/floor/truncate)?"
+    }
+  ],
+  "coverage": {
+    "applicable": 31,
+    "resolved": 31,
+    "unresolved": 0,
+    "byVerification": {
+      "explicit": 31,
+      "backstop": 0
+    }
+  }
+}
+
