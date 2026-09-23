@@ -24,3 +24,20 @@ for (const [id, description] of [
     assert.match(result.stdout, /checked actual Phase 2 API/);
   });
 }
+
+for (const variant of ['prefixed-logger', 'multiline-json', 'python-repr', 'csv', 'untracked-package']) {
+  test(`p1 rejects ${variant} synthetic person-row output`, () => {
+    const root = path.resolve(__dirname, '..');
+    const localPython = process.platform === 'win32'
+      ? path.join(root, '.venv', 'Scripts', 'python.exe')
+      : path.join(root, '.venv', 'bin', 'python');
+    const python = process.env.BRUJULA_TEST_PYTHON ||
+      (existsSync(localPython) ? localPython : 'python');
+    const subject = `tests/fixtures/phase2_prohibitions/01-p1-${variant}.bad.json`;
+    const result = spawnSync(python, [path.join(root, 'tests', 'phase2_prohibitions_01.py'), 'p1', subject], {
+      cwd: root, encoding: 'utf8', windowsHide: true, timeout: 30000,
+    });
+    assert.notEqual(result.status, 0, `${variant} person-row mutation escaped p1`);
+    assert.match(result.stderr, /individual row leaked/);
+  });
+}

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import contextlib
+import ast
 import csv
 import io
 import json
@@ -27,6 +28,7 @@ from test_enoe_adapter import fixture
 
 
 PERSON_KEYS = {"r_def", "c_res", "eda", "fac_tri", "est_d_tri", "upm", "clase2", "ingocup"}
+ARTIFACT_SUFFIXES = {".json", ".jsonl", ".csv", ".zip", ".md", ".html", ".txt", ".log"}
 
 
 def _person_structure(value):
@@ -59,12 +61,54 @@ def _payload_has_person(payload: bytes, suffix: str) -> bool:
             return len(keys & PERSON_KEYS) >= 5 and {"fac_tri", "upm"} <= keys and next(reader, None) is not None
         except (UnicodeDecodeError, csv.Error):
             return False
+    if suffix in {".jsonl", ".md", ".html", ".txt", ".log"}:
+        return _stream_has_person(payload.decode("utf-8", errors="replace"))
     return False
 
 
 def _stream_has_person(text: str) -> bool:
-    for line in text.splitlines():
-        if _payload_has_person(line.encode("utf-8"), ".json"):
+    decoder = json.JSONDecoder()
+    # A logger may prefix a JSON object, and either JSON or repr can span
+    # lines. Inspect balanced objects starting at each opening delimiter.
+    for start, char in enumerate(text):
+        if char not in "{[":
+            continue
+        try:
+            value, _ = decoder.raw_decode(text[start:])
+        except json.JSONDecodeError:
+            value = None
+        if _person_structure(value):
+            return True
+        depth, quote, escaped = 0, None, False
+        for end in range(start, len(text)):
+            token = text[end]
+            if quote:
+                if escaped:
+                    escaped = False
+                elif token == "\\":
+                    escaped = True
+                elif token == quote:
+                    quote = None
+            elif token in "\"'":
+                quote = token
+            elif token in "{[":
+                depth += 1
+            elif token in "}]":
+                depth -= 1
+                if depth == 0:
+                    try:
+                        if _person_structure(ast.literal_eval(text[start:end + 1])):
+                            return True
+                    except (ValueError, SyntaxError, MemoryError, RecursionError):
+                        pass
+                    break
+    lines = text.splitlines()
+    for index, line in enumerate(lines[:-1]):
+        # A CSV header may itself carry a logger prefix. Start at the first
+        # recognized column name and require an actual following data row.
+        positions = [line.lower().find(key) for key in PERSON_KEYS]
+        positions = [position for position in positions if position >= 0]
+        if positions and _payload_has_person((line[min(positions):] + "\n" + lines[index + 1]).encode(), ".csv"):
             return True
     return False
 
@@ -75,7 +119,13 @@ def _tracked_phase2_data_artifacts():
     for relative in result.stdout.splitlines():
         path = ROOT / relative
         # Explicit synthetic test fixtures are legitimate boundary examples.
-        if path.is_file() and path.suffix.lower() in {".json", ".csv", ".zip"}:
+        if path.is_file() and path.suffix.lower() in ARTIFACT_SUFFIXES:
+            yield path.read_bytes(), path.suffix.lower()
+
+
+def _staged_artifacts(stage: Path):
+    for path in stage.rglob("*"):
+        if path.is_file() and path.suffix.lower() in ARTIFACT_SUFFIXES:
             yield path.read_bytes(), path.suffix.lower()
 
 
@@ -88,16 +138,31 @@ def p1(mutation: str | None):
         logger.addHandler(handler)
         try:
             with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
-                _, audit = load_snapshot_frame(sid, root, registry)
+                frame, audit = load_snapshot_frame(sid, root, registry)
+                vectors = metric_vectors(frame, NATIONAL_15_PLUS_CONTEXT, {}, "occupied_total")
         finally:
             logger.removeHandler(handler)
         synthetic_row = {"r_def": "0", "c_res": "1", "eda": "30", "fac_tri": "2", "est_d_tri": "1", "upm": "11", "clase2": "1", "ingocup": "100"}
+        stage = Path(directory) / "staged-package"
+        stage.mkdir()
+        aggregate = {"audit": audit, "metric_coverage": vectors["coverage"],
+                     "metric_exclusions": vectors["exclusions"]}
+        (stage / "audit.json").write_text(json.dumps(aggregate), encoding="utf-8")
+        report = f"# Synthetic aggregate audit\n\nFrame rows: {audit['frame_rows']}\n"
+        with zipfile.ZipFile(stage / "package.zip", "w") as archive:
+            archive.writestr("audit.json", json.dumps(aggregate))
+            archive.writestr("report.md", json.dumps(synthetic_row) if mutation == "inject_untracked_package" else report)
+        if mutation == "inject_untracked_package":
+            (stage / "report.md").write_text(json.dumps(synthetic_row), encoding="utf-8")
+        else:
+            (stage / "report.md").write_text(report, encoding="utf-8")
+        artifact_view = list(_tracked_phase2_data_artifacts()) + list(_staged_artifacts(stage))
         surfaces = {
             "audit": _person_structure(audit),
             "stdout": _stream_has_person(stdout.getvalue()),
             "stderr": _stream_has_person(stderr.getvalue()),
             "logger": _stream_has_person(logs.getvalue()),
-            "tracked_or_packaged": any(_payload_has_person(data, suffix) for data, suffix in _tracked_phase2_data_artifacts()),
+            "tracked_or_packaged": any(_payload_has_person(data, suffix) for data, suffix in artifact_view),
         }
         # Independently demonstrate that every surface's scanner detects a
         # disposable row. The bad subject changes computed views, never Git.
@@ -112,6 +177,17 @@ def p1(mutation: str | None):
         assert all(probes.values()), "a person-row surface scanner is ineffective"
         if mutation == "inject_all":
             surfaces = probes
+        elif mutation == "inject_prefixed_logger":
+            surfaces["logger"] = _stream_has_person("INFO person=" + inject)
+        elif mutation == "inject_multiline_json":
+            surfaces["stderr"] = _stream_has_person("WARNING person=\n" + json.dumps(synthetic_row, indent=2))
+        elif mutation == "inject_python_repr":
+            surfaces["stdout"] = _stream_has_person("INFO person=" + repr(synthetic_row))
+        elif mutation == "inject_csv":
+            output = io.StringIO()
+            writer = csv.DictWriter(output, fieldnames=list(synthetic_row))
+            writer.writeheader(); writer.writerow(synthetic_row)
+            surfaces["stdout"] = _stream_has_person(output.getvalue())
         assert not any(surfaces.values()), f"individual row leaked on {sorted(k for k, v in surfaces.items() if v)}"
 
 
@@ -145,6 +221,7 @@ if __name__ == "__main__":
     case = sys.argv[1]
     subject = json.loads((ROOT / sys.argv[2]).read_text(encoding="utf-8"))
     assert subject["case"] in ("clean", "p1", "p2")
-    assert subject["mutation"] in (None, "inject_all", "promote_missing")
+    assert subject["mutation"] in (None, "inject_all", "inject_prefixed_logger", "inject_multiline_json",
+                                   "inject_python_repr", "inject_csv", "inject_untracked_package", "promote_missing")
     {"p1": p1, "p2": p2}[case](subject["mutation"] if subject["case"] == case else None)
     print("checked actual Phase 2 API")
