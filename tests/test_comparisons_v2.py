@@ -259,3 +259,31 @@ def test_temporal_pairs_keep_specific_seasonality_and_overlap_limits(pair, regis
         assert "same_period_descriptive_slice" not in result["limitations"]
     assert "seasonality_qoq" in qoq["limitations"] and "like_quarter_yoy" not in qoq["limitations"]
     assert "like_quarter_yoy" in yoy["limitations"] and "seasonality_qoq" not in yoy["limitations"]
+
+
+@pytest.mark.parametrize("kind", ["reversed", "missing", "duplicate"])
+def test_mutated_period_registry_cannot_authorize_a_different_window(pair, registry, kind):
+    altered = deepcopy(registry)
+    if kind == "reversed":
+        altered["periods"] = tuple(reversed(registry["periods"]))
+    elif kind == "missing":
+        altered["periods"] = registry["periods"][1:]
+    else:
+        altered["periods"] = registry["periods"][:-1] + (registry["periods"][-2],)
+    result = compare_public_records(pair("2025-Q3"), pair("2025-Q2"), registry=altered)
+    assert not result["comparable"] and result["absolute_change"] is None
+    assert "period_registry" in result["reasons"]
+    profiles = {"periods": list(registry["periods"]), "record_index": {}, "national": [],
+                "latest_states": [], "latest_recorded_sexes": []}
+    with pytest.raises(ValueError, match="period registry"):
+        build_comparison_ledger(profiles, registry=altered)
+
+
+
+def test_geography_concept_cannot_be_coherently_replaced(pair, registry):
+    altered = deepcopy(registry)
+    altered["geography_concept"] = "arbitrary different state concept"
+    result = compare_public_records(pair("2025-Q2", geography="02"),
+                                    pair("2025-Q3", geography="02"), registry=altered)
+    assert not result["comparable"] and result["absolute_change"] is None
+    assert "geography_concept_review" in result["reasons"]
