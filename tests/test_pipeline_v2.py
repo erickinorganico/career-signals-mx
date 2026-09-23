@@ -109,6 +109,19 @@ def test_inventory_rejects_extra_missing_and_symlink(tmp_path):
     (root / "extra.txt").write_bytes(b"extra")
     with pytest.raises(ValueError, match="inventory"):
         p._inventory(root, {"analysis.json"})
+
+
+def test_current_pointer_rejects_unlisted_authority_fields(monkeypatch, tmp_path):
+    source, out = tmp_path / "source", tmp_path / "out"
+    out.mkdir()
+    pointer = {"schema_version": "2.0", "run_id": "20260923T120000-aaaaaaaaaaaa",
+               "status": "REVIEW", "build_status": "SUCCEEDED",
+               "manifest_sha256": "a" * 64, "forged_success": True}
+    p.atomic_json(out / "current.json", pointer)
+    monkeypatch.setattr(p, "_verify_sealed", lambda *_args: {
+        "sources": [], "artifact_hashes": {}, "manifest": {}, "receipt": {}})
+    with pytest.raises(ValueError, match="current pointer"):
+        p.resolve_publication_current(out, source)
     (root / "extra.txt").unlink()
     (root / "analysis.json").unlink()
     with pytest.raises(ValueError, match="inventory"):
