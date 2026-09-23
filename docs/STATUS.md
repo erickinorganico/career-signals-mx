@@ -3,9 +3,15 @@
 La versión final de investigación real **1.0.0 está en ejecución**. El
 [estado GSD](../.planning/STATE.md) y el
 [roadmap activo](../.planning/ROADMAP.md) registran su avance. La fase de fuentes
-y contrato está verificada; el lector de ocho trimestres y las definiciones de
-23 indicadores están implementados. La estimación, la aceptación independiente,
-el informe y el release final siguen pendientes.
+y contrato y la fase estadística están aceptadas: ocho trimestres, 23 indicadores
+con denominadores explícitos y 6,739 celdas evaluadas. El cálculo pasó los 26
+casos reales y cuatro controles analíticos de R, ambas referencias oficiales y
+una repetición idéntica. La revisión independiente verificó 43/43 criterios;
+el cierre GSD no tiene advertencias. La precisión propia continúa siendo no
+oficial, con las discrepancias documentadas. La
+[evidencia numérica](evidence/phase-02-numerical-acceptance.json) conserva los
+intentos y hashes. Los perfiles y hallazgos están en implementación; el informe
+y el release final siguen pendientes.
 
 La evidencia que sigue es el registro histórico de la demo sintética 0.1.0;
 sus bloqueos de ingesta y cifras de pruebas no describen el alcance activo.

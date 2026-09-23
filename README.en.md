@@ -6,10 +6,13 @@ analytical reports. [Español](README.md) · [Documentation](docs/README.md)
 
 > **Real-data version 1.0.0: under construction.** The full scope covers eight
 > ENOE quarters, 2024 Q3–2026 Q2, survey uncertainty, field profiles, offline
-> HTML/Markdown/PDF reporting and reusable public aggregates. All eight inputs
-> passed the frame audit; numerical acceptance and the final publication remain
-> pending. See the [release plan](docs/FINAL-RELEASE-PLAN.md) and
-> [GSD status](.planning/STATE.md).
+> HTML/Markdown/PDF reporting and reusable public aggregates. Source custody and
+> statistical estimation are accepted: 6,739 estimates, independent R checks,
+> official references and identical eight-quarter replay. Project precision
+> remains explicitly nonofficial. Profiles and findings are being implemented;
+> the report and final release remain pending. See the
+> [numerical evidence](docs/evidence/phase-02-numerical-acceptance.json),
+> [release plan](docs/FINAL-RELEASE-PLAN.md) and [GSD status](.planning/STATE.md).
 >
 > The demo instructions below describe historical version 0.1.0. Its observations
 > are **synthetic**, not Mexican labor estimates or personal recommendations.

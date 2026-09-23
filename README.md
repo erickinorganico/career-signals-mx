@@ -9,10 +9,13 @@ ocupación sin tratarlos como equivalentes.
 
 > **Versión 1.0.0 de investigación real: en construcción.** El alcance completo
 > abarca ocho trimestres ENOE, 2024-T3 a 2026-T2, precisión estadística, perfiles,
-> informe offline HTML/Markdown/PDF y datos reutilizables. Los ocho archivos ya
-> pasaron la auditoría de lectura; la aceptación numérica y la publicación final
-> siguen pendientes. Consulta el [plan final](docs/FINAL-RELEASE-PLAN.md) y el
-> [estado GSD](.planning/STATE.md).
+> informe offline HTML/Markdown/PDF y datos reutilizables. Las fuentes y la fase
+> estadística están aceptadas: 6,739 estimaciones, contraste independiente con R,
+> referencias oficiales y replay idéntico de los ocho trimestres. La precisión
+> propia sigue identificada como no oficial. Los perfiles y hallazgos están en
+> implementación; el informe y el release final siguen pendientes. Consulta la
+> [evidencia numérica](docs/evidence/phase-02-numerical-acceptance.json), el
+> [plan final](docs/FINAL-RELEASE-PLAN.md) y el [estado GSD](.planning/STATE.md).
 >
 > Las instrucciones de demo que siguen documentan la versión histórica 0.1.0.
 > Sus observaciones son **sintéticas** y no representan estimaciones de México
