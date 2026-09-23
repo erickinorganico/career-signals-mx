@@ -80,10 +80,46 @@ def test_golden_generation_is_rejected_before_any_source_read(tmp_path):
 def test_nested_roots_are_rejected_before_output_creation(tmp_path):
     source = tmp_path / "source"
     nested_output = source / "output"
-    result = service.accept(nested_output, tmp_path / "audit", source_root=source,
-                            workbook=tmp_path / "workbook", pdf=tmp_path / "pdf")
-    assert result["status"] == "BLOCKED" and "must not overlap" in result["reason"]
+    with pytest.raises(ValueError, match="must not overlap"):
+        service.accept(nested_output, tmp_path / "audit", source_root=source,
+                       workbook=tmp_path / "workbook", pdf=tmp_path / "pdf")
     assert not nested_output.exists()
+
+
+def test_audit_overlap_never_writes_into_source_or_sealed_output(tmp_path):
+    source = tmp_path / "source"
+    source.mkdir()
+    with pytest.raises(ValueError, match="must not overlap"):
+        service.accept(tmp_path / "output", source / "audit", source_root=source,
+                       workbook=tmp_path / "workbook", pdf=tmp_path / "pdf")
+    assert list(source.iterdir()) == []
+    historical = tmp_path / "historical"
+    historical.mkdir()
+    attempts = tmp_path / "old-audit" / "attempts"
+    attempts.mkdir(parents=True)
+    seal = attempts / "prior.json"
+    seal.write_text(json.dumps({"output_root": str(historical)}), encoding="utf-8")
+    with pytest.raises(ValueError, match="overlaps sealed accepted output"):
+        service.replay(source, seal, historical / "audit")
+    assert list(historical.iterdir()) == []
+    with pytest.raises(ValueError, match="overlaps sealed acceptance audit"):
+        service.replay(source, seal, attempts.parent / "nested-audit")
+
+
+def test_benchmark_hashes_reject_mid_run_replacement(monkeypatch, tmp_path):
+    from brujula import official_reconciliation as official
+
+    workbook = tmp_path / "workbook.xlsx"
+    pdf = tmp_path / "report.pdf"
+    workbook.write_bytes(b"reviewed workbook")
+    pdf.write_bytes(b"reviewed PDF")
+    monkeypatch.setattr(official, "WORKBOOK_SHA256", service.hashlib.sha256(workbook.read_bytes()).hexdigest())
+    monkeypatch.setattr(official, "PDF_2026_Q2_SHA256", service.hashlib.sha256(pdf.read_bytes()).hexdigest())
+    pinned = service._benchmark_digests(workbook, pdf)
+    pdf.write_bytes(b"replaced PDF")
+    with pytest.raises(ValueError, match="SHA-256"):
+        service._benchmark_digests(workbook, pdf)
+    assert pinned["pdf_sha256"] != service.hashlib.sha256(pdf.read_bytes()).hexdigest()
 
 
 def test_existing_acceptance_artifacts_are_immutable(tmp_path):

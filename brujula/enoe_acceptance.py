@@ -74,6 +74,16 @@ def _numeric_resource_digests() -> dict[str, str]:
             for name, path in sorted(paths.items())}
 
 
+def _benchmark_digests(workbook: Path, pdf: Path) -> dict[str, str]:
+    from .official_reconciliation import WORKBOOK_SHA256, PDF_2026_Q2_SHA256
+
+    digests = {"workbook_sha256": hashlib.sha256(Path(workbook).read_bytes()).hexdigest(),
+               "pdf_sha256": hashlib.sha256(Path(pdf).read_bytes()).hexdigest()}
+    if digests != {"workbook_sha256": WORKBOOK_SHA256, "pdf_sha256": PDF_2026_Q2_SHA256}:
+        raise ValueError("official workbook or PDF SHA-256 mismatch")
+    return digests
+
+
 def _digest(value: object) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
                                      ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
@@ -529,17 +539,14 @@ def _accept_unlocked(output_root: Path, audit_dir: Path, *, source_root: Path,
                      generate_golden: bool = False) -> dict:
     from .official_reconciliation import (
         reconcile, check_2026_pdf_benchmark, COUNT_EXPECTED, RATE_EXPECTED,
-        PDF_2026_Q2_SHA256, WORKBOOK_SHA256,
+        PDF_2026_Q2_SHA256,
     )
     if generate_golden:
         raise ValueError("ordinary installed acceptance cannot generate golden")
     output_root, audit_dir, source_root = _separate_roots(output_root, audit_dir, source_root)
     if any(path.name != ".build.lock" for path in output_root.iterdir()):
         raise FileExistsError("acceptance output root already contains historical artifacts")
-    if hashlib.sha256(Path(workbook).read_bytes()).hexdigest() != WORKBOOK_SHA256:
-        raise ValueError("official workbook SHA-256 mismatch")
-    if hashlib.sha256(Path(pdf).read_bytes()).hexdigest() != PDF_2026_Q2_SHA256:
-        raise ValueError("2026-Q2 official PDF SHA-256 mismatch")
+    benchmarks = _benchmark_digests(workbook, pdf)
     output_root.mkdir(parents=True, exist_ok=True)
     audit_dir.mkdir(parents=True, exist_ok=True)
     golden_path = require_installed_package_path(aggregate_golden_path())
@@ -673,6 +680,8 @@ def _accept_unlocked(output_root: Path, audit_dir: Path, *, source_root: Path,
         raise ValueError("approved source current changed during numerical acceptance")
     if _numeric_resource_digests() != resources:
         raise ValueError("numerical package resource changed during acceptance")
+    if _benchmark_digests(workbook, pdf) != benchmarks:
+        raise ValueError("official benchmark changed during acceptance")
     final_runtime = _r_runtime(rscript, r_home, r_lib)
     if any(final_runtime[key] != runtime[key] for key in
            ("rscript_sha256", "version", "packages")):
@@ -809,6 +818,9 @@ def accept(output_root: Path, audit_dir: Path, *, source_root: Path,
            r_home: Path | None = None, r_lib: Path | None = None,
            generate_golden: bool = False) -> dict:
     """Run frozen acceptance with a current pointer and immutable full receipt."""
+    # An invalid receipt destination must not create current/lock files in the
+    # source or output tree. There is no safe place to emit a failed receipt.
+    output_root, audit_dir, source_root = _separate_roots(output_root, audit_dir, source_root)
     context = {"source_root": str(Path(source_root).resolve()),
                "output_root": str(Path(output_root).resolve()),
                "workbook_path": str(Path(workbook).resolve()),
@@ -824,6 +836,22 @@ def replay(source_root: Path, sealed_run: Path, audit_dir: Path, *,
            rscript: Path | None = None, r_home: Path | None = None,
            r_lib: Path | None = None) -> dict:
     """Recompute frozen inputs and seal a separate immutable replay receipt."""
+    source_root, sealed_run, audit_dir = (Path(path).resolve() for path in
+                                          (source_root, sealed_run, audit_dir))
+    if (audit_dir.is_relative_to(source_root) or source_root.is_relative_to(audit_dir)
+            or sealed_run.is_relative_to(audit_dir)):
+        raise ValueError("replay audit overlaps source or sealed baseline")
+    prior_audit = sealed_run.parent.parent
+    if audit_dir.is_relative_to(prior_audit) or prior_audit.is_relative_to(audit_dir):
+        raise ValueError("replay audit overlaps sealed acceptance audit")
+    try:
+        prior = json.loads(sealed_run.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        prior = None  # Valid audit root can receive a failed missing/corrupt-seal receipt.
+    if isinstance(prior, dict) and isinstance(prior.get("output_root"), str):
+        prior_output = Path(prior["output_root"]).resolve()
+        if audit_dir.is_relative_to(prior_output) or prior_output.is_relative_to(audit_dir):
+            raise ValueError("replay audit overlaps sealed accepted output")
     context = {"source_root": str(Path(source_root).resolve()),
                "sealed_run": str(Path(sealed_run).resolve()),
                "rscript": str(Path(rscript).resolve()) if rscript else None}
