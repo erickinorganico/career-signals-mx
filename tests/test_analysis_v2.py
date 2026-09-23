@@ -81,7 +81,7 @@ def synthetic_inputs(monkeypatch):
             records.append(row)
             grain = analysis_v2._ledger_key(tuple(row[key] for key in GRAIN))
             requested[grain] = True
-            evaluated[grain] = {"status": "UNKNOWN", "has_estimate": False, "reason": "unknown",
+            evaluated[grain] = {"status": "UNKNOWN", "has_estimate": False, "reason": "sample_size_below_30",
                                 "coverage": {"domain_n": 0, "eligible_n": 0, "reason": "empty"},
                                 "exclusions": {"income_amount_unknown": 0},
                                 "method_version": method_version,
