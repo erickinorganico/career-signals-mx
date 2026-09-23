@@ -72,7 +72,9 @@ def classify_eligibility(row: Mapping[str, object], population_id: str) -> dict:
     if residence not in ("1", "3"):
         reasons.append("unknown_residence" if _blank(row.get("c_res")) else "nonresident" if residence == "2" else "invalid_residence")
     age = _row_code(row, "eda", 2)
-    age_unknown = age in ("98", "99") or _blank(row.get("eda"))
+    raw_age = row.get("eda")
+    age_missing = _blank(raw_age) or raw_age in (-1, "-1")
+    age_unknown = age in ("98", "99") or age_missing
     if age_unknown:
         if age != "98" or population_id == COMPLETED_PROFESSIONAL_KNOWN_AGE:
             reasons.append("age_unknown")
@@ -85,7 +87,8 @@ def classify_eligibility(row: Mapping[str, object], population_id: str) -> dict:
     if population_id == COMPLETED_PROFESSIONAL_KNOWN_AGE:
         education = _row_code(row, "cs_p13_1", 2)
         if education != "07":
-            if _blank(row.get("cs_p13_1")) or education in ("00", "99"):
+            raw_education = row.get("cs_p13_1")
+            if _blank(raw_education) or raw_education in (-1, "-1") or education == "99":
                 reasons.append("unknown_education")
             elif education == "06":
                 reasons.append("technical_education")

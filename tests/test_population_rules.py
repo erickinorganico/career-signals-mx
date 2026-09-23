@@ -49,11 +49,21 @@ def test_age_boundaries_and_operational_unknown(age, national, cohort, unknown):
     ("06", "1", "technical_education"), ("08", "1", "postgraduate_education"),
     ("09", "1", "postgraduate_education"), ("07", "2", "incomplete_education"),
     ("07", "9", "unknown_completion"), ("07", " ", "unknown_completion"),
-    ("  ", "1", "unknown_education"), ("07", "x", "invalid_completion"),
+    ("  ", "1", "unknown_education"), ("99", "1", "unknown_education"),
+    ("-1", "1", "unknown_education"), ("00", "1", "other_education"),
+    ("07", "x", "invalid_completion"),
 ])
 def test_professional_exclusions_are_distinct(education, completion, reason):
     result = classify_eligibility(row(cs_p13_1=education, cs_p16=completion), COMPLETED_PROFESSIONAL_KNOWN_AGE)
     assert result["eligible"] is False and reason in result["exclusion_reasons"]
+
+
+@pytest.mark.parametrize("age", ["-1", -1, "99", " "])
+def test_missing_age_is_unknown_not_under_15(age):
+    result = classify_eligibility(row(eda=age), COMPLETED_PROFESSIONAL_KNOWN_AGE)
+    assert result["eligible"] is False
+    assert "age_unknown" in result["exclusion_reasons"]
+    assert "age_below_15" not in result["exclusion_reasons"]
 
 
 @pytest.mark.parametrize("field", ["999999", " 999999", "", "  ", None, "３１３００"])

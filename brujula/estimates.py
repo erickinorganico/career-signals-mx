@@ -130,14 +130,22 @@ def _population_coverage(frame, domain: dict) -> dict:
     if domain["population_id"] == COMPLETED_PROFESSIONAL_KNOWN_AGE:
         population_eligible &= professional
     field = domain["field_of_study_id"]
+    professional_population = domain["population_id"] == COMPLETED_PROFESSIONAL_KNOWN_AGE
     masks = {
-        "age_unknown": np.isin(frame.eda, [98, 99, -1]),
-        "age_below_15": frame.eda < 15,
-        "technical_education": frame.cs_p13_1 == 6,
-        "postgraduate_education": np.isin(frame.cs_p13_1, [8, 9]),
-        "unknown_education": np.isin(frame.cs_p13_1, [-1, 0, 99]),
-        "incomplete_education": frame.cs_p16 == 2,
-        "unknown_completion": np.isin(frame.cs_p16, [-1, 9]),
+        # EDA 98 is an operationally included national-context value; it is
+        # unknown age only for the known-age professional cohort.  Missing and
+        # -1 remain unknown in both populations.
+        "age_unknown": np.isin(frame.eda, [99, -1]) | (
+            professional_population & (frame.eda == 98)
+        ),
+        # A missing sentinel (-1) is unknown, not an under-15 observation.
+        "age_below_15": (frame.eda >= 0) & (frame.eda < 15),
+        "technical_education": professional_population & (frame.cs_p13_1 == 6),
+        "postgraduate_education": professional_population & np.isin(frame.cs_p13_1, [8, 9]),
+        "unknown_education": professional_population & np.isin(frame.cs_p13_1, [-1, 99]),
+        "other_education": professional_population & (frame.cs_p13_1 == 0),
+        "incomplete_education": professional_population & (frame.cs_p16 == 2),
+        "unknown_completion": professional_population & np.isin(frame.cs_p16, [-1, 9]),
         "unknown_field": frame.cs_p14_c == None,  # noqa: E711 - NumPy object array comparison
     }
     counts = {name: int(np.count_nonzero(scope & mask)) for name, mask in masks.items()}

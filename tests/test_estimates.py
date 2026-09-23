@@ -167,3 +167,41 @@ def test_aggregate_audit_keeps_distinct_exclusions_without_weighted_leaks(monkey
     assert audit["evaluated_cells"][income_key]["exclusions"]["income_amount_unknown"] >= 1
     assert audit["evaluated_cells"][income_key]["coverage"]["eligible_n"] > 0
     assert "weighted_denominator" not in json.dumps(audit)
+
+
+def test_population_coverage_matches_age_and_education_sentinels():
+    from brujula import estimates
+
+    frame = synthetic_frame()
+    columns = dict(frame.columns)
+    for name in ("eda", "cs_p13_1"):
+        columns[name] = columns[name].copy()
+    columns["eda"][:4] = [98, -1, 99, 14]
+    columns["cs_p13_1"][:4] = [0, -1, 99, 6]
+    frame = replace(frame, columns=columns)
+
+    national = estimates._population_coverage(frame, {
+        "population_id": "national_15_plus_context", "field_of_study_id": "all",
+        "geography_id": "mx", "recorded_sex_id": "all",
+    })
+    professional = estimates._population_coverage(frame, {
+        "population_id": "completed_professional_known_age", "field_of_study_id": "all",
+        "geography_id": "mx", "recorded_sex_id": "all",
+    })
+
+    # National EDA 98 is included operationally; missing/99 age is unknown,
+    # and -1 must never leak into the under-15 count.
+    assert national["population_eligible_n"] == 37
+    assert national["exclusions"]["age_unknown"] == 2
+    assert national["exclusions"]["age_below_15"] == 1
+    assert national["exclusions"]["technical_education"] == 0
+    assert national["exclusions"]["other_education"] == 0
+
+    # The known-age professional cohort excludes 98 and applies education
+    # exclusions; catalog value 0 is known other education.
+    assert professional["population_eligible_n"] == 36
+    assert professional["exclusions"]["age_unknown"] == 3
+    assert professional["exclusions"]["age_below_15"] == 1
+    assert professional["exclusions"]["other_education"] == 1
+    assert professional["exclusions"]["unknown_education"] == 2
+    assert professional["exclusions"]["technical_education"] == 1
