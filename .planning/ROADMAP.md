@@ -88,15 +88,15 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
   4. A deliberately suppressed internal cell remains absent as a number from all public tables, exports, figures, report text, PDF, and alternative text because each consumes the same validated public projection.
   5. An analyst can refresh and replay from the documented CLI; the same source snapshots reproduce numerical content, a sealed manifest and hashes precede current promotion, and acquisition/build failures leave receipts and invalidate dependent current access without erasing history.
 
-**Plans**: 2/6 plans executed
+**Plans**: 3/6 plans executed
 **Wave 1**
 
 - [x] 04-01-PLAN.md — Installed resources and PDF capability (wave 1)
 - [x] 04-03-PLAN.md — Public projection and joined exports (wave 1)
 
-**Wave 2** *(blocked on Wave 1 completion)*
+**Wave 2** *(in progress; Wave 1 accepted)*
 
-- [ ] 04-02-PLAN.md — Installed numerical acceptance and replay (wave 2)
+- [x] 04-02-PLAN.md — Installed numerical acceptance and replay (wave 2)
 - [ ] 04-04-PLAN.md — Editorial reports, figures and PDF (wave 2)
 
 **Wave 3** *(blocked on Wave 2 completion)*
@@ -178,5 +178,5 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 | 1. Official Sources and Research Contract | 4/4 | Complete    | 2026-09-22 |
 | 2. Defensible Survey Estimates | 3/3 | Complete    | 2026-09-23 |
 | 3. Supported Labor Findings | 3/3 | Complete    | 2026-09-23 |
-| 4. Offline Publication and Reproducible Operation | 2/6 | In Progress|  |
+| 4. Offline Publication and Reproducible Operation | 3/6 | In Progress|  |
 | 5. Independent Audit and v1.0.0 Release | 0/TBD | Not started | - |
