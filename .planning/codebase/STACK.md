@@ -1,3 +1,7 @@
+---
+last_mapped_commit: 20b935e
+last_mapped_at: 2026-09-22
+---
 # Technology Stack
 
 **Analysis Date:** 2026-09-22
@@ -5,10 +9,12 @@
 ## Languages
 
 **Primary:**
+
 - Python 3.12+ - Analytical pipeline, CLI, validation, exports, reports, deterministic agent replay, and tests in `brujula/`, `tests/`, and `evals/`; minimum version is declared in `pyproject.toml` and the selected minor version in `.python-version`.
 - Use JSON `snake_case`, UTF-8, explicit nulls, and the public evidence states defined in `docs/CONTRACT.md` and `contracts/dataset.schema.json` when extending Python interfaces.
 
 **Secondary:**
+
 - SQL, using DuckDB's dialect - DDL, constraints, transactions, parameterized inserts, and Parquet export are embedded in `brujula/warehouse.py` and `brujula/export.py`; there is no separate SQL model project.
 - JSON / JSON Schema Draft 2020-12 - Dataset, insight, agent-run, and run contracts in `contracts/`; source metadata and fixture data in `data/catalog/` and `data/fixtures/pilot.json`.
 - PowerShell and POSIX shell - Thin local command wrappers in `scripts/demo.ps1`, `scripts/verify.ps1`, and `scripts/demo.sh`; shell versions are not pinned.
@@ -17,12 +23,14 @@
 ## Runtime
 
 **Environment:**
+
 - CPython 3.12 is the development and CI baseline in `.python-version` and `.github/workflows/verify.yml`; `pyproject.toml` accepts Python >=3.12.
 - The local `.venv/Scripts/python.exe` reports CPython 3.12.13; treat this as an observed environment version, not an exact repository runtime pin.
 - CLI entry points are `python -m brujula` through `brujula/__main__.py`, and installed command `brujula` through `brujula.cli:main` in `pyproject.toml`.
 - Synchronous local execution and filesystem artifacts are the runtime model in `brujula/pipeline.py`; OS locks use `msvcrt` on Windows and `fcntl` on POSIX in `brujula/runlock.py`.
 
 **Package Manager:**
+
 - `uv` is the documented local environment/install tool in `README.md`; the inspected host reports version 0.10.8. The repository does not pin the `uv` executable version.
 - `pip` is an explicit alternative in `README.md` and the installer in `.github/workflows/verify.yml`; its version is not pinned.
 - Lockfile: exact dependency pins are present in `requirements.txt` for 23 distributions, including test dependencies; no dedicated `uv.lock` or hash-verified requirements lock is present. Keep `requirements.txt` aligned with `pyproject.toml`.
@@ -31,12 +39,14 @@
 ## Frameworks
 
 **Core:**
+
 - No web/backend framework - The application surface is standard-library `argparse` in `brujula/cli.py`; `AGENTS.md` limits delivery to local analytical artifacts and excludes an application/server in this phase.
 - DuckDB 1.4.4 - Embedded relational analytical materialization in `brujula/warehouse.py`; read-only connections support exports in `brujula/export.py`. Version is fixed in `pyproject.toml` and `requirements.txt`.
 - jsonschema 4.26.0 - `Draft202012Validator` plus `FormatChecker` validate authored contracts in `brujula/data.py`, `brujula/quality.py`, and `brujula/pipeline.py`; `brujula/agents.py` validates local agent and insight schemas.
 - Matplotlib 3.10.8 - Static charts with the noninteractive `Agg` backend in `brujula/report.py`; no browser or display server is required for rendering.
 
 **Testing:**
+
 - pytest 9.0.3 - Unit, integration, and analytical end-to-end tests in `tests/`; runner configuration is in `pyproject.toml`.
 - Standard-library deterministic evaluation runner - `evals/run.py` consumes `evals/cases.json`; this is local evidence validation, not an external model evaluation service.
 - Optional validation-only R environment - `.cache/R-4.6.1/` contains an R 4.6.1 installation; `.cache/R-library/survey/DESCRIPTION` identifies survey 4.5 and `.cache/R-library/jsonlite/DESCRIPTION` identifies jsonlite 2.0.0. These ignored local tools support independent survey-estimator checks; they are not Python product dependencies, required CLI runtime, or configured CI steps in `pyproject.toml` or `.github/workflows/verify.yml`.
@@ -45,6 +55,7 @@
 - `tests/conftest.py` blocks socket connection methods for all tests; source/acquisition tests use injected or patched transports in `tests/test_scout.py` and `tests/test_acquisition.py`.
 
 **Build/Dev:**
+
 - setuptools 80.10.2 - PEP 517 build backend `setuptools.build_meta` in `pyproject.toml`; this is a build-system requirement, not a runtime package requirement.
 - Packaged resources - `pyproject.toml` maps `contracts/`, `data/catalog/`, and `data/fixtures/` into `brujula.contracts`, `brujula.catalog`, and `brujula.fixtures`; `brujula/resources.py` resolves installed-wheel or checkout resources.
 - GitHub Actions - `.github/workflows/verify.yml` defines Python 3.12 jobs on Ubuntu and Windows, with checkout/setup-python actions pinned by commit SHA.
@@ -53,6 +64,7 @@
 ## Key Dependencies
 
 **Critical:**
+
 - `duckdb==1.4.4` - Creates separate dimensional tables, evidence relationships, and observation facts with primary/foreign keys and grain uniqueness in `brujula/warehouse.py`; writes Parquet in `brujula/export.py`.
 - `jsonschema==4.26.0` - Enforces JSON contracts before records become research outputs in `brujula/data.py`, `brujula/quality.py`, `brujula/agents.py`, and `brujula/pipeline.py`.
 - `matplotlib==3.10.8` - Produces SVG/PNG figures and accompanying tables through `brujula/report.py`; pinned in `pyproject.toml` and `requirements.txt`.
@@ -60,6 +72,7 @@
 - `referencing==0.37.0` - Directly imported by `brujula/agents.py` for local schema resource registration; pinned in `requirements.txt` and supplied transitively through jsonschema in the package declaration.
 
 **Infrastructure:**
+
 - Python standard library `urllib.request`, `urllib.robotparser`, `hashlib`, and `json` - Approved-source metadata HTTP access and immutable capture receipts in `brujula/scout.py`.
 - Python standard library `urllib.request`, `zipfile`, `hashlib`, and `os` - In-progress official snapshot acquisition, ZIP inspection, digest validation, and local cache control in `brujula/acquisition.py`.
 - Python standard library `pathlib`, `os.replace`, `os.fsync`, and exclusive file creation - Run artifacts and atomic publication pointer operations in `brujula/pipeline.py`; lock implementation in `brujula/runlock.py`.
@@ -68,6 +81,7 @@
 ## Configuration
 
 **Environment:**
+
 - No required application environment variables or credentials are read by the inspected `brujula/` modules. Inputs are explicit CLI arguments in `brujula/cli.py` and authored JSON resources resolved by `brujula/resources.py`.
 - `MPLCONFIGDIR` is optional. `brujula/report.py` sets a default under the system temporary directory, then selects the `Agg` backend; ensure the temporary/config directory is writable.
 - `build` and `demo` accept `--input`, `--output`, and `--as-of`; `report` accepts `--output` and `--format`; `scout` accepts `--source` and `--output` in `brujula/cli.py`.
@@ -75,6 +89,7 @@
 - `AGENTS.md`, `docs/CONTRACT.md`, and `docs/decisions/0006-real-research-scope-and-acquisition.md` govern local execution, interface boundaries, and acquisition versus publication authority. Project-local `.codex/skills/` and `.agents/skills/` directories are not detected in this checkout.
 
 **Build:**
+
 - `pyproject.toml` - Package identity `career-signals-mx` version 0.1.0, Python floor, direct dependency pins, optional test dependency, console entry point, resource packaging, and pytest configuration.
 - `requirements.txt` - Exact runtime/transitive/test package pins for local installation and CI.
 - `.python-version` - Python minor version selection.
@@ -84,6 +99,7 @@
 ## Platform Requirements
 
 **Development:**
+
 - Python >=3.12 and installable pinned dependencies are required by `pyproject.toml` and `requirements.txt`; documented wrappers use `.venv/Scripts/python.exe` on Windows or `.venv/bin/python` on POSIX in `scripts/`.
 - A writable output directory is required for raw content, per-run databases/exports, reports, locks, and current pointers in `brujula/pipeline.py`; Matplotlib also needs its writable temporary config directory in `brujula/report.py`.
 - Install-time network access is needed unless dependencies are cached. Standard fixture builds, reporting, verification, and evals are local; opt-in source monitoring/acquisition use HTTPS in `brujula/scout.py` and `brujula/acquisition.py`.
@@ -91,6 +107,7 @@
 - Windows and Ubuntu are configured CI platforms in `.github/workflows/verify.yml`; POSIX support also appears in `scripts/demo.sh` and `brujula/runlock.py`, without a separate macOS CI job.
 
 **Production:**
+
 - Deployment target is a local research workflow producing DuckDB, CSV/Parquet/JSON, SVG/PNG, and Markdown/HTML files through `brujula/pipeline.py`, `brujula/export.py`, and `brujula/report.py`; no hosted service target is configured.
 - Public repository publication is authorized only for reviewed synthetic or redistributable public material by `AGENTS.md`; raw person-level ENOE packages are excluded from editorial release by `docs/decisions/0006-real-research-scope-and-acquisition.md`.
 - The current CLI is wired to the local JSON pipeline in `brujula/cli.py` and `brujula/pipeline.py`. `brujula/acquisition.py`, `brujula/survey.py`, and their tests are in-progress local additions; their presence does not establish an integrated, validated ENOE publication.

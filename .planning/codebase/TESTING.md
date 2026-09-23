@@ -1,3 +1,7 @@
+---
+last_mapped_commit: 20b935e
+last_mapped_at: 2026-09-22
+---
 # Testing Patterns
 
 **Analysis Date:** 2026-09-22
@@ -5,11 +9,13 @@
 ## Test Framework
 
 **Runner:**
+
 - Pytest `9.0.3`, pinned in `requirements.txt` and the test extra in `pyproject.toml`.
 - Config: `pyproject.toml`, section `[tool.pytest.ini_options]`; test root is `tests`, default options are `-ra`, and the repository root is on `pythonpath`.
 - Runtime target is Python 3.12+ in `pyproject.toml`; `.github/workflows/verify.yml` runs Python 3.12 on Windows and Ubuntu.
 
 **Assertion Library:**
+
 - Plain Python `assert`, `pytest.raises`, and `pytest.approx`; examples are `tests/test_quality.py`, `tests/test_runlock.py`, and `tests/test_survey.py`.
 - DuckDB itself verifies persisted schema, values, counts, and Parquet round trips in `tests/test_data.py`, `tests/test_warehouse.py`, `tests/test_export.py`, and `tests/test_pipeline.py`.
 
@@ -31,6 +37,7 @@ python -m brujula verify                      # Docs + evals + pytest + receipts
 - This map is based on file inspection; no full suite is executed for the mapping task. Preserve the distinction between recorded evidence and fresh execution.
 
 **Evidence Scope:**
+
 - The synthetic release record in `docs/evidence/release-receipt.json` records 89 passing tests, 12 passing eval cases, and passing Windows/Ubuntu CI for its recorded source revision. This is evidence for the synthetic release scope recorded in that file.
 - The mapping assignment reports isolated acquisition and survey checks of 15 and 24 passing cases respectively. Their source files are `tests/test_acquisition.py` and `tests/test_survey.py`; those reported results are not an integrated suite receipt, a current collection total, or an independent statistical oracle.
 - The acquisition and survey modules are present in `brujula/acquisition.py` and `brujula/survey.py`, but the active orchestration in `brujula/cli.py` and `brujula/pipeline.py` does not connect them into a real ENOE analytical release.
@@ -39,11 +46,13 @@ python -m brujula verify                      # Docs + evals + pytest + receipts
 ## Test File Organization
 
 **Location:**
+
 - Tests are separate from implementation in `tests/`; production modules live in `brujula/`.
 - Deterministic evaluation definitions and runner live in `evals/cases.json` and `evals/run.py`; `tests/test_evals.py` tests their contract and outcomes.
 - Repository-wide fixture behavior lives in `tests/conftest.py`; most data factories are local to the test module that needs them.
 
 **Naming:**
+
 - Use `tests/test_<subject>.py` and descriptive `test_<behavior>` functions. No class-based test suites are detected in the inspected tests.
 - Use `@pytest.mark.parametrize` for related invalid inputs and boundary conditions; see `tests/test_data.py`, `tests/test_quality.py`, `tests/test_acquisition.py`, and `tests/test_survey.py`.
 
@@ -91,6 +100,7 @@ def test_quality_fails_duplicate_grain_and_unapproved_source():
 ```
 
 **Patterns:**
+
 - Arrange/act/assert is expressed directly without special suite helpers; assertions target semantic outputs and artifact state in `tests/test_quality.py` and `tests/test_pipeline.py`.
 - Use `tmp_path` for each filesystem scenario. Tests create local input JSON, output roots, DuckDB databases, and cache fixtures rather than reading a mutable working output directory; see `tests/test_data.py`, `tests/test_export.py`, and `tests/test_acquisition.py`.
 - `tests/test_pipeline.py` uses a module-scoped `successful_run(tmp_path_factory)` to avoid rebuilding expensive reports for every invariant. Tests that mutate that run first use `shutil.copytree` into their own `tmp_path`.
@@ -130,12 +140,14 @@ def prohibit_test_network(monkeypatch):
 ```
 
 **What to Mock:**
+
 - Mock public HTTP at explicit boundaries. `tests/test_scout.py` passes `fake_page(...)` as the scout fetcher; `tests/test_acquisition.py` patches `_download` and provides a disposable registry.
 - Inject failures at the stage being tested. `tests/test_pipeline.py` patches `brujula.report.render_report`, `pipeline.atomic_json`, and `pipeline.current_report` to test staging, commit, and index failures separately.
 - Replace heavy rendering with the local `fast_renderer` only when testing pipeline state transitions rather than report behavior; see `tests/test_pipeline.py`.
 - Capture output through `capsys` for direct CLI calls in `tests/test_cli.py`, and through `subprocess.run(..., capture_output=True)` for actual process failures in `tests/test_pipeline.py` and `tests/test_runlock.py`.
 
 **What NOT to Mock:**
+
 - Keep DuckDB, export serialization, schema validation, hashing, and filesystem atomicity real in their integration tests: `tests/test_data.py`, `tests/test_export.py`, `tests/test_pipeline.py`, and `tests/test_runlock.py`.
 - Keep the real renderer for escaping, metadata, byte determinism, null gaps, and chart content tests in `tests/test_report.py`.
 - Keep survey arithmetic real in `tests/test_survey.py`; examples and metamorphic transformations are intended to test estimates, uncertainty, and suppression together.
@@ -170,6 +182,7 @@ assert result["value"] is None
 ```
 
 **Location:**
+
 - Shared authored analytical data: `data/fixtures/pilot.json`.
 - Small factories and independent copies: `_registry`/`_zip` in `tests/test_acquisition.py`, `fake_page` in `tests/test_scout.py`, and `payload` in `tests/test_report.py`.
 - Mutation cases for deterministic agent replay: `evals/cases.json`; mutations are implemented and allowlisted in `evals/run.py`.
@@ -178,16 +191,19 @@ assert result["value"] is None
 ## Coverage
 
 **Requirements:**
+
 - No numeric line/branch coverage threshold is configured in `pyproject.toml` or `.github/workflows/verify.yml`.
 - Behavioral acceptance is mapped to requirements in `docs/VALIDATION-PLAN.md`: null preservation, strict schema, reference integrity, comparability, receipts, publication authority, report semantics, and release evidence.
 - Critical agent-evaluation violations must be empty; `tests/test_evals.py` asserts the 12-case receipt and required failure-mode set in `evals/cases.json`.
 - `docs/FINAL-RELEASE-PLAN.md` separately requires independently checked statistical calculations and real ENOE acceptance; these are not discharged by synthetic E2E checks.
 
 **View Coverage:**
+
 - No generated code-coverage artifact is defined. The actual test outcome artifacts are `artifacts/verification/junit.xml` and `artifacts/verification/verify.json`, created by `brujula/cli.py`.
 - JUnit and verifier output report execution outcomes, not line coverage. Inspect `docs/evidence/release-receipt.json` for the explicitly scoped synthetic release record.
 
 **Visible Gaps:**
+
 - Independent survey implementation comparison is not present in `tests/test_survey.py`; the file tests hand-calculable cases, policy thresholds, and invariants. Confidence intervals use `Z90` imported from the implementation, so those assertions do not independently validate the constant.
 - `SurveyDesign` in `brujula/survey.py` rejects full-design singleton strata, and `tests/test_survey.py` asserts that rejection. An explicit conservative singleton adjustment is not implemented; an official snapshot containing singleton strata cannot pass this constructor without a separately defined treatment.
 - `tests/test_acquisition.py` tests redirect/HTML failure propagation by replacing `_download` with an exception. These cases do not exercise the real `_download` response parsing or `_CheckedRedirects.redirect_request` in `brujula/acquisition.py`.
@@ -198,18 +214,21 @@ assert result["value"] is None
 ## Test Types
 
 **Unit Tests:**
+
 - Strict input shape and nonfinite rejection: `tests/test_data.py`.
 - Referential integrity, source approval, null/status consistency, future dates, and comparison compatibility: `tests/test_quality.py`.
 - Agent authority, canonical claims, evidence congruence, prompt-like input, and concept namespace collisions: `tests/test_agents.py` and `tests/test_insights.py`.
 - Statistical totals/ratios, retained zero-contribution PSUs, nested PSU IDs, row-order invariance, weight-scale metamorphism, invalid weights, denominator rules, precision thresholds, and boundary suppression: `tests/test_survey.py`.
 
 **Integration Tests:**
+
 - Real normalized DuckDB tables and export round trips: `tests/test_warehouse.py`, `tests/test_data.py`, and `tests/test_export.py`.
 - Acquisition cache, receipts, archive-path rejection, duplicate members, expansion bounds, pinned hash mismatch, and current-failure semantics with fake transport: `tests/test_acquisition.py`.
 - Actual subprocess lock contention and OS release after `os._exit`: `tests/test_runlock.py`.
 - Static report generation with real Matplotlib output and semantic/byte assertions: `tests/test_report.py`.
 
 **E2E Tests:**
+
 - Analytical E2E is `tests/test_pipeline.py`: input -> strict load -> quality -> warehouse -> exports -> deterministic agents -> report -> receipt/manifest/current resolver.
 - Its success test verifies 54 rows, raw SHA-256, Parquet row count, preserved nulls, manifest hashes, synthetic warnings, HTML images/tables, and absence of scripts.
 - Failure E2E checks retain immutable history while invalidating current; separate cases cover missing input, renderer errors, interruption before receipt sealing, errors during pointer commit, and index failure after commit in `tests/test_pipeline.py`.
@@ -219,6 +238,7 @@ assert result["value"] is None
 ## Common Patterns
 
 **Async Testing:**
+
 - Not applicable to the inspected implementation: `brujula/pipeline.py`, `brujula/scout.py`, and `brujula/acquisition.py` are synchronous; no pytest-asyncio setup is declared in `pyproject.toml`.
 - Test concurrency through independent processes as `tests/test_runlock.py` does, not by adding an async fixture around synchronous filesystem locks.
 

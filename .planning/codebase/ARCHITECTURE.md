@@ -1,4 +1,9 @@
+---
+last_mapped_commit: 20b935e
+last_mapped_at: 2026-09-22
+---
 <!-- refreshed: 2026-09-22 -->
+
 # Architecture
 
 **Analysis Date:** 2026-09-22
@@ -61,6 +66,7 @@ Separate ENOE components, without a publication connection:
 **Overall:** A synchronous, function-oriented batch pipeline with schema-bound dictionaries, deterministic analytical gates and immutable run artifacts. `brujula/pipeline.py` owns orchestration; consumers resolve the canonical pointer before using an output.
 
 **Key Characteristics:**
+
 - Keep I/O and publication in `brujula/pipeline.py`; statistical and claim logic remain independently callable in `brujula/quality.py`, `brujula/insights.py` and `brujula/survey.py`.
 - Treat the input JSON plus its SHA-256 as provenance. DuckDB is a per-run materialization, not the system of record (`brujula/pipeline.py`, `brujula/warehouse.py`).
 - Deny publication on failed gates, preserve historical runs and expose only the current verified run (`brujula/pipeline.py:115`, `brujula/pipeline.py:152`).
@@ -70,6 +76,7 @@ Separate ENOE components, without a publication connection:
 ## Layers
 
 **Command and resource layer:**
+
 - Purpose: Adapt shell invocations and installed-package resources to local functions.
 - Location: `brujula/cli.py`, `brujula/__main__.py`, `brujula/resources.py`.
 - Contains: `argparse` subcommands, console output, subprocess verification, resource-path resolution.
@@ -77,6 +84,7 @@ Separate ENOE components, without a publication connection:
 - Used by: `python -m brujula`, the `brujula` console entry in `pyproject.toml`, and wrappers in `scripts/`.
 
 **Contract and analytical layer:**
+
 - Purpose: Establish valid data, comparison semantics and permitted claims before persistence or rendering.
 - Location: `contracts/*.schema.json`, `brujula/data.py`, `brujula/quality.py`, `brujula/insights.py`, `brujula/agents.py`.
 - Contains: Draft 2020-12 validation, relational checks, period comparisons and canonical insight templates.
@@ -84,6 +92,7 @@ Separate ENOE components, without a publication connection:
 - Used by: `brujula/pipeline.py`, export revalidation in `brujula/export.py`, tests and `evals/run.py`.
 
 **Artifact and publication layer:**
+
 - Purpose: Turn accepted analytical state into recoverable local artifacts and publish a verified pointer.
 - Location: `brujula/pipeline.py`, `brujula/runlock.py`, `brujula/warehouse.py`, `brujula/export.py`, `brujula/report.py`.
 - Contains: Atomic JSON replacement, exclusive immutable writes, OS locking, DuckDB transaction, report rendering and manifest verification.
@@ -91,6 +100,7 @@ Separate ENOE components, without a publication connection:
 - Used by: CLI `build`, `demo` and `report`; generated roots default to `artifacts/`.
 
 **Optional source-access layer:**
+
 - Purpose: Record external source evidence without implicitly activating numeric results.
 - Location: `brujula/scout.py`, `brujula/acquisition.py`, `data/catalog/sources.json`, `data/catalog/enoe-snapshots.json`.
 - Contains: Separate HTTPS allowlists, size limits, metadata receipts and raw ZIP acquisition receipts.
@@ -98,6 +108,7 @@ Separate ENOE components, without a publication connection:
 - Used by: CLI `scout` for metadata; direct Python callers and `tests/test_acquisition.py` for acquisition. No acquisition CLI command is registered in `brujula/cli.py`.
 
 **Independent statistical component:**
+
 - Purpose: Evaluate caller-supplied survey design arrays without deciding source or universe validity.
 - Location: `brujula/survey.py`.
 - Contains: `SurveyDesign`, full-frame stratum/PSU indexing, Taylor ultimate-cluster variance, totals, ratios, 90% intervals and precision suppression.
@@ -139,6 +150,7 @@ Separate ENOE components, without a publication connection:
 4. `total(...)` or `ratio(...)` returns an estimate, visible `value`, standard error, CV, confidence interval, sample support and suppression reasons. This result is not a v1 observation or a release artifact (`brujula/survey.py:101`, `contracts/dataset.schema.json`).
 
 **State Management:**
+
 - Run data is passed as dictionaries, lists and `Path` objects; there is no web session, service registry or shared server database (`brujula/pipeline.py`, `brujula/cli.py`).
 - `current.json` is mutable publication state, `journal.json` is mutable attempt state, and sealed run/raw artifacts are retained as history (`brujula/pipeline.py`).
 - Acquisition has its own `acquisitions/<snapshot_id>/current.json` and attempt history; it is not the research publication pointer (`brujula/acquisition.py`).
@@ -147,26 +159,31 @@ Separate ENOE components, without a publication connection:
 ## Key Abstractions
 
 **Dataset and observation:**
+
 - Purpose: A normalized analytical contract separating field, occupation, industry, geography, period, metric, source and evidence.
 - Examples: `contracts/dataset.schema.json`, `data/fixtures/pilot.json`, `brujula/quality.py`.
 - Pattern: Schema-validated dictionary with observation grain `(concept_type, concept_id, geography_id, period_id, metric_id)`; use `(concept_type, concept_id)` for label lookup.
 
 **Quality and comparison:**
+
 - Purpose: State whether a dataset can be published and whether a pair permits deltas.
 - Examples: `brujula/quality.py`, `brujula/pipeline.py:65`.
 - Pattern: Return structured checks/reasons; UNKNOWN/BLOCKED or incompatible rows produce null deltas. Match source, universe, method, unit, price basis, concept, geography and synthetic status before calculating a change.
 
 **Insight and agent run:**
+
 - Purpose: Bind every generated statement to supplied evidence while preventing source/bridge activation.
 - Examples: `contracts/insight.schema.json`, `contracts/agent-run.schema.json`, `brujula/insights.py`, `brujula/agents.py`.
 - Pattern: Generate canonical observation prose and validate exact text, identifiers, source, status and evidence; proposals remain REVIEW. V1 comparison prose is not accepted.
 
 **Receipt, manifest and current pointer:**
+
 - Purpose: Distinguish execution state, evidence state, artifact integrity and publication authority.
 - Examples: `contracts/run.schema.json`, `brujula/pipeline.py`.
 - Pattern: Separate `status` (`MEASURED|REVIEW|UNKNOWN|BLOCKED`) from `build_status` (`RUNNING|SUCCEEDED|FAILED`); seal terminal receipts once and expose only a verified current run.
 
 **Survey design:**
+
 - Purpose: Keep domain estimation and design variance on a consistent full frame.
 - Examples: `brujula/survey.py`, `tests/test_survey.py`.
 - Pattern: Explicit immutable weights, nested stratum/PSU groups and Boolean masks. Singleton design strata raise errors; zero weights require explicit caller audit. Never infer missing outcomes as observed zero.
@@ -174,16 +191,19 @@ Separate ENOE components, without a publication connection:
 ## Entry Points
 
 **Research CLI:**
+
 - Location: `brujula/__main__.py`, `brujula/cli.py`, `pyproject.toml`.
 - Triggers: `python -m brujula` or installed `brujula` command.
 - Responsibilities: `build`, `demo`, `report`, `verify`, `scout`; no ENOE estimate/refresh/PDF command exists in this parser.
 
 **Library surface:**
+
 - Location: `brujula/__init__.py`.
 - Triggers: Python imports from tests or other local scripts.
 - Responsibilities: Export `load_dataset`, `validate_dataset`, `compare_observations`, `write_warehouse`. Additional components use their explicit module imports.
 
 **Verification and eval entry points:**
+
 - Location: `brujula/cli.py:15`, `evals/run.py`, `scripts/check_docs.py`, `.github/workflows/verify.yml`.
 - Triggers: CLI `verify`, `python -m evals.run`, documentation check, CI push/PR.
 - Responsibilities: Offline documentation checks, deterministic negative-control evals, pytest and a synthetic demo on Linux/Windows. These checks do not constitute an ENOE statistical release.
@@ -217,6 +237,7 @@ Separate ENOE components, without a publication connection:
 **Strategy:** Fail closed at validation/publication boundaries and retain structured evidence instead of inheriting a historical success (`brujula/pipeline.py`, `brujula/quality.py`).
 
 **Patterns:**
+
 - Loaders and integrity resolvers raise `ValueError`, schema errors or filesystem errors for invalid inputs; quality returns structured diagnostic checks (`brujula/data.py`, `brujula/quality.py`, `brujula/pipeline.py:115`).
 - Stage failures inside the build body are converted into sanitized error type/stage receipts. Lock setup and recovery occur outside that inner handler and can raise to the CLI (`brujula/pipeline.py:187`, `brujula/runlock.py`).
 - CLI catches `OSError`, `ValueError` and `RuntimeError`, writes an error to stderr and returns exit code 1 (`brujula/cli.py`).
