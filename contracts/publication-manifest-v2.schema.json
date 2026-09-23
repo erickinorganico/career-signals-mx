@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Brújula v2 sealed publication manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "status", "source_dependencies", "numerical_acceptance", "analysis_content_digest", "publication_content_digest", "artifact_hashes", "receipt_sha256", "sealed_at"],
+  "properties": {
+    "schema_version": {"const": "2.0"},
+    "run_id": {"type": "string", "pattern": "^[0-9]{8}T[0-9]{6}-[a-f0-9]{12}$"},
+    "status": {"const": "REVIEW"},
+    "source_dependencies": {"type": "array", "minItems": 8, "maxItems": 8, "items": {"type": "object", "additionalProperties": false, "required": ["snapshot_id", "acquisition_attempt_id", "source_url", "source_sha256", "period_id", "receipt_sha256"], "properties": {"snapshot_id": {"type": "string"}, "acquisition_attempt_id": {"type": "string"}, "source_url": {"type": "string", "format": "uri"}, "source_sha256": {"$ref": "#/$defs/sha256"}, "period_id": {"type": "string"}, "receipt_sha256": {"$ref": "#/$defs/sha256"}}}},
+    "numerical_acceptance": {"type": "object", "additionalProperties": false, "required": ["attempt_id", "receipt_sha256", "numeric_content_digest", "metric_manifest_sha256", "code_sha256", "resource_sha256", "source_manifest"], "properties": {"attempt_id": {"type": "string"}, "receipt_sha256": {"$ref": "#/$defs/sha256"}, "numeric_content_digest": {"$ref": "#/$defs/sha256"}, "metric_manifest_sha256": {"$ref": "#/$defs/sha256"}, "code_sha256": {"type": "object", "minProperties": 11, "maxProperties": 11, "additionalProperties": {"$ref": "#/$defs/sha256"}}, "resource_sha256": {"type": "object", "minProperties": 7, "maxProperties": 7, "additionalProperties": {"$ref": "#/$defs/sha256"}}, "source_manifest": {"type": "object"}}},
+    "analysis_content_digest": {"$ref": "#/$defs/sha256"},
+    "publication_content_digest": {"$ref": "#/$defs/sha256"},
+    "artifact_hashes": {"type": "object", "minProperties": 73, "maxProperties": 73, "propertyNames": {"pattern": "^[^\\\\]+$"}, "additionalProperties": {"$ref": "#/$defs/sha256"}},
+    "receipt_sha256": {"$ref": "#/$defs/sha256"},
+    "sealed_at": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+}

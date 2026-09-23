@@ -101,6 +101,7 @@ _SCHEMA_NAMES = (
     "dataset.schema.json",
     "insight.schema.json",
     "publication-v2.schema.json",
+    "publication-manifest-v2.schema.json",
     "research-v2.schema.json",
     "research-v2-public.schema.json",
     "run.schema.json",
