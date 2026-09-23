@@ -64,22 +64,35 @@ def _schema_checks(payload: Mapping[str, object], public: bool) -> list[dict]:
     return sorted(checks, key=lambda x: (x["id"], x["message"]))
 
 
-def _nonfinite_paths(value: object, path: str = "$", seen: set[int] | None = None) -> list[str]:
+def _json_input_checks(value: object, path: str = "$", seen: set[int] | None = None) -> list[dict]:
     seen = seen if seen is not None else set()
-    if isinstance(value, float) and not math.isfinite(value):
-        return [path]
+    if value is None or isinstance(value, (str, bool)):
+        return []
+    if isinstance(value, float):
+        return [] if math.isfinite(value) else [_fail("nonfinite", path)]
+    if isinstance(value, int):
+        # Keep integer-valued JSON interoperable with downstream consumers.
+        return [] if abs(value) <= 2**53 - 1 else [_fail("json_number", path)]
     if isinstance(value, (Mapping, list)):
         identity = id(value)
         if identity in seen:
-            return [path + " (cycle)"]
+            return [_fail("json_type", path + " (cycle)")]
         seen.add(identity)
         if isinstance(value, Mapping):
-            result = [child for key, part in value.items() for child in _nonfinite_paths(part, f"{path}.{key}", seen)]
+            result = []
+            for key, part in value.items():
+                if not isinstance(key, str):
+                    result.append(_fail("json_type", path + " (non-string key)"))
+                else:
+                    result.extend(_json_input_checks(part, f"{path}.{key}", seen))
         else:
-            result = [child for index, part in enumerate(value) for child in _nonfinite_paths(part, f"{path}[{index}]", seen)]
+            result = [child for index, part in enumerate(value)
+                      for child in _json_input_checks(part, f"{path}[{index}]", seen)]
         seen.remove(identity)
         return result
-    return []
+    # Decimal and other Python numeric classes are not JSON scalar types.
+    # This also catches Decimal NaN/Infinity before jsonschema comparisons.
+    return [_fail("json_type", path)]
 
 
 def _semantic_checks(payload: Mapping[str, object], public: bool) -> list[dict]:
@@ -197,9 +210,9 @@ def _semantic_checks(payload: Mapping[str, object], public: bool) -> list[dict]:
 
 
 def _validate(payload: Mapping[str, object], public: bool) -> list[dict]:
-    finite = [_fail("nonfinite", path) for path in _nonfinite_paths(payload)]
-    if finite:
-        return sorted(finite, key=lambda x: x["message"])
+    input_checks = _json_input_checks(payload)
+    if input_checks:
+        return sorted(input_checks, key=lambda x: (x["id"], x["message"]))
     schema = _schema_checks(payload, public)
     if schema:
         return schema

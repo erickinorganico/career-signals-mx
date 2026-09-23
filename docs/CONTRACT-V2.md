@@ -15,6 +15,11 @@ objeto pasa schema y semántica; los fallos tienen `id` y `message` ordenados.
 construye el objeto público por lista permitida y lo valida antes de devolverlo.
 El publicador, exportador y renderer de fases posteriores deben consumir esa
 salida, nunca `estimate` ni el bundle diagnóstico.
+La API acepta solo escalares JSON nativos: `null`, booleanos, cadenas,
+enteros seguros (valor absoluto hasta `2^53-1`) y flotantes finitos.
+`Decimal`, NaN, infinito, enteros fuera del rango seguro y estructuras
+cíclicas devuelven fallos de validación antes de comparar números o ejecutar
+JSON Schema.
 
 La raíz exige `schema_version`, `sources`, `populations`, `fields_of_study`,
 `occupations`, `industries`, `geographies`, `recorded_sexes`, `periods`,

@@ -2,6 +2,7 @@
 
 import copy
 import json
+from decimal import Decimal
 
 import pytest
 
@@ -75,6 +76,38 @@ def test_internal_rejects_invalid_or_orphan_records(change):
     fixture = research_fixture()
     change(fixture)
     assert failures(fixture)
+
+
+@pytest.mark.parametrize("field,value", [
+    ("value", Decimal("NaN")),
+    ("value", Decimal("Infinity")),
+    ("estimate", Decimal("-Infinity")),
+    ("weighted_denominator", Decimal("NaN")),
+    ("sample_size", 10**1000),
+])
+def test_internal_non_json_numbers_return_failures_without_raising(field, value):
+    fixture = research_fixture()
+    fixture["records"][0][field] = value
+    assert failures(fixture) & {"json_type", "json_number"}
+
+
+@pytest.mark.parametrize("field,value", [
+    ("value", Decimal("NaN")),
+    ("weighted_denominator", Decimal("Infinity")),
+    ("sample_size", 10**1000),
+])
+def test_public_non_json_numbers_return_failures_without_raising(field, value):
+    public = public_research_projection(research_fixture())
+    public["records"][0][field] = value
+    assert {item["id"] for item in validate_public_research_v2(public)} & {"json_type", "json_number"}
+
+
+def test_nested_diagnostic_decimal_is_rejected_before_schema_comparison():
+    fixture = research_fixture()
+    fixture["records"][0]["precision"]["standard_error"] = Decimal("NaN")
+    assert "json_type" in failures(fixture)
+    fixture["records"][0]["precision"]["standard_error"] = Decimal("Infinity")
+    assert "json_type" in failures(fixture)
 
 
 def test_adjacent_periods_are_valid_but_overlapping_periods_are_not():
