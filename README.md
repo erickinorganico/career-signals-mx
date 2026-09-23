@@ -7,11 +7,16 @@ ocupación sin tratarlos como equivalentes.
 
 [English](README.en.md) · [Documentación](docs/README.md) · [Alcance](docs/SCOPE.md) · [Estado verificado](docs/STATUS.md)
 
-> **Versión 0.1.0: MVP sintético implementado y verificado.** La
-> demo local genera artefactos reproducibles. Los datos incluidos son **sintéticos** y no
-> representan estimaciones de México, oportunidades de empleo ni recomendaciones
-> para elegir una carrera. Consulta los bloqueadores y resultados de pruebas en
-> [STATUS](docs/STATUS.md).
+> **Versión 1.0.0 de investigación real: en construcción.** El alcance completo
+> abarca ocho trimestres ENOE, 2024-T3 a 2026-T2, precisión estadística, perfiles,
+> informe offline HTML/Markdown/PDF y datos reutilizables. Los ocho archivos ya
+> pasaron la auditoría de lectura; la aceptación numérica y la publicación final
+> siguen pendientes. Consulta el [plan final](docs/FINAL-RELEASE-PLAN.md) y el
+> [estado GSD](.planning/STATE.md).
+>
+> Las instrucciones de demo que siguen documentan la versión histórica 0.1.0.
+> Sus observaciones son **sintéticas** y no representan estimaciones de México
+> ni recomendaciones personales. Esta demo no es la entrega final del proyecto.
 
 ## Qué construimos
 

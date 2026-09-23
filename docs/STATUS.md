@@ -1,5 +1,15 @@
 # Brújula Laboral MX — estado verificable
 
+La versión final de investigación real **1.0.0 está en ejecución**. El
+[estado GSD](../.planning/STATE.md) y el
+[roadmap activo](../.planning/ROADMAP.md) registran su avance. La fase de fuentes
+y contrato está verificada; el lector de ocho trimestres y las definiciones de
+23 indicadores están implementados. La estimación, la aceptación independiente,
+el informe y el release final siguen pendientes.
+
+La evidencia que sigue es el registro histórico de la demo sintética 0.1.0;
+sus bloqueos de ingesta y cifras de pruebas no describen el alcance activo.
+
 Fecha local: 2026-09-22. **MVP sintético 0.1.0 terminado y publicado; CI PASS en Windows y Linux.**
 M0 conserva su aceptación documental. M1–M5 están completos dentro del alcance
 sintético. [Release público v0.1.0](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.1.0),

@@ -9,7 +9,7 @@ document is not a release approval. Checked 2026-09-22 in the local checkout of
 The project source, documentation, schemas, catalog metadata, and synthetic
 fixtures are covered by the repository [MIT license](../../LICENSE). The wheel
 does not bundle the Python environments or execution artifacts. Current package
-evidence is from installed distribution metadata in [`.venv`](../../.venv) with
+evidence is from installed distribution metadata in the ignored local `.venv` with
 Python 3.12.13, cross-checked against the exact pins in
 [`pyproject.toml`](../../pyproject.toml) and [`requirements.txt`](../../requirements.txt).
 The existing machine-readable snapshot is
