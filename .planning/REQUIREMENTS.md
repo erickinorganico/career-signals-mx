@@ -9,12 +9,12 @@ En este archivo v1 significa la entrega final 1.0.0. La demo sintética 0.1.0 es
 
 ### Fuentes y contrato
 
-- [ ] **SRC-01**: El analista puede adquirir y resolver exactamente ocho ZIP oficiales ENOE de 2024-Q3 a 2026-Q2 mediante catálogo aprobado, SHA-256 fijado y caché verificada.
-- [ ] **SRC-02**: Cada intento de adquisición deja recibo; errores de red, catálogo, contenido, hash y concurrencia no exponen un éxito previo como current vigente.
-- [ ] **SRC-03**: Cada corte tiene inventario verificable de miembro SDEM, diccionario, catálogo de estudios, revisión, codificación y aliases geográficos; las correcciones de 2024 quedan identificadas.
-- [ ] **SRC-04**: El lector puede consultar términos, atribución, fecha de adquisición y transformación; los registros individuales permanecen locales.
-- [ ] **CTR-01**: Un contrato v2 estricto separa poblaciones, campos de estudios, ocupaciones, industrias, geografías, sexo registrado, periodos, métricas, evidencia y estado de precisión, sin relajar los gates sintéticos v1.
-- [ ] **CTR-02**: La cohorte de profesionales con materias terminadas y el universo nacional tienen reglas de elegibilidad y denominadores explícitos; los posgrados, edades y campos desconocidos no se mezclan silenciosamente.
+- [x] **SRC-01**: El analista puede adquirir y resolver exactamente ocho ZIP oficiales ENOE de 2024-Q3 a 2026-Q2 mediante catálogo aprobado, SHA-256 fijado y caché verificada.
+- [x] **SRC-02**: Cada intento de adquisición deja recibo; errores de red, catálogo, contenido, hash y concurrencia no exponen un éxito previo como current vigente.
+- [x] **SRC-03**: Cada corte tiene inventario verificable de miembro SDEM, diccionario, catálogo de estudios, revisión, codificación y aliases geográficos; las correcciones de 2024 quedan identificadas.
+- [x] **SRC-04**: El lector puede consultar términos, atribución, fecha de adquisición y transformación; los registros individuales permanecen locales.
+- [x] **CTR-01**: Un contrato v2 estricto separa poblaciones, campos de estudios, ocupaciones, industrias, geografías, sexo registrado, periodos, métricas, evidencia y estado de precisión, sin relajar los gates sintéticos v1.
+- [x] **CTR-02**: La cohorte de profesionales con materias terminadas y el universo nacional tienen reglas de elegibilidad y denominadores explícitos; los posgrados, edades y campos desconocidos no se mezclan silenciosamente.
 
 ### Validez estadística
 
@@ -73,12 +73,12 @@ Todos los requisitos están pendientes de verificación integral. Los ocho ZIP a
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SRC-01 | Phase 1 | Pending |
-| SRC-02 | Phase 1 | Pending |
-| SRC-03 | Phase 1 | Pending |
-| SRC-04 | Phase 1 | Pending |
-| CTR-01 | Phase 1 | Pending |
-| CTR-02 | Phase 1 | Pending |
+| SRC-01 | Phase 1 | Complete |
+| SRC-02 | Phase 1 | Complete |
+| SRC-03 | Phase 1 | Complete |
+| SRC-04 | Phase 1 | Complete |
+| CTR-01 | Phase 1 | Complete |
+| CTR-02 | Phase 1 | Complete |
 | STAT-01 | Phase 2 | Pending |
 | STAT-02 | Phase 2 | Pending |
 | STAT-03 | Phase 2 | Pending |

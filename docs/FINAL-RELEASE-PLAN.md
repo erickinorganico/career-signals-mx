@@ -41,7 +41,7 @@ tablas descargables y PDF. No se amplía a LATAM sin metodología por país.
    estimador quedan verificados. Los conteos no representan vacantes.
 4. Análisis territorial y por sexo donde la muestra lo permita, con supresión
    de resultados imprecisos visible; no ampliar cobertura rellenando ceros.
-5. Estimadores con pesos, estratos y UPM, n efectivo observado, error estándar,
+5. Estimadores con pesos, estratos y UPM, tamaño muestral observado, error estándar,
    intervalos y CV. La política de precisión es propia y debe ser comprobable.
 6. Ocho trimestres no se concatenan como personas distintas: el panel rota y
    las muestras se superponen. Las tendencias son cortes transversales; no se

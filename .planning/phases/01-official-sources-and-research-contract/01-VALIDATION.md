@@ -1,9 +1,9 @@
 ---
 phase: 1
 slug: official-sources-and-research-contract
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: validated
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-09-22
 ---
 
@@ -25,7 +25,7 @@ After each task run its affected tests. After each plan wave and before phase ve
 
 ## Per-Task Verification Map
 
-Plan/task IDs below are final for execution. New test files are created in the listed tasks; `File Exists` describes the pre-execution state.
+All listed files now exist. All six task checks are COVERED and pass in the final full regression at `0eec8c6`: 254 tests passed in 54.84 seconds, with no skip. The rows below preserve the original plan-time existence/status record; the final audit table supersedes those pending labels.
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---|---|---|---|---|---|---|---|---|---|
@@ -47,15 +47,32 @@ Review the eight generated inventories against package paths, aliases and 2024 r
 
 ## Validation Sign-Off
 
-- [ ] Every task has an automated verification command.
-- [ ] No three consecutive tasks lack verification.
-- [ ] New test references exist and pass after execution.
-- [ ] No watch flags; focused fixture feedback <60 seconds.
-- [ ] Actual eight-package inventory passed offline.
-- [ ] Full v1/v2 regression suite passed.
-- [ ] `nyquist_compliant: true` set only after verification.
+- [x] Every task has an automated verification command.
+- [x] No three consecutive tasks lack verification.
+- [x] New test references exist and pass after execution.
+- [x] No watch flags; focused fixture feedback <60 seconds.
+- [x] Actual eight-package inventory passed offline.
+- [x] Full v1/v2 regression suite passed.
+- [x] `nyquist_compliant: true` set only after verification.
 
-Approval: pending execution evidence.
+Approval: validation coverage verified 2026-09-22; independent phase-goal acceptance remains separate.
+
+## Validation Audit 2026-09-22
+
+| Task | Requirement | Final status | Behavioral evidence |
+|---|---|---|---|
+| 01-01-T1 | SRC-01/02/03 | COVERED | acquisition/inventory corruption, failure, latest-attempt, exact member and eight-cache tests |
+| 01-01-T2 | SRC-03/04 | COVERED | revision log, catalog/dictionary hashes, provenance and metadata-only inventory fixtures |
+| 01-02-T1 | CTR-02 | COVERED | response/resident/age/education/field exclusion parameterized tests |
+| 01-02-T2 | CTR-02 | COVERED | separate observed/weighted denominators; income sentinel, overflow and invalid-weight tests |
+| 01-03-T1 | CTR-01/02 | COVERED | schema/ref/grain/period/nonfinite/support/CV negative tests plus v1 regression |
+| 01-03-T2 | CTR-01 | COVERED | public-schema suppression and serialized reason/sentinel negative tests |
+
+Coverage review found no missing automated task checks after the five independent code-review fixes; zero gaps require a Nyquist test-generation agent. Full command: `.venv/Scripts/python.exe -m pytest -q`; **254 passed, 0 skipped, 1 expected duplicate-ZIP fixture warning** in 54.84 seconds. The eight real pinned source inventories ran offline within that suite. The existing semantic research/dictionary review supports definitions, not numerical inference; numerical and final public-output acceptance remain later-phase gates.
+
+## Gap-plan validation
+
+01-04 adds two tasks: executable controls and canonical descriptor enforcement. Both are COVERED: `node --test tests/phase1_prohibitions_*.test.cjs` passes six tests; all six named bad subjects fail, all clean controls pass, and the GSD producer returns six green, located, unflagged results with machine-proven violation fixtures. Full Python regression after this addition remains **254 passed, 0 skipped, 54.11 seconds**; the six Node controls are additional checks, not included in the 254 count. They are now included in the Windows/Ubuntu CI workflow. The harness selects a local platform-appropriate venv, an explicit `BRUJULA_TEST_PYTHON`, or CI's `python` on PATH. Linux execution remains independently observable in CI after push.
 
 ## Planning Source Audit
 
