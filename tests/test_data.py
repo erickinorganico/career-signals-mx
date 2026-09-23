@@ -15,6 +15,8 @@ def test_load_fixture_is_strict_and_keeps_nulls():
     dataset = load_dataset(FIXTURE)
     assert dataset["mode"] == "illustrative"
     assert len(dataset["dimensions"]["fields"]) == 3
+    assert len(dataset["observations"]) == 54
+    assert len({(r["concept_id"], r["geography_id"], r["period_id"], r["metric_id"]) for r in dataset["observations"]}) == 54
     assert any(row["value"] is None for row in dataset["observations"])
 
 
@@ -24,6 +26,17 @@ def test_schema_rejects_unknown_properties(tmp_path):
     target = tmp_path / "invalid.json"
     target.write_text(json.dumps(payload), encoding="utf-8")
     with pytest.raises(ValidationError):
+        load_dataset(target)
+
+
+@pytest.mark.parametrize("payload", [
+    '{"schema_version":"1.0","value":1e999}',
+    '{"schema_version":"1.0","schema_version":"1.0"}',
+])
+def test_loader_rejects_nonfinite_numbers_and_duplicate_keys(tmp_path, payload):
+    target = tmp_path / "invalid.json"
+    target.write_text(payload, encoding="utf-8")
+    with pytest.raises((ValueError, ValidationError)):
         load_dataset(target)
 
 

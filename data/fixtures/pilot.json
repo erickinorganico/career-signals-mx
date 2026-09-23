@@ -4,34 +4,1323 @@
   "label": "Brújula Laboral MX · piloto ilustrativo",
   "mode": "illustrative",
   "description": "Fixture sintético local para validar el contrato; no es una estimación de México.",
-  "sources": [{"id":"demo_fixture_source","name":"Fixture local sintético","url":null,"terms_url":null,"license":"Internal test fixture","authority":null,"access_status":"local_only","approved":true,"checked_at":null,"population":"Synthetic illustration","coverage":"MX nacional y Jalisco ilustrativo","periodicity":"quarterly","methodology":"No microdata; values are illustrative","notes":"Nunca atribuir sus cifras a una fuente real."}],
+  "sources": [
+    {
+      "id": "demo_fixture_source",
+      "name": "Fixture local sintético",
+      "url": null,
+      "terms_url": null,
+      "license": "Internal test fixture",
+      "authority": null,
+      "access_status": "local_only",
+      "approved": true,
+      "checked_at": null,
+      "population": "Synthetic illustration",
+      "coverage": "MX nacional y Jalisco ilustrativo",
+      "periodicity": "quarterly",
+      "methodology": "No microdata; values are illustrative",
+      "notes": "Nunca atribuir sus cifras a una fuente real."
+    }
+  ],
   "dimensions": {
     "fields": [
-      {"id":"demo_field_derecho","label":"Derecho","description":"Campo de estudio ilustrativo."},
-      {"id":"demo_field_comunicacion_periodismo","label":"Comunicación y periodismo","description":"Campo de estudio ilustrativo."},
-      {"id":"demo_field_ciencias_politicas","label":"Ciencias políticas","description":"Campo de estudio ilustrativo."}
+      {
+        "id": "demo_field_derecho",
+        "label": "Derecho",
+        "description": "Campo de estudio ilustrativo."
+      },
+      {
+        "id": "demo_field_comunicacion_periodismo",
+        "label": "Comunicación y periodismo",
+        "description": "Campo de estudio ilustrativo."
+      },
+      {
+        "id": "demo_field_ciencias_politicas",
+        "label": "Ciencias políticas",
+        "description": "Campo de estudio ilustrativo."
+      }
     ],
-    "occupations": [{"id":"demo_occupation_legal_professionals","label":"Profesionales del derecho","description":"Ocupación editorial, separada del campo."}],
-    "industries": [{"id":"demo_industry_services","label":"Servicios profesionales","description":"Industria editorial, separada del campo."}],
-    "geographies": [{"id":"demo_mx","label":"México (nacional)"},{"id":"demo_jalisco","label":"Jalisco (ilustrativo)"}],
-    "periods": [{"id":"demo_2025_q2","label":"2025 Q2","start":"2025-04-01","end":"2025-06-30"},{"id":"demo_2025_q3","label":"2025 Q3","start":"2025-07-01","end":"2025-09-30"},{"id":"demo_2025_q4","label":"2025 Q4","start":"2025-10-01","end":"2025-12-31"}],
-    "bridges": [{"id":"demo_bridge_field_occupation","from_type":"field_of_study","from_id":"demo_field_derecho","to_type":"occupation","to_id":"demo_occupation_legal_professionals","method":"Editorial hypothesis; requires review","confidence":null,"status":"REVIEW","evidence_refs":["demo_evidence_fixture"]}]
+    "occupations": [
+      {
+        "id": "demo_occupation_legal_professionals",
+        "label": "Profesionales del derecho",
+        "description": "Ocupación editorial, separada del campo."
+      }
+    ],
+    "industries": [
+      {
+        "id": "demo_industry_services",
+        "label": "Servicios profesionales",
+        "description": "Industria editorial, separada del campo."
+      }
+    ],
+    "geographies": [
+      {
+        "id": "demo_mx",
+        "label": "México (nacional)"
+      },
+      {
+        "id": "demo_jalisco",
+        "label": "Jalisco (ilustrativo)"
+      }
+    ],
+    "periods": [
+      {
+        "id": "demo_2025_q2",
+        "label": "2025 Q2",
+        "start": "2025-04-01",
+        "end": "2025-06-30"
+      },
+      {
+        "id": "demo_2025_q3",
+        "label": "2025 Q3",
+        "start": "2025-07-01",
+        "end": "2025-09-30"
+      },
+      {
+        "id": "demo_2025_q4",
+        "label": "2025 Q4",
+        "start": "2025-10-01",
+        "end": "2025-12-31"
+      }
+    ],
+    "bridges": [
+      {
+        "id": "demo_bridge_field_occupation",
+        "from_type": "field_of_study",
+        "from_id": "demo_field_derecho",
+        "to_type": "occupation",
+        "to_id": "demo_occupation_legal_professionals",
+        "method": "Editorial hypothesis; requires review",
+        "confidence": null,
+        "status": "REVIEW",
+        "evidence_refs": [
+          "demo_evidence_fixture"
+        ]
+      }
+    ]
   },
   "metrics": [
-    {"id":"mean_monthly_income","label":"Ingreso mensual medio","unit":"MXN/month","description":"Media mensual nominal ilustrativa entre personas empleadas con ingreso positivo.","price_basis":"nominal"},
-    {"id":"employed_people","label":"Personas ocupadas","unit":"people","description":"Total ponderado ilustrativo de personas ocupadas.","price_basis":"not_applicable"},
-    {"id":"female_share","label":"Proporción de mujeres","unit":"percent","description":"Porcentaje ilustrativo de mujeres bajo la definición registrada.","price_basis":"not_applicable"}
+    {
+      "id": "mean_monthly_income",
+      "label": "Ingreso mensual medio",
+      "unit": "MXN/month",
+      "description": "Media mensual nominal ilustrativa entre personas empleadas con ingreso positivo.",
+      "price_basis": "nominal"
+    },
+    {
+      "id": "employed_people",
+      "label": "Personas ocupadas",
+      "unit": "people",
+      "description": "Total ponderado ilustrativo de personas ocupadas.",
+      "price_basis": "not_applicable"
+    },
+    {
+      "id": "female_share",
+      "label": "Proporción de mujeres",
+      "unit": "percent",
+      "description": "Porcentaje ilustrativo de mujeres bajo la definición registrada.",
+      "price_basis": "not_applicable"
+    }
   ],
-  "evidence": [{"id":"demo_evidence_fixture","source_id":"demo_fixture_source","label":"Fixture local","url":null,"kind":"synthetic_fixture","note":"Evidencia sintética; no representa una fuente oficial."}],
+  "evidence": [
+    {
+      "id": "demo_evidence_fixture",
+      "source_id": "demo_fixture_source",
+      "label": "Fixture local",
+      "url": null,
+      "kind": "synthetic_fixture",
+      "note": "Evidencia sintética; no representa una fuente oficial."
+    }
+  ],
   "observations": [
-    {"id":"demo_derecho_mx_q2_income","concept_type":"field_of_study","concept_id":"demo_field_derecho","geography_id":"demo_mx","period_id":"demo_2025_q2","metric_id":"mean_monthly_income","value":18500,"source_id":"demo_fixture_source","population":"Employed people with positive reported monetary income","methodology_id":"illustrative_formula_v1","unit":"MXN/month","price_basis":"nominal","sample_size":120,"coefficient_variation":null,"status":"REVIEW","precision_note":"Synthetic precision is illustrative.","evidence_refs":["demo_evidence_fixture"],"synthetic":true},
-    {"id":"demo_derecho_mx_q2_people","concept_type":"field_of_study","concept_id":"demo_field_derecho","geography_id":"demo_mx","period_id":"demo_2025_q2","metric_id":"employed_people","value":12000,"source_id":"demo_fixture_source","population":"Employed people","methodology_id":"illustrative_formula_v1","unit":"people","price_basis":"not_applicable","sample_size":120,"coefficient_variation":null,"status":"REVIEW","precision_note":"Synthetic precision is illustrative.","evidence_refs":["demo_evidence_fixture"],"synthetic":true},
-    {"id":"demo_derecho_mx_q2_female","concept_type":"field_of_study","concept_id":"demo_field_derecho","geography_id":"demo_mx","period_id":"demo_2025_q2","metric_id":"female_share","value":null,"source_id":"demo_fixture_source","population":"Employed people under recorded sex definition","methodology_id":"illustrative_formula_v1","unit":"percent","price_basis":"not_applicable","sample_size":120,"coefficient_variation":null,"status":"UNKNOWN","precision_note":"Synthetic fixture intentionally omits this value.","evidence_refs":["demo_evidence_fixture"],"synthetic":true},
-    {"id":"demo_com_mx_q3_income","concept_type":"field_of_study","concept_id":"demo_field_comunicacion_periodismo","geography_id":"demo_mx","period_id":"demo_2025_q3","metric_id":"mean_monthly_income","value":14200,"source_id":"demo_fixture_source","population":"Employed people with positive reported monetary income","methodology_id":"illustrative_formula_v1","unit":"MXN/month","price_basis":"nominal","sample_size":95,"coefficient_variation":null,"status":"REVIEW","precision_note":"Synthetic precision is illustrative.","evidence_refs":["demo_evidence_fixture"],"synthetic":true},
-    {"id":"demo_com_mx_q3_people","concept_type":"field_of_study","concept_id":"demo_field_comunicacion_periodismo","geography_id":"demo_mx","period_id":"demo_2025_q3","metric_id":"employed_people","value":9000,"source_id":"demo_fixture_source","population":"Employed people","methodology_id":"illustrative_formula_v1","unit":"people","price_basis":"not_applicable","sample_size":95,"coefficient_variation":null,"status":"REVIEW","precision_note":"Synthetic precision is illustrative.","evidence_refs":["demo_evidence_fixture"],"synthetic":true},
-    {"id":"demo_com_mx_q3_female","concept_type":"field_of_study","concept_id":"demo_field_comunicacion_periodismo","geography_id":"demo_mx","period_id":"demo_2025_q3","metric_id":"female_share","value":61.0,"source_id":"demo_fixture_source","population":"Employed people under recorded sex definition","methodology_id":"illustrative_formula_v1","unit":"percent","price_basis":"not_applicable","sample_size":95,"coefficient_variation":null,"status":"REVIEW","precision_note":"Synthetic precision is illustrative.","evidence_refs":["demo_evidence_fixture"],"synthetic":true},
-    {"id":"demo_pol_jal_q4_income","concept_type":"field_of_study","concept_id":"demo_field_ciencias_politicas","geography_id":"demo_jalisco","period_id":"demo_2025_q4","metric_id":"mean_monthly_income","value":null,"source_id":"demo_fixture_source","population":"Employed people with positive reported monetary income","methodology_id":"illustrative_formula_v1","unit":"MXN/month","price_basis":"nominal","sample_size":null,"coefficient_variation":null,"status":"UNKNOWN","precision_note":"No illustrative value supplied.","evidence_refs":["demo_evidence_fixture"],"synthetic":true},
-    {"id":"demo_pol_jal_q4_people","concept_type":"field_of_study","concept_id":"demo_field_ciencias_politicas","geography_id":"demo_jalisco","period_id":"demo_2025_q4","metric_id":"employed_people","value":3400,"source_id":"demo_fixture_source","population":"Employed people","methodology_id":"illustrative_formula_v1","unit":"people","price_basis":"not_applicable","sample_size":40,"coefficient_variation":null,"status":"REVIEW","precision_note":"Synthetic precision is illustrative.","evidence_refs":["demo_evidence_fixture"],"synthetic":true},
-    {"id":"demo_pol_jal_q4_female","concept_type":"field_of_study","concept_id":"demo_field_ciencias_politicas","geography_id":"demo_jalisco","period_id":"demo_2025_q4","metric_id":"female_share","value":54.0,"source_id":"demo_fixture_source","population":"Employed people under recorded sex definition","methodology_id":"illustrative_formula_v1","unit":"percent","price_basis":"not_applicable","sample_size":40,"coefficient_variation":null,"status":"REVIEW","precision_note":"Synthetic precision is illustrative.","evidence_refs":["demo_evidence_fixture"],"synthetic":true}
+    {
+      "id": "demo_derecho_mx_2025_q2_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q2",
+      "metric_id": "mean_monthly_income",
+      "value": 12137,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 31,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_mx_2025_q2_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q2",
+      "metric_id": "employed_people",
+      "value": 2726,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 32,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_mx_2025_q2_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q2",
+      "metric_id": "female_share",
+      "value": 45.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 33,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_jalisco_2025_q2_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q2",
+      "metric_id": "mean_monthly_income",
+      "value": 12548,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 34,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_jalisco_2025_q2_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q2",
+      "metric_id": "employed_people",
+      "value": 3065,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 35,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_jalisco_2025_q2_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q2",
+      "metric_id": "female_share",
+      "value": 48.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 36,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_mx_2025_q3_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q3",
+      "metric_id": "mean_monthly_income",
+      "value": 12959,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 37,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_mx_2025_q3_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q3",
+      "metric_id": "employed_people",
+      "value": 3404,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 38,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_mx_2025_q3_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q3",
+      "metric_id": "female_share",
+      "value": 51.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 39,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_jalisco_2025_q3_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q3",
+      "metric_id": "mean_monthly_income",
+      "value": 13370,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 40,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_jalisco_2025_q3_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q3",
+      "metric_id": "employed_people",
+      "value": null,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": null,
+      "coefficient_variation": null,
+      "status": "UNKNOWN",
+      "precision_note": "Synthetic fixture intentionally omits this value.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_jalisco_2025_q3_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q3",
+      "metric_id": "female_share",
+      "value": 54.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 42,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_mx_2025_q4_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q4",
+      "metric_id": "mean_monthly_income",
+      "value": 13781,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 43,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_mx_2025_q4_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q4",
+      "metric_id": "employed_people",
+      "value": 4082,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 44,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_mx_2025_q4_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q4",
+      "metric_id": "female_share",
+      "value": 57.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 45,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_jalisco_2025_q4_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q4",
+      "metric_id": "mean_monthly_income",
+      "value": 14192,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 46,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_jalisco_2025_q4_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q4",
+      "metric_id": "employed_people",
+      "value": null,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": null,
+      "coefficient_variation": null,
+      "status": "UNKNOWN",
+      "precision_note": "Synthetic fixture intentionally omits this value.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_derecho_jalisco_2025_q4_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_derecho",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q4",
+      "metric_id": "female_share",
+      "value": 60.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 48,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_mx_2025_q2_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q2",
+      "metric_id": "mean_monthly_income",
+      "value": 14603,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 49,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_mx_2025_q2_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q2",
+      "metric_id": "employed_people",
+      "value": 4760,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 50,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_mx_2025_q2_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q2",
+      "metric_id": "female_share",
+      "value": 63.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 51,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_jalisco_2025_q2_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q2",
+      "metric_id": "mean_monthly_income",
+      "value": null,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": null,
+      "coefficient_variation": null,
+      "status": "UNKNOWN",
+      "precision_note": "Synthetic fixture intentionally omits this value.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_jalisco_2025_q2_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q2",
+      "metric_id": "employed_people",
+      "value": 5099,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 53,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_jalisco_2025_q2_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q2",
+      "metric_id": "female_share",
+      "value": 66.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 54,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_mx_2025_q3_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q3",
+      "metric_id": "mean_monthly_income",
+      "value": 15425,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 55,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_mx_2025_q3_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q3",
+      "metric_id": "employed_people",
+      "value": 5438,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 56,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_mx_2025_q3_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q3",
+      "metric_id": "female_share",
+      "value": 69.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 57,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_jalisco_2025_q3_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q3",
+      "metric_id": "mean_monthly_income",
+      "value": 15836,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 58,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_jalisco_2025_q3_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q3",
+      "metric_id": "employed_people",
+      "value": 5777,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 59,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_jalisco_2025_q3_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q3",
+      "metric_id": "female_share",
+      "value": 72.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 60,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_mx_2025_q4_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q4",
+      "metric_id": "mean_monthly_income",
+      "value": 16247,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 61,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_mx_2025_q4_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q4",
+      "metric_id": "employed_people",
+      "value": 6116,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 62,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_mx_2025_q4_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q4",
+      "metric_id": "female_share",
+      "value": null,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": null,
+      "coefficient_variation": null,
+      "status": "UNKNOWN",
+      "precision_note": "Synthetic fixture intentionally omits this value.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_jalisco_2025_q4_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q4",
+      "metric_id": "mean_monthly_income",
+      "value": null,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": null,
+      "coefficient_variation": null,
+      "status": "UNKNOWN",
+      "precision_note": "Synthetic fixture intentionally omits this value.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_jalisco_2025_q4_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q4",
+      "metric_id": "employed_people",
+      "value": 6455,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 65,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_comunicacion_periodismo_jalisco_2025_q4_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_comunicacion_periodismo",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q4",
+      "metric_id": "female_share",
+      "value": 43.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 66,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_mx_2025_q2_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q2",
+      "metric_id": "mean_monthly_income",
+      "value": 17069,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 67,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_mx_2025_q2_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q2",
+      "metric_id": "employed_people",
+      "value": 6794,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 68,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_mx_2025_q2_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q2",
+      "metric_id": "female_share",
+      "value": 46.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 69,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_jalisco_2025_q2_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q2",
+      "metric_id": "mean_monthly_income",
+      "value": 17480,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 70,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_jalisco_2025_q2_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q2",
+      "metric_id": "employed_people",
+      "value": 7133,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 71,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_jalisco_2025_q2_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q2",
+      "metric_id": "female_share",
+      "value": 49.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 72,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_mx_2025_q3_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q3",
+      "metric_id": "mean_monthly_income",
+      "value": 17891,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 73,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_mx_2025_q3_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q3",
+      "metric_id": "employed_people",
+      "value": null,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": null,
+      "coefficient_variation": null,
+      "status": "UNKNOWN",
+      "precision_note": "Synthetic fixture intentionally omits this value.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_mx_2025_q3_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q3",
+      "metric_id": "female_share",
+      "value": 52.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 75,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_jalisco_2025_q3_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q3",
+      "metric_id": "mean_monthly_income",
+      "value": 18302,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 76,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_jalisco_2025_q3_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q3",
+      "metric_id": "employed_people",
+      "value": 7811,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 77,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_jalisco_2025_q3_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q3",
+      "metric_id": "female_share",
+      "value": 55.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 78,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_mx_2025_q4_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q4",
+      "metric_id": "mean_monthly_income",
+      "value": 18713,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 79,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_mx_2025_q4_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q4",
+      "metric_id": "employed_people",
+      "value": 8150,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 80,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_mx_2025_q4_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_mx",
+      "period_id": "demo_2025_q4",
+      "metric_id": "female_share",
+      "value": null,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": null,
+      "coefficient_variation": null,
+      "status": "UNKNOWN",
+      "precision_note": "Synthetic fixture intentionally omits this value.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_jalisco_2025_q4_income",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q4",
+      "metric_id": "mean_monthly_income",
+      "value": 19124,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people with positive reported monetary income",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "MXN/month",
+      "price_basis": "nominal",
+      "sample_size": 82,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_jalisco_2025_q4_people",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q4",
+      "metric_id": "employed_people",
+      "value": 8489,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "people",
+      "price_basis": "not_applicable",
+      "sample_size": 83,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "demo_ciencias_politicas_jalisco_2025_q4_female",
+      "concept_type": "field_of_study",
+      "concept_id": "demo_field_ciencias_politicas",
+      "geography_id": "demo_jalisco",
+      "period_id": "demo_2025_q4",
+      "metric_id": "female_share",
+      "value": 61.0,
+      "source_id": "demo_fixture_source",
+      "population": "Employed people under recorded sex definition",
+      "methodology_id": "illustrative_formula_v1",
+      "unit": "percent",
+      "price_basis": "not_applicable",
+      "sample_size": 84,
+      "coefficient_variation": null,
+      "status": "REVIEW",
+      "precision_note": "Synthetic precision is illustrative.",
+      "evidence_refs": [
+        "demo_evidence_fixture"
+      ],
+      "synthetic": true
+    }
   ]
 }
