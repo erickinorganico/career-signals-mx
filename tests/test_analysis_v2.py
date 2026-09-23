@@ -170,3 +170,14 @@ def test_evaluated_reason_cannot_disagree_with_suppressed_public_row(monkeypatch
     acceptance["audits"][snap]["evaluated_cells"][key]["reason"] = "different computed reason"
     with pytest.raises(ValueError, match="evaluated cell disagrees"):
         analysis_v2.index_public_estimates(publics, acceptance)
+
+
+def test_observed_exact_income_response_has_explicit_denominator_and_empty_state():
+    assert analysis_v2._observed_response(0, 0) == {
+        "responding_n": 0, "denominator_n": 0, "observed_percent": None,
+        "reason": "empty_denominator", "denominator_key": "occupied_eligible_n",
+    }
+    assert analysis_v2._observed_response(5, 10)["observed_percent"] == 50.0
+    assert analysis_v2._observed_response(10, 10)["observed_percent"] == 100.0
+    with pytest.raises(ValueError, match="response count"):
+        analysis_v2._observed_response(11, 10)
