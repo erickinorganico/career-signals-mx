@@ -13,7 +13,7 @@ from brujula.enoe_adapter import load_snapshot_frame
 from test_source_inventory import _cache, _member_paths
 
 
-HEADER = "r_def,c_res,eda,cs_p13_1,cs_p16,cs_p14_c,est_d_tri,upm,fac_tri,sex,clase1,clase2,ing7c,ingocup,emp_ppal,pos_ocu,sub_o,dur9c,hrsocup,ent"
+HEADER = "r_def,c_res,eda,cs_p13_1,cs_p16,cs_p14_c,est_d_tri,upm,fac_tri,sex,clase1,clase2,ing7c,ingocup,emp_ppal,pos_ocu,sub_o,dur9c,hrsocup,ent,ageb,loc,mun"
 ROWS = [
     "0,1,15,7,1, 33100,1,11,2,2,1,1,1,100,1,1,1,2,40,02",
     "00,3,98,7,1,999999,1,11,3,1,1,2,7,999999,0,5,0,9,0,02",
@@ -30,7 +30,11 @@ def fixture(tmp_path, rows=ROWS, header=HEADER):
     old = root / "raw" / f"{item['expected_sha256']}.zip"
     with zipfile.ZipFile(old) as archive:
         content = {x.filename: archive.read(x) for x in archive.infolist()}
-    content[member] = (header + "\n" + "\n".join(rows) + "\n").encode("latin1")
+    content[member] = (header + "\n" + "\n".join(row + ",1,1,1" if row else row for row in rows) + "\n").encode("latin1")
+    dictionary = _member_paths("2025-Q2")[1]
+    content[dictionary] = ("NOMBRE_CAMPO,LONGITUD,TIPO,NEMÓNICO,CATÁLOGO,RANGO_CLAVES\n" +
+        "".join(f"Campo,{6 if field == 'cs_p14_c' else 2},C,{field},{'cs_p14_c' if field == 'cs_p14_c' else ''},\n"
+                for field in set(HEADER.split(',')))).encode("utf-8")
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w") as archive:
         for name, data in content.items():
@@ -65,7 +69,7 @@ def test_complete_frame_design_and_order(tmp_path):
     assert audit["frame_rows"] == reverse_audit["frame_rows"]
 
 
-@pytest.mark.parametrize("bad", ["", "0,1,30,7,1,33100,1,11,0,2,1,1,1,100,1,1,1,2,40,02", "0,1,30,7,1,33100,1,11,1e309,2,1,1,1,100,1,1,1,2,40,02", "0,1,30,7,1,33100,1,11,2,2,1,1,1,100,1,1,1,2,40,０２"])
+@pytest.mark.parametrize("bad", ["0,1", "0,1,30,7,1,33100,1,11,0,2,1,1,1,100,1,1,1,2,40,02", "0,1,30,7,1,33100,1,11,1e309,2,1,1,1,100,1,1,1,2,40,02", "0,1,30,7,1,33100,1,11,2,2,1,1,1,100,1,1,1,2,40,\u00a002"])
 def test_invalid_design_or_code_fails(tmp_path, bad):
     sid, root, registry = fixture(tmp_path, rows=[bad, ROWS[1], ROWS[2]])
     with pytest.raises((AcquisitionError, ValueError)):
