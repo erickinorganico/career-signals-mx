@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0.0
 milestone_name: Release
-current_phase: 03
-current_phase_name: Supported Labor Findings
-status: executing
-stopped_at: Phase 2 accepted without warnings; Plans 03-01/03-02 accepted; executing Phase 3 Plan 03-03 for evidence-bound findings.
-last_updated: "2026-09-23T17:39:09.283426+00:00"
+current_phase: 04
+current_phase_name: Offline Publication and Reproducible Operation
+status: planning
+stopped_at: Phase 3 accepted without warnings; transitioned to Phase 4 planning.
+last_updated: "2026-09-23T18:47:27.037Z"
 last_activity: 2026-09-23
-last_activity_desc: Phase 3 comparisons complete; executing evidence-bound findings
+last_activity_desc: Phase 3 complete, transitioned to Phase 04
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 10
-  completed_plans: 9
-  percent: 40
+  completed_plans: 10
+  percent: 60
 ---
 
 # Project State
@@ -24,25 +24,27 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-22)
 
 **Core value:** Una persona puede entender y verificar una conclusión laboral útil sin confundir muestras pequeñas, datos faltantes, carreras, ocupaciones o diferencias metodológicas.
-**Current focus:** Phase 3 — Supported Labor Findings
+**Current focus:** Phase 4 — Offline Publication and Reproducible Operation
 
 ## Current Position
 
-Phase: 03 — Supported Labor Findings
-Plan: 3 of 3 (03-03, executing)
-Status: executing
-Last activity: 2026-09-23 — Phase 3 comparison wave passed 403 tests and real aggregate readback; executing 03-03
+Phase: 04 — Offline Publication and Reproducible Operation
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-09-23 — Phase 3 complete, transitioned to Phase 04
 
-Progress: 2/5 phases accepted; 9/10 currently planned execution plans implemented. This is not release completion.
+Progress: 3/5 phases accepted; 10/10 planned execution plans implemented. This is not release completion.
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans implemented: 9
+- Total plans implemented: 10
 - Executor-reported durations are recorded in each plan summary; they exclude orchestration, research and independent reviews.
 
 **By Phase:** Phase 1 — 4/4 plans complete, 27/27 truths verified, six prohibitions mechanically enforced; canonical phase completion returned no warnings.
+
+**Phase 3:** 42/42 truths and 4/4 roadmap criteria verified; 6,739 real records, 4,209 comparisons, 38 claims and 3 openings; persisted JSON reload validation has zero errors. Canonical completion returned no warnings.
 
 **Recent Trend:** Source plan 14 minutes; population plan 6 minutes.
 
@@ -54,12 +56,13 @@ Decisions are logged in PROJECT.md. The active milestone is a complete real-data
 
 ### Pending Todos
 
-Plans 03-01/03-02 are implemented and verified (403 Python tests; four canonical prohibitions; 4,209 distinct real comparison slots). Execute 03-03 evidence-bound findings, then final Phase 3 review/security/Nyquist/independent verification. Phase 2 is independently accepted. Phase 4 publication and Phase 5 final release remain required.
+Phase 3 is accepted: the evidence-bound packet contains 6,739 real records, 4,209 comparisons, 38 claims and 3 openings, with zero persisted JSON validation errors. Phase 4 publication and Phase 5 final release remain required.
 
 ### Blockers/Concerns
 
 - Phase 1: Complete. Full Python regression 254 passed, no skips; six additional Node controls pass and fail on known bad subjects. Independent verification and canonical closure pass without warnings.
 - Phase 2: Complete. All eight quarters and 6,739 cells pass initialization and unchanged replay; 26 real R cases, four analytic controls and both official editions pass. The 366-test regression and seven canonical prohibitions pass. Independent verification is 43/43 truths plus four roadmap criteria; canonical closure has no warnings. Precision remains explicitly nonofficial REVIEW.
+- Phase 3: Complete. Independent verification is 42/42 truths plus four roadmap criteria; security closed 15/15 threat entries with zero open, Nyquist is 31/31, and the saved packet reloads with zero validation errors. Code review is clean with its correction history recorded. The full-suite receipt records 443 passed, zero skipped and one warning; the final edge suite adds one distinct case, for 444 distinct cases covered. CI passed on Windows and Ubuntu at runs 35904257228 and 35904250523 for commit 59451d3d1d3afb86d6e6313160719e74cf6a0267.
 - Phase 4: Windows offline PDF smoke test passed via verified WeasyPrint 70. Final report parity, visual quality and cross-format suppression remain release gates.
 
 ## Deferred Items
@@ -69,5 +72,5 @@ None. The full real-data scope remains in v1.0.0.
 ## Session Continuity
 
 Last session: 2026-09-23
-Stopped at: Phase 2 accepted without warnings; Plans 03-01/03-02 accepted; executing Phase 3 Plan 03-03 for evidence-bound findings.
+Stopped at: Phase 3 accepted without warnings; Phase 4 is ready to plan.
 Resume file: None

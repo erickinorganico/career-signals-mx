@@ -4,17 +4,20 @@
 Analytics repository combining source research, evidence-aware pipelines and
 analytical reports. [Español](README.md) · [Documentation](docs/README.md)
 
-> **Real-data version 1.0.0: under construction.** The full scope covers eight
+> **Real-data version 1.0.0: Phases 1–3 accepted.** The full scope covers eight
 > ENOE quarters, 2024 Q3–2026 Q2, survey uncertainty, field profiles, offline
 > HTML/Markdown/PDF reporting and reusable public aggregates. Source custody and
 > statistical estimation are accepted: 6,739 evaluated cells, independent R checks,
 > official references and identical eight-quarter replay. Project precision
-> remains explicitly nonofficial. Profiles cover 118 observed named fields;
-> the comparison ledger contains 4,209 slots, with 2,120 supported descriptive
-> comparisons. The regression suite passed 403 tests. Evidence-bound findings,
-> reporting and the final release are still in progress. See the
+> remains explicitly nonofficial. The accepted evidence-bound packet contains
+> 6,739 real records, 4,209 comparisons, 38 claims and 3 openings; persisted JSON
+> reload validation has zero errors. Independent review verified 42/42 truths and
+> 4/4 roadmap criteria; security closed 15/15 threat entries with zero open and
+> Nyquist passed 31/31.
+> Phase 4 publication and Phase 5 release remain pending. See the
 > [numerical evidence](docs/evidence/phase-02-numerical-acceptance.json),
 > [release plan](docs/FINAL-RELEASE-PLAN.md) and [GSD status](.planning/STATE.md).
+> The public repository remains at version 0.1.0 until the final release.
 >
 > The demo instructions below describe historical version 0.1.0. Its observations
 > are **synthetic**, not Mexican labor estimates or personal recommendations.

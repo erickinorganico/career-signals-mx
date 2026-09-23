@@ -1,21 +1,21 @@
 # Brújula Laboral MX — estado verificable
 
-La versión final de investigación real **1.0.0 está en ejecución**. El
+La versión final de investigación real **1.0.0 sigue en construcción; Phases 1–3 están aceptadas**. El
 [estado GSD](../.planning/STATE.md) y el
 [roadmap activo](../.planning/ROADMAP.md) registran su avance. La fase de fuentes
 y contrato y la fase estadística están aceptadas: ocho trimestres, 23 indicadores
 con denominadores explícitos y 6,739 celdas evaluadas. El cálculo pasó los 26
 casos reales y cuatro controles analíticos de R, ambas referencias oficiales y
-una repetición idéntica. La revisión independiente verificó 43/43 criterios;
-el cierre GSD no tiene advertencias. La precisión propia continúa siendo no
-oficial, con las discrepancias documentadas. La
-[evidencia numérica](evidence/phase-02-numerical-acceptance.json) conserva los
-intentos y hashes. Los perfiles cubren 118 campos observados y conservan los
-desgloses requeridos de 32 entidades y dos categorías de sexo registrado. El
-registro contiene 4,209 comparaciones posibles, 2,120 de ellas descriptivamente
-compatibles; las demás conservan sus causas de bloqueo. La regresión pasó 403
-pruebas. Los hallazgos con evidencia están en implementación; el informe y el
-release final siguen pendientes.
+una repetición idéntica. Phase 3 añadió el paquete de hallazgos soportados:
+6,739 registros reales, 4,209 comparaciones, 38 claims y 3 aperturas; su JSON
+persistido recarga y valida con cero errores. La revisión independiente verificó
+42/42 verdades y 4/4 criterios de roadmap; seguridad cerró 15/15 entradas de
+amenazas, sin abiertas, y Nyquist pasó 31/31. La precisión propia continúa siendo no oficial, con las
+discrepancias documentadas. La [evidencia numérica](evidence/phase-02-numerical-acceptance.json)
+conserva los intentos y hashes, y la [evidencia de Phase 3](evidence/phase-03-analysis-acceptance.json)
+conserva el digest del paquete. Phase 4 debe producir la publicación offline;
+Phase 5 debe cerrar el release. Ninguno está terminado.
+El repositorio conserva la versión pública 0.1.0 hasta el release final.
 
 La evidencia que sigue es el registro histórico de la demo sintética 0.1.0;
 sus bloqueos de ingesta y cifras de pruebas no describen el alcance activo.

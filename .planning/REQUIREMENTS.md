@@ -27,12 +27,12 @@ En este archivo v1 significa la entrega final 1.0.0. La demo sintética 0.1.0 es
 
 ### Investigación y análisis
 
-- [ ] **ANA-01**: El lector dispone de perfiles detallados para Derecho, Comunicación y periodismo y Ciencias políticas, más contexto de los demás campos profesionales identificables y la cohorte total.
-- [ ] **ANA-02**: El lector puede seguir los ocho cortes trimestrales nacionales con cambios descriptivos; no se suman como personas distintas ni se declara significancia suponiendo independencia.
-- [ ] **ANA-03**: El ledger de comparación bloquea deltas por cambio de fuente, universo, geografía, métrica, concepto, base de precios, clasificación o método, y por extremos suprimidos.
-- [ ] **ANA-04**: El lector consulta diferencias por sexo registrado y cobertura por entidad donde la precisión lo permite, con ausencias y supresiones visibles.
-- [ ] **ANA-05**: El informe muestra cobertura muestral y de respuesta, exclusiones y limitaciones por periodo/campo, incluyendo edad y campo desconocidos y no respuesta de ingreso.
-- [ ] **ANA-06**: Cada hallazgo tiene identificador y referencias exactas a estimaciones, fuente y método; el gate rechaza prosa causal, cantidades nuevas y recomendaciones personales sin evidencia.
+- [x] **ANA-01**: El lector dispone de perfiles detallados para Derecho, Comunicación y periodismo y Ciencias políticas, más contexto de los demás campos profesionales identificables y la cohorte total.
+- [x] **ANA-02**: El lector puede seguir los ocho cortes trimestrales nacionales con cambios descriptivos; no se suman como personas distintas ni se declara significancia suponiendo independencia.
+- [x] **ANA-03**: El ledger de comparación bloquea deltas por cambio de fuente, universo, geografía, métrica, concepto, base de precios, clasificación o método, y por extremos suprimidos.
+- [x] **ANA-04**: El lector consulta diferencias por sexo registrado y cobertura por entidad donde la precisión lo permite, con ausencias y supresiones visibles.
+- [x] **ANA-05**: El informe muestra cobertura muestral y de respuesta, exclusiones y limitaciones por periodo/campo, incluyendo edad y campo desconocidos y no respuesta de ingreso.
+- [x] **ANA-06**: Cada hallazgo tiene identificador y referencias exactas a estimaciones, fuente y método; el gate rechaza prosa causal, cantidades nuevas y recomendaciones personales sin evidencia.
 
 ### Publicación editorial y operación
 
@@ -85,12 +85,12 @@ Los requisitos SRC y CTR de la fase 1 tienen verificación independiente complet
 | STAT-04 | Phase 2 | Complete |
 | STAT-05 | Phase 2 | Complete |
 | STAT-06 | Phase 2 | Complete |
-| ANA-01 | Phase 3 | Pending |
-| ANA-02 | Phase 3 | Pending |
-| ANA-03 | Phase 3 | Pending |
-| ANA-04 | Phase 3 | Pending |
-| ANA-05 | Phase 3 | Pending |
-| ANA-06 | Phase 3 | Pending |
+| ANA-01 | Phase 3 | Complete |
+| ANA-02 | Phase 3 | Complete |
+| ANA-03 | Phase 3 | Complete |
+| ANA-04 | Phase 3 | Complete |
+| ANA-05 | Phase 3 | Complete |
+| ANA-06 | Phase 3 | Complete |
 | PUB-01 | Phase 4 | Pending |
 | PUB-02 | Phase 4 | Pending |
 | PUB-03 | Phase 4 | Pending |

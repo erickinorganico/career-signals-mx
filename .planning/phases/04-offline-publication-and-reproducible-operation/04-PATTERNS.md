@@ -1,12 +1,12 @@
 # Phase 4: Offline Publication and Reproducible Operation - Pattern Map
 
 **Mapped:** 2026-09-22
-**Scope:** preparatory map, refreshed 2026-09-23; Phase 2 is accepted. Phase 3 profile, comparison, claim and packet code exists; final claim/packet review and acceptance remain pending. This map is not an executable plan or a Phase 3 acceptance decision.
+**Scope:** preparatory map, refreshed 2026-09-23; Phase 2 is accepted. Phase3 profile, comparison, claim and packet code is independently accepted (42/42 truths, canonical closure without warnings). This map supplies implementation patterns, not executable tasks.
 **Source edits:** none.
 
 ## File Classification
 
-The paths marked * are proposed boundaries from `04-RESEARCH.md` and the packaging/runtime readbacks, not locked filenames. Phase 3 callable signatures below are current source interfaces, still subject to final acceptance. Existing files are marked `modify`.
+The paths marked * are proposed boundaries from `04-RESEARCH.md` and the packaging/runtime readbacks, not locked filenames. Phase 3 callable signatures below are current source interfaces, accepted at a6696a1/59451d3. Existing files are marked `modify`.
 
 | New/modified file | Role | Data flow | Closest existing analog | Match quality |
 |---|---|---|---|---|
@@ -29,7 +29,7 @@ The paths marked * are proposed boundaries from `04-RESEARCH.md` and the packagi
 | `brujula/oracle/enoe_survey_oracle.R`* | package resource | batch, file I/O | `scripts/enoe_survey_oracle.R` | exact content; new package location |
 | `tests/test_installed_runtime.py`* | test | batch, file I/O | `tests/test_analysis_v2.py`, `tests/test_acquisition.py`, `tests/test_cli.py` | role match; installed wheel is a new boundary |
 
-No proposed Phase 4 Python API filename, argument list, or canonical publication digest is accepted by this map. The current Phase 3 packet shape is defined in `contracts/analysis-v2.schema.json:1-62`, but its acceptance remains pending. The output artifact names (HTML, Markdown, PDF, SVG/PNG, CSV/Parquet/DuckDB, receipt, manifest, current) are locked in `04-CONTEXT.md` and `04-EDITORIAL-SPEC.md`.
+No proposed Phase 4 Python API filename, argument list, or canonical publication digest is accepted by this map. The current Phase 3 packet shape is defined in `contracts/analysis-v2.schema.json:1-62`, and its persisted form is independently accepted. The output artifact names (HTML, Markdown, PDF, SVG/PNG, CSV/Parquet/DuckDB, receipt, manifest, current) are locked in `04-CONTEXT.md` and `04-EDITORIAL-SPEC.md`.
 
 ## Pattern Assignments
 
@@ -50,7 +50,7 @@ for key in ("standard_error", "coefficient_variation", "ci90_lower", "ci90_upper
 failures = validate_public_research_v2(result)
 ```
 
-The ten-key `GRAIN` remains the identity input. `analysis_v2.py:280-286` creates `v2r:` IDs from canonical JSON of the grain. `build_profiles` propagates complementary parent redactions into its sanitized `record_index` (`analysis_v2.py:369-380,438-461`). `findings_v2.py:156-180` then places that index in the analytical packet. Reuse those IDs after final Phase 3 acceptance. The publisher must consume the final validated packet and its `record_index`; reprojecting original Phase 2 estimates would restore additional redactions. Preserve controlled public reasons and `redaction_reason`; internal diagnostics never enter publication.
+The ten-key `GRAIN` remains the identity input. `analysis_v2.py:280-286` creates `v2r:` IDs from canonical JSON of the grain. `build_profiles` propagates complementary parent redactions into its sanitized `record_index` (`analysis_v2.py:369-380,438-461`). `findings_v2.py:156-180` then places that index in the analytical packet. Reuse those IDs from accepted Phase3. The publisher must consume the final validated packet and its `record_index`; reprojecting original Phase 2 estimates would restore additional redactions. Preserve controlled public reasons and `redaction_reason`; internal diagnostics never enter publication.
 
 **Current packet validation seam** (`brujula/findings_v2.py:208-226,227-259,265-272`):
 
@@ -86,7 +86,7 @@ The publisher should display accepted `packet["comparisons"]` entries and their 
 
 **Claims:** `brujula/claims_v2.py:117-175` binds each `v2k:` claim to supported `v2r:` rows or one passing comparison, exact source SHA-256, method/version, evidence refs, quantities, Spanish copy and limitation. `validate_claim` (`:178-189`) regenerates the entire object and rejects altered text; `select_opening_claims` (`:192-216`) yields at most three distinct supported themes. `findings_v2.py:108-139` creates the packet's claim registry and `opening_claim_ids`. Use those IDs and canonical text in the question-led report; if fewer than three pass, show fewer. `tests/test_claims_v2.py:56-82,85-149,152-176` are the close analogs for exact provenance, suppressed cells, grammar and stable selection. Do not use the renderer to mint new quantitative prose.
 
-**Output model:** the packet's `record_index` entries contain `record_id`, ten-field `grain`, public `record`, `snapshot_sha256`, `method_version`, `display` and optional `redaction_reason` (`analysis-v2.schema.json:64-85`). `profiles` provides national, latest field, state and recorded-sex slots; `coverage` counts missing reasons; `source_manifest` binds eight snapshots and accepted numerical content. These are the concrete inputs for the editorial model. The packet is still pending final Phase 3 acceptance, so executable Phase 4 planning must confirm the final accepted hash-only reference and packet readback.
+**Output model:** the packet's `record_index` entries contain `record_id`, ten-field `grain`, public `record`, `snapshot_sha256`, `method_version`, `display` and optional `redaction_reason` (`analysis-v2.schema.json:64-85`). `profiles` provides national, latest field, state and recorded-sex slots; `coverage` counts missing reasons; `source_manifest` binds eight snapshots and accepted numerical content. These are the concrete inputs for the editorial model. The packet and hash-only reference are accepted; 04-UPSTREAM-PREFLIGHT.md records the exact stored JSON readback and the later installed-runtime reacceptance boundary.
 
 ### `brujula/report_v2.py`* — HTML, Markdown, paired figures and PDF
 

@@ -20,6 +20,7 @@ Que una persona pueda entender y verificar una conclusión laboral útil sin con
 - Ocho snapshots ENOE con inventario offline, metadatos, poblaciones explícitas y contrato v2 interno/público — Phase 1, 27/27 criterios y seis prohibiciones comprobadas; cierre canónico GSD sin advertencias. Ver `01-VERIFICATION.md` y `01-VALIDATION.md`.
 
 - Estimaciones reales de ocho trimestres y 6,739 celdas, contrastadas con 26 casos reales de R survey, cuatro controles analíticos y dos ediciones oficiales — Phase 2, 43/43 criterios y siete prohibiciones; inicialización y replay inalterado coinciden. Ver `02-VERIFICATION.md` y `docs/evidence/phase-02-numerical-acceptance.json`.
+- Hallazgos laborales soportados por evidencia en un paquete persistido: 6,739 registros reales, 4,209 comparaciones, 38 claims y 3 aperturas; reload JSON validado con cero errores, 42/42 verdades y 4/4 criterios de roadmap — Phase 3 aceptada. Ver `03-VERIFICATION.md` y `docs/evidence/phase-03-analysis-acceptance.json`.
 
 ### Active
 
@@ -42,7 +43,7 @@ Que una persona pueda entender y verificar una conclusión laboral útil sin con
 
 Python 3.12, CLI local, DuckDB, JSON Schema y Matplotlib. El código v1 protege la demo sintética y necesita un contrato v2 para investigación oficial. Existen investigaciones recientes en `docs/research/COMPARABLE-REPOSITORIES.md`, `PRODUCT-GAP-AUDIT.md` y `ENOE-METHOD-REVIEW.md`; deben reutilizarse y profundizarse solo donde hay vacíos.
 
-La ampliación está definida en `docs/FINAL-RELEASE-PLAN.md` y ADR 0006. La adquisición y las estimaciones completas están aceptadas en Phases 1–2; los hallazgos y la publicación final todavía requieren sus gates. El contexto nacional usa 15<=EDA<=98, separado de la cohorte profesional de edad conocida 15–97. Los 13 estratos singleton de 2026-Q2 usan el ajuste del proyecto y conservan su limitación de precisión no oficial.
+La ampliación está definida en `docs/FINAL-RELEASE-PLAN.md` y ADR 0006. La adquisición, las estimaciones y los hallazgos soportados están aceptados en Phases 1–3; la publicación Phase 4 y el release Phase 5 todavía requieren sus gates. El contexto nacional usa 15<=EDA<=98, separado de la cohorte profesional de edad conocida 15+; el código 97 representa 97 años o más. Los 13 estratos singleton de 2026-Q2 usan el ajuste del proyecto y conservan su limitación de precisión no oficial.
 
 R 4.6.1 y survey 4.5 están instalados en la caché ignorada como oráculo de validación, no como dependencia del producto Python. La contrastación versionada con la cohorte final, todos los trimestres y los criterios de Phase 2 pasó; la discrepancia de error estándar respecto de la referencia oficial permanece registrada sin ajuste oportunista. La precisión con ajuste propio de estratos singleton siempre será explícitamente no oficial.
 
@@ -60,9 +61,9 @@ R 4.6.1 y survey 4.5 están instalados en la caché ignorada como oráculo de va
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Hito v1.0.0 de investigación real, alcance completo | Corrección explícita del usuario al MVP | Activo |
-| Seguir recomendaciones GSD | Instrucción del usuario del 22 de septiembre | Phases 1–2 completas con investigación, planes, revisiones, controles negativos, seguridad y verificación; Phase 3 en ejecución |
-| Cinco fases sustanciales con revisión de planes y verificación | Granularidad gruesa recomendada, sin recortar entregables | Roadmap activo; Phases 1–2 completas |
-| Cohorte principal CS_P13_1=7 y CS_P16=1, edad conocida 15–97 | No mezclar campo de licenciatura y posgrado ni edad desconocida | Contrato y reglas verificados en Phase 1 |
+| Seguir recomendaciones GSD | Instrucción del usuario del 22 de septiembre | Phases 1–3 completas con investigación, planes, revisiones, controles negativos, seguridad y verificación; Phase 4 en planificación |
+| Cinco fases sustanciales con revisión de planes y verificación | Granularidad gruesa recomendada, sin recortar entregables | Roadmap activo; Phases 1–3 completas |
+| Cohorte principal CS_P13_1=7 y CS_P16=1, edad conocida 15+; código 97 significa 97 años o más | No mezclar campo de licenciatura y posgrado ni edad desconocida | Contrato y reglas verificadas; el rango técnico EDA 15..97 permanece explícito |
 | Intervalos 90%, CV y supresión | Incertidumbre interpretable y coherente con encuesta | Método y oráculo aceptados en Phase 2; precisión explícitamente no oficial |
 | Informe estático offline y datos exportables | Entrega útil dentro del alcance autorizado | Activo |
 
@@ -71,4 +72,4 @@ R 4.6.1 y survey 4.5 están instalados en la caché ignorada como oráculo de va
 Después de cada fase se actualizarán requisitos verificados, decisiones y límites, con referencias a la evidencia. Al cerrar el hito se revisarán alcance, utilidad prometida y resultados reales; ningún pendiente se convertirá en completo por existir documentación o una prueba aislada.
 
 ---
-*Last updated: 2026-09-23 after Phase 2 canonical completion and accepted Phase 3 profile/comparison waves; final findings, publication and release remain pending.*
+*Last updated: 2026-09-23 after accepted Phase 3 evidence-bound findings; Phase 4 publication and Phase 5 release remain pending.*

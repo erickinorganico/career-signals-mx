@@ -7,17 +7,21 @@ ocupación sin tratarlos como equivalentes.
 
 [English](README.en.md) · [Documentación](docs/README.md) · [Alcance](docs/SCOPE.md) · [Estado verificado](docs/STATUS.md)
 
-> **Versión 1.0.0 de investigación real: en construcción.** El alcance completo
+> **Versión 1.0.0 de investigación real: Phases 1–3 aceptadas.** El alcance completo
 > abarca ocho trimestres ENOE, 2024-T3 a 2026-T2, precisión estadística, perfiles,
 > informe offline HTML/Markdown/PDF y datos reutilizables. Las fuentes y la fase
 > estadística están aceptadas: 6,739 celdas evaluadas, contraste independiente con R,
 > referencias oficiales y replay idéntico de los ocho trimestres. La precisión
-> propia sigue identificada como no oficial. Ya están implementados los perfiles
-> de 118 campos observados y 4,209 comparaciones posibles, de las que 2,120
-> cumplen las reglas descriptivas. La regresión pasó 403 pruebas. Los hallazgos
-> con evidencia, el informe y el release final siguen en ejecución. Consulta la
+> propia sigue identificada como no oficial. El paquete aceptado contiene 6,739
+> registros reales, 4,209 comparaciones, 38 claims y 3 aperturas; el JSON
+> persistido recarga y valida con cero errores. La revisión independiente verificó
+> 42/42 verdades y 4/4 criterios; seguridad cerró 15/15 entradas de amenazas,
+> sin abiertas, y Nyquist pasó
+> 31/31. Phase 4 corresponde a publicación y Phase 5 al release; ambos siguen
+> pendientes. Consulta la
 > [evidencia numérica](docs/evidence/phase-02-numerical-acceptance.json), el
 > [plan final](docs/FINAL-RELEASE-PLAN.md) y el [estado GSD](.planning/STATE.md).
+> El repositorio conserva la versión pública 0.1.0 hasta el release final.
 >
 > Las instrucciones de demo que siguen documentan la versión histórica 0.1.0.
 > Sus observaciones son **sintéticas** y no representan estimaciones de México

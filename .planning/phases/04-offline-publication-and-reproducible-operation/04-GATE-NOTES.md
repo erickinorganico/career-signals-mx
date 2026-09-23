@@ -1,0 +1,8 @@
+# Phase4 planning gates
+
+- Accepted upstream: Phases1–3 complete; Phase3 canonical closure returned no warnings. Exact interfaces and saved packet readback are in04-UPSTREAM-PREFLIGHT.md.
+- Reuse existing04-RESEARCH/CONTEXT/EDITORIAL-SPEC/PACKAGING-READBACK/RUNTIME-PATH-MAP and the refreshed typed pattern map. New research is only needed for a concrete uncovered implementation question.
+- plan:pre is active for research, pattern mapping, threat modeling, edge/validation and coverage contributions. The phase has no AI integration, frontend, hosted database or ORM; the UI detector returns frontend=false/block=false and codebase drift requires no action. Editorial visual checks remain explicit PUB acceptance requirements.
+- assumption-delta scan detected `alternative` only in alternative text. Decision: no-change. Primary analytical identity remains the ten-dimensional v2r grain; alternative text is another representation of the same public records. Acquisition attempt, numerical acceptance, publication run and release IDs remain separate concepts as already specified.
+- The runtime warns about baked model configuration and an optional missing mempalace curator. The actual native typed spawn schema supports the explicit Sol/medium selection required by AGENTS. No optional memory integration or global runtime reinstall is needed for this project; no memory writes are authorized.
+- Eight PUB/OPS requirements yield45 explicit edge candidates in the shared GSD engine. Draft requirements/resolutions are in `.cache/research/phase4-edge-*.json`; planner must review and lift exact criteria into flat must-have truths, and write the final edge/validation artifacts. Draft resolution denotes a specification, not a passed test.

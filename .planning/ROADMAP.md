@@ -11,7 +11,8 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 - [x] **Phase 1: Official Sources and Research Contract** - Eight immutable ENOE snapshots and explicit populations, dimensions, and method rules can be verified. (completed 2026-09-22)
 - [x] **Phase 2: Defensible Survey Estimates** - Real-data estimates and precision states pass independent numerical and official reconciliation.
  (completed 2026-09-23)
-- [ ] **Phase 3: Supported Labor Findings** - Readers can inspect field, time, sex, and territorial findings with comparable evidence and visible limits.
+
+- [x] **Phase 3: Supported Labor Findings** - Readers can inspect field, time, sex, and territorial findings with comparable evidence and visible limits. (completed 2026-09-23)
 - [ ] **Phase 4: Offline Publication and Reproducible Operation** - One validated public projection produces the editorial report, reusable data, and fail-closed replayable run.
 - [ ] **Phase 5: Independent Audit and v1.0.0 Release** - Clean reproduction and release review support a verifiable public research bundle.
 
@@ -70,7 +71,7 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 
 - [x] 03-01-PLAN.md
 - [x] 03-02-PLAN.md
-- [ ] 03-03-PLAN.md
+- [x] 03-03-PLAN.md
 
 ### Phase 4: Offline Publication and Reproducible Operation
 
@@ -109,6 +110,6 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 |-------|----------------|--------|-----------|
 | 1. Official Sources and Research Contract | 4/4 | Complete    | 2026-09-22 |
 | 2. Defensible Survey Estimates | 3/3 | Complete    | 2026-09-23 |
-| 3. Supported Labor Findings | 2/3 | Executing 03-03 | - |
+| 3. Supported Labor Findings | 3/3 | Complete    | 2026-09-23 |
 | 4. Offline Publication and Reproducible Operation | 0/TBD | Not started | - |
 | 5. Independent Audit and v1.0.0 Release | 0/TBD | Not started | - |
