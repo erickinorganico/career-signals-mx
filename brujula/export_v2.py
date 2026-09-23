@@ -124,7 +124,7 @@ def _table_data(model: dict) -> dict[str, tuple[dict[str, str], list[tuple]]]:
 def _csv_value(value: object) -> object:
     if value is None:
         return ""
-    if isinstance(value, str) and value.startswith(("=", "+", "-", "@")):
+    if isinstance(value, str) and value.startswith(("=", "+", "-", "@", "'")):
         return "'" + value
     return value
 
@@ -152,7 +152,7 @@ def _dictionary(tables: dict) -> str:
     lines = ["# Brújula Laboral MX public data dictionary", "",
              "All tables derive from the independently pinned Phase 3 sanitized public packet.",
              "CSV is UTF-8. Empty CSV numeric/text fields represent SQL NULL; the literal numeric zero remains 0.",
-             "CSV text beginning =, +, - or @ gains one leading apostrophe. Remove exactly that apostrophe to recover the original text; DuckDB and Parquet keep the original string.",
+             "CSV text beginning `=`, `+`, `-` or `@` gains one leading apostrophe; text already beginning `'` gains a second apostrophe. Decode by removing one apostrophe only from CSV text beginning `'=`, `'+`, `'-`, `'@` or `''`. DuckDB and Parquet keep the original string.",
              "Public values retain full binary floating precision. Display rounding belongs to report formatters only.",
              "The 10 grain columns of public_records remain separate; v2r is their canonical identity.",
              "Evidence refs are relational rows. Source snapshot hashes and method versions preserve provenance.", ""]

@@ -27,24 +27,29 @@ def test_actual_export_round_trip(model, tmp_path):
     assert len({item["record"]["metric_id"] for item in model["records"].values()}) == 23
     assert all((target / name).is_file() for name in result["files"])
     db = duckdb.connect(str(target / "public.duckdb"), read_only=True)
-    db_rows = db.execute("SELECT record_id, value, standard_error, field_of_study_id FROM public_records ORDER BY record_id").fetchall()
-    pq_rows = duckdb.query(f"SELECT record_id, value, standard_error, field_of_study_id FROM read_parquet('{(target / 'public-records.parquet').as_posix()}') ORDER BY record_id").fetchall()
+    db_rows = db.execute("SELECT * FROM public_records ORDER BY record_id").fetchall()
+    columns = [column[0] for column in db.description]
+    pq_rows = duckdb.query(f"SELECT * FROM read_parquet('{(target / 'public-records.parquet').as_posix()}') ORDER BY record_id").fetchall()
     with (target / "public-records.csv").open(encoding="utf-8", newline="") as stream:
         csv_rows = list(csv.DictReader(stream))
     assert len(csv_rows) == len(db_rows) == len(pq_rows) == 6739
     assert db_rows == pq_rows
     assert [row["record_id"] for row in csv_rows] == [row[0] for row in db_rows]
     assert any(row["field_of_study_id"].startswith("0") for row in csv_rows)
-    for csv_row, (key, value, se, _field) in zip(csv_rows, db_rows):
+    for csv_row, db_row in zip(csv_rows, db_rows):
+        typed = dict(zip(columns, db_row))
+        key, value, se = typed["record_id"], typed["value"], typed["standard_error"]
         record = model["records"][key]["record"]
         assert value == record["value"]
         assert se == record["precision"]["standard_error"]
-        assert (None if csv_row["value"] == "" else float(csv_row["value"])) == value
-        assert (None if csv_row["standard_error"] == "" else float(csv_row["standard_error"])) == se
+        for column, db_value in typed.items():
+            assert csv_row[column] == ("" if db_value is None else str(_csv_value(db_value)))
         assert csv_row["status"] == record["status"]
         assert csv_row["reason"] == (record["reason"] or "")
     assert db.execute("SELECT count(*) FROM figure_record_links").fetchone()[0] > 32
     assert db.execute("SELECT count(DISTINCT metric_id) FROM public_records").fetchone()[0] == 23
+    assert db.execute("SELECT count(*) FROM comparisons").fetchone()[0] == 4209
+    assert db.execute("SELECT count(*) FROM claims").fetchone()[0] == 38
     assert db.execute("SELECT count(*) FROM record_evidence").fetchone()[0] >= 6739
     db.close()
 
@@ -73,6 +78,7 @@ def test_interrupted_export_leaves_no_declared_set(model, tmp_path, monkeypatch)
 @pytest.mark.parametrize("source,encoded", [
     ("=SUM(1,2)", "'=SUM(1,2)"), ("+cmd", "'+cmd"),
     ("-cmd", "'-cmd"), ("@cmd", "'@cmd"),
+    ("'=literal", "''=literal"), ("'ordinary", "''ordinary"),
     ("031300", "031300"), ("México", "México"),
     (0.0, 0.0), (None, ""),
 ])
