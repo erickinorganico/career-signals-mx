@@ -66,9 +66,9 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
   3. A reader can inspect supported differences by recorded sex and entity, with suppressed cells, missing coverage, response rates, and exclusions visible for each relevant period and field.
   4. A reviewer can trace each proposed finding to exact estimate, source, and method IDs; unsupported causal prose, new quantities, and personal recommendations fail the claim gate.
 
-**Plans**: 0/3 plans executed; targeted plan review and accepted upstream preflight passed, 03-01 executing
+**Plans**: 1/3 plans executed; 03-01 profiles accepted, 03-02 comparisons executing
 
-- [ ] 03-01-PLAN.md
+- [x] 03-01-PLAN.md
 - [ ] 03-02-PLAN.md
 - [ ] 03-03-PLAN.md
 
@@ -109,6 +109,6 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 |-------|----------------|--------|-----------|
 | 1. Official Sources and Research Contract | 4/4 | Complete    | 2026-09-22 |
 | 2. Defensible Survey Estimates | 3/3 | Complete    | 2026-09-23 |
-| 3. Supported Labor Findings | 0/3 | Executing 03-01 | - |
+| 3. Supported Labor Findings | 1/3 | Executing 03-02 | - |
 | 4. Offline Publication and Reproducible Operation | 0/TBD | Not started | - |
 | 5. Independent Audit and v1.0.0 Release | 0/TBD | Not started | - |
