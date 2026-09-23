@@ -287,7 +287,8 @@ def build_publication(source_root: Path, output_root: Path, audit_dir: Path,
             artifact_hashes = _render(model, run)
             if set(artifact_hashes) != _expected(model):
                 raise ValueError("staged artifact set differs")
-            if _sources(source_root) != sources or _accepted(audit_dir)[1] != acceptance_sha:
+            if (_sources(source_root) != sources or _accepted(audit_dir)[1] != acceptance_sha
+                    or _summary(packet, acceptance, acceptance_sha, sources) != summary):
                 raise ValueError("input identity changed during build")
             stage = "receipt"
             receipt = {"schema_version": "2.0", "run_id": run_id, "status": "REVIEW",
@@ -438,7 +439,7 @@ def _accepted_payloads(acceptance: dict, sources: list[dict]) -> tuple[dict, dic
 
 
 def _operation_receipt(audit: Path, result: dict) -> dict:
-    audit_dir.mkdir(parents=True, exist_ok=True)
+    audit.mkdir(parents=True, exist_ok=True)
     with BuildLock(audit):
         attempt_id = _attempt_id()
         payload = {**result, "attempt_id": attempt_id, "completed_at": now()}
@@ -475,7 +476,10 @@ def analyze_acceptance(source_root: Path, acceptance_receipt: Path,
         _summary(packet, accepted, accepted_sha, sources)
         if validate_analysis_packet(packet):
             raise ValueError("new analysis packet rejected")
-        if _sources(source_root) != sources or _accepted(numerical_audit, acceptance_receipt)[1] != accepted_sha:
+        current_publics, current_audits = _accepted_payloads(accepted, sources)
+        if (_sources(source_root) != sources
+                or _accepted(numerical_audit, acceptance_receipt)[1] != accepted_sha
+                or current_publics != publics or current_audits != audits):
             raise ValueError("analysis input changed")
         if analysis_output.exists():
             raise FileExistsError("analysis output already exists")
@@ -519,7 +523,7 @@ def replay_publication(source_root: Path, sealed_run: Path, audit_dir: Path) -> 
     source_root, sealed_run, audit_dir = _strict_roots(source_root, sealed_run, audit_dir)
     if sealed_run.parent.name != "runs" or not RUN_ID.fullmatch(sealed_run.name):
         raise ValueError("sealed publication run required")
-    audit.mkdir(parents=True, exist_ok=True)
+    audit_dir.mkdir(parents=True, exist_ok=True)
     with BuildLock(audit_dir):
         attempt_id = _attempt_id()
         attempt = audit_dir / "replay-runs" / attempt_id

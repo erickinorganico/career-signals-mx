@@ -154,3 +154,94 @@ def test_safe_artifact_paths_reject_traversal_and_backslashes(tmp_path):
     for value in ("../escape", "C:/absolute", "sub\\evil", "/absolute"):
         with pytest.raises(ValueError, match="unsafe|escaped"):
             p._safe_file(root, value)
+
+
+@pytest.mark.parametrize("stage", ("render", "receipt", "manifest", "pointer", "final_index"))
+def test_fault_boundaries_leave_blocked_current_and_preserve_history(monkeypatch, tmp_path, stage):
+    source, out, audit, analysis, _names = _stub_build(monkeypatch, tmp_path)
+    good = p.build_publication(source, out, audit, analysis)
+    sealed = (good["run"] / "manifest.json").read_bytes()
+    armed = True
+    if stage == "render":
+        monkeypatch.setattr(p, "_render", lambda *_args: (_ for _ in ()).throw(RuntimeError("private path")))
+    elif stage == "receipt":
+        original = p.immutable_bytes
+
+        def fail_receipt(path, content):
+            nonlocal armed
+            if path.name == "receipt.json" and armed:
+                armed = False
+                raise OSError("receipt I/O fault")
+            return original(path, content)
+
+        monkeypatch.setattr(p, "immutable_bytes", fail_receipt)
+    elif stage == "manifest":
+        monkeypatch.setattr(p, "_validate_manifest", lambda _item: (_ for _ in ()).throw(ValueError("manifest fault")))
+    else:
+        original = p.atomic_json
+
+        def fail_atomic(path, value):
+            nonlocal armed
+            if armed and ((stage == "pointer" and path.name == "current.json"
+                           and value.get("status") == "REVIEW")
+                          or (stage == "final_index" and path.name == "journal.json"
+                              and value.get("build_status") == "SUCCEEDED")):
+                armed = False
+                raise OSError("promotion fault")
+            return original(path, value)
+
+        monkeypatch.setattr(p, "atomic_json", fail_atomic)
+    with pytest.raises((OSError, ValueError, RuntimeError)):
+        p.build_publication(source, out, audit, analysis)
+    current = json.loads((out / "current.json").read_text(encoding="utf-8"))
+    assert current["status"] == "BLOCKED"
+    assert "private" not in json.dumps(current)
+    assert (good["run"] / "manifest.json").read_bytes() == sealed
+    failed = out / "runs" / current["run_id"]
+    assert (failed / "receipt.json").exists()
+
+
+def test_analysis_failure_receipt_is_separate_and_bounded(monkeypatch, tmp_path):
+    source = tmp_path / "sources"
+    audit = tmp_path / "analysis-audit"
+    numerical = tmp_path / "numerical-audit"
+    receipt = numerical / "attempts" / ("a" * 36 + ".json")
+    output = tmp_path / "new-analysis.json"
+    monkeypatch.setattr(p, "_accepted", lambda *_args: (
+        {"output_root": str(tmp_path / "accepted-output"), "attempt_id": "a" * 36}, "b" * 64))
+    monkeypatch.setattr(p, "_sources", lambda *_args: [{"snapshot_id": sid} for sid in p.SNAPSHOTS])
+    monkeypatch.setattr(p, "_accepted_payloads", lambda *_args: ({}, {}))
+    monkeypatch.setattr(p, "build_analysis_packet",
+                        lambda *_args: (_ for _ in ()).throw(ValueError("C:/private/secret")))
+    with pytest.raises(ValueError):
+        p.analyze_acceptance(source, receipt, output, audit)
+    current = json.loads((audit / "current.json").read_text(encoding="utf-8"))
+    assert current["status"] == "BLOCKED"
+    assert "private" not in json.dumps(current)
+    assert (audit / "attempts" / (current["attempt_id"] + ".json")).exists()
+    assert not numerical.exists() and not output.exists()
+
+
+def test_replay_reconstructs_and_keeps_baseline_immutable(monkeypatch, tmp_path):
+    source, audit = tmp_path / "sources", tmp_path / "replay-audit"
+    sealed = tmp_path / "publication" / "runs" / "20260923T120000-aaaaaaaaaaaa"
+    sealed.mkdir(parents=True)
+    (sealed / "manifest.json").write_bytes(b"baseline")
+    packet = {"content_digest": "a" * 64}
+    model = {"content_digest": "b" * 64, "records": {"v2r:one": {}},
+             "comparisons": [], "claims": [], "figure_links": []}
+    calls = []
+    baseline = {"manifest": {"numerical_acceptance": {"numeric_content_digest": "c" * 64}},
+                "manifest_sha256": "d" * 64, "packet": packet, "model": model,
+                "sources": [], "artifact_hashes": {"report.html": "e" * 64}}
+    monkeypatch.setattr(p, "_verify_sealed", lambda *_args: baseline)
+    monkeypatch.setattr(p, "build_publication_model", lambda _packet: model)
+    monkeypatch.setattr(p, "_render", lambda _model, directory: (
+        calls.append(directory), {"report.html": "f" * 64})[1])
+    monkeypatch.setattr(p, "_table_data", lambda _model: {"public_records": ({}, [])})
+    monkeypatch.setattr(p, "_logical_exports", lambda *_args: True)
+    result = p.replay_publication(source, sealed, audit)
+    assert result["status"] == "PASS" and len(calls) == 1
+    assert calls[0].is_relative_to(audit / "replay-runs")
+    assert (sealed / "manifest.json").read_bytes() == b"baseline"
+    assert (audit / "attempts" / (result["attempt_id"] + ".json")).exists()
