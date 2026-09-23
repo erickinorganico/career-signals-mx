@@ -26,8 +26,9 @@ if str(ROOT) not in sys.path:
 from brujula import estimates
 from brujula.enoe_adapter import load_snapshot_frame
 from brujula.metrics import load_metric_manifest
+from brujula.populations import COMPLETED_PROFESSIONAL_KNOWN_AGE, NATIONAL_15_PLUS_CONTEXT
 from brujula.research_contract import GRAIN, validate_public_research_v2, validate_research_v2
-from brujula.source_inventory import inventory_all
+from brujula.source_inventory import FOCUS_CODES, inventory_all
 from brujula.survey import SurveyDesign
 
 RTOL = 1e-10
@@ -134,6 +135,49 @@ def run_attempt(audit_dir: Path, operation) -> dict:
 def _grain(snapshot: str, period: str, domain: dict, metric: str) -> str:
     return "|".join((snapshot, domain["population_id"], domain["field_of_study_id"], "all", "all",
                      domain["geography_id"], domain["recorded_sex_id"], period, metric, estimates.METHOD_ID))
+
+
+DOMAIN_KEYS = ("population_id", "field_of_study_id", "geography_id", "recorded_sex_id")
+
+
+def expected_acceptance_domains(snapshot: str, observed_fields: list[str],
+                                catalog_keys: set[str] | frozenset[str]) -> list[dict]:
+    """Independent complete gate inventory; partial estimator requests remain valid."""
+    focal = {code.zfill(6) for code in FOCUS_CODES}
+    observed = set(observed_fields)
+    if (len(observed) != len(observed_fields) or not observed <= set(catalog_keys)
+            or not focal <= set(catalog_keys)):
+        raise ValueError("acceptance field inventory differs from verified quarter catalog")
+    domains = set()
+
+    def add(population: str, field: str = "all", geo: str = "mx", sex: str = "all") -> None:
+        domains.add((population, field, geo, sex))
+
+    add(NATIONAL_15_PLUS_CONTEXT)
+    add(COMPLETED_PROFESSIONAL_KNOWN_AGE)
+    for field in focal:
+        add(COMPLETED_PROFESSIONAL_KNOWN_AGE, field)
+    if snapshot == LATEST:
+        for field in observed:
+            add(COMPLETED_PROFESSIONAL_KNOWN_AGE, field)
+        for field in ("all", *sorted(focal)):
+            for entity in range(1, 33):
+                add(COMPLETED_PROFESSIONAL_KNOWN_AGE, field, f"{entity:02d}")
+            for sex in ("1", "2"):
+                add(COMPLETED_PROFESSIONAL_KNOWN_AGE, field, "mx", sex)
+    if snapshot in {"enoe_2025_q2", LATEST}:
+        add(NATIONAL_15_PLUS_CONTEXT, "all", "02")
+    return [dict(zip(DOMAIN_KEYS, values)) for values in sorted(domains)]
+
+
+def verify_acceptance_domains(actual: list[dict], required: list[dict]) -> dict:
+    def key(domain: dict) -> str:
+        return "|".join(str(domain[name]) for name in DOMAIN_KEYS)
+    ledger = compare_inventory([key(d) for d in required], [key(d) for d in actual],
+                               [key(d) for d in actual])
+    if ledger["status"] != "PASS":
+        raise ValueError(f"complete acceptance domain inventory mismatch: {ledger}")
+    return ledger
 
 
 def _oracle_specs() -> list[dict]:
@@ -261,13 +305,17 @@ def _run_analytic_oracle(audit_dir: Path) -> dict:
 
 
 def _verify_result(result: dict, domains: list[dict], metric_ids: list[str],
-                   snapshot: str, period: str) -> dict:
+                   snapshot: str, period: str, required_domains: list[dict] | None = None) -> dict:
     audit, internal, public = result["audit"], result["internal"], result["public"]
     if validate_research_v2(internal) or validate_public_research_v2(public):
         raise ValueError("strict v2 validation failed")
     if any(value is not True for value in audit["requested_cells"].values()):
         raise ValueError("requested cell was not declared true")
-    expected = [_grain(snapshot, period, domain, metric) for domain in domains for metric in metric_ids]
+    if required_domains is not None:
+        verify_acceptance_domains(domains, required_domains)
+    expected = [_grain(snapshot, period, domain, metric)
+                for domain in (required_domains if required_domains is not None else domains)
+                for metric in metric_ids]
     def keyed(rows):
         return {"|".join(str(row[k]) for k in GRAIN): row for row in rows}
     internal_by = keyed(internal["records"])
@@ -401,13 +449,15 @@ def accept(output_root: Path, audit_dir: Path, *, generate_golden: bool = False)
             raise ValueError(f"corrected occupied/suboccupation/hours design audit mismatch: {snapshot}")
         field_ids = sorted(set(frame.cs_p14_c[(frame.eda >= 15) & (frame.eda <= 97) &
                                                    (frame.cs_p13_1 == 7) & (frame.cs_p16 == 1)]) - {None})
+        required_domains = expected_acceptance_domains(snapshot, field_ids, frame.cmpe_catalog_keys)
         domains = estimates.required_estimation_domains(snapshot, latest_snapshot_id=LATEST, field_ids=field_ids)
         if snapshot in {"enoe_2025_q2", LATEST}:
             domains.append({"population_id": "national_15_plus_context", "field_of_study_id": "all",
                             "geography_id": "02", "recorded_sex_id": "all"})
+        verify_acceptance_domains(domains, required_domains)
         with patch.object(estimates, "load_snapshot_frame", return_value=(frame, frame_audit)):
             result = estimates.estimate_snapshot(snapshot, output_root, domains=domains)
-        coverage = _verify_result(result, domains, metrics, snapshot, period)
+        coverage = _verify_result(result, domains, metrics, snapshot, period, required_domains)
         audit = result["audit"]
         public = result["public"]
         counts = {}
