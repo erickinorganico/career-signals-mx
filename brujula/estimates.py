@@ -109,7 +109,10 @@ def _period_record(period: str) -> dict:
 
 
 def _method_version(manifest: dict) -> str:
-    adapter_hash = hashlib.sha256(Path(enoe_adapter.__file__).read_bytes()).hexdigest()
+    # Git checkouts may use CRLF on Windows and LF on Unix. Hash canonical
+    # source text so identical algorithms share one replay identity.
+    adapter_source = Path(enoe_adapter.__file__).read_bytes().replace(b"\r\n", b"\n")
+    adapter_hash = hashlib.sha256(adapter_source).hexdigest()
     return f"{VARIANCE_METHOD}:adapter:{adapter_hash}:metrics:{manifest['content_sha256']}"
 
 
@@ -123,7 +126,7 @@ def _record(frame, domain: dict, metric: dict, vectors: dict, design: SurveyDesi
     else:
         result = design.ratio(numerator, denominator, vectors["domain"],
                               percent=metric["unit"] == "percent")
-        support_mask = vectors["domain"] & (denominator > 0) & (numerator != 0) & (design.weights > 0)
+        support_mask = vectors["domain"] & (denominator > 0) & (design.weights > 0)
     weighted_support = float(np.sum(design.weights[support_mask], dtype=np.float64))
     weighted_denominator = result["weighted_denominator"]
     if operation == "total":
@@ -177,7 +180,7 @@ def estimate_snapshot(snapshot_id: str, output_root: Path, *, domains: list[dict
                                               field_ids=verified_fields)
     if not isinstance(domains, list) or not domains:
         raise ValueError("estimate request inventory cannot be empty")
-    parsed = [(domain, *_domain_selector(domain, set(verified_fields))) for domain in domains]
+    parsed = [(domain, *_domain_selector(domain, set(frame.cmpe_catalog_keys))) for domain in domains]
     keys = [tuple(domain[key] for key in ("population_id", "field_of_study_id", "geography_id", "recorded_sex_id"))
             for domain, _, _ in parsed]
     if len(keys) != len(set(keys)):

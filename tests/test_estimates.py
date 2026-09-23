@@ -77,3 +77,41 @@ def test_unverified_field_rejected(monkeypatch, tmp_path):
                                     domains=[{"population_id": "completed_professional_known_age",
                                               "field_of_study_id": "999999", "geography_id": "mx",
                                               "recorded_sex_id": "all"}])
+
+
+def test_ratio_support_includes_known_zero_outcomes(monkeypatch, tmp_path):
+    from brujula import estimates
+    frame = synthetic_frame()
+    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (frame, {"synthetic": True}))
+    domain = {"population_id": "completed_professional_known_age", "field_of_study_id": "033100",
+              "geography_id": "mx", "recorded_sex_id": "all"}
+    rows = estimates.estimate_snapshot(frame.snapshot_id, tmp_path, domains=[domain])["internal"]["records"]
+    rate = next(row for row in rows if row["metric_id"] == "employment_rate")
+    assert rate["sample_size"] == 40
+    assert rate["support"]["weighted_support_total"] == 40
+    assert rate["weighted_denominator"] == 40
+
+
+def test_method_version_normalizes_platform_line_endings(monkeypatch, tmp_path):
+    from brujula import estimates
+    source = tmp_path / "adapter.py"
+    manifest = load_metric_manifest()
+    monkeypatch.setattr(estimates.enoe_adapter, "__file__", str(source))
+    source.write_bytes(b"a = 1\n")
+    unix = estimates._method_version(manifest)
+    source.write_bytes(b"a = 1\r\n")
+    assert estimates._method_version(manifest) == unix
+
+
+def test_catalogued_field_with_zero_observed_rows_is_evaluated(monkeypatch, tmp_path):
+    from brujula import estimates
+    frame = synthetic_frame()
+    frame = Frame(frame.snapshot_id, frame.period, frame.source_id, frame.inventory,
+                  frozenset({"033100", "031300"}), frame.columns)
+    monkeypatch.setattr(estimates, "load_snapshot_frame", lambda *a, **k: (frame, {"synthetic": True}))
+    domain = {"population_id": "completed_professional_known_age", "field_of_study_id": "031300",
+              "geography_id": "mx", "recorded_sex_id": "all"}
+    result = estimates.estimate_snapshot(frame.snapshot_id, tmp_path, domains=[domain])
+    assert result["audit"]["requested_count"] == result["audit"]["evaluated_count"] == 23
+    assert all(row["sample_size"] == 0 and row["value"] is None and row["reason"]
+               for row in result["internal"]["records"])
