@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "status": "VERIFIED",
+  "reviewed_at": "2026-09-22",
+  "source": {
+    "source_id": "inegi_enoe",
+    "method": "resolve_snapshot followed by read-only zipfile inspection of exact cs_p13_1.csv members",
+    "registry": "data/catalog/enoe-snapshots.json",
+    "raw_artifacts_root": "artifacts/enoe",
+    "person_rows_read": false
+  },
+  "catalog_field": "CS_P13_1",
+  "labels_verified": {
+    "0": "Ninguno",
+    "99": "No sabe"
+  },
+  "snapshots": [
+    {"snapshot_id": "enoe_2024_q3", "zip_sha256": "f384a1b8872e051856ed2241289400302b13a8701489b1c596390452c183cd01", "catalog_member": "conjunto_de_datos_sdem_enoe_2024_3t/catalogos/cs_p13_1.csv", "catalog_sha256": "5f6a9c28b994b4d99002cfd0bf345f35893ce86ab4ba3a50568351ab792053e5", "catalog_bytes": 178},
+    {"snapshot_id": "enoe_2024_q4", "zip_sha256": "bb6d958c9bca11672d367d2c051cd08bf1654c471c2f32c8e21992c126a3b426", "catalog_member": "conjunto_de_datos_sdem_enoe_2024_4t/catalogos/cs_p13_1.csv", "catalog_sha256": "5f6a9c28b994b4d99002cfd0bf345f35893ce86ab4ba3a50568351ab792053e5", "catalog_bytes": 178},
+    {"snapshot_id": "enoe_2025_q1", "zip_sha256": "3931e7c9242147da6ebf9badb1e2b9a59d43d95a9811e077232be406c4ce6691", "catalog_member": "conjunto_de_datos_sdem_enoe_2025_1t/catalogos/cs_p13_1.csv", "catalog_sha256": "5f6a9c28b994b4d99002cfd0bf345f35893ce86ab4ba3a50568351ab792053e5", "catalog_bytes": 178},
+    {"snapshot_id": "enoe_2025_q2", "zip_sha256": "9530a017e3defb0658418b73a47a6039eeb54abf11342fa10693374736515127", "catalog_member": "conjunto_de_datos_sdem_enoe_2025_2t/catalogos/cs_p13_1.csv", "catalog_sha256": "5f6a9c28b994b4d99002cfd0bf345f35893ce86ab4ba3a50568351ab792053e5", "catalog_bytes": 178},
+    {"snapshot_id": "enoe_2025_q3", "zip_sha256": "7138b2bfabc740a9805b83b3fd0dae28287fc2aab3781a596a741b8fc7861566", "catalog_member": "conjunto_de_datos_sdem_enoe_2025_3t/catalogos/cs_p13_1.csv", "catalog_sha256": "5f6a9c28b994b4d99002cfd0bf345f35893ce86ab4ba3a50568351ab792053e5", "catalog_bytes": 178},
+    {"snapshot_id": "enoe_2025_q4", "zip_sha256": "e4d4284cc9924a40c39544a5530715f320a5627cd81997214c0430827616d9d6", "catalog_member": "conjunto_de_datos_sdem_enoe_2025_4t/catalogos/cs_p13_1.csv", "catalog_sha256": "5f6a9c28b994b4d99002cfd0bf345f35893ce86ab4ba3a50568351ab792053e5", "catalog_bytes": 178},
+    {"snapshot_id": "enoe_2026_q1", "zip_sha256": "429c288af46e408de743e5dfb92750f668df7e42789be5824f7cdf1c5ff56580", "catalog_member": "conjunto_de_datos_sdem_enoe_2026_1t/catalogos/cs_p13_1.csv", "catalog_sha256": "5f6a9c28b994b4d99002cfd0bf345f35893ce86ab4ba3a50568351ab792053e5", "catalog_bytes": 178},
+    {"snapshot_id": "enoe_2026_q2", "zip_sha256": "9ef8877c363f6097da1a04b2077cbda96300cc474b38f835c4963d1dd8f953df", "catalog_member": "conjunto_de_datos_sdem_enoe_2026_2t/catalogos/cs_p13_1.csv", "catalog_sha256": "5f6a9c28b994b4d99002cfd0bf345f35893ce86ab4ba3a50568351ab792053e5", "catalog_bytes": 178}
+  ],
+  "interpretation": {
+    "0": "known_other_education",
+    "missing": "unknown_education",
+    "-1": "unknown_education",
+    "99": "unknown_education",
+    "professional_cohort_selection": "unchanged: CS_P13_1=07 and CS_P16=1"
+  },
+  "history": {
+    "prior_audit_truth": "The earlier aggregate audit classified CS_P13_1=0 as unknown education.",
+    "correction": "The source catalog verifies 0 as Ninguno; coverage now reports it as known other education while preserving missing, -1 and 99 as unknown."
+  }
+}

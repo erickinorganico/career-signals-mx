@@ -1,17 +1,22 @@
 # Brújula Laboral MX
 
-**Investigación reproducible para interpretar el mercado laboral mexicano.**
-Un repositorio de Analytics, pipelines locales y automatización con evidencia,
-para explorar qué se puede observar sobre estudiar un campo y trabajar en una
-ocupación sin tratarlos como equivalentes.
+Investigación reproducible del mercado laboral mexicano con datos públicos de INEGI.
 
-[English](README.en.md) · [Documentación](docs/README.md) · [Alcance](docs/SCOPE.md) · [Estado verificado](docs/STATUS.md)
+[Descargar publicación](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) · [Informe PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v0.9.0-preview.1/brujula-laboral-mx-informe.pdf) · [English](README.en.md)
 
-> **Versión 0.1.0: MVP sintético implementado y verificado.** La
-> demo local genera artefactos reproducibles. Los datos incluidos son **sintéticos** y no
-> representan estimaciones de México, oportunidades de empleo ni recomendaciones
-> para elegir una carrera. Consulta los bloqueadores y resultados de pruebas en
-> [STATUS](docs/STATUS.md).
+**Publicación del estado actual, por decisión del propietario.** El informe real cubre ocho trimestres ENOE, de 2024-T3 a 2026-T2. Incluye 97 páginas, nueve grupos de gráficas y 22 tablas enlazadas en CSV, Parquet y DuckDB. El paquete contiene HTML para consulta offline, Markdown, PDF, fuentes y manifiesto de integridad.
+
+Los perfiles nacionales y campos focales tienen seguimiento de ocho trimestres; los demás campos, sexo registrado y 32 entidades se presentan para el último trimestre. Carrera, ocupación e industria se mantienen separadas. Los valores faltantes y suprimidos conservan `null`; la precisión calculada es **no oficial, REVIEW**. No constituye un ranking ni una recomendación personal.
+
+El análisis incluye 6,739 registros, 4,209 comparaciones (las no comparables quedan bloqueadas) y 38 afirmaciones enlazadas a evidencia. La validación local pasó 592 pruebas Python, 30 controles Node, contraste independiente con R y replay numérico. La instalación nativa en GitHub Actions y el cierre completo de GSD siguen pendientes en esta publicación preliminar. No se declara completada la versión 1.0.0.
+
+Descarga y extrae el ZIP; abre `research/report.html` o `research/report.pdf`. Consulta [el contrato vigente](docs/CONTRACT-V2.md), [la evidencia de publicación](docs/evidence/phase-04-publication-acceptance.json) y [el estado GSD](.planning/STATE.md). No se distribuyen microdatos ni se requiere una aplicación alojada.
+
+---
+
+## Documentación histórica del piloto sintético 0.1.0
+
+El contenido siguiente describe el piloto anterior. Sus datos, periodos y alcance no son los del informe real enlazado arriba. La documentación bilingüe completa de la futura versión 1.0.0 quedó pendiente al cerrar este trabajo.
 
 ## Qué construimos
 

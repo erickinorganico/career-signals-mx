@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://brujula.local/contracts/research-v2.schema.json",
+  "title": "Brújula Laboral MX internal research record v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "sources", "populations", "fields_of_study", "occupations", "industries", "geographies", "recorded_sexes", "periods", "metrics", "methods", "evidence", "records"],
+  "properties": {
+    "schema_version": {"const": "2.0"},
+    "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}},
+    "populations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/population"}},
+    "fields_of_study": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concept"}},
+    "occupations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concept"}},
+    "industries": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concept"}},
+    "geographies": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concept"}},
+    "recorded_sexes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concept"}},
+    "periods": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/period"}},
+    "metrics": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/metric"}},
+    "methods": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/method"}},
+    "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}},
+    "records": {"type": "array", "items": {"$ref": "#/$defs/record"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^(?!\\s*$).+"},
+    "nullable_number": {"type": ["number", "null"]},
+    "nullable_nonnegative": {"type": ["number", "null"], "minimum": 0},
+    "concept": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "label"],
+      "properties": {"id": {"$ref": "#/$defs/id"}, "label": {"$ref": "#/$defs/id"}}
+    },
+    "population": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id"], "properties": {"id": {"$ref": "#/$defs/id"}}
+    },
+    "period": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "label", "start", "end"],
+      "properties": {"id": {"$ref": "#/$defs/id"}, "label": {"$ref": "#/$defs/id"},
+                     "start": {"type": "string", "format": "date"}, "end": {"type": "string", "format": "date"}}
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "period_id", "url", "sha256", "terms_url", "authority", "acquired_at"],
+      "properties": {"id": {"$ref": "#/$defs/id"}, "period_id": {"$ref": "#/$defs/id"},
+                     "url": {"type": "string", "format": "uri"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                     "terms_url": {"type": "string", "format": "uri"}, "authority": {"$ref": "#/$defs/id"},
+                     "acquired_at": {"type": "string", "format": "date-time"}}
+    },
+    "metric": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "label", "unit", "price_basis"],
+      "properties": {"id": {"$ref": "#/$defs/id"}, "label": {"$ref": "#/$defs/id"},
+                     "unit": {"enum": ["people", "percent", "MXN/month", "hours/week"]},
+                     "price_basis": {"enum": ["nominal", "not_applicable"]}}
+    },
+    "method": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "design_id", "version", "source_snapshot_ids"],
+      "properties": {"id": {"$ref": "#/$defs/id"}, "design_id": {"$ref": "#/$defs/id"},
+                     "version": {"$ref": "#/$defs/id"},
+                     "source_snapshot_ids": {"type": "array", "minItems": 1, "uniqueItems": true,
+                                             "items": {"$ref": "#/$defs/id"}}}
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "source_snapshot_id", "label", "url", "kind"],
+      "properties": {"id": {"$ref": "#/$defs/id"}, "source_snapshot_id": {"$ref": "#/$defs/id"},
+                     "label": {"$ref": "#/$defs/id"}, "url": {"type": "string", "format": "uri"},
+                     "kind": {"$ref": "#/$defs/id"}}
+    },
+    "support": {
+      "type": "object", "additionalProperties": false,
+      "required": ["n_psu_design", "n_strata_design", "n_psu_domain", "n_strata_domain", "design_df", "weighted_support_total"],
+      "properties": {"n_psu_design": {"type": "integer", "minimum": 0},
+                     "n_strata_design": {"type": "integer", "minimum": 0},
+                     "n_psu_domain": {"type": "integer", "minimum": 0},
+                     "n_strata_domain": {"type": "integer", "minimum": 0},
+                     "design_df": {"type": "integer", "minimum": 0},
+                     "weighted_support_total": {"$ref": "#/$defs/nullable_nonnegative"}}
+    },
+    "precision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["standard_error", "coefficient_variation", "ci90_lower", "ci90_upper", "method", "ci_method", "level", "singleton_policy", "official_precision"],
+      "properties": {"standard_error": {"$ref": "#/$defs/nullable_nonnegative"},
+                     "coefficient_variation": {"$ref": "#/$defs/nullable_nonnegative"},
+                     "ci90_lower": {"$ref": "#/$defs/nullable_number"},
+                     "ci90_upper": {"$ref": "#/$defs/nullable_number"},
+                     "method": {"$ref": "#/$defs/id"}, "ci_method": {"$ref": "#/$defs/id"},
+                     "level": {"const": 0.9}, "singleton_policy": {"enum": ["fail", "adjust"]},
+                     "official_precision": {"type": "boolean"}}
+    },
+    "record": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_snapshot_id", "population_id", "field_of_study_id", "occupation_id", "industry_id", "geography_id", "recorded_sex_id", "period_id", "metric_id", "method_id", "unit", "price_basis", "method_version", "design_id", "sample_size", "weighted_denominator", "support", "precision", "status", "reason", "estimate", "value", "evidence_refs", "synthetic"],
+      "properties": {
+        "source_snapshot_id": {"$ref": "#/$defs/id"}, "population_id": {"$ref": "#/$defs/id"},
+        "field_of_study_id": {"$ref": "#/$defs/id"}, "occupation_id": {"$ref": "#/$defs/id"},
+        "industry_id": {"$ref": "#/$defs/id"}, "geography_id": {"$ref": "#/$defs/id"},
+        "recorded_sex_id": {"$ref": "#/$defs/id"}, "period_id": {"$ref": "#/$defs/id"},
+        "metric_id": {"$ref": "#/$defs/id"}, "method_id": {"$ref": "#/$defs/id"},
+        "unit": {"enum": ["people", "percent", "MXN/month", "hours/week"]},
+        "price_basis": {"enum": ["nominal", "not_applicable"]},
+        "method_version": {"$ref": "#/$defs/id"}, "design_id": {"$ref": "#/$defs/id"},
+        "sample_size": {"type": "integer", "minimum": 0},
+        "weighted_denominator": {"$ref": "#/$defs/nullable_nonnegative"},
+        "support": {"$ref": "#/$defs/support"}, "precision": {"$ref": "#/$defs/precision"},
+        "status": {"enum": ["MEASURED", "REVIEW", "UNKNOWN", "BLOCKED"]},
+        "reason": {"type": ["string", "null"]},
+        "estimate": {"$ref": "#/$defs/nullable_number"}, "value": {"$ref": "#/$defs/nullable_number"},
+        "evidence_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "synthetic": {"type": "boolean"}
+      },
+      "allOf": [
+        {"if": {"properties": {"status": {"enum": ["UNKNOWN", "BLOCKED"]}}}, "then": {"properties": {"value": {"type": "null"}}}},
+        {"if": {"properties": {"value": {"type": "null"}}}, "then": {"properties": {"reason": {"$ref": "#/$defs/id"}}}},
+        {"if": {"properties": {"status": {"const": "MEASURED"}}}, "then": {"properties": {"value": {"type": "number"}, "reason": {"type": "null"}, "synthetic": {"const": false}}}}
+      ]
+    }
+  }
+}

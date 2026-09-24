@@ -9,16 +9,17 @@ description = "Reproducible Mexican labor research pipelines and evidence-aware 
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
-dependencies = ["duckdb==1.4.4", "jsonschema==4.26.0", "matplotlib==3.10.8"]
+dependencies = ["duckdb==1.4.4", "jsonschema==4.26.0", "matplotlib==3.10.8", "numpy==2.5.3"]
 
 [project.optional-dependencies]
-test = ["pytest==9.0.3"]
+test = ["pytest==9.0.3", "pypdf==6.19.0"]
+pdf = ["weasyprint==70.0"]
 
 [project.scripts]
 brujula = "brujula.cli:main"
 
 [tool.setuptools]
-packages = ["brujula", "brujula.contracts", "brujula.catalog", "brujula.fixtures"]
+packages = ["brujula", "brujula.contracts", "brujula.catalog", "brujula.fixtures", "brujula.oracle", "brujula.assets.fonts"]
 
 [tool.setuptools.package-dir]
 "brujula.contracts" = "contracts"
@@ -29,6 +30,7 @@ packages = ["brujula", "brujula.contracts", "brujula.catalog", "brujula.fixtures
 "brujula.contracts" = ["*.json"]
 "brujula.catalog" = ["*.json"]
 "brujula.fixtures" = ["*.json"]
+"brujula" = ["oracle/*.R", "assets/fonts/*.ttf", "assets/fonts/LICENSE_DEJAVU"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

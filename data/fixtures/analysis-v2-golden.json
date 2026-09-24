@@ -1,0 +1,14 @@
+{
+  "synthetic": true,
+  "description": "Synthetic aggregate-only controls for eight-quarter public profile indexing; no person rows or official findings.",
+  "metric_id": "population_total",
+  "metric_manifest_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "named_fields": {
+    "031300": "Ciencias políticas",
+    "032100": "Comunicación y periodismo",
+    "033100": "Derecho"
+  },
+  "sparse_state": "01",
+  "sparse_sex": "1"
+}

@@ -1,5 +1,7 @@
 # Plan de ejecución — Brújula Laboral MX
 
+> **Plan histórico del piloto sintético 0.1.0.** El plan vigente para la entrega ENOE real completa es el [roadmap GSD](../.planning/ROADMAP.md), con avance y aceptación en [STATE](../.planning/STATE.md). Los estados de release de este documento pertenecen exclusivamente al piloto.
+
 Baseline: 2026-09-22. Este plan convierte [PRD.md](PRD.md) en tareas pequeñas y
 verificables. El paquete de planeación M0 está **aceptado** y la
 implementación/runtime del MVP sintético está **verificada localmente**. La

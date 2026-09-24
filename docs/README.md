@@ -1,9 +1,14 @@
 # Documentación de Brújula Laboral MX
 
-El repositorio entrega un MVP sintético local verificable y su documentación de
-contratos. El release 0.1.0 está publicado y verificado; [STATUS](STATUS.md)
-es la referencia de verificación y conserva el recibo histórico M0 separado del
-estado actual.
+La entrega activa es una investigación ENOE real de ocho trimestres, con
+informes estáticos y datos agregados. Sigue [PROJECT](../.planning/PROJECT.md),
+[REQUIREMENTS](../.planning/REQUIREMENTS.md), el [roadmap GSD](../.planning/ROADMAP.md)
+y [STATE](../.planning/STATE.md). Su aceptación numérica y publicación final
+siguen pendientes. [CONTRACT-V2](CONTRACT-V2.md) define el contrato real.
+
+El release sintético 0.1.0 permanece como referencia histórica y fixture de
+regresión. Los documentos históricos señalados abajo se actualizarán con los
+interfaces y comprobantes aceptados de la entrega real.
 
 | Necesidad | Documento | Qué decide o prueba |
 |---|---|---|

@@ -1,0 +1,416 @@
+{
+  "internal_content_sha256_by_snapshot": {
+    "enoe_2024_q3": "02578f359c6a309e7fb5d854dff6b008da6b713fb9d0930e99a4a654a176722b",
+    "enoe_2024_q4": "f779e8b0e1ce74f1cfb9eea2c65b7dfc10de2589a2ef8d5f93429aa4e88c41f9",
+    "enoe_2025_q1": "65b7711346680fbda38adccc1139e1c0c1f8fa7f13f95ab5718bfe34227253a2",
+    "enoe_2025_q2": "ea70ad4faa070433df8570b222c35c1a01c3958b4ef661adb82b9fdf6ac8a9b4",
+    "enoe_2025_q3": "8cf5e178803b7cefec7fbfae83832055c6d13728eb243ea812950c8d7604ece7",
+    "enoe_2025_q4": "e575e2d4b6e91461d23da1d065d3d16c667c00a4c2beeb0429a15c984ceb8aa2",
+    "enoe_2026_q1": "df28270b9990d4c96b259877bbbebd109c50dfc8299b13e4ee03f8ad617dad77",
+    "enoe_2026_q2": "27c9747bcd3fc0b1bd0d1b65c91d6b2f27970e2e97a81ee7ed78d11912d3c5f5"
+  },
+  "latest_source_sha256": "9ef8877c363f6097da1a04b2077cbda96300cc474b38f835c4963d1dd8f953df",
+  "metric_manifest_sha256": "2ee87c8b7bfae9addcdf224ae93071023b918a5a22012e1355b9378b73e5827e",
+  "national_population_se_relative_difference": -0.0037148696737544095,
+  "official_cells": {
+    "02|pea_total": {
+      "kind": "count",
+      "official_estimate": 1790619.0,
+      "official_precision": false,
+      "official_standard_error": 30418.6486898548,
+      "point_match": true,
+      "point_signed_difference": 0.0,
+      "project_estimate": 1790619.0,
+      "project_standard_error": 30419.47014669342,
+      "se_relative_difference": 2.7005040460428478e-05,
+      "se_signed_difference": 0.8214568386210885,
+      "strict_original_point_match": true
+    },
+    "02|population_total": {
+      "kind": "count",
+      "official_estimate": 3014248.0,
+      "official_precision": false,
+      "official_standard_error": 40931.3553188787,
+      "point_match": true,
+      "point_signed_difference": 0.0,
+      "project_estimate": 3014248.0,
+      "project_standard_error": 40933.08520221089,
+      "se_relative_difference": 4.226303572687275e-05,
+      "se_signed_difference": 1.7298833321910934,
+      "strict_original_point_match": true
+    },
+    "02|unemployed_total": {
+      "kind": "count",
+      "official_estimate": 41435.0,
+      "official_precision": false,
+      "official_standard_error": 3713.1611603447,
+      "point_match": true,
+      "point_signed_difference": 0.0,
+      "project_estimate": 41435.0,
+      "project_standard_error": 3713.1647637642727,
+      "se_relative_difference": 9.70445239823826e-07,
+      "se_signed_difference": 0.0036034195727552287,
+      "strict_original_point_match": true
+    },
+    "02|unemployment_rate": {
+      "kind": "rate",
+      "official_estimate": 2.314,
+      "official_precision": false,
+      "official_standard_error": 0.20617388,
+      "point_match": true,
+      "point_signed_difference": 4.263330166676127e-06,
+      "project_estimate": 2.3140042633301667,
+      "project_standard_error": 0.2061738843222302,
+      "se_relative_difference": 2.09640046783434e-08,
+      "se_signed_difference": 4.322230184872211e-09,
+      "strict_original_point_match": false
+    },
+    "mx|pea_total": {
+      "kind": "count",
+      "official_estimate": 61065005.0,
+      "official_precision": false,
+      "official_standard_error": 260388.067207678,
+      "point_match": true,
+      "point_signed_difference": 0.0,
+      "project_estimate": 61065005.0,
+      "project_standard_error": 260349.24804593562,
+      "se_relative_difference": -0.00014908195355746326,
+      "se_signed_difference": -38.81916174237267,
+      "strict_original_point_match": true
+    },
+    "mx|population_total": {
+      "kind": "count",
+      "official_estimate": 102615200.0,
+      "official_precision": false,
+      "official_standard_error": 361341.395402928,
+      "point_match": true,
+      "point_signed_difference": 0.0,
+      "project_estimate": 102615200.0,
+      "project_standard_error": 359999.05921127356,
+      "se_relative_difference": -0.0037148696737544095,
+      "se_signed_difference": -1342.3361916544382,
+      "strict_original_point_match": true
+    },
+    "mx|unemployed_total": {
+      "kind": "count",
+      "official_estimate": 1624245.0,
+      "official_precision": false,
+      "official_standard_error": 41734.1636385596,
+      "point_match": true,
+      "point_signed_difference": 0.0,
+      "project_estimate": 1624245.0,
+      "project_standard_error": 41736.83738835973,
+      "se_relative_difference": 6.406621259472953e-05,
+      "se_signed_difference": 2.6737498001311906,
+      "strict_original_point_match": true
+    },
+    "mx|unemployment_rate": {
+      "kind": "rate",
+      "official_estimate": 2.6599,
+      "official_precision": false,
+      "official_standard_error": 0.06771337,
+      "point_match": true,
+      "point_signed_difference": -3.7776128897437644e-05,
+      "project_estimate": 2.6598622238711025,
+      "project_standard_error": 0.06771656229051706,
+      "se_relative_difference": 4.714416838310986e-05,
+      "se_signed_difference": 3.1922905170678195e-06,
+      "strict_original_point_match": false
+    }
+  },
+  "official_counts": {
+    "02|pea_total": 1790619,
+    "02|population_total": 3014248,
+    "02|unemployed_total": 41435,
+    "mx|pea_total": 61065005,
+    "mx|population_total": 102615200,
+    "mx|unemployed_total": 1624245
+  },
+  "official_rates": {
+    "02|unemployment_rate": 2.314,
+    "mx|unemployment_rate": 2.6599
+  },
+  "oracle_cases": {
+    "enoe_2026_q2|completed_professional_known_age|033100|mx|all|population_total": {
+      "estimate": 1296754.0,
+      "standard_error": 38523.178826900476
+    },
+    "enoe_2026_q2|national_15_plus_context|all|mx|all|population_total": {
+      "estimate": 104305022.0,
+      "standard_error": 478096.11566257535
+    }
+  },
+  "pdf_2026_q2_sha256": "74cfc4f19f98ea25ba20d0e0dc70557855050cc3399bbdc25dd46e066a0b8fca",
+  "public_content_sha256_by_snapshot": {
+    "enoe_2024_q3": "44c641bcebf1436aa5ccc8122431a069b18f92392f08f3b9e2831b1e58dbf3d3",
+    "enoe_2024_q4": "c4e96e0feed1b854560f9468403589cf56ac20e049a4f3797df4185404b237d0",
+    "enoe_2025_q1": "9c2218a708702efac2f67e12fc53f7f9b141b252baacf5ab3896efdd139aec44",
+    "enoe_2025_q2": "72727ccd69d0af0bb522007d93706fbea8bce5c28d5382a1add80ed9feb6055a",
+    "enoe_2025_q3": "81d329ca09874316bf710bc426452c25aa252abc8dd511ca8932704622788510",
+    "enoe_2025_q4": "541ba0cd401bf6073a0ef0ce94e443c8b8d34fa04cf7ed0718a73112f9e516ea",
+    "enoe_2026_q1": "707dc23bcdaa3629125228e0c48223681ac53fdf7535be9a93ad7902b1b81f65",
+    "enoe_2026_q2": "0a7a74232f437f058d9929a4f6358e9a9726c0ae836fe8b62c638f9b21376f0b"
+  },
+  "rounding_half_unit": 5e-05,
+  "schema_version": "1.0",
+  "semantic_baseline": {
+    "enoe_2024_q3": {
+      "dictionary_sha256": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
+      "hours_duration_joint_occupied": {
+        "hours=valid_1_168|dur9c=2": 13309,
+        "hours=valid_1_168|dur9c=3": 16394,
+        "hours=valid_1_168|dur9c=4": 15466,
+        "hours=valid_1_168|dur9c=5": 11499,
+        "hours=valid_1_168|dur9c=6": 80935,
+        "hours=valid_1_168|dur9c=7": 24505,
+        "hours=valid_1_168|dur9c=8": 24539,
+        "hours=zero|dur9c=1": 6464,
+        "hours=zero|dur9c=9": 1971
+      },
+      "n_psus": 20978,
+      "n_strata": 1203,
+      "occupied_rows_clase2_eq_1": 195082,
+      "pea_rows_clase1_eq_1": 201063,
+      "principal_cohort": {
+        "rows": 52073,
+        "weighted_rows": 14507209
+      },
+      "singleton_strata": 53,
+      "source_member_sha256": "a2b8ea7a64ae2c6b428526da24c6c62894decd7d1b0520853472966e69522135",
+      "sub_o_by_clase2": {
+        "clase2=0|sub_o=0": 67889,
+        "clase2=1|sub_o=0": 180150,
+        "clase2=1|sub_o=1": 14932,
+        "clase2=2|sub_o=0": 5981,
+        "clase2=3|sub_o=0": 16907,
+        "clase2=4|sub_o=0": 129288
+      }
+    },
+    "enoe_2024_q4": {
+      "dictionary_sha256": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
+      "hours_duration_joint_occupied": {
+        "hours=valid_1_168|dur9c=2": 13793,
+        "hours=valid_1_168|dur9c=3": 16782,
+        "hours=valid_1_168|dur9c=4": 16585,
+        "hours=valid_1_168|dur9c=5": 11426,
+        "hours=valid_1_168|dur9c=6": 81029,
+        "hours=valid_1_168|dur9c=7": 23341,
+        "hours=valid_1_168|dur9c=8": 24360,
+        "hours=zero|dur9c=1": 3445,
+        "hours=zero|dur9c=9": 2173
+      },
+      "n_psus": 21056,
+      "n_strata": 1210,
+      "occupied_rows_clase2_eq_1": 192934,
+      "pea_rows_clase1_eq_1": 198018,
+      "principal_cohort": {
+        "rows": 51033,
+        "weighted_rows": 14687242
+      },
+      "singleton_strata": 39,
+      "source_member_sha256": "b5d39d8b6afa2c554f3f68a225293d4ab6531706823d2c9084b7c002ae769f86",
+      "sub_o_by_clase2": {
+        "clase2=0|sub_o=0": 67344,
+        "clase2=1|sub_o=0": 177716,
+        "clase2=1|sub_o=1": 15218,
+        "clase2=2|sub_o=0": 5084,
+        "clase2=3|sub_o=0": 17475,
+        "clase2=4|sub_o=0": 130187
+      }
+    },
+    "enoe_2025_q1": {
+      "dictionary_sha256": "410dff0ef72908a275e01be116e1bce949d79a38e17a403427840680c64cd51d",
+      "hours_duration_joint_occupied": {
+        "hours=valid_1_168|dur9c=2": 12894,
+        "hours=valid_1_168|dur9c=3": 16391,
+        "hours=valid_1_168|dur9c=4": 16999,
+        "hours=valid_1_168|dur9c=5": 11936,
+        "hours=valid_1_168|dur9c=6": 78939,
+        "hours=valid_1_168|dur9c=7": 22024,
+        "hours=valid_1_168|dur9c=8": 22910,
+        "hours=zero|dur9c=1": 6215,
+        "hours=zero|dur9c=9": 2195
+      },
+      "n_psus": 21117,
+      "n_strata": 1205,
+      "occupied_rows_clase2_eq_1": 190503,
+      "pea_rows_clase1_eq_1": 195575,
+      "principal_cohort": {
+        "rows": 50953,
+        "weighted_rows": 14794214
+      },
+      "singleton_strata": 124,
+      "source_member_sha256": "bcb310cbd5b695db264da0f0dcaef266d047a037486853012e5cbc096d7abbf5",
+      "sub_o_by_clase2": {
+        "clase2=0|sub_o=0": 66453,
+        "clase2=1|sub_o=0": 177851,
+        "clase2=1|sub_o=1": 12652,
+        "clase2=2|sub_o=0": 5072,
+        "clase2=3|sub_o=0": 16228,
+        "clase2=4|sub_o=0": 133823
+      }
+    },
+    "enoe_2025_q2": {
+      "dictionary_sha256": "ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b",
+      "hours_duration_joint_occupied": {
+        "hours=valid_1_168|dur9c=2": 13654,
+        "hours=valid_1_168|dur9c=3": 17949,
+        "hours=valid_1_168|dur9c=4": 16723,
+        "hours=valid_1_168|dur9c=5": 11058,
+        "hours=valid_1_168|dur9c=6": 79915,
+        "hours=valid_1_168|dur9c=7": 22470,
+        "hours=valid_1_168|dur9c=8": 22628,
+        "hours=zero|dur9c=1": 4888,
+        "hours=zero|dur9c=9": 2558
+      },
+      "n_psus": 21192,
+      "n_strata": 743,
+      "occupied_rows_clase2_eq_1": 191843,
+      "pea_rows_clase1_eq_1": 197146,
+      "principal_cohort": {
+        "rows": 50988,
+        "weighted_rows": 15170723
+      },
+      "singleton_strata": 7,
+      "source_member_sha256": "c9f1a2adf14b388be7d1a68ef57d30fd92356d36f522cc7e3ac32de6ab5a48d8",
+      "sub_o_by_clase2": {
+        "clase2=0|sub_o=0": 66600,
+        "clase2=1|sub_o=0": 177965,
+        "clase2=1|sub_o=1": 13878,
+        "clase2=2|sub_o=0": 5303,
+        "clase2=3|sub_o=0": 16200,
+        "clase2=4|sub_o=0": 133058
+      }
+    },
+    "enoe_2025_q3": {
+      "dictionary_sha256": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+      "hours_duration_joint_occupied": {
+        "hours=valid_1_168|dur9c=2": 13177,
+        "hours=valid_1_168|dur9c=3": 16160,
+        "hours=valid_1_168|dur9c=4": 14805,
+        "hours=valid_1_168|dur9c=5": 10770,
+        "hours=valid_1_168|dur9c=6": 82523,
+        "hours=valid_1_168|dur9c=7": 23314,
+        "hours=valid_1_168|dur9c=8": 23004,
+        "hours=zero|dur9c=1": 6005,
+        "hours=zero|dur9c=9": 2443
+      },
+      "n_psus": 21203,
+      "n_strata": 744,
+      "occupied_rows_clase2_eq_1": 192201,
+      "pea_rows_clase1_eq_1": 197929,
+      "principal_cohort": {
+        "rows": 51515,
+        "weighted_rows": 15098930
+      },
+      "singleton_strata": 23,
+      "source_member_sha256": "04bd5d5f9668848ac6c435f29abe3b20e6693f02f2ee880a1e9dc0aab1c94c9d",
+      "sub_o_by_clase2": {
+        "clase2=0|sub_o=0": 65038,
+        "clase2=1|sub_o=0": 178376,
+        "clase2=1|sub_o=1": 13825,
+        "clase2=2|sub_o=0": 5728,
+        "clase2=3|sub_o=0": 16523,
+        "clase2=4|sub_o=0": 132072
+      }
+    },
+    "enoe_2025_q4": {
+      "dictionary_sha256": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+      "hours_duration_joint_occupied": {
+        "hours=valid_1_168|dur9c=2": 13498,
+        "hours=valid_1_168|dur9c=3": 16045,
+        "hours=valid_1_168|dur9c=4": 15774,
+        "hours=valid_1_168|dur9c=5": 11086,
+        "hours=valid_1_168|dur9c=6": 82264,
+        "hours=valid_1_168|dur9c=7": 23594,
+        "hours=valid_1_168|dur9c=8": 23706,
+        "hours=zero|dur9c=1": 3014,
+        "hours=zero|dur9c=9": 2284
+      },
+      "n_psus": 21194,
+      "n_strata": 724,
+      "occupied_rows_clase2_eq_1": 191265,
+      "pea_rows_clase1_eq_1": 196217,
+      "principal_cohort": {
+        "rows": 51692,
+        "weighted_rows": 15167479
+      },
+      "singleton_strata": 11,
+      "source_member_sha256": "088a2affeaef800bd9941656869392290905a9cf597af42a15d748b13b43de7e",
+      "sub_o_by_clase2": {
+        "clase2=0|sub_o=0": 63933,
+        "clase2=1|sub_o=0": 177515,
+        "clase2=1|sub_o=1": 13750,
+        "clase2=2|sub_o=0": 4952,
+        "clase2=3|sub_o=0": 16454,
+        "clase2=4|sub_o=0": 131495
+      }
+    },
+    "enoe_2026_q1": {
+      "dictionary_sha256": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+      "hours_duration_joint_occupied": {
+        "hours=valid_1_168|dur9c=2": 12840,
+        "hours=valid_1_168|dur9c=3": 16322,
+        "hours=valid_1_168|dur9c=4": 16953,
+        "hours=valid_1_168|dur9c=5": 11895,
+        "hours=valid_1_168|dur9c=6": 79203,
+        "hours=valid_1_168|dur9c=7": 21602,
+        "hours=valid_1_168|dur9c=8": 21400,
+        "hours=zero|dur9c=1": 6202,
+        "hours=zero|dur9c=9": 2187
+      },
+      "n_psus": 21171,
+      "n_strata": 723,
+      "occupied_rows_clase2_eq_1": 188604,
+      "pea_rows_clase1_eq_1": 193554,
+      "principal_cohort": {
+        "rows": 52032,
+        "weighted_rows": 15377571
+      },
+      "singleton_strata": 16,
+      "source_member_sha256": "8bf2b74f4222b72c5d717509a7527213346564f17acd1affdce7f50bd21daeca",
+      "sub_o_by_clase2": {
+        "clase2=0|sub_o=0": 62969,
+        "clase2=1|sub_o=0": 176447,
+        "clase2=1|sub_o=1": 12157,
+        "clase2=2|sub_o=0": 4950,
+        "clase2=3|sub_o=0": 15297,
+        "clase2=4|sub_o=0": 134920
+      }
+    },
+    "enoe_2026_q2": {
+      "dictionary_sha256": "43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe",
+      "hours_duration_joint_occupied": {
+        "hours=valid_1_168|dur9c=2": 13537,
+        "hours=valid_1_168|dur9c=3": 17523,
+        "hours=valid_1_168|dur9c=4": 16994,
+        "hours=valid_1_168|dur9c=5": 11271,
+        "hours=valid_1_168|dur9c=6": 80270,
+        "hours=valid_1_168|dur9c=7": 22107,
+        "hours=valid_1_168|dur9c=8": 21345,
+        "hours=zero|dur9c=1": 4950,
+        "hours=zero|dur9c=9": 2328
+      },
+      "n_psus": 21215,
+      "n_strata": 722,
+      "occupied_rows_clase2_eq_1": 190325,
+      "pea_rows_clase1_eq_1": 195542,
+      "principal_cohort": {
+        "rows": 52496,
+        "weighted_rows": 15363592
+      },
+      "singleton_strata": 13,
+      "source_member_sha256": "6256468cd6cf5ed08b8538f8094eb3cf20793cb669ba0084c18f571fc8f78407",
+      "sub_o_by_clase2": {
+        "clase2=0|sub_o=0": 62398,
+        "clase2=1|sub_o=0": 176899,
+        "clase2=1|sub_o=1": 13426,
+        "clase2=2|sub_o=0": 5217,
+        "clase2=3|sub_o=0": 15408,
+        "clase2=4|sub_o=0": 133759
+      }
+    }
+  },
+  "source_2025_q2_sha256": "9530a017e3defb0658418b73a47a6039eeb54abf11342fa10693374736515127",
+  "workbook_sha256": "21b45fb76a3f2df336529c3c9ac5cf7543c7d1ded477cc21f77bcc2db8ba267c"
+}

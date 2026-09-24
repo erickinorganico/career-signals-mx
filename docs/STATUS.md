@@ -1,4 +1,30 @@
+# Estado publicado — v0.9.0-preview.1
+
+El propietario pidió detener la ampliación y publicar el estado existente. Se entrega el [informe real y sus agregados](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) como publicación preliminar. La implementación local está validada; CI nativa alojada, cierre de 04-06, fase 5 y auditoría final GSD permanecen pendientes. No se declara versión final 1.0.0. Los detalles que siguen son registros históricos anteriores a esta decisión.
+
+---
+
 # Brújula Laboral MX — estado verificable
+
+La versión final de investigación real **1.0.0 sigue en construcción; Phases 1–3 están aceptadas**. El
+[estado GSD](../.planning/STATE.md) y el
+[roadmap activo](../.planning/ROADMAP.md) registran su avance. La fase de fuentes
+y contrato y la fase estadística están aceptadas: ocho trimestres, 23 indicadores
+con denominadores explícitos y 6,739 celdas evaluadas. El cálculo pasó los 26
+casos reales y cuatro controles analíticos de R, ambas referencias oficiales y
+una repetición idéntica. Phase 3 añadió el paquete de hallazgos soportados:
+6,739 registros reales, 4,209 comparaciones, 38 claims y 3 aperturas; su JSON
+persistido recarga y valida con cero errores. La revisión independiente verificó
+42/42 verdades y 4/4 criterios de roadmap; seguridad cerró 15/15 entradas de
+amenazas, sin abiertas, y Nyquist pasó 31/31. La precisión propia continúa siendo no oficial, con las
+discrepancias documentadas. La [evidencia numérica](evidence/phase-02-numerical-acceptance.json)
+conserva los intentos y hashes, y la [evidencia de Phase 3](evidence/phase-03-analysis-acceptance.json)
+conserva el digest del paquete. Phase 4 debe producir la publicación offline;
+Phase 5 debe cerrar el release. Ninguno está terminado.
+El repositorio conserva la versión pública 0.1.0 hasta el release final.
+
+La evidencia que sigue es el registro histórico de la demo sintética 0.1.0;
+sus bloqueos de ingesta y cifras de pruebas no describen el alcance activo.
 
 Fecha local: 2026-09-22. **MVP sintético 0.1.0 terminado y publicado; CI PASS en Windows y Linux.**
 M0 conserva su aceptación documental. M1–M5 están completos dentro del alcance

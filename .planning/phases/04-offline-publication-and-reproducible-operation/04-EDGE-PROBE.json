@@ -1,0 +1,418 @@
+{
+  "items": [
+    {
+      "requirement_id": "PUB-01",
+      "category": "boundary",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-01 boundary: Opening contains zero to three accepted claim IDs; a fourth, duplicated or unsupported opening claim blocks publication.",
+      "reason": null,
+      "probe": "What happens exactly at each min/max/threshold — and one step either side?"
+    },
+    {
+      "requirement_id": "PUB-01",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-01 adjacency: Field, occupation, industry and population scopes remain distinct even when labels or numbers coincide; each sentence retains its accepted claim identity.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "PUB-01",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-01 empty: An empty supported-opening set produces the accepted limitation; suppressed profile cells remain visible as unavailable with reason.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "PUB-01",
+      "category": "encoding",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-01 encoding: Official Spanish labels, accents and source text survive output encoding; HTML/Markdown escaping does not replace the underlying evidence identity.",
+      "reason": null,
+      "probe": "Whose definition of length/equality applies — bytes, code points, grapheme clusters, or normalized form?"
+    },
+    {
+      "requirement_id": "PUB-01",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-01 ordering: Fixed question-led sections and field order are independent of input map order, and the eight quarterly sections remain chronological.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "PUB-01",
+      "category": "precision",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-01 precision: Every displayed quantity uses a declared formatter over its exact public record or comparison, with nominal income, universe and nonofficial precision wording retained.",
+      "reason": null,
+      "probe": "Where can precision loss, overflow, or rounding/tie-breaking occur — and what is the exact contract (e.g. half-up vs half-to-even, ceil/floor/truncate)?"
+    },
+    {
+      "requirement_id": "PUB-02",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-02 adjacency: HTML, Markdown and extracted PDF refer to the same section/claim/figure/record keys and carry the same supported values and limitations.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "PUB-02",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-02 empty: Missing PDF capability, font or required local asset blocks the complete publication with a failure receipt; no blank-success or synthetic fallback.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "PUB-02",
+      "category": "encoding",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-02 encoding: Spanish accents and punctuation are searchable in the rendered PDF and match the semantic HTML/Markdown text.",
+      "reason": null,
+      "probe": "Whose definition of length/equality applies — bytes, code points, grapheme clusters, or normalized form?"
+    },
+    {
+      "requirement_id": "PUB-02",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-02 ordering: Section order and repeated table headings remain correct across page breaks and match the common editorial representation.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "PUB-02",
+      "category": "concurrency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-02 concurrency: Interrupted or concurrent rendering never promotes an incomplete set of HTML/Markdown/PDF artifacts as current.",
+      "reason": null,
+      "probe": "If interrupted or run in parallel, what is guaranteed?"
+    },
+    {
+      "requirement_id": "PUB-03",
+      "category": "boundary",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-03 boundary: Actual desktop, mobile-width and 200 percent zoom HTML and A4 PDF remain legible without clipped prose or figure labels; wide tables use contained scrolling.",
+      "reason": null,
+      "probe": "What happens exactly at each min/max/threshold — and one step either side?"
+    },
+    {
+      "requirement_id": "PUB-03",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-03 adjacency: Trend lines never bridge an unavailable point or incompatible adjacent period; supported intervals and table rows remain attached to the same record.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "PUB-03",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-03 empty: Fully unavailable figure groups retain a clear unavailable explanation and complete semantic table, never an invented zero plot.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "PUB-03",
+      "category": "encoding",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-03 encoding: Figure titles, captions, alternatives and table header scopes preserve official Spanish labels, units, universe and source.",
+      "reason": null,
+      "probe": "Whose definition of length/equality applies — bytes, code points, grapheme clusters, or normalized form?"
+    },
+    {
+      "requirement_id": "PUB-03",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-03 ordering: SVG, PNG and accompanying tables use stable figure keys and declared classification/period order rather than an implicit outcome ranking.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "PUB-03",
+      "category": "precision",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-03 precision: Plot points and intervals equal supported public values before formatting; null precision stays unavailable and no difference interval is inferred.",
+      "reason": null,
+      "probe": "Where can precision loss, overflow, or rounding/tie-breaking occur — and what is the exact contract (e.g. half-up vs half-to-even, ceil/floor/truncate)?"
+    },
+    {
+      "requirement_id": "PUB-04",
+      "category": "boundary",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-04 boundary: Zero, null and finite numeric precision round-trip distinctly through CSV, Parquet and DuckDB; nonfinite numbers are rejected.",
+      "reason": null,
+      "probe": "What happens exactly at each min/max/threshold — and one step either side?"
+    },
+    {
+      "requirement_id": "PUB-04",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-04 adjacency: Stable v2 record keys join claims, comparisons and figures without conflating separate grain dimensions or duplicate profile appearances.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "PUB-04",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-04 empty: Suppressed values and precision fields remain SQL/Parquet null and documented CSV nulls, with their status/reason retained.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "PUB-04",
+      "category": "encoding",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-04 encoding: UTF-8 labels and leading-zero field/entity codes round-trip; spreadsheet-formula prefixes are neutralized under a documented reversible text convention.",
+      "reason": null,
+      "probe": "Whose definition of length/equality applies — bytes, code points, grapheme clusters, or normalized form?"
+    },
+    {
+      "requirement_id": "PUB-04",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-04 ordering: Export row order is canonical and deterministic under input permutation, and the data dictionary documents every public column and join.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "PUB-04",
+      "category": "precision",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-04 precision: Numeric export values retain the canonical public precision independently of display rounding; weighted totals are not renamed observed sample counts.",
+      "reason": null,
+      "probe": "Where can precision loss, overflow, or rounding/tie-breaking occur — and what is the exact contract (e.g. half-up vs half-to-even, ceil/floor/truncate)?"
+    },
+    {
+      "requirement_id": "PUB-04",
+      "category": "concurrency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-04 concurrency: An export failure or interrupted write cannot leave a sealed manifest claiming successful CSV, Parquet or DuckDB output.",
+      "reason": null,
+      "probe": "If interrupted or run in parallel, what is guaranteed?"
+    },
+    {
+      "requirement_id": "PUB-05",
+      "category": "boundary",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-05 boundary: A deliberately suppressed numeric sentinel remains absent from every artifact, including hidden metadata, alternative text and PDF text.",
+      "reason": null,
+      "probe": "What happens exactly at each min/max/threshold — and one step either side?"
+    },
+    {
+      "requirement_id": "PUB-05",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-05 adjacency: Complementary parent redactions propagate through every duplicate record appearance; the publisher rejects reconstructing a suppressed cell from other public cells.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "PUB-05",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-05 empty: Null points, denominators and precision fields stay null everywhere and never use internal estimates or another format as fallback.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "PUB-05",
+      "category": "encoding",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-05 encoding: Serialized JSON/text/HTML/SVG and extracted PDF scans reject nested or encoded diagnostic sentinels while keeping ordinary safe public metadata.",
+      "reason": null,
+      "probe": "Whose definition of length/equality applies — bytes, code points, grapheme clusters, or normalized form?"
+    },
+    {
+      "requirement_id": "PUB-05",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-05 ordering: Reordering public records cannot alter suppression, selected claims, plotted membership or export eligibility.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "PUB-05",
+      "category": "precision",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "PUB-05 precision: Suppressed standard errors, coefficients of variation, intervals and weighted support never reappear as numerical values in another output.",
+      "reason": null,
+      "probe": "Where can precision loss, overflow, or rounding/tie-breaking occur — and what is the exact contract (e.g. half-up vs half-to-even, ceil/floor/truncate)?"
+    },
+    {
+      "requirement_id": "OPS-01",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-01 adjacency: Acquisition refresh, numerical acceptance, analytical build and publication replay retain separate source, acceptance and run identities.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "OPS-01",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-01 empty: Missing approved snapshot/current receipt, R, benchmark or required package resource fails with a receipt and explicit reason, never a fixture fallback.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "OPS-01",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-01 ordering: Replaying identical eight approved inputs preserves canonical numerical/public content regardless of run IDs and timestamps.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "OPS-01",
+      "category": "idempotency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-01 idempotency: Repeated installed CLI replay of the same frozen snapshots creates distinct immutable receipts with equal canonical numerical content.",
+      "reason": null,
+      "probe": "What happens if this runs twice on the same input?"
+    },
+    {
+      "requirement_id": "OPS-01",
+      "category": "concurrency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-01 concurrency: Competing or interrupted operations obey the documented source/output lock boundaries and cannot certify mixed-input content.",
+      "reason": null,
+      "probe": "If interrupted or run in parallel, what is guaranteed?"
+    },
+    {
+      "requirement_id": "OPS-02",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-02 adjacency: Exact artifact inventory and final receipt are sealed before current promotion; failure at any promotion boundary leaves current invalid.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "OPS-02",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-02 empty: Empty, partial or corrupted receipt/manifest inventories cannot resolve as a successful publication.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "OPS-02",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-02 ordering: Fault injection across input, export, PDF, receipt, manifest, pointer and final index stages verifies the prescribed write order and preserved history.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "OPS-02",
+      "category": "idempotency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-02 idempotency: A repeated attempt never overwrites an immutable historical run or receipt; reused/colliding run IDs are rejected.",
+      "reason": null,
+      "probe": "What happens if this runs twice on the same input?"
+    },
+    {
+      "requirement_id": "OPS-02",
+      "category": "concurrency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-02 concurrency: A crash or concurrent builder cannot expose a partly sealed run as current; lock and recovery behavior are tested locally.",
+      "reason": null,
+      "probe": "If interrupted or run in parallel, what is guaranteed?"
+    },
+    {
+      "requirement_id": "OPS-03",
+      "category": "adjacency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-03 adjacency: Each current publication binds the exact required eight source acquisitions; an unrelated successful snapshot cannot authorize it.",
+      "reason": null,
+      "probe": "When two things are exactly equal or just touch, do they merge, collide, or separate?"
+    },
+    {
+      "requirement_id": "OPS-03",
+      "category": "empty",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-03 empty: Missing source acquisition, missing artifact, bad hash or absent immutable success receipt blocks current resolution.",
+      "reason": null,
+      "probe": "What is the result for empty, single-element, or null input?"
+    },
+    {
+      "requirement_id": "OPS-03",
+      "category": "ordering",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-03 ordering: A later failed required acquisition invalidates previously successful current access; historical bundles remain historical and do not become fresh success.",
+      "reason": null,
+      "probe": "When elements compare equal, is output order specified and stable?"
+    },
+    {
+      "requirement_id": "OPS-03",
+      "category": "idempotency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-03 idempotency: Repeated resolution verifies current dependencies and artifact hashes again, with no stale success cache across changed inputs.",
+      "reason": null,
+      "probe": "What happens if this runs twice on the same input?"
+    },
+    {
+      "requirement_id": "OPS-03",
+      "category": "concurrency",
+      "status": "resolved",
+      "verification": "explicit",
+      "resolution": "OPS-03 concurrency: Source or manifest changes during resolution are detected before a report/export path is returned as current.",
+      "reason": null,
+      "probe": "If interrupted or run in parallel, what is guaranteed?"
+    }
+  ],
+  "coverage": {
+    "applicable": 45,
+    "resolved": 45,
+    "unresolved": 0,
+    "byVerification": {
+      "explicit": 45,
+      "backstop": 0
+    }
+  }
+}

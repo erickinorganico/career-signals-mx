@@ -1,5 +1,7 @@
 # Roadmap — Brújula Laboral MX
 
+> **Roadmap histórico M0–M6 del piloto 0.1.0.** Fue sustituido para la entrega activa por el [roadmap GSD 1.0.0](../.planning/ROADMAP.md). ENOE real forma parte de la entrega comprometida; los estados históricos siguientes no acreditan su terminación.
+
 El roadmap está ordenado por dependencias y gates, no por fechas prometidas.
 México se valida antes de cualquier expansión LATAM. El estado de un hito solo
 cambia con evidencia revisada; archivos presentes o trabajo parcial no bastan.

@@ -1,0 +1,127 @@
+{
+  "schema_version": "phase-02-acceptance-evidence-v1",
+  "status": "PASS",
+  "source_commit": "86406f6",
+  "synthetic": false,
+  "scope": "Eight pinned ENOE snapshots; aggregate numerical acceptance, not release acceptance",
+  "initialization": {
+    "attempt_id": "05dd6471-58a8-474e-8202-2a4b2a57d9fc",
+    "elapsed_seconds": 795.094,
+    "numeric_content_digest": "8db575e9d664864d1513e3b9658bd9b060c4cb3bed8b51561f208adeb97b9a00"
+  },
+  "replay": {
+    "attempt_id": "45fe0738-b981-4c9c-852b-28545bf4a9bf",
+    "elapsed_seconds": 31856.734,
+    "numeric_content_digest": "8db575e9d664864d1513e3b9658bd9b060c4cb3bed8b51561f208adeb97b9a00"
+  },
+  "unchanged_replay": true,
+  "code_sha256": {
+    "brujula/acquisition.py": "ee9aa3906c13b0fa56001d9475300214c332850b38a20d9f80f7c256a7b6c757",
+    "brujula/enoe_adapter.py": "cceacc5707f36e594d2659ed4a106ccee9bf6d9f0512296ac6d2380f132f19cc",
+    "brujula/estimates.py": "da9567e8dcff3242f7f148eabcb3edd4305c3903473fa3ad991bc70d415f4b9e",
+    "brujula/metrics.py": "e5bfbccd799647e884da955e62ec46a38ae2a9c609da731429c11134f1e25b7b",
+    "brujula/populations.py": "47e11ede385e44ba2f44c13e4141cac39830938dc0cbee11986ab5b670024978",
+    "brujula/research_contract.py": "386f46e19089f828b41e98d178148d4b253bbcfb0aad06c94ae778aa28a4b766",
+    "brujula/source_inventory.py": "05bd4d9ef0aa7909a68dee5cafb7a547371661ab675f734b33b112e614a30d4e",
+    "brujula/survey.py": "8873d29d76d897a7471796146efd8ef0ffb0c0c1ca4de3974004d34f581a9081",
+    "scripts/accept_enoe_estimates.py": "3977deeba70ef627c1fb4e9d2d7ff57e02eb8e4355248242f022320caff6b29b",
+    "scripts/enoe_survey_oracle.R": "8bd11d3e5a04a3e571a0549df897a457d31f67b9334044c597cce30d8d47a1c1",
+    "scripts/official_reconciliation.py": "0729685d8a7e077f20f3db3543a517cb6ec93248a7bd3a8adc8a80bcbd008030"
+  },
+  "runtime": {
+    "numpy": "2.5.3",
+    "python": "3.12.13"
+  },
+  "metric_manifest_sha256": "2ee87c8b7bfae9addcdf224ae93071023b918a5a22012e1355b9378b73e5827e",
+  "snapshots": {
+    "enoe_2024_q3": {
+      "requested_count": 115,
+      "numeric_digest": "fe7c637964a7bedc46713c25f727117dd62cf7be99bad9c8a7e1c1c681f0b884",
+      "public_content_sha256": "44c641bcebf1436aa5ccc8122431a069b18f92392f08f3b9e2831b1e58dbf3d3",
+      "internal_content_sha256": "02578f359c6a309e7fb5d854dff6b008da6b713fb9d0930e99a4a654a176722b",
+      "public_v2_digest": "6089c67ad241d6d61b554efc7b9612807d5859abfbad961a2e542ec5c71b3741"
+    },
+    "enoe_2024_q4": {
+      "requested_count": 115,
+      "numeric_digest": "05232e43c8f77fa15c38839d5106349960843234e6da4d927a79f9e30c4f6f5c",
+      "public_content_sha256": "c4e96e0feed1b854560f9468403589cf56ac20e049a4f3797df4185404b237d0",
+      "internal_content_sha256": "f779e8b0e1ce74f1cfb9eea2c65b7dfc10de2589a2ef8d5f93429aa4e88c41f9",
+      "public_v2_digest": "328e9876a51f4f219fbcff329dc8e73cb424b1538f2b473cef4dda443030a7a7"
+    },
+    "enoe_2025_q1": {
+      "requested_count": 115,
+      "numeric_digest": "96a77c3b82700d5dbe5d15dccc2588075640e7c455dbccab071dc6501b229736",
+      "public_content_sha256": "9c2218a708702efac2f67e12fc53f7f9b141b252baacf5ab3896efdd139aec44",
+      "internal_content_sha256": "65b7711346680fbda38adccc1139e1c0c1f8fa7f13f95ab5718bfe34227253a2",
+      "public_v2_digest": "f10c3653eee54c2bf4a3810943ebc78f89f84ce37049380c98f6481bdbe94ba8"
+    },
+    "enoe_2025_q2": {
+      "requested_count": 138,
+      "numeric_digest": "6c08d724a3ea9ecd20372c4ff1e732b71e59d08ce6a23ba6e487149bdf0f9177",
+      "public_content_sha256": "72727ccd69d0af0bb522007d93706fbea8bce5c28d5382a1add80ed9feb6055a",
+      "internal_content_sha256": "ea70ad4faa070433df8570b222c35c1a01c3958b4ef661adb82b9fdf6ac8a9b4",
+      "public_v2_digest": "34abb675c23f098e3972dfa08da26a906a8660eb1a1fcb2b01bb75661d02ce48"
+    },
+    "enoe_2025_q3": {
+      "requested_count": 115,
+      "numeric_digest": "b54a895acd3093848569d582681b4669f3d051794ccbc10185a06963cf6c9b7e",
+      "public_content_sha256": "81d329ca09874316bf710bc426452c25aa252abc8dd511ca8932704622788510",
+      "internal_content_sha256": "8cf5e178803b7cefec7fbfae83832055c6d13728eb243ea812950c8d7604ece7",
+      "public_v2_digest": "79616bc60dc6dfdddc82c82dee4ce29acb1cb68758f8ff89566503ab71bac1ec"
+    },
+    "enoe_2025_q4": {
+      "requested_count": 115,
+      "numeric_digest": "1a08eb3744ad3983b6b22468c696d43c1ac59d67cc1600f0331eb2ed8d185b27",
+      "public_content_sha256": "541ba0cd401bf6073a0ef0ce94e443c8b8d34fa04cf7ed0718a73112f9e516ea",
+      "internal_content_sha256": "e575e2d4b6e91461d23da1d065d3d16c667c00a4c2beeb0429a15c984ceb8aa2",
+      "public_v2_digest": "7557e86e8f9f9747d45c5c4115416cf01224371a552c117a63db99a9ea9d2626"
+    },
+    "enoe_2026_q1": {
+      "requested_count": 115,
+      "numeric_digest": "31e99459333f27d1012f1c4530b7282cc338ea1a0168a725e12a111a6f83e7c8",
+      "public_content_sha256": "707dc23bcdaa3629125228e0c48223681ac53fdf7535be9a93ad7902b1b81f65",
+      "internal_content_sha256": "df28270b9990d4c96b259877bbbebd109c50dfc8299b13e4ee03f8ad617dad77",
+      "public_v2_digest": "c32d1f01e4f49a95079ce4e65b14f1c02ef5fd85cb65551beaadc81fb5aa07ce"
+    },
+    "enoe_2026_q2": {
+      "requested_count": 5911,
+      "numeric_digest": "64098ee8073aefe04d3de64d25d1f446ea4d54ea775eb3e9eb6dfddff5935046",
+      "public_content_sha256": "0a7a74232f437f058d9929a4f6358e9a9726c0ae836fe8b62c638f9b21376f0b",
+      "internal_content_sha256": "27c9747bcd3fc0b1bd0d1b65c91d6b2f27970e2e97a81ee7ed78d11912d3c5f5",
+      "public_v2_digest": "bd915277dcb5fcae851c23e33979ce63386811a6b0803808f3f4973a90422eff"
+    }
+  },
+  "oracle": {
+    "case_count": 26,
+    "r_version": "R version 4.6.1 (2026-06-24 ucrt)",
+    "status": "PASS",
+    "survey_version": "4.5"
+  },
+  "analytic_oracle": {
+    "case_count": 4,
+    "status": "PASS"
+  },
+  "official": {
+    "national_population_se_relative_difference": -0.0037148696737544095,
+    "status": "PASS",
+    "workbook_sha256": "21b45fb76a3f2df336529c3c9ac5cf7543c7d1ded477cc21f77bcc2db8ba267c"
+  },
+  "pdf_2026_q2": {
+    "sha256": "74cfc4f19f98ea25ba20d0e0dc70557855050cc3399bbdc25dd46e066a0b8fca",
+    "status": "PASS"
+  },
+  "official_precision": false,
+  "no_distinct_person_sum": true,
+  "no_independent_quarter_significance": true,
+  "regression": {
+    "python_pass": 366,
+    "python_skip": 0,
+    "node_pass": 18,
+    "canonical_prohibitions": 7
+  },
+  "limits": [
+    "Taylor singleton adjustment is project precision, not official INEGI precision.",
+    "Internal diagnostics are represented by hashes only.",
+    "Phase 3 analytical findings and Phase 4/5 publication/release are separate gates."
+  ]
+}

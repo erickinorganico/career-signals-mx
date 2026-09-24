@@ -1,0 +1,273 @@
+{
+  "tool": "slopcheck",
+  "version": "0.6.1",
+  "exit_code": 0,
+  "mode": "read-only registry scan, no install or fix",
+  "results": [
+    {
+      "package": "cycler",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "iniconfig",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "cssselect2",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "attrs",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "colorama",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "contourpy",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "brotli",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "cffi",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "fonttools",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "duckdb",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "jsonschema-specifications",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "packaging",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "kiwisolver",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "jsonschema",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "pluggy",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [
+        {
+          "signal": "NO_REPO",
+          "severity": "info",
+          "message": "No source repository linked. Harder to verify what this code actually does."
+        }
+      ],
+      "suggestion": null
+    },
+    {
+      "package": "pillow",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "pycparser",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "matplotlib",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "pydyf",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "numpy",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "pygments",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "pyparsing",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "pyphen",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "python-dateutil",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [
+        {
+          "signal": "HALLUCINATION_PATTERN",
+          "severity": "info",
+          "message": "Name starts with 'python-' -- classic LLM naming pattern. Name looks like LLM bait but package is established."
+        }
+      ],
+      "suggestion": null
+    },
+    {
+      "package": "pytest",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "six",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "referencing",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "tinycss2",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "rpds-py",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "tinyhtml5",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "typing-extensions",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "webencodings",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "weasyprint",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    },
+    {
+      "package": "zopfli",
+      "ecosystem": "pypi",
+      "status": "OK",
+      "flags": [],
+      "suggestion": null
+    }
+  ],
+  "schema_version": "1.0",
+  "checked_on": "2026-09-23",
+  "status": "PASS",
+  "scope": "Registry identity and heuristic package-name legitimacy, not vulnerability or source-code certification",
+  "tool_wheel_sha256": "46c4e41f7f82897311309a65fc40bd16c4f43d56cca6aa0f1d33f17bd47ca903",
+  "recommended_new_package": {
+    "name": "weasyprint",
+    "version": "70.0",
+    "registry": "https://pypi.org/pypi/weasyprint/70.0/json",
+    "source": "https://github.com/Kozea/WeasyPrint/releases/tag/v70.0",
+    "wheel_sha256": "5043e55e38d2a2af2b2b871e869697b1f65dad5f8b4a3677961d04ceacf9c5fe",
+    "sdist_sha256": "c263abf0e86c747b12af678b67f85f4abbfb97d18a20503031e7ba94e4b8cf8c",
+    "first_public_upload": "2011-10-28T17:48:31.476224Z",
+    "download_count": null
+  }
+}

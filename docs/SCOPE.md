@@ -1,5 +1,7 @@
 # Alcance — Brújula Laboral MX
 
+> **Alcance histórico del piloto sintético 0.1.0.** La entrega activa es la investigación ENOE real 1.0.0 de ocho trimestres. Su alcance vigente está en [PROJECT](../.planning/PROJECT.md), [REQUIREMENTS](../.planning/REQUIREMENTS.md) y [ROADMAP](../.planning/ROADMAP.md); su aceptación sigue [STATE](../.planning/STATE.md). Las exclusiones y fases futuras del texto histórico no sustituyen ese alcance.
+
 Estado del documento: **baseline de planeación aceptado en M0**. Este documento
 define el producto; la implementación, las pruebas y el release analítico
 permanecen incompletos.

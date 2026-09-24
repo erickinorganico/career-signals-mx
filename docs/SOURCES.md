@@ -74,3 +74,57 @@ Usar una forma equivalente a:
 
 Conservar además URL exacta, SHA-256 del archivo descargado, parámetros,
 diccionario usado, hora de fetch y versión del código.
+
+## Inventario local verificado de ocho paquetes ENOE
+
+La autoridad de custodia es `data/catalog/enoe-snapshots.json`: fija las ocho URL
+oficiales, el SHA-256 de cada ZIP, sus fichas, términos y aprobación de
+**adquisición**. `inventory_all(Path('artifacts/enoe'))` resuelve exclusivamente
+el intento `current.json` y su recibo inmutable. Un intento fallido, en curso,
+ausente o alterado bloquea el inventario; un éxito histórico no lo sustituye.
+El inventario no autoriza por sí solo una cifra ni la publicación de microdatos.
+
+La tabla resume una verificación local del 2026-09-22. Cada miembro SDEM es
+`conjunto_de_datos_sdem_enoe_YYYY_Nt/conjunto_de_datos/conjunto_de_datos_sdem_enoe_YYYY_Nt.csv`;
+el diccionario es el miembro hermano
+`diccionario_de_datos/diccionario_datos_sdem_enoe_YYYY_Nt.csv` y el catálogo
+es `catalogos/cs_p14_c.csv`. El JSON local ignorado
+`.cache/research/enoe-source-inventory.json` registra las rutas completas,
+SHA-256 y bytes de cada miembro, identificador y hash del recibo, fecha de
+adquisición, encabezado completo y metadatos de fuente. No contiene filas de
+personas ni bytes de ZIP.
+
+| Corte y ficha INEGI | SHA-256 ZIP | SHA-256 SDEM | Columnas / entidad | SHA-256 diccionario | Bitácora SDEM |
+|---|---|---|---|---|---|
+| 2024-Q3 · [2403872](https://www.inegi.org.mx/app/descarga/ficha.html?ag=0&f=csv&tit=2403872) | `f384a1b8872e051856ed2241289400302b13a8701489b1c596390452c183cd01` | `a2b8ea7a64ae2c6b428526da24c6c62894decd7d1b0520853472966e69522135` | 114 / `ent` | `ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b` | 4 cambios `cs_p14_c`, 2025-05-27; SHA `cc3101c01a94cd7e9e810f82bc1cd2d49f3cf867d4ee5fc9e0761f6e283d565e` |
+| 2024-Q4 · [2534385](https://www.inegi.org.mx/app/descarga/ficha.html?ag=0&f=csv&tit=2534385) | `bb6d958c9bca11672d367d2c051cd08bf1654c471c2f32c8e21992c126a3b426` | `b5d39d8b6afa2c554f3f68a225293d4ab6531706823d2c9084b7c002ae769f86` | 114 / `ent` | `ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b` | 9 cambios: 5 `cs_p14_c`, 1 `par_c`, 1 `cs_p20a_c`, 2 `cs_p20b_c`, 2025-05-27; SHA `4716ded92c64ae5053e1f20c6d5df188eed8bf14e503ae88a86e7321cf4062e5` |
+| 2025-Q1 · [2715160](https://www.inegi.org.mx/app/descarga/ficha.html?ag=0&f=csv&tit=2715160) | `3931e7c9242147da6ebf9badb1e2b9a59d43d95a9811e077232be406c4ce6691` | `bcb310cbd5b695db264da0f0dcaef266d047a037486853012e5cbc096d7abbf5` | 114 / `ent` | `410dff0ef72908a275e01be116e1bce949d79a38e17a403427840680c64cd51d` | Sin miembro de bitácora SDEM en este ZIP |
+| 2025-Q2 · [2985637](https://www.inegi.org.mx/app/descarga/ficha.html?ag=0&f=csv&tit=2985637) | `9530a017e3defb0658418b73a47a6039eeb54abf11342fa10693374736515127` | `c9f1a2adf14b388be7d1a68ef57d30fd92356d36f522cc7e3ac32de6ab5a48d8` | 114 / `ent` | `ce67f37024a4a60767b0b140ad249e9eca98bf900459117cf82f63c3649d251b` | Sin miembro de bitácora SDEM en este ZIP |
+| 2025-Q3 · [3161259](https://www.inegi.org.mx/app/descarga/ficha.html?ag=0&f=csv&tit=3161259) | `7138b2bfabc740a9805b83b3fd0dae28287fc2aab3781a596a741b8fc7861566` | `04bd5d5f9668848ac6c435f29abe3b20e6693f02f2ee880a1e9dc0aab1c94c9d` | 115 / `cve_ent` | `43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe` | Sin miembro de bitácora SDEM en este ZIP |
+| 2025-Q4 · [3233652](https://www.inegi.org.mx/app/descarga/ficha.html?ag=0&f=csv&tit=3233652) | `e4d4284cc9924a40c39544a5530715f320a5627cd81997214c0430827616d9d6` | `088a2affeaef800bd9941656869392290905a9cf597af42a15d748b13b43de7e` | 115 / `cve_ent` | `43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe` | Sin miembro de bitácora SDEM en este ZIP |
+| 2026-Q1 · [3634157](https://www.inegi.org.mx/app/descarga/ficha.html?ag=0&f=csv&tit=3634157) | `429c288af46e408de743e5dfb92750f668df7e42789be5824f7cdf1c5ff56580` | `8bf2b74f4222b72c5d717509a7527213346564f17acd1affdce7f50bd21daeca` | 115 / `cve_ent` | `43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe` | Sin miembro de bitácora SDEM en este ZIP |
+| 2026-Q2 · [3946334](https://www.inegi.org.mx/app/descarga/ficha.html?ag=0&f=csv&tit=3946334) | `9ef8877c363f6097da1a04b2077cbda96300cc474b38f835c4963d1dd8f953df` | `6256468cd6cf5ed08b8538f8094eb3cf20793cb669ba0084c18f571fc8f78407` | 115 / `cve_ent` | `43dd74055f8d4c934c5101b68f70065517f4a4b538d8230592e273b4c0ec6cbe` | Sin miembro de bitácora SDEM en este ZIP |
+
+Los ocho catálogos `cs_p14_c.csv` tienen SHA-256
+`b521d2b5a07e3471da1bd6792183bb2c6864a38e022f74a6a919990c49f4a871`.
+El diccionario 2025-Q1 tiene hash propio, distinto al de 2024-Q3/Q4 y 2025-Q2.
+La longitud declarada de `cs_p14_c` es seis caracteres. Las claves ASCII
+`31300`, `32100` y `33100` del catálogo se validan y rellenan a
+`031300`, `032100` y `033100` para Ciencias políticas, Comunicación y
+periodismo, y Derecho; `999999` y ausencia siguen siendo desconocidos.
+
+El cambio de cabecera `ageb/ent/loc/mun` a
+`cve_ageb/cve_ent/cve_loc/cve_mun`, con `cvegeo` añadido, se observa desde
+2025-Q3. La equivalencia conceptual entre periodos queda en `REVIEW` y
+requiere validación antes de calcular diferencias temporales. La ausencia de
+bitácora en los otros seis ZIP no afirma que jamás hayan tenido revisiones.
+Los bytes de metadatos se decodifican como UTF-8; la codificación de las filas
+de personas aún no está establecida y debe auditarse en la fase de ingesta.
+
+Fuente: INEGI, Encuesta Nacional de Ocupación y Empleo, ocho paquetes
+trimestrales 2024-Q3–2026-Q2. [Términos de libre uso de INEGI](https://www.inegi.org.mx/inegi/terminos.html).
+La selección de miembros, verificación de hashes, normalización de claves y
+este inventario son transformaciones de Brújula Laboral MX, no realizadas ni
+avaladas por INEGI. Los ZIP y microdatos quedan en almacenamiento local
+ignorado; solo los metadatos y futuros agregados validados pueden entrar en
+un artefacto público.

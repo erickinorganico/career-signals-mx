@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0",
+  "status": "PASS",
+  "scope": "Phase3 accepted aggregate analysis and persisted handoff; not a current publication or final release",
+  "checked_at": "2026-09-23T18:39:29.040769+00:00",
+  "synthetic": false,
+  "implementation_commit": "a6696a1a62e91cd72ac26bde149d201f3ea07e82",
+  "upstream_evidence": "docs/evidence/phase-02-numerical-acceptance.json",
+  "accepted_numeric_digest": "8db575e9d664864d1513e3b9658bd9b060c4cb3bed8b51561f208adeb97b9a00",
+  "analysis_content_digest": "d2f28f26f993d052fb5f246db3262ad00b776081a663d608e0427962745a0c79",
+  "claim_count": 38,
+  "comparison_count": 4209,
+  "opening_claim_ids": [
+    "v2k:7b66a320b957029a78acf87e6f0cebebe42c8d5efde1652ddcd7544ae033c4de",
+    "v2k:7d6e1e45043c9f5b309b91186cc9a259e4543baf20d07e12ec74bf88e99c8b2e",
+    "v2k:49098ac0e72ad61498b66be4ad781a1a3a53d55bb7c52713ebf26f1539f0ce73"
+  ],
+  "profile_cells": {
+    "latest_fields": 2714,
+    "latest_recorded_sexes": 184,
+    "latest_states": 2944,
+    "national": 920
+  },
+  "record_count": 6739,
+  "source_snapshot_ids": [
+    "enoe_2024_q3",
+    "enoe_2024_q4",
+    "enoe_2025_q1",
+    "enoe_2025_q2",
+    "enoe_2025_q3",
+    "enoe_2025_q4",
+    "enoe_2026_q1",
+    "enoe_2026_q2"
+  ],
+  "analysis_file_sha256": "9bbb5af3091c4cb02bec98d499ac522d77715f3a1316a30f906364fcc4c6537d",
+  "persisted_json_validation_errors": 0,
+  "trusted_reference_matches": true,
+  "claims_reference_visible_records": true,
+  "complementary_parents": {
+    "count": 5,
+    "all_null": true
+  },
+  "claim_kinds": {
+    "entity": 2,
+    "observation": 11,
+    "qoq": 8,
+    "sex": 9,
+    "yoy": 8
+  },
+  "tests": {
+    "full_suite": {
+      "passed": 443,
+      "skipped": 0,
+      "warnings": 1,
+      "seconds": 151.46,
+      "junit_sha256": "b1758139fcef06159b0fddcd04664237dead53d5d769e2e8debf01b0b2af5f1d"
+    },
+    "final_edge_suite": {
+      "passed": 8,
+      "seconds": 4.19,
+      "note": "One final edge case was added after whole-suite collection; seven overlap. Final source unchanged; 444 distinct cases covered."
+    },
+    "persisted_fix_focused": {
+      "passed": 41,
+      "seconds": 66.74
+    }
+  },
+  "prohibitions": [
+    {
+      "id": "p1",
+      "status": "green",
+      "located": true,
+      "flagged": false,
+      "evidence": [
+        {
+          "kind": "node-test",
+          "target": "tests/phase3_prohibitions_01.test.cjs",
+          "failFirst": true,
+          "passed": true,
+          "failFirstProof": "violation-fixture"
+        }
+      ],
+      "proof_sha256": "b3212876d1b7217d160089715dec0ce9f3453a326c09613bb960195171eaec81"
+    },
+    {
+      "id": "p2",
+      "status": "green",
+      "located": true,
+      "flagged": false,
+      "evidence": [
+        {
+          "kind": "node-test",
+          "target": "tests/phase3_prohibitions_01.test.cjs",
+          "failFirst": true,
+          "passed": true,
+          "failFirstProof": "violation-fixture"
+        }
+      ],
+      "proof_sha256": "b3212876d1b7217d160089715dec0ce9f3453a326c09613bb960195171eaec81"
+    },
+    {
+      "id": "p3",
+      "status": "green",
+      "located": true,
+      "flagged": false,
+      "evidence": [
+        {
+          "kind": "node-test",
+          "target": "tests/phase3_prohibitions_02.test.cjs",
+          "failFirst": true,
+          "passed": true,
+          "failFirstProof": "violation-fixture"
+        }
+      ],
+      "proof_sha256": "b9bee55cdf0d24129ddde6174fc788f0f52c0d7a1a9d759f5d386bf9b574d231"
+    },
+    {
+      "id": "p4",
+      "status": "green",
+      "located": true,
+      "flagged": false,
+      "evidence": [
+        {
+          "kind": "node-test",
+          "target": "tests/phase3_prohibitions_02.test.cjs",
+          "failFirst": true,
+          "passed": true,
+          "failFirstProof": "violation-fixture"
+        }
+      ],
+      "proof_sha256": "b9bee55cdf0d24129ddde6174fc788f0f52c0d7a1a9d759f5d386bf9b574d231"
+    },
+    {
+      "id": "p5",
+      "status": "green",
+      "located": true,
+      "flagged": false,
+      "evidence": [
+        {
+          "kind": "node-test",
+          "target": "tests/phase3_prohibitions_03.test.cjs",
+          "failFirst": true,
+          "passed": true,
+          "failFirstProof": "violation-fixture"
+        }
+      ],
+      "proof_sha256": "98537b3caefe6510dabb47b20c1e8bd54d3e220ae34554a0a84f81e22901abfd"
+    },
+    {
+      "id": "p6",
+      "status": "green",
+      "located": true,
+      "flagged": false,
+      "evidence": [
+        {
+          "kind": "node-test",
+          "target": "tests/phase3_prohibitions_03.test.cjs",
+          "failFirst": true,
+          "passed": true,
+          "failFirstProof": "violation-fixture"
+        }
+      ],
+      "proof_sha256": "98537b3caefe6510dabb47b20c1e8bd54d3e220ae34554a0a84f81e22901abfd"
+    },
+    {
+      "id": "p7",
+      "status": "green",
+      "located": true,
+      "flagged": false,
+      "evidence": [
+        {
+          "kind": "node-test",
+          "target": "tests/phase3_prohibitions_03.test.cjs",
+          "failFirst": true,
+          "passed": true,
+          "failFirstProof": "violation-fixture"
+        }
+      ],
+      "proof_sha256": "98537b3caefe6510dabb47b20c1e8bd54d3e220ae34554a0a84f81e22901abfd"
+    }
+  ],
+  "source_file_sha256": {
+    "brujula/analysis_v2.py": "1b999525842cb547984c0081696ce8648aff8ece73e958b865792ed0bed2cbe6",
+    "brujula/comparisons_v2.py": "bcbec22a48ec11ab4f2127c4029e1bdff04ab913a1576716a691a3cbe29cc340",
+    "brujula/claims_v2.py": "2d122b412d7220cb84459c5cd5f31b2968e77a2843704c3d834c6a252f6e12e0",
+    "brujula/findings_v2.py": "315e436b301c27e0378ecb2b5bf81b9fe08155c96d8bb90d6904932fc7cbcbb5",
+    "contracts/analysis-v2.schema.json": "b078baa5b85076cbdba8f356f6cb8233c5de650e9cb56f5e8d7393fcc9e50c0c",
+    "data/fixtures/enoe-analysis-reference.json": "2ecaf5808db2ec26c38f4d28138dc0af50ca191f5fb0fdb498240f650862a520",
+    "data/fixtures/enoe-analysis-coverage-pins.json": "ce2fb528c3164491c73214875cd12c92a75d21830612df0889a5b9b91046978b"
+  },
+  "test_file_sha256": {
+    "tests/test_analysis_v2.py": "62cf937224b28c66aa92fb3105b84379bda849a92d963221e59fa4b9726251b0",
+    "tests/test_claims_v2.py": "d08220c7a20d80f791119b08c32ea02705fc9f182e525099bd0c3e3ad32601f8",
+    "tests/test_comparisons_v2.py": "9b1ca9205f07421e68e6d4fe710de1ea4eec15cf5324899be784af85e5a0b2be",
+    "tests/test_analysis_integration.py": "a94673c1d3eed152c98d718a61054f95d6e86543fc3f8e194b95fac88eb83097",
+    "tests/test_phase3_edge_acceptance.py": "2e2f841307d7583e2f4e09206311da9e62ecf48e6ec8c7dee906c41cb290eab6"
+  },
+  "limitations": [
+    "Precision remains a project approximation with nonofficial REVIEW status.",
+    "Descriptive contrasts do not establish causal effects or statistical significance.",
+    "No survey ZIPs or individual records are included in this receipt.",
+    "Phase4 rendering, exports, installed runtime, sealing and current resolution remain separate acceptance gates."
+  ],
+  "source_and_test_hash_basis": "UTF-8 text with universal-newline normalization to LF; artifact and receipt hashes are original bytes."
+}

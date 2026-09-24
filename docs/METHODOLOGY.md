@@ -1,5 +1,7 @@
 # Metodología analítica y estadística
 
+> **Método histórico del piloto sintético 0.1.0.** Para el trabajo ENOE real en curso, consultar [CONTRACT-V2](CONTRACT-V2.md), [las decisiones estadísticas](../.planning/phases/02-defensible-survey-estimates/02-CONTEXT.md) y [el estado de aceptación](../.planning/STATE.md). Las cifras ilustrativas siguientes no son resultados ENOE.
+
 Fecha: 2026-09-22. Aplica al piloto sintético y define las condiciones para una
 extensión ENOE real. No convierte el fixture en una estimación de México.
 
