@@ -6,9 +6,9 @@ current_phase: 04
 current_phase_name: Offline Publication and Reproducible Operation
 status: active
 stopped_at: null
-last_updated: "2026-09-24T01:29:54+00:00"
+last_updated: "2026-09-24T20:55:39.007750+00:00"
 last_activity: 2026-09-24
-last_activity_desc: "04-06 integrated acceptance complete; hosted Windows/Ubuntu installed-wheel CI passed at 3b8b2d4; independent Phase 4 verification and Phase 5 remain"
+last_activity_desc: "04-06 integrated acceptance complete; hosted Windows/Ubuntu installed-wheel CI passed at 3b8b2d4; Phase 4 verified 5/5 technical truths; explicit visual approval requested; Phase 5 preparation continues"
 progress:
   total_phases: 5
   completed_phases: 3
@@ -28,22 +28,22 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-22)
 
 **Core value:** Una persona puede entender y verificar una conclusión laboral útil sin confundir muestras pequeñas, datos faltantes, carreras, ocupaciones o diferencias metodológicas.
-**Current focus:** Phase 4 — Offline Publication and Reproducible Operation
+**Current focus:** Phase 4 visual acceptance; reviewed Phase 5 release preparation
 
 ## Current Position
 
 Phase: 04 — Offline Publication and Reproducible Operation
-Plan: 6/6 implemented; independent phase verification pending
+Plan: 6/6 implemented; independent technical verification passed, human visual approval pending
 Status: Active; current preliminary snapshot published
 Last activity: 2026-09-24 UTC — 04-06 local controls and cross-platform native CI passed; installed helper receipts read back
 
-Progress: 3/5 phases independently accepted; 16/19 proposed execution plans implemented. The three Phase 5 plans and validation strategy are written but have not passed independent plan-checker review; this is not release completion.
+Progress: 3/5 phases independently accepted; 16/19 proposed execution plans implemented. The three Phase 5 plans passed independent plan-checker review; formal execution awaits Phase4 human visual approval; this is not release completion.
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans implemented: 15
+- Total plans implemented: 16
 - Executor-reported durations are recorded in each plan summary; they exclude orchestration, research and independent reviews.
 
 **By Phase:** Phase 1 — 4/4 plans complete, 27/27 truths verified, six prohibitions mechanically enforced; canonical phase completion returned no warnings.
@@ -79,3 +79,7 @@ None. The full real-data scope remains in v1.0.0.
 Last session: 2026-09-24T01:29:54+00:00
 Stopped at: 04-06 integrated controls under independent review; actual installed crash recovery and metadata continuity passed
 Resume file: None
+
+## Current review checkpoint
+
+Independent Phase4 verifier checked all five roadmap truths and eight requirements, with 73/73 content hashes matching. Its explicit GSD human visual gate remains pending; the user was asked to review the unchanged published PDF/HTML. Phase5 plan-checker passed all three plans after correcting executable checks, ownership, immutable-target/later-evidence sequencing and manual edge coverage. Canonical post-planning gap analysis covers all five Phase5 requirements. Independent public-content review found no material privacy/disclosure/attribution issue; exact final wheel/archive/remote custody remains pending. No v1.0.0 release or phase completion is claimed.

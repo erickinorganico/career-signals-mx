@@ -182,5 +182,5 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 | 1. Official Sources and Research Contract | 4/4 | Complete    | 2026-09-22 |
 | 2. Defensible Survey Estimates | 3/3 | Complete    | 2026-09-23 |
 | 3. Supported Labor Findings | 3/3 | Complete    | 2026-09-23 |
-| 4. Offline Publication and Reproducible Operation | 6/6 | Independent verification pending |  |
-| 5. Independent Audit and v1.0.0 Release | 0/3 | Proposed plans; checker pending | - |
+| 4. Offline Publication and Reproducible Operation | 6/6 | Technical verification passed; visual approval pending |  |
+| 5. Independent Audit and v1.0.0 Release | 0/3 | Plans reviewed; visual preflight pending | - |

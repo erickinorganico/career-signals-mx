@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "status": "PASS",
+  "scope": "Independent read-only review of the immutable Phase 4 public content; not approval of final wheel, archive or release.",
+  "reviewer": {
+    "agent": "release_content_audit",
+    "role": "gsd-security-auditor",
+    "independence_basis": "Separate agent did not implement production pipeline, renderers or release packaging; inspected actual sealed bytes and schemas."
+  },
+  "reviewed_on": "2026-09-24",
+  "input": {
+    "source_commit": "c222f69",
+    "run_id": "20260924T010247-81cfb71ea5f1",
+    "manifest_sha256": "38c3dfc21d816f32d7e4a21d7efd89418fc198fd80e94577783706f00d7fb023",
+    "analysis_sha256": "4b35ce4d67f9b0372aa6e418e88ed8aa90f630b36814a1295cbf79481e25b638"
+  },
+  "inspected_artifacts": [
+    "manifest.json",
+    "analysis.json",
+    "exports/public.duckdb",
+    "report.html",
+    "report.md",
+    "report.pdf",
+    "all 9 SVG/PNG pairs",
+    "assets/fonts/LICENSE_DEJAVU"
+  ],
+  "checks": {
+    "manifest_artifacts": 73,
+    "hash_mismatches": 0,
+    "source_dependencies": 8,
+    "public_records": 6739,
+    "comparisons": 4209,
+    "claims": 38,
+    "suppressed_records": 3565,
+    "suppressed_sensitive_diagnostics_nonnull": 0,
+    "duckdb_tables": 22,
+    "forbidden_person_columns": 0,
+    "credential_or_private_path_hits": 0,
+    "pdf_pages": 97,
+    "canonical_ids_per_report": {
+      "records": 446,
+      "comparisons": 141,
+      "claims": 38
+    }
+  },
+  "findings": [],
+  "material_open_findings": 0,
+  "affected_reruns": [],
+  "reused_evidence": [
+    "04-INTEGRATED-OPERATION.md",
+    "04-WAVE3-CHECKS.md",
+    "docs/visual/phase-04-visual-review.md"
+  ],
+  "reuse_limit": "No new numerical/R replay or human visual-readability approval; prior evidence reused only for unchanged content.",
+  "source_terms": {
+    "url": "https://www.inegi.org.mx/inegi/terminos.html",
+    "read_on": "2026-09-24",
+    "review": "Redistribution and transformation with retained metadata, source/product attribution, transformation disclosure and no endorsement. Actual sealed report includes these statements."
+  },
+  "final_release_approved": false,
+  "remaining_gates": [
+    "Final version wheel/member audit",
+    "Final archive and closed allowlist",
+    "Human visual acceptance",
+    "Draft and anonymous public byte readback"
+  ]
+}

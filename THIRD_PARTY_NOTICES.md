@@ -1,23 +1,17 @@
-# Third-Party Notices / Avisos de terceros
-
-**Status / Estado:** `CANDIDATE_REVIEW`; this notice set supports preparation and is not a final release audit.
+# Third-party notices / Avisos de terceros
 
 ## English
 
-- **Project:** `career-signals-mx 0.1.0` is MIT licensed. The project license notice must remain with the outer release bundle.
-- **DejaVu fonts:** the wheel carries four project-selected DejaVu font files and the full `LICENSE_DEJAVU` notice. Preserve that notice with the font resources.
-- **Python dependencies:** the 35-package preparation inventory, exact versions, declared expressions, classifiers, and license-file SHA-256 values are in [the candidate evidence](docs/evidence/phase-05-dependency-license-candidate.json). A missing expression remains unfilled; no license is upgraded by inference.
-- **INEGI source:** retain INEGI attribution, the specific source product and update information, the project transformation description, and a statement that INEGI did not perform, endorse, or sponsor the transformation. The [official-terms preflight](docs/evidence/phase-05-inegi-terms-preflight.json) checked the accepted report; exact-target asset review remains pending.
-- **PDF boundary:** NumPy is direct runtime; `pypdf` and pytest are test dependencies; WeasyPrint 70 is optional Python PDF support. The native PDF asset was reviewed as source/CI evidence and is not redistributed. The temporary Python environment is not redistributed.
-- **Security evidence:** pip-audit 0.1 is historical evidence only. No fresh vulnerability result is asserted here.
+Project code is distributed under the MIT license in [LICENSE](LICENSE), copyright 2026 Brújula Laboral MX contributors. This license does not replace the source-data or font terms.
+
+The research uses INEGI, Encuesta Nacional de Ocupación y Empleo (ENOE), quarterly public sources from 2024 Q3 through 2026 Q2. Source URLs, dates, metadata and hashes remain in the report and sealed manifest. These aggregates and charts were independently transformed by Brújula Laboral MX; they are not official INEGI estimates and do not imply INEGI endorsement. See [INEGI terms](https://www.inegi.org.mx/inegi/terminos.html) and [source details](docs/SOURCES.md). Raw person-level microdata are not redistributed in this release.
+
+Four unmodified DejaVu TrueType fonts and their complete original notice are redistributed. The wheel contains `brujula/assets/fonts/LICENSE_DEJAVU`; the research archive contains `research/assets/fonts/LICENSE_DEJAVU`. Notice SHA-256: `d75938dec098f06f0ac3c00853065d94f020be1c3c62ef1dc2975ba15b4d9b0e`. Preserve this notice when redistributing the fonts or bundled reports.
+
+Python dependencies, R, native PDF toolchains and their installation archives are not bundled in the project wheel or research archive. They are separately installed software under their own terms. The [dependency inventory](docs/research/DEPENDENCY-LICENSE-INVENTORY.md) records the reviewed environment and is not a blanket license for third-party packages. Embedded PDF font subsets originate from the same DejaVu files.
 
 ## Español
 
-- **Proyecto:** `career-signals-mx 0.1.0` tiene licencia MIT. El aviso de licencia del proyecto debe permanecer en el paquete externo de publicación.
-- **Fuentes DejaVu:** la rueda contiene cuatro archivos de fuentes DejaVu seleccionados por el proyecto y el aviso completo `LICENSE_DEJAVU`. Conserve ese aviso junto con los recursos de fuentes.
-- **Dependencias Python:** el inventario de preparación de 35 paquetes, versiones exactas, expresiones declaradas, clasificadores y SHA-256 de archivos de licencia está en [la evidencia candidata](docs/evidence/phase-05-dependency-license-candidate.json). Una expresión ausente permanece vacía; no se asigna una licencia por inferencia.
-- **Fuente INEGI:** conserve la atribución a INEGI, el producto fuente específico y su información de actualización, la descripción de la transformación del proyecto y la declaración de que INEGI no realizó, avaló ni patrocinó la transformación. La [revisión preliminar de términos oficiales](docs/evidence/phase-05-inegi-terms-preflight.json) comprobó el informe aceptado; aún falta revisar los assets del target final.
-- **Límite PDF:** NumPy es dependencia directa de ejecución; `pypdf` y pytest son dependencias de pruebas; WeasyPrint 70 es soporte Python opcional para PDF. El activo PDF nativo se revisó como evidencia de fuente/CI y no se redistribuye. El entorno temporal de Python no se redistribuye.
-- **Evidencia de seguridad:** pip-audit 0.1 es únicamente evidencia histórica. Aquí no se afirma un resultado nuevo de vulnerabilidades.
+El código del proyecto se distribuye bajo MIT, con el texto completo en LICENSE. Los datos proceden de INEGI, ENOE, 2024-T3 a 2026-T2. Se conservan fuente, metadatos y hashes; los agregados y gráficas son transformaciones independientes de Brújula Laboral MX, no estimaciones oficiales ni un producto avalado por INEGI. Los términos de INEGI y de las fuentes no se sustituyen por la licencia del código. No se redistribuyen microdatos personales.
 
-Source / Fuente: commit `c222f69`, wheel SHA-256 `77e6a0e36aa897a3e7f054b49b6259837be3ccb83b5200adec9e63e0fb61e983`; see [the inventory](docs/research/DEPENDENCY-LICENSE-INVENTORY.md). Final exact-target license review remains open.
+Se incluyen cuatro fuentes DejaVu sin modificar, su aviso íntegro en las rutas indicadas arriba y subconjuntos incrustados en el PDF. Conserva ese aviso al redistribuir. Las dependencias Python, R y las bibliotecas nativas se instalan por separado y no forman parte del wheel ni del archivo de investigación. El inventario de dependencias describe el entorno revisado; cada paquete conserva sus propios términos.
