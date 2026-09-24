@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import csv
+from collections import Counter
 import json
 import re
 from datetime import datetime, timezone
@@ -544,12 +545,12 @@ def _logical_exports(old: Path, new: Path, tables: set[str]) -> bool:
     new_db = duckdb.connect(str(new / "public.duckdb"), read_only=True)
     try:
         for table in sorted(tables):
-            left_rows = old_db.execute(f"SELECT * FROM {table} ORDER BY 1")
+            left_rows = old_db.execute(f"SELECT * FROM {table}")
             left_types = [(item[0], str(item[1])) for item in left_rows.description]
-            left_values = left_rows.fetchall()
-            right_rows = new_db.execute(f"SELECT * FROM {table} ORDER BY 1")
+            left_values = Counter(left_rows.fetchall())
+            right_rows = new_db.execute(f"SELECT * FROM {table}")
             right_types = [(item[0], str(item[1])) for item in right_rows.description]
-            if left_types != right_types or left_values != right_rows.fetchall():
+            if left_types != right_types or left_values != Counter(right_rows.fetchall()):
                 return False
             stem = "public-records" if table == "public_records" else table.replace("_", "-")
             with (old / f"{stem}.csv").open(newline="", encoding="utf-8") as left:
@@ -558,14 +559,14 @@ def _logical_exports(old: Path, new: Path, tables: set[str]) -> bool:
                         return False
             left_parquet = old / f"{stem}.parquet"
             right_parquet = new / f"{stem}.parquet"
-            left_rows = old_db.execute("SELECT * FROM read_parquet(?) ORDER BY 1",
+            left_rows = old_db.execute("SELECT * FROM read_parquet(?)",
                                        [str(left_parquet)])
             left_types = [(item[0], str(item[1])) for item in left_rows.description]
-            left_values = left_rows.fetchall()
-            right_rows = new_db.execute("SELECT * FROM read_parquet(?) ORDER BY 1",
+            left_values = Counter(left_rows.fetchall())
+            right_rows = new_db.execute("SELECT * FROM read_parquet(?)",
                                         [str(right_parquet)])
             right_types = [(item[0], str(item[1])) for item in right_rows.description]
-            if left_types != right_types or left_values != right_rows.fetchall():
+            if left_types != right_types or left_values != Counter(right_rows.fetchall()):
                 return False
         return True
     finally:
