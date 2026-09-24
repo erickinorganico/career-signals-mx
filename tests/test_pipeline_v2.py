@@ -305,6 +305,22 @@ def test_replay_logical_exports_checks_csv_and_parquet_independently(tmp_path):
     assert p._logical_exports(left, right, {"public_records"})
     (right / "public-records.csv").write_text("value\n999.0\n", encoding="utf-8")
     assert not p._logical_exports(left, right, {"public_records"})
+
+
+def test_replay_logical_exports_ignores_tied_container_row_order(tmp_path):
+    import duckdb
+
+    left, right = tmp_path / "left", tmp_path / "right"
+    for root, values in ((left, [(1, 10), (1, 20)]),
+                         (right, [(1, 20), (1, 10)])):
+        root.mkdir()
+        db = duckdb.connect(str(root / "public.duckdb"))
+        db.execute("CREATE TABLE public_records(k INTEGER, v INTEGER)")
+        db.executemany("INSERT INTO public_records VALUES (?, ?)", values)
+        db.execute(f"COPY public_records TO '{(root / 'public-records.parquet').as_posix()}' (FORMAT PARQUET)")
+        db.close()
+        (root / "public-records.csv").write_text("k,v\n1,10\n1,20\n", encoding="utf-8")
+    assert p._logical_exports(left, right, {"public_records"})
     (right / "public-records.csv").write_text("value\n1.0\n", encoding="utf-8")
     (right / "public-records.parquet").unlink()
     db = duckdb.connect()
