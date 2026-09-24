@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "status": "LOCAL_PASS_PENDING_CI",
+  "scope": "Real offline Phase 4 publication and local controls; Windows and Ubuntu hosted CI remain unverified until their run artifacts are read back. Public statistical status remains REVIEW.",
+  "synthetic": false,
+  "implementation_commit": "c222f69",
+  "control_commit": "ad73a72",
+  "upstream_evidence": [
+    "docs/evidence/phase-02-numerical-acceptance.json",
+    "docs/evidence/phase-03-analysis-acceptance.json",
+    ".planning/phases/04-offline-publication-and-reproducible-operation/04-WAVE3-CHECKS.md",
+    ".planning/phases/04-offline-publication-and-reproducible-operation/04-INTEGRATED-OPERATION.md"
+  ],
+  "accepted_content": {
+    "numerical_digest": "8db575e9d664864d1513e3b9658bd9b060c4cb3bed8b51561f208adeb97b9a00",
+    "analysis_digest": "15f5bdc0fb366f9b3ae75c1c0b096aed1f7b1f4e7f8b71b514f62133ea8dddca",
+    "publication_digest": "ff4f7ef1c34927812c15488d46220edd2cebb55378c264827c15b378970a385e",
+    "source_snapshot_count": 8,
+    "metric_count": 23,
+    "record_count": 6739,
+    "comparison_count": 4209,
+    "claim_count": 38,
+    "source_and_method_continuity": "Eleven numerical code/oracle hashes, seven numerical resources, eight source identities, R/library and benchmark hashes unchanged from Phase 2; see 04-WAVE3-CHECKS and 04-INTEGRATED-OPERATION."
+  },
+  "integrated_installed_publication": {
+    "source_commit": "c222f69",
+    "wheel_sha256": "77e6a0e36aa897a3e7f054b49b6259837be3ccb83b5200adec9e63e0fb61e983",
+    "run_id": "20260924T010247-81cfb71ea5f1",
+    "manifest_sha256": "38c3dfc21d816f32d7e4a21d7efd89418fc198fd80e94577783706f00d7fb023",
+    "receipt_sha256": "1b2e2c228700c8491ea7ee2c1d489fb7af5cc603e1da40ba610d7144dcf5cbe1",
+    "content_artifact_count": 73,
+    "export_table_count": 22,
+    "figure_count": 9,
+    "pdf_page_count": 97,
+    "network_attempt_count": 0,
+    "actual_research_build_exit_code": 0,
+    "actual_pdf_open_exit_code": 0,
+    "interrupted_attempt_recovered_as_failed": true,
+    "historical_anchor_count_unchanged": 87
+  },
+  "reconstruction_replay": {
+    "status": "PASS_REUSED_FOR_UNCHANGED_REPLAY_IMPLEMENTATION",
+    "attempt_id": "20260924T001001-c9ecddaaee71",
+    "receipt_sha256": "825d9d1122b953578b49ce40a9b7cf1b179444149aa69798b701106fcddaa2e8",
+    "scope_limit": "The c222f69 recovery and report metadata changes were tested through fresh installed build/open/readback; no new full reconstruction replay is claimed."
+  },
+  "failure_invalidation": {
+    "failed_acquisition_attempt_id": "20260924T002741769026Z-1ee9bcb4edf2",
+    "immutable_receipt_sha256": "7ad86b0a71a412e26385f815bde5d517e8a6553d57d5edae94c5196d2c5c0b1e",
+    "historical_bundle_unchanged": true,
+    "subsequent_current_open_blocked": true,
+    "network_attempt_count": 0
+  },
+  "local_controls": {
+    "full_verify": {"status": "PASS", "pytest_passed": 592, "pytest_warnings": 1, "docs_and_evals_passed": true},
+    "exact_edge_mapping": {"status": "PASS", "criteria": 45, "mapping_and_behavior_tests_passed": 46},
+    "all_node_prohibitions": {"status": "PASS", "passed": 30, "failed": 0},
+    "canonical_gsd_producers": {
+      "status": "PASS",
+      "cases": ["suppressed", "complement", "pdf-fetch", "stale-current"],
+      "all_located": true,
+      "all_green": true,
+      "all_fail_first_proof": "violation-fixture"
+    },
+    "canary": "A validated internal suppressed point, denominator, weighted support, SE, CV and CI sentinels passed through the same projected packet/model and were absent from emitted HTML, Markdown, PDF text, SVG/PNG metadata, CSV, Parquet and DuckDB.",
+    "nonempty_real_permutation": {
+      "status": "PASS",
+      "receipt_sha256": "68a65608a03483a0cb5c013c59cd7a88c114b4f53a57326ee2aeaca3d1111c2c",
+      "figure_record_links": 249,
+      "figure_comparison_links": 133,
+      "figure_claim_links": 3,
+      "claim_record_links": 65,
+      "csv_tables_byte_identical": 22,
+      "typed_tables_identical": 22,
+      "png_pixel_buffers_identical": 9
+    }
+  },
+  "local_installed_helper": {
+    "status": "PASS_EXISTING_ISOLATED_WINDOWS_INSTALL",
+    "wheel_sha256": "77e6a0e36aa897a3e7f054b49b6259837be3ccb83b5200adec9e63e0fb61e983",
+    "installed_code_count": 33,
+    "authored_resource_count": 24,
+    "installed_code_and_resource_sha256": "7aeb37d1cd655d43af4abd1ae02a8717b21ab978351feb405386b57f09d1d5c3",
+    "searchable_spanish_pdf": true,
+    "embedded_dejavu": true,
+    "local_asset_guard_passed": true,
+    "changed_wheel_module_blocked": true,
+    "scope_limit": "The helper reused the existing clean outside-checkout c222f69 install; the CI lane will create a fresh environment from the current wheel on each OS."
+  },
+  "candidate_content_review": {
+    "status": "REVIEW",
+    "wheel_members": 63,
+    "bundle_content_files": 73,
+    "credential_marker_matches": 0,
+    "private_path_marker_matches": 0,
+    "project_and_font_license_members_present": true,
+    "scope_limit": "Final release notices and publication approval belong to the later release gate."
+  },
+  "hosted_ci": {
+    "status": "PENDING",
+    "required_os": ["Windows", "Ubuntu"],
+    "windows_result": null,
+    "ubuntu_result": null,
+    "current_wheel_installed_helper_result": null
+  }
+}
