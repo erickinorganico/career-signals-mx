@@ -1,41 +1,23 @@
-# Licencias y atribución
+# Third-Party Notices / Avisos de terceros
 
-El código, documentación y fixtures originales de este repositorio se publican
-bajo [MIT](LICENSE). Los paquetes instalados no se redistribuyen aquí:
-`.venv`, cachés y artefactos de ejecución están excluidos de Git.
+**Status / Estado:** `CANDIDATE_REVIEW`; this notice set supports preparation and is not a final release audit.
 
-Dependencias directas declaradas: Python, DuckDB, jsonschema y Matplotlib;
-pytest se utiliza para verificación. Las versiones fijadas están en
-[pyproject.toml](pyproject.toml) y [requirements.txt](requirements.txt).
-Sus licencias propias no se reemplazan por la licencia MIT del proyecto.
-Antes de empaquetar binarios o distribuir entornos, el gate de release deberá
-inventariar también dependencias transitivas y conservar sus avisos.
+## English
 
-Para 0.1.0 se revisaron los metadatos de los 23 paquetes fijados, sin entradas
-carentes de información de licencia. El [inventario](docs/evidence/dependency-licenses.json)
-conserva expresiones SPDX o metadatos/clasificadores del paquete instalado.
-Los avisos completos permanecen con cada distribución. El wheel del proyecto
-incluye también recursos authored y cuatro fuentes DejaVu con su licencia
-íntegra; no redistribuye los paquetes Python dependientes. El
-[resultado histórico de pip-audit](docs/evidence/dependency-audit.json)
-no encontró vulnerabilidades conocidas en el conjunto de 0.1.0 revisado
-entonces; no constituye una auditoría nueva de esta edición.
+- **Project:** `career-signals-mx 0.1.0` is MIT licensed. The project license notice must remain with the outer release bundle.
+- **DejaVu fonts:** the wheel carries four project-selected DejaVu font files and the full `LICENSE_DEJAVU` notice. Preserve that notice with the font resources.
+- **Python dependencies:** the 35-package preparation inventory, exact versions, declared expressions, classifiers, and license-file SHA-256 values are in [the candidate evidence](docs/evidence/phase-05-dependency-license-candidate.json). A missing expression remains unfilled; no license is upgraded by inference.
+- **INEGI source:** retain INEGI attribution, the specific source product and update information, the project transformation description, and a statement that INEGI did not perform, endorse, or sponsor the transformation. Derived-project wording is `REVIEW` pending final source review.
+- **PDF boundary:** NumPy is direct runtime; `pypdf` and pytest are test dependencies; WeasyPrint 70 is optional Python PDF support. The native PDF asset was reviewed as source/CI evidence and is not redistributed. The temporary Python environment is not redistributed.
+- **Security evidence:** pip-audit 0.1 is historical evidence only. No fresh vulnerability result is asserted here.
 
-El [catálogo de fuentes](docs/SOURCES.md) documenta condiciones de INEGI,
-OLA/STPS, Data México e IMCO. La auditoría pública conserva enlaces y notas
-metodológicas, no microdatos ENOE ni cifras OLA redistribuidas. No se incluye
-código, consultas o datos propietarios de otras organizaciones.
+## Español
 
-Para una futura derivación de ENOE se debe conservar atribución a INEGI y al
-producto específico, periodo, fecha de consulta/actualización, metadatos y una
-nota de transformación que no implique aval de INEGI. La revisión debe hacerse
-sobre los términos vigentes del dataset y snapshot seleccionado, no solo sobre
-esta nota de planificación.
+- **Proyecto:** `career-signals-mx 0.1.0` tiene licencia MIT. El aviso de licencia del proyecto debe permanecer en el paquete externo de publicación.
+- **Fuentes DejaVu:** la rueda contiene cuatro archivos de fuentes DejaVu seleccionados por el proyecto y el aviso completo `LICENSE_DEJAVU`. Conserve ese aviso junto con los recursos de fuentes.
+- **Dependencias Python:** el inventario de preparación de 35 paquetes, versiones exactas, expresiones declaradas, clasificadores y SHA-256 de archivos de licencia está en [la evidencia candidata](docs/evidence/phase-05-dependency-license-candidate.json). Una expresión ausente permanece vacía; no se asigna una licencia por inferencia.
+- **Fuente INEGI:** conserve la atribución a INEGI, el producto fuente específico y su información de actualización, la descripción de la transformación del proyecto y la declaración de que INEGI no realizó, avaló ni patrocinó la transformación. La redacción del proyecto derivado queda en `REVIEW` hasta la revisión final de fuentes.
+- **Límite PDF:** NumPy es dependencia directa de ejecución; `pypdf` y pytest son dependencias de pruebas; WeasyPrint 70 es soporte Python opcional para PDF. El activo PDF nativo se revisó como evidencia de fuente/CI y no se redistribuye. El entorno temporal de Python no se redistribuye.
+- **Evidencia de seguridad:** pip-audit 0.1 es únicamente evidencia histórica. Aquí no se afirma un resultado nuevo de vulnerabilidades.
 
-La prueba y auditoría del PDF usan `pypdf==6.19.0` (BSD-3-Clause, copyright
-de sus contribuyentes); no forma parte del motor de generación de PDF.
-Identidad, wheel y SHA-256 revisados: [auditoría de dependencia](docs/evidence/phase-04-pdf-audit-dependency.json).
-El PDF se genera con `weasyprint==70.0`, declarado como extra `pdf`; se aplican
-las licencias y avisos de su propia distribución y dependencias nativas.
-Los cuatro archivos DejaVu TTF se distribuyen con su `LICENSE_DEJAVU` completo
-en cada publicación y wheel.
+Source / Fuente: commit `c222f69`, wheel SHA-256 `77e6a0e36aa897a3e7f054b49b6259837be3ccb83b5200adec9e63e0fb61e983`; see [the inventory](docs/research/DEPENDENCY-LICENSE-INVENTORY.md). Final exact-target license review remains open.

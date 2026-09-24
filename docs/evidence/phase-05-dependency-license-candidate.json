@@ -1,0 +1,718 @@
+{
+  "schema_version": 1,
+  "status": "CANDIDATE_REVIEW",
+  "generated_on": "2026-09-23",
+  "scope": {
+    "dependency_count": 35,
+    "project_excluded": {
+      "name": "career-signals-mx",
+      "version": "0.1.0"
+    },
+    "deduplication": "case-insensitive distribution name; project distributions excluded",
+    "source": {
+      "metadata_recovery_receipt": ".cache/research/phase4-metadata-recovery-install.json",
+      "source_commit": "c222f69",
+      "wheel_sha256": "77e6a0e36aa897a3e7f054b49b6259837be3ccb83b5200adec9e63e0fb61e983"
+    }
+  },
+  "dependencies": [
+    {
+      "name": "attrs",
+      "version": "26.1.0",
+      "license_expression": "MIT",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "attrs-26.1.0.dist-info/licenses/LICENSE",
+          "sha256": "882115c95dfc2af1eeb6714f8ec6d5cbcabf667caff8729f42420da63f714e9f"
+        }
+      ]
+    },
+    {
+      "name": "brotli",
+      "version": "1.2.0",
+      "license_expression": null,
+      "license_field_present": true,
+      "license_field_note": "present_short",
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "brotli-1.2.0.dist-info/licenses/LICENSE",
+          "sha256": "60ae0f13e76cc2eaaa108677eefa4ce16b647f6bbe8cf0a1ac9429d82eca7248"
+        }
+      ]
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "license_expression": "MIT-0",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "cffi-2.1.1.dist-info/licenses/LICENSE",
+          "sha256": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63"
+        }
+      ]
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "license_expression": null,
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "colorama-0.4.6.dist-info/licenses/LICENSE.txt",
+          "sha256": "cac35c02686e5d04a5a7140bfb3b36e73aed496656e891102e428886d7930318"
+        }
+      ]
+    },
+    {
+      "name": "contourpy",
+      "version": "1.4.0",
+      "license_expression": "BSD-3-Clause",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "contourpy-1.4.0.dist-info/licenses/LICENSE",
+          "sha256": "0e55e86a8fbf3e9b482ae8dc9e111e1b0dc09a7d300e7f480dda68c1125ed614"
+        }
+      ]
+    },
+    {
+      "name": "cssselect2",
+      "version": "0.10.1",
+      "license_expression": null,
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "cssselect2-0.10.1.dist-info/licenses/LICENSE",
+          "sha256": "6fd97229a1d1b0f6a8b41e109f413426dbc0874b1e03746d66cc33282601c2c2"
+        }
+      ]
+    },
+    {
+      "name": "cycler",
+      "version": "0.12.1",
+      "license_expression": null,
+      "license_field_present": true,
+      "license_field_note": "present_long",
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "cycler-0.12.1.dist-info/LICENSE",
+          "sha256": "f1218143d766da3fea66f13396b7f15df46a83303f29bf96ba6e98eb4d42f408"
+        }
+      ]
+    },
+    {
+      "name": "duckdb",
+      "version": "1.4.4",
+      "license_expression": null,
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "duckdb-1.4.4.dist-info/licenses/LICENSE",
+          "sha256": "4000856a8f007e53fc53150533d644bcaefc64b7461e43c14ccb9d3d66a59cd2"
+        },
+        {
+          "path": "duckdb/experimental/spark/LICENSE",
+          "sha256": "bc219cdc6410cc929715f4622ce2424af890049b071f34d68dec1955554bf332"
+        }
+      ]
+    },
+    {
+      "name": "fonttools",
+      "version": "4.65.0",
+      "license_expression": null,
+      "license_field_present": true,
+      "license_field_note": "present_short",
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "fonttools-4.65.0.dist-info/licenses/LICENSE",
+          "sha256": "22bef80697ecfaa17f97e62b9a26dfa12820be05583e8dd12ad169b241274c99"
+        },
+        {
+          "path": "fonttools-4.65.0.dist-info/licenses/LICENSE.external",
+          "sha256": "b082a5f86775b2641f01bccb8b9c82908481de5f502bb254b1e13bfc2a9f303d"
+        }
+      ]
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.0",
+      "license_expression": "MIT",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "iniconfig-2.3.0.dist-info/licenses/LICENSE",
+          "sha256": "3409fa91f7ace557894632676656e32264fe5ef7581535725dc9a23774551bd4"
+        }
+      ]
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.26.0",
+      "license_expression": "MIT",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "jsonschema-4.26.0.dist-info/licenses/COPYING",
+          "sha256": "4f92a015a13c4d1a040bef018aa13430b4f1bc73b41b16bb846c346766de7439"
+        }
+      ]
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1",
+      "license_expression": "MIT",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "jsonschema_specifications-2025.9.1.dist-info/licenses/COPYING",
+          "sha256": "42dcd63495f87b4eb7c7757afa379bb55a53f94afd7a5f657d9adf57236e515c"
+        }
+      ]
+    },
+    {
+      "name": "kiwisolver",
+      "version": "1.5.1",
+      "license_expression": null,
+      "license_field_present": true,
+      "license_field_note": "present_long",
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "kiwisolver-1.5.1.dist-info/licenses/LICENSE",
+          "sha256": "b24c2bf6185f31a124ad6bacccae3071bdc7ad7882de00b00110aa62abb76a15"
+        }
+      ]
+    },
+    {
+      "name": "matplotlib",
+      "version": "3.10.8",
+      "license_expression": null,
+      "license_field_present": true,
+      "license_field_note": "present_long",
+      "license_classifiers": [
+        "License :: OSI Approved :: Python Software Foundation License"
+      ],
+      "license_files": [
+        {
+          "path": "matplotlib-3.10.8.dist-info/LICENSE",
+          "sha256": "dbb9ad7495a83b0f2f48c94b06e23020587d82f8d1492dcb717fb1ebc2f86c18"
+        },
+        {
+          "path": "matplotlib/mpl-data/fonts/ttf/LICENSE_DEJAVU",
+          "sha256": "d75938dec098f06f0ac3c00853065d94f020be1c3c62ef1dc2975ba15b4d9b0e"
+        },
+        {
+          "path": "matplotlib/mpl-data/fonts/ttf/LICENSE_STIX",
+          "sha256": "bab3d31dfef07f483624f2f65f2711e76065b8e7273278b1c071ede1041c9959"
+        }
+      ]
+    },
+    {
+      "name": "numpy",
+      "version": "2.5.3",
+      "license_expression": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/LICENSE.txt",
+          "sha256": "a804dff0ead9fadc5293456410bcbfc32bf024be9c4513459663fb7b442d2341"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/_core/include/numpy/libdivide/LICENSE.txt",
+          "sha256": "d544761558b510866c21f7e8a2d5716fca76e0b98117e3b6b86314db7244d150"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/_core/src/common/pythoncapi-compat/COPYING",
+          "sha256": "aea41976c720f91bd19725c16916a1ace40eb1ea42620d340e587a5de4bbcea0"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/_core/src/highway/LICENSE",
+          "sha256": "d208152e2777ffd0126eacc1bd21c0320d69e4e6b622d21a2a12a47e8ef73763"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/_core/src/multiarray/dragon4_LICENSE.txt",
+          "sha256": "b0fd592d4ead563148e3977e7b589169d46a5ef2ff133c755a81af880a3fc919"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md",
+          "sha256": "a732977853530066790c42817087f4829b518dd98d340c916acbfd227e39d3cb"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/_core/src/umath/svml/LICENSE",
+          "sha256": "585483905b13d4b42f800c55ba99e89d6e2e33ccd5f503e201c07531d148ff41"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md",
+          "sha256": "8db000e158c162e7249787852d8c69764706502ccee725c06641b31c1e95c8af"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/linalg/lapack_lite/LICENSE.txt",
+          "sha256": "19060ef465e1797d682ee0fc3081bd25ab1395e995e43d25c9d13c95d9a3cd6b"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/ma/LICENSE",
+          "sha256": "d78dbb208b80d92b4d333e41a4baae50d12444f46e53199fa7726a91de6e2da7"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/random/LICENSE.md",
+          "sha256": "b4bc2f4fa1c95778f1ed3dd8f14706bece399475b978f9f34b5d3cd72521b48a"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/random/src/distributions/LICENSE.md",
+          "sha256": "cf5619f25b112d5ce7c896efffc8e610bcb345dfadcc19f2c1460aa48fff2c9e"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md",
+          "sha256": "92c10699884321f1c2947fe2a70ab23b0fbf1507f756d89dd08f38c61fc3d4fa"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md",
+          "sha256": "41190663b77bee5302386495a07b7eabfbfa571aa0ae2f11da6764162062fc4f"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/random/src/philox/LICENSE.md",
+          "sha256": "322ac46d870c8aeead6c53adcccc839296fb3c8e456eae155081297daf7f8013"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md",
+          "sha256": "28cad82ce1379dc529df30da78ec012d7d0d1d576b03ddcb93388aee53659f59"
+        },
+        {
+          "path": "numpy-2.5.3.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md",
+          "sha256": "454ec7350e478e037061850b67395753b425b1cb0a34bbc26290b020bf89d763"
+        },
+        {
+          "path": "numpy/_core/include/numpy/random/LICENSE.txt",
+          "sha256": "d544761558b510866c21f7e8a2d5716fca76e0b98117e3b6b86314db7244d150"
+        },
+        {
+          "path": "numpy/ma/LICENSE",
+          "sha256": "d78dbb208b80d92b4d333e41a4baae50d12444f46e53199fa7726a91de6e2da7"
+        },
+        {
+          "path": "numpy/random/LICENSE.md",
+          "sha256": "b4bc2f4fa1c95778f1ed3dd8f14706bece399475b978f9f34b5d3cd72521b48a"
+        }
+      ]
+    },
+    {
+      "name": "packaging",
+      "version": "26.3",
+      "license_expression": "Apache-2.0 OR BSD-2-Clause",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "packaging-26.3.dist-info/licenses/LICENSE",
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "packaging-26.3.dist-info/licenses/LICENSE.APACHE",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "packaging-26.3.dist-info/licenses/LICENSE.BSD",
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        },
+        {
+          "path": "packaging/licenses/__init__.py",
+          "sha256": "590d12eee73ddbec53b4e9ee5bfc64d9cb3aacb4940e8ebcba260757ce56740b"
+        },
+        {
+          "path": "packaging/licenses/_spdx.py",
+          "sha256": "596ec35e2ca0ebcba9fd8343ff0a51625af548786257815f24b41f7e08613314"
+        }
+      ]
+    },
+    {
+      "name": "pillow",
+      "version": "12.3.0",
+      "license_expression": "MIT-CMU",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pillow-12.3.0.dist-info/licenses/LICENSE",
+          "sha256": "4f7866a74802c6326f81faff59a56546b6aec2b10b91973e0e9308de95e79857"
+        }
+      ]
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0",
+      "license_expression": null,
+      "license_field_present": true,
+      "license_field_note": "present_short",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "pluggy-1.6.0.dist-info/licenses/LICENSE",
+          "sha256": "d6b65e6c213a5d0b577911d34d6e5949b9f59d76c238c5071a2f3fc16cfb2606"
+        }
+      ]
+    },
+    {
+      "name": "pycparser",
+      "version": "3.0",
+      "license_expression": "BSD-3-Clause",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pycparser-3.0.dist-info/licenses/LICENSE",
+          "sha256": "0c846399369ea76ddd7b5c44fe6d16497415fcf015f5cbb508c24bf98b81c5b1"
+        }
+      ]
+    },
+    {
+      "name": "pydyf",
+      "version": "0.12.1",
+      "license_expression": null,
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "pydyf-0.12.1.dist-info/licenses/LICENSE",
+          "sha256": "75461e438973e1ba0f93a7de9e3fe5b2f49e1ab49251d392878a9cdae8ce7e47"
+        }
+      ]
+    },
+    {
+      "name": "Pygments",
+      "version": "2.21.0",
+      "license_expression": "BSD-2-Clause",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pygments-2.21.0.dist-info/licenses/AUTHORS",
+          "sha256": "71a83872ad82f57be692cf827e048e2cd51d45169cfa1ea3f28706d97a872c0f"
+        },
+        {
+          "path": "pygments-2.21.0.dist-info/licenses/LICENSE",
+          "sha256": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+        }
+      ]
+    },
+    {
+      "name": "pyparsing",
+      "version": "3.3.3",
+      "license_expression": "MIT",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pyparsing-3.3.3.dist-info/licenses/LICENSE",
+          "sha256": "a5425f9dc14ac74d4c5f0b679e941f2442e32cca7452a4418d5b1a49893ebe4e"
+        }
+      ]
+    },
+    {
+      "name": "pypdf",
+      "version": "6.19.0",
+      "license_expression": "BSD-3-Clause",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pypdf-6.19.0.dist-info/licenses/LICENSE",
+          "sha256": "a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524"
+        }
+      ]
+    },
+    {
+      "name": "pyphen",
+      "version": "0.18.1",
+      "license_expression": null,
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
+        "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
+        "License :: OSI Approved :: Mozilla Public License 1.1 (MPL 1.1)"
+      ],
+      "license_files": [
+        {
+          "path": "pyphen-0.18.1.dist-info/licenses/COPYING.GPL",
+          "sha256": "2233a3eecf299bc271f1a9f57f0b3198343ad4ab16571d70320133002c51496b"
+        },
+        {
+          "path": "pyphen-0.18.1.dist-info/licenses/COPYING.LGPL",
+          "sha256": "5bbcbb737e60fe9deba08ecbd00920cfcc3403ba2e534c64fdeea49d6bb87509"
+        },
+        {
+          "path": "pyphen-0.18.1.dist-info/licenses/COPYING.MPL",
+          "sha256": "ad192a67649aa23ac9681939840f4f241643a98da9cd8aec8de28c3b8c6ee854"
+        },
+        {
+          "path": "pyphen-0.18.1.dist-info/licenses/LICENSE",
+          "sha256": "4fd1c78fcec632bc872ba7b42ba04be330029cfffa411039b48a4f2262bb8240"
+        }
+      ]
+    },
+    {
+      "name": "pytest",
+      "version": "9.0.3",
+      "license_expression": "MIT",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pytest-9.0.3.dist-info/licenses/LICENSE",
+          "sha256": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b"
+        }
+      ]
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.9.0.post0",
+      "license_expression": null,
+      "license_field_present": true,
+      "license_field_note": "present_short",
+      "license_classifiers": [
+        "License :: OSI Approved :: Apache Software License",
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "python_dateutil-2.9.0.post0.dist-info/LICENSE",
+          "sha256": "ba00f51a0d92823b5a1cde27d8b5b9d2321e67ed8da9bc163eff96d5e17e577e"
+        }
+      ]
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0",
+      "license_expression": "MIT",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "referencing-0.37.0.dist-info/licenses/COPYING",
+          "sha256": "42dcd63495f87b4eb7c7757afa379bb55a53f94afd7a5f657d9adf57236e515c"
+        }
+      ]
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3",
+      "license_expression": "MIT",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "rpds_py-2026.6.3.dist-info/licenses/LICENSE",
+          "sha256": "8bcb72c82ea8ae74802293c41d93ad7d51434001b0ae45a603a5af0f507aee0a"
+        }
+      ]
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "license_expression": null,
+      "license_field_present": true,
+      "license_field_note": "present_short",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "six-1.17.0.dist-info/LICENSE",
+          "sha256": "4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0"
+        }
+      ]
+    },
+    {
+      "name": "tinycss2",
+      "version": "1.5.1",
+      "license_expression": null,
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "tinycss2-1.5.1.dist-info/licenses/LICENSE",
+          "sha256": "6b94acee20ec9f2709333134f3ba70322535fb420af0ce8c1455d9cbe297f1d5"
+        }
+      ]
+    },
+    {
+      "name": "tinyhtml5",
+      "version": "2.1.0",
+      "license_expression": null,
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "tinyhtml5-2.1.0.dist-info/licenses/LICENSE",
+          "sha256": "16a39991619e92f18680932da2a9199fdf7d95df3ecaedc52ea06218aabafd6f"
+        }
+      ]
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "license_expression": "PSF-2.0",
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+          "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+        }
+      ]
+    },
+    {
+      "name": "weasyprint",
+      "version": "70.0",
+      "license_expression": null,
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "weasyprint-70.0.dist-info/licenses/LICENSE",
+          "sha256": "bfd14eccfa6100575460e685556b183399d4bd335904e3c9521b0116d21c54da"
+        }
+      ]
+    },
+    {
+      "name": "webencodings",
+      "version": "0.6.1",
+      "license_expression": null,
+      "license_field_present": false,
+      "license_field_note": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "webencodings-0.6.1.dist-info/licenses/LICENSE",
+          "sha256": "e06ef33485e7498ad592887c41fa79cc8a7fecde576c7210e11bfdddef58040e"
+        }
+      ]
+    },
+    {
+      "name": "zopfli",
+      "version": "0.4.3",
+      "license_expression": null,
+      "license_field_present": true,
+      "license_field_note": "present_short",
+      "license_classifiers": [
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "license_files": [
+        {
+          "path": "zopfli-0.4.3.dist-info/licenses/COPYING",
+          "sha256": "675fc1c25ad23d5e14255152262598b591a6e3fc65f0871655f5f6585f120acd"
+        }
+      ]
+    }
+  ],
+  "dependency_roles": {
+    "direct_runtime": [
+      "duckdb",
+      "jsonschema",
+      "matplotlib",
+      "numpy"
+    ],
+    "direct_test": [
+      "pypdf",
+      "pytest"
+    ],
+    "optional_pdf_python": [
+      "weasyprint"
+    ],
+    "transitive_and_runtime_closure": "all remaining records in dependencies"
+  },
+  "redistributed_wheel": {
+    "includes": [
+      "project-authored package resources",
+      "four DejaVu font files",
+      "LICENSE_DEJAVU full notice"
+    ],
+    "excludes": [
+      "the temporary Python environment",
+      "native WeasyPrint/GTK asset bundle"
+    ],
+    "release_note": "Exact final wheel contents remain a Phase 5 frozen-inventory gate."
+  },
+  "native_pdf_asset": {
+    "status": "reviewed_reference_not_redistributed",
+    "source": ".planning/research/PDF-PROBE.md; corroborating docs/evidence/phase-04-pdf-audit-dependency.json",
+    "sha256": "ab1151f210b4e6bb7aa7a79e91a67e8ddb760094c107bfda55241b6aaefe7d53",
+    "note": "Retained as source/CI evidence only; this candidate does not claim a current final audit."
+  },
+  "inegi_notice": {
+    "source_preparation": ".cache/research/phase5-doc-drafts/inegi-terms-preparation.json",
+    "attribution_required": true,
+    "no_endorsement_statement_required": true,
+    "derived_project_review": "REVIEW"
+  },
+  "security": {
+    "pip_audit": "historical 0.1 result only; no fresh vulnerability claim",
+    "current_security_audit": "not performed by this candidate refresh"
+  },
+  "limitations": [
+    "Metadata values and license-file hashes describe the recorded recovery environment.",
+    "A final publication requires frozen wheel/bundle inventory and legal/source review.",
+    "Absent License-Expression values remain null; classifiers and license-file evidence are retained without SPDX inference."
+  ]
+}
