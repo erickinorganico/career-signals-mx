@@ -166,6 +166,110 @@ def test_failed_promotion_marker_blocks_a_previously_sealed_run(tmp_path):
         p._verify_sealed(run, tmp_path / "sources")
 
 
+def test_recovery_resumes_after_its_failure_receipt_is_sealed(monkeypatch, tmp_path):
+    source, out, audit, analysis, _names = _stub_build(monkeypatch, tmp_path)
+    original_sources = p._sources
+    monkeypatch.setattr(p, "_sources", lambda *_args: (_ for _ in ()).throw(KeyboardInterrupt()))
+    with pytest.raises(KeyboardInterrupt):
+        p.build_publication(source, out, audit, analysis)
+    run_id = json.loads((out / "current.json").read_text())["run_id"]
+    interrupted = out / "runs" / run_id
+    monkeypatch.setattr(p, "_sources", original_sources)
+    original_atomic = p.atomic_json
+    armed = True
+
+    def stop_recovery(path, value):
+        nonlocal armed
+        if armed and path == interrupted / "journal.json" and value.get("stage") == "interrupted_recovery":
+            armed = False
+            raise KeyboardInterrupt("recovery interrupted after immutable failure")
+        original_atomic(path, value)
+
+    monkeypatch.setattr(p, "atomic_json", stop_recovery)
+    with pytest.raises(KeyboardInterrupt):
+        p.build_publication(source, out, audit, analysis)
+    sealed_failure = (interrupted / "receipt.json").read_bytes()
+    p.build_publication(source, out, audit, analysis)
+    assert (interrupted / "receipt.json").read_bytes() == sealed_failure
+    assert not (interrupted / "publication-failure.json").exists()
+    assert json.loads((interrupted / "journal.json").read_text())["build_status"] == "FAILED"
+
+
+@pytest.mark.parametrize("authority", ["current", "lock"])
+def test_recovery_rejects_unsafe_prior_run_identity_before_writes(monkeypatch, tmp_path, authority):
+    source, out, audit, analysis, _names = _stub_build(monkeypatch, tmp_path)
+    out.mkdir()
+    bad = {"schema_version": "2.0", "run_id": "../../outside", "build_status": "RUNNING"}
+    target = out / ("current.json" if authority == "current" else ".build.lock")
+    data = (b"" if authority == "current" else b"B\n") + p.json_bytes(bad)
+    target.write_bytes(data)
+    with pytest.raises(ValueError, match="run identity"):
+        p.build_publication(source, out, audit, analysis)
+    assert target.read_bytes() == data
+    assert not (out / "runs").exists() and not (tmp_path / "outside").exists()
+
+
+def test_recovery_rejects_junction_journal_before_write(monkeypatch, tmp_path):
+    source, out, audit, analysis, _names = _stub_build(monkeypatch, tmp_path)
+    run_id = "20260923T120000-aaaaaaaaaaaa"
+    run = out / "runs" / run_id
+    run.mkdir(parents=True)
+    current = {"schema_version": "2.0", "run_id": run_id, "build_status": "RUNNING"}
+    p.atomic_json(out / "current.json", current)
+    original = Path.is_junction
+    monkeypatch.setattr(Path, "is_junction", lambda path: path == run / "journal.json" or original(path))
+    with pytest.raises(ValueError, match="junction"):
+        p.build_publication(source, out, audit, analysis)
+    assert not (run / "receipt.json").exists()
+    assert json.loads((out / "current.json").read_text()) == current
+
+
+@pytest.mark.parametrize("mutation", ["extra", "error", "timestamp"])
+def test_recovery_does_not_publish_unbounded_existing_failure(monkeypatch, tmp_path, mutation):
+    source, out, audit, analysis, _names = _stub_build(monkeypatch, tmp_path)
+    run_id = "20260923T120000-aaaaaaaaaaaa"
+    run = out / "runs" / run_id
+    run.mkdir(parents=True)
+    running = {"schema_version": "2.0", "run_id": run_id, "build_status": "RUNNING", "status": "BLOCKED"}
+    p.atomic_json(out / "current.json", running)
+    p.atomic_json(run / "journal.json", running)
+    failure = {**running, "build_status": "FAILED", "stage": "interrupted_recovery", "completed_at": p.now(),
+               "error": {"code": "RuntimeError", "reason": "publication stage failed"}}
+    if mutation == "extra":
+        failure["private"] = "C:/private/secret"
+    elif mutation == "error":
+        failure["error"]["reason"] = "C:/private/secret"
+    else:
+        failure["completed_at"] = "C:/private/secret"
+    p.immutable_bytes(run / "receipt.json", p.json_bytes(failure))
+    before = {path: path.read_bytes() for path in (out / "current.json", run / "journal.json", run / "receipt.json")}
+    with pytest.raises(ValueError):
+        p.build_publication(source, out, audit, analysis)
+    assert all(path.read_bytes() == content for path, content in before.items())
+    assert len(list((out / "runs").iterdir())) == 1
+
+
+def test_real_process_exit_releases_lock_and_next_build_recovers(monkeypatch, tmp_path):
+    import subprocess
+    import sys
+
+    source, out, audit, analysis, _names = _stub_build(monkeypatch, tmp_path)
+    program = (
+        "import os,sys; from pathlib import Path; from brujula import pipeline_v2 as p; "
+        "p._sources=lambda root: os._exit(17); "
+        "p.build_publication(*map(Path,sys.argv[1:]))"
+    )
+    stopped = subprocess.run([sys.executable, "-c", program, str(source), str(out), str(audit), str(analysis)],
+                             cwd=Path(__file__).resolve().parents[1], capture_output=True, timeout=30)
+    assert stopped.returncode == 17, stopped.stderr.decode(errors="replace")
+    current = json.loads((out / "current.json").read_text())
+    assert current["build_status"] == "RUNNING"
+    rebuilt = p.build_publication(source, out, audit, analysis)
+    failed = json.loads((out / "runs" / current["run_id"] / "receipt.json").read_text())
+    assert failed["build_status"] == "FAILED" and failed["stage"] == "interrupted_recovery"
+    assert rebuilt["current"]["build_status"] == "SUCCEEDED"
+
+
 def test_inventory_rejects_extra_missing_and_symlink(tmp_path):
     root = tmp_path / "run"
     root.mkdir()

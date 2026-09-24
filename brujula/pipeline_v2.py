@@ -275,6 +275,70 @@ def _failure(run: Path, output_root: Path, run_id: str, stage: str, exc: Excepti
     return reason
 
 
+def _recover_interrupted(output_root: Path, previous: dict | None) -> None:
+    """Finish abandoned failure records while the caller holds the output lock."""
+    _guard_children(output_root, "runs", "current.json")
+    current_path = output_root / "current.json"
+    current = _read(current_path)[0] if current_path.exists() else {}
+    if previous is not None and not isinstance(previous, dict):
+        raise ValueError("invalid prior publication lock record")
+    candidates = []
+    for record in (previous or {}, current):
+        run_id = record.get("run_id")
+        if run_id is None:
+            continue  # Acquisition refresh barriers have no publication run ID.
+        if not isinstance(run_id, str) or not RUN_ID.fullmatch(run_id):
+            raise ValueError("invalid interrupted publication run identity")
+        if run_id not in candidates:
+            candidates.append(run_id)
+    for run_id in candidates:
+        _guard_children(output_root / "runs", run_id)
+        run = output_root / "runs" / run_id
+        _guard_children(run, "journal.json", "receipt.json", "publication-failure.json")
+        journal_path = run / "journal.json"
+        journal = _read(journal_path)[0] if journal_path.exists() else {}
+        if journal and (journal.get("run_id") != run_id
+                        or journal.get("build_status") not in {"RUNNING", "FAILED", "SUCCEEDED"}):
+            raise ValueError("invalid interrupted publication journal")
+        pending = (journal.get("build_status") == "RUNNING"
+                   or current.get("run_id") == run_id and current.get("build_status") == "RUNNING"
+                   or not journal and (previous or {}).get("run_id") == run_id)
+        if not pending:
+            continue
+        # Recovery can itself stop after writing the immutable failure. Reuse
+        # that exact record to finish journal/current without replacing a seal.
+        existing_failure = None
+        for name in ("publication-failure.json", "receipt.json"):
+            candidate = run / name
+            if not candidate.exists():
+                continue
+            recorded = _read(candidate)[0]
+            if recorded.get("build_status") == "FAILED":
+                error = recorded.get("error")
+                if (set(recorded) != {"schema_version", "run_id", "status", "build_status", "stage", "error", "completed_at"}
+                        or recorded.get("schema_version") != "2.0" or recorded.get("run_id") != run_id
+                        or recorded.get("status") != "BLOCKED"
+                        or recorded.get("stage") not in {"start", "source", "acceptance", "analysis", "render_export",
+                                                          "receipt", "manifest", "pointer", "final_index", "interrupted_recovery"}
+                        or not isinstance(error, dict) or set(error) != {"code", "reason"}
+                        or not isinstance(error.get("code"), str)
+                        or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]{0,59}", error["code"])
+                        or error.get("reason") != "publication stage failed"
+                        or not isinstance(recorded.get("completed_at"), str)):
+                    raise ValueError("invalid interrupted failure receipt")
+                if datetime.fromisoformat(recorded["completed_at"]).tzinfo is None:
+                    raise ValueError("invalid interrupted failure receipt timestamp")
+                existing_failure = recorded
+                break
+        if existing_failure is not None:
+            atomic_json(journal_path, existing_failure)
+            atomic_json(current_path, existing_failure)
+        else:
+            run.mkdir(parents=True, exist_ok=True)
+            _failure(run, output_root, run_id, "interrupted_recovery",
+                     RuntimeError("Interrupted publication"))
+
+
 def build_publication(source_root: Path, output_root: Path, audit_dir: Path,
                       analysis_packet_path: Path) -> dict:
     """Seal a validated aggregate run, then atomically promote current."""
@@ -285,12 +349,16 @@ def build_publication(source_root: Path, output_root: Path, audit_dir: Path,
         raise ValueError("analysis input and source/output roots overlap")
     _guard_children(output_root, "runs", "current.json", ".build.lock")
     output_root.mkdir(parents=True, exist_ok=True)
-    with BuildLock(output_root):
+    with BuildLock(output_root) as lock:
         _guard_children(output_root, "runs", "current.json", ".build.lock")
+        _recover_interrupted(output_root, lock.previous)
         run_id = _attempt_id()
         run = output_root / "runs" / run_id
         if _is_reparse(run):
             raise ValueError("symlink or junction run path")
+        if run.exists():
+            raise FileExistsError("immutable publication run already exists")
+        lock.record({"run_id": run_id})
         run.mkdir(parents=True, exist_ok=False)
         stage = "start"
         atomic_json(output_root / "current.json", {"schema_version": "2.0", "run_id": run_id,
@@ -358,6 +426,8 @@ def _verify_sealed(run: Path, source_root: Path, expected_manifest_sha: str | No
         raise ValueError("symlink sealed run path")
     if _is_reparse(run / "manifest.json") or _is_reparse(run / "receipt.json"):
         raise ValueError("symlink sealed authority")
+    if (run / "publication-failure.json").exists() or _is_reparse(run / "publication-failure.json"):
+        raise ValueError("publication attempt failed after sealing")
     raw_manifest = (run / "manifest.json").read_bytes()
     manifest_sha = _sha(raw_manifest)
     if expected_manifest_sha is not None and manifest_sha != expected_manifest_sha:
