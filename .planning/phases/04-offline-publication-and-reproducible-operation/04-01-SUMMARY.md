@@ -94,7 +94,7 @@ Verified repository files: `brujula/resources.py`, `brujula/oracle/enoe_survey_o
 ## Installed proof
 
 - Fresh wheel: `.cache/phase4-wheel/career_signals_mx-0.1.0-py3-none-any.whl`, SHA-256 `4c782b5dc5e2afb602349a214eab93191e35dde78cd28caea573df8e7060ac7e`.
-- Isolated Python 3.12 install: `C:\Users\erick\AppData\Local\Temp\brujula-0401-31a971f43eed4e7088e993a317fb576c\Lib\site-packages\brujula`. `brujula.__file__` resolved there from a separate temporary working directory.
+- Isolated Python 3.12 install: `${TEMP}/brujula-0401-31a971f43eed4e7088e993a317fb576c/Lib/site-packages/brujula`. `brujula.__file__` resolved there from a separate temporary working directory.
 - Wheel ZIP inspection found 54 members, of which exactly 22 are authored catalogs, contracts, fixtures, oracle or font/notice files. No `.zip`, `.xlsx`, `.pdf`, `.cache/`, `raw/` or person-named member appeared. The wheel does not contain R binaries or source records.
 - Installed `authored_resource_digests()` returned 22 entries. Removing installed `catalog/enoe-metrics.json` temporarily yielded `FileNotFoundError: Missing bundled resource: catalog/enoe-metrics.json` and process exit 1 from outside the checkout; the file was restored.
 - Installed v1 `python -m brujula demo --as-of 2026-09-22` completed with a synthetic `REVIEW` receipt, 54 observations, and `report --format html` resolved the verified current report. This is a synthetic regression, not numerical acceptance.

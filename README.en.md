@@ -1,3 +1,19 @@
+# Brújula Laboral MX — current research snapshot
+
+[Download release](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) · [Spanish PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v0.9.0-preview.1/brujula-laboral-mx-informe.pdf) · [Español](README.md)
+
+Published at the owner's request as a preliminary snapshot. The real INEGI ENOE report covers 2024 Q3–2026 Q2, with 97 pages, nine figure groups and 22 linked CSV/Parquet/DuckDB tables. Extract the archive and open `research/report.html` or `research/report.pdf` offline. No raw person-level data is distributed.
+
+National and focal-field profiles span eight quarters; other fields, recorded sex and all 32 states cover the latest quarter only. Missing and suppressed values remain null. Precision is explicitly nonofficial (`REVIEW`); this is neither a career ranking nor a personal recommendation.
+
+Local checks passed 592 Python tests, 30 Node controls, independent R comparisons and numerical replay. Hosted native-install CI and final GSD closure remain pending. Version 1.0.0 is not declared complete; full bilingual documentation is unfinished.
+
+---
+
+## Historical synthetic pilot 0.1.0 documentation
+
+The remaining material describes the earlier synthetic pilot, not the real report above.
+
 # Brújula Laboral MX
 
 **Reproducible research for understanding Mexico's labor market.** A local-first

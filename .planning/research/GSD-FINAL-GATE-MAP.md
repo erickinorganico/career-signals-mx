@@ -51,7 +51,7 @@ La receipt existente en docs/evidence/release-receipt.json documenta el release 
 
 5. **Cerrar y etiquetar la milestone (estado administrativo posterior al proof).** Sólo con el audit aprobado y todas las fases phase_complete=true y verification_status=passed:
 
-   node "C:/Users/erick/OneDrive/Documentos/Snowplow/.codex/gsd-core/bin/gsd-tools.cjs" query audit-open --json
+   node "${GSD_CORE}/bin/gsd-tools.cjs" query audit-open --json
    $gsd-complete-milestone v1.0.0
 
    complete-milestone archiva ROADMAP/REQUIREMENTS/fases, actualiza MILESTONES.md/STATE.md y crea el tag si aún no existe; el workflow explícitamente salta la creación cuando el tag ya existe. Así, si el candidato de Phase 5 ya creó el tag v1.0.0 para que GitHub pueda servir el release y su readback, el cierre administrativo no duplica ni cambia ese target. Su pre-close audit-open debe quedar sin material abierto. Un cierre con overrides requiere una decisión explícita y un registro de gaps; no cumple el objetivo solicitado de release completo.
@@ -91,7 +91,7 @@ La receipt existente en docs/evidence/release-receipt.json documenta el release 
 - .planning/phases/03-supported-labor-findings/03-CONTEXT.md, 03-RESEARCH.md, 03-VALIDATION.md, 03-UPSTREAM-PREFLIGHT.md.
 - .planning/phases/04-offline-publication-and-reproducible-operation/04-CONTEXT.md, 04-RESEARCH.md, 04-EDITORIAL-SPEC.md, 04-PACKAGING-READBACK.md.
 - .planning/phases/05-independent-audit-and-v1-0-0-release/05-CONTEXT.md, 05-RESEARCH.md.
-- GSD skills: C:/Users/erick/.agents/skills/gsd-audit-milestone/SKILL.md, gsd-audit-uat/SKILL.md, gsd-complete-milestone/SKILL.md, gsd-docs-update/SKILL.md, gsd-secure-phase/SKILL.md, gsd-ship/SKILL.md, gsd-verify-work/SKILL.md.
-- GSD workflows: C:/Users/erick/OneDrive/Documentos/Snowplow/.codex/gsd-core/workflows/ files audit-milestone.md, audit-uat.md, complete-milestone.md, docs-update.md, secure-phase.md, ship.md, verify-phase.md, verify-work.md.
+- GSD skills: ${CODEX_SKILLS}/gsd-audit-milestone/SKILL.md, gsd-audit-uat/SKILL.md, gsd-complete-milestone/SKILL.md, gsd-docs-update/SKILL.md, gsd-secure-phase/SKILL.md, gsd-ship/SKILL.md, gsd-verify-work/SKILL.md.
+- GSD workflows: ${GSD_CORE}/workflows/ files audit-milestone.md, audit-uat.md, complete-milestone.md, docs-update.md, secure-phase.md, ship.md, verify-phase.md, verify-work.md.
 - Release mechanics: GitHub CLI gh release and official release asset API, as linked in 05-RESEARCH.md; the exact asset set remains a Phase 4 output.
-- CLI readback: node C:/Users/erick/OneDrive/Documentos/Snowplow/.codex/gsd-core/bin/gsd-tools.cjs query audit-open --json executed on 2026-09-23; result has_open_items=false and total=0. The command form is valid; it is a pre-close scan, not milestone verification.
+- CLI readback: node ${GSD_CORE}/bin/gsd-tools.cjs query audit-open --json executed on 2026-09-23; result has_open_items=false and total=0. The command form is valid; it is a pre-close scan, not milestone verification.

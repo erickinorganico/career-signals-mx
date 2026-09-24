@@ -37,7 +37,7 @@ The PDF helper requires `weasyprint==70.0`, performs an actual `write_pdf()` cal
 - Wheel: `.cache/phase4-wheel/career_signals_mx-0.1.0-py3-none-any.whl`; SHA-256 `4c782b5dc5e2afb602349a214eab93191e35dde78cd28caea573df8e7060ac7e`.
 - Wheel ZIP inventory: `54` members, exactly `22` authored resource members under `brujula/catalog`, `brujula/contracts`, `brujula/fixtures`, `brujula/oracle`, and `brujula/assets/fonts`.
 - Font hashes independently match the five values in `.planning/research/FONT-ASSET-AUDIT.md`; oracle bytes independently match the authored checkout script.
-- Accepted temporary outside-checkout install path exists at `C:\Users\erick\AppData\Local\Temp\brujula-0401-31a971f43eed4e7088e993a317fb576c\Lib\site-packages\brujula\resources.py`. The Plan 04-01 summary records the isolated import-origin, missing-resource failure, synthetic CLI smoke, and native PDF probe from that install.
+- Accepted temporary outside-checkout install path exists at `${TEMP}/brujula-0401-31a971f43eed4e7088e993a317fb576c/Lib/site-packages/brujula/resources.py`. The Plan 04-01 summary records the isolated import-origin, missing-resource failure, synthetic CLI smoke, and native PDF probe from that install.
 - Focused command: `.venv/Scripts/python.exe -m pytest tests/test_installed_runtime.py -q` → exit `0`, `12 passed`.
 
 ## Boundary and follow-up

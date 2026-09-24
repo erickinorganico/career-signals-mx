@@ -51,7 +51,7 @@ Read `docs/CONTRACT.md` before interface changes. Use local scripts, fixtures an
 | R / `survey` | R 4.6.1 / survey 4.5 local | Independent `svydesign`, `svytotal`, `svyratio` oracle; keep in research/test environment, not Python runtime. [VERIFIED: local executables; [survey manual](https://r-forge.r-universe.dev/survey/doc/manual.html)] |
 | pytest | 9.0.3 local | Analytic, adapter, oracle and projection gates. [VERIFIED: local import] |
 
-No new estimator library is needed. The local Python venv has no `pip` module, but `uv` is available as the trusted package manager (`C:/Users/erick/.local/bin/uv.exe`; use `--cache-dir .cache/uv` within this workspace). PyPI confirms the exact NumPy 2.5.3 release and its Python >=3.12 requirement. `slopcheck` was unavailable, so the package legitimacy protocol requires `[ASSUMED]` on a new install even though package identity/version and existing local execution are verified. Add the direct dependency without treating a missing optional audit utility as a statistical blocker. [VERIFIED: local commands; `pyproject.toml`; [PyPI release](https://pypi.org/project/numpy/2.5.3/)]
+No new estimator library is needed. The local Python venv has no `pip` module, but `uv` is available as the trusted package manager (`${UV_EXECUTABLE}`; use `--cache-dir .cache/uv` within this workspace). PyPI confirms the exact NumPy 2.5.3 release and its Python >=3.12 requirement. `slopcheck` was unavailable, so the package legitimacy protocol requires `[ASSUMED]` on a new install even though package identity/version and existing local execution are verified. Add the direct dependency without treating a missing optional audit utility as a statistical blocker. [VERIFIED: local commands; `pyproject.toml`; [PyPI release](https://pypi.org/project/numpy/2.5.3/)]
 
 ## Package Legitimacy Audit
 
@@ -149,7 +149,7 @@ svyratio(~income_times_valid_domain, ~valid_income_domain, d)
 | Eight approved cached ZIPs | yes | Phase 1 resolver/research and eight-quarter audit. [VERIFIED: local files] |
 | Python 3.12.13 / NumPy 2.5.3 / pytest 9.0.3 | yes | Local version/import probes. [VERIFIED: local commands] |
 | R 4.6.1 / survey 4.5 | yes | Local `Rscript` and package probe. [VERIFIED: local commands] |
-| `uv` package manager | yes | Installed at `C:/Users/erick/.local/bin/uv.exe`; set local cache dir. [VERIFIED: parent local probe] |
+| `uv` package manager | yes | Installed at `${UV_EXECUTABLE}`; set local cache dir. [VERIFIED: parent local probe] |
 | slopcheck | no | Command unavailable; preserve package protocol tag. [VERIFIED: local command] |
 
 ## Validation Architecture

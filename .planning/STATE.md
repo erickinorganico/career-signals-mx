@@ -4,7 +4,7 @@ milestone: v1.0.0
 milestone_name: Release
 current_phase: 04
 current_phase_name: Offline Publication and Reproducible Operation
-status: executing
+status: paused
 stopped_at: 04-06 integrated controls under independent review; actual installed crash recovery and metadata continuity passed
 last_updated: "2026-09-24T01:29:54+00:00"
 last_activity: 2026-09-24
@@ -19,6 +19,8 @@ progress:
 
 # Project State
 
+**Owner decision, 2026-09-24 UTC:** stop additional implementation/research to limit token usage; publish the existing validated snapshot as `v0.9.0-preview.1`. No further phase execution is authorized by this continuation. Hosted native CI, final 04-06 acceptance, Phase 5 and final GSD closure remain uncompleted; this is not v1.0.0 completion.
+
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-09-22)
@@ -30,7 +32,7 @@ See: .planning/PROJECT.md (updated 2026-09-22)
 
 Phase: 04 — Offline Publication and Reproducible Operation
 Plan: 5/6 complete; 04-06 executing
-Status: Executing 04-06
+Status: Paused at owner request; current snapshot published
 Last activity: 2026-09-24 UTC — Actual installed abrupt-exit recovery/build/open and metadata continuity passed; integrated edge/disclosure review and cross-platform native CI remain in progress
 
 Progress: 3/5 phases accepted; 15/16 currently planned execution plans implemented (93.75%). Phase 5 is not yet planned; this is not release completion.
