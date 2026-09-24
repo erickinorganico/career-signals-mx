@@ -305,10 +305,27 @@ def _plot_figure(figure: dict, points: list[dict], *, print_mode: bool = False):
     return fig
 
 
+def _figure_context(figure: dict, points: list[dict]) -> str:
+    """Human-readable scope from public points only; no derived quantities."""
+    labels = [('Universo', 'population'), ('Periodos', 'period'),
+              ('Geografía', 'geography'), ('Campo de estudios', 'field'),
+              ('Sexo registrado', 'recorded_sex'), ('Medidas', 'metric'),
+              ('Fuentes INEGI ENOE', 'source_id')]
+    parts = [figure['figure_id'], figure['title']]
+    if figure.get('synthetic'):
+        parts.append('DATOS SINTÉTICOS')
+    for label, key in labels:
+        parts.append(f"{label}: {', '.join(dict.fromkeys(p[key] for p in points))}")
+    parts.append('Unidades: ' + ', '.join(dict.fromkeys(UNIT_LABELS[p['unit']] for p in points)))
+    parts.append('IC90 del proyecto; precisión no oficial de INEGI')
+    # Keep the first ASCII semicolon reserved for the exact numeric manifest.
+    return ' · '.join(parts).replace(';', '；')
+
+
 def _plot(figure: dict, root: Path) -> tuple[str, str]:
     fig = _plot_figure(figure, figure['points'])
     points = figure['points']
-    origin_note = ' · DATOS SINTÉTICOS' if figure.get('synthetic') else ''
+    context = _figure_context(figure, points)
     manifest = json.dumps([{'record_id': p['record_id'], 'value': p['value'],
                             'ci90_lower': p['ci90_lower'], 'ci90_upper': p['ci90_upper'],
                             'status': p['status'], 'reason': p['reason']}
@@ -318,13 +335,13 @@ def _plot(figure: dict, root: Path) -> tuple[str, str]:
     svg = f"figures/{figure['slug']}.svg"
     png = f"figures/{figure['slug']}.png"
     fig.savefig(root / svg, format='svg', metadata={'Title': figure['title'],
-                'Description': f"{figure['figure_id']}{origin_note}; {manifest}"})
+                'Description': f"{context}; {manifest}"})
     fig.savefig(root / png, format='png', dpi=145, metadata={'Title': figure['title'],
-                'Description': f"{figure['figure_id']}{origin_note}; {manifest}"})
+                'Description': f"{context}; {manifest}"})
     svg_path = root / svg
     raw_svg = svg_path.read_text(encoding='utf-8')
     raw_svg = re.sub(r'(<svg\b[^>]*>)',
-                     lambda m: m.group(1) + f'<title>{escape(figure["title"])}</title><desc>{escape(figure["figure_id"])} · {len(points)} registros públicos</desc>',
+                     lambda m: m.group(1) + f'<title>{escape(figure["title"])}</title><desc>{escape(context)}</desc>',
                      raw_svg, count=1)
     svg_path.write_text(raw_svg, encoding='utf-8')
     plt.close(fig)
@@ -337,11 +354,16 @@ def _print_panels(figure: dict) -> str:
     for n, start in enumerate(range(0, len(points), 16), 1):
         panel = _plot_figure(figure, points[start:start+16], print_mode=True)
         output = io.StringIO()
-        panel.savefig(output, format='svg', metadata={'Title': figure['title']})
+        context = _figure_context(figure, points[start:start+16])
+        panel.savefig(output, format='svg', metadata={'Title': figure['title'],
+                      'Description': context})
         plt.close(panel)
         svg = output.getvalue()
         svg = re.sub(r'^<\?xml[^>]*>\s*', '', svg)
         svg = re.sub(r'<!DOCTYPE svg[^>]*>\s*', '', svg)
+        svg = re.sub(r'(<svg\b[^>]*>)',
+                     lambda m: m.group(1) + f'<title>{escape(figure["title"])}</title><desc>{escape(context)}</desc>',
+                     svg, count=1)
         # Matplotlib IDs are local to each SVG; add a panel namespace to every
         # referenced ID so repeated clip paths cannot collide in print HTML.
         prefix = f"p-{figure['slug']}-{n}-"
