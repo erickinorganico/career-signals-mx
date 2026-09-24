@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "status": "PREFLIGHT_PASS_FINAL_TARGET_REVIEW_PENDING",
+  "checked_on": "2026-09-24",
+  "terms_url": "https://www.inegi.org.mx/inegi/terminos.html",
+  "source_product_url": "https://www.inegi.org.mx/programas/enoe/15ymas/",
+  "observed_terms": [
+    "Information may be copied, published, adapted and extracted with attribution and retained metadata.",
+    "Credit INEGI and the source product, with update date where technically possible.",
+    "Disclose project analyses or transformations without implying that INEGI performed or endorsed them."
+  ],
+  "catalog_sha256": "ff8cdf5615b9f4591e07af5f4c1522c890548e0fa497ce19ad3ccd668a0fc2a7",
+  "reviewed_phase4_report": {
+    "run_id": "20260924T010247-81cfb71ea5f1",
+    "report_md_sha256": "4177931651266afc4f484c9bf3c9746cecdf45a38a5e4e003e9c48d3e20a09ef",
+    "attribution_paragraph_present": true,
+    "terms_link_present": true,
+    "project_transformation_disclosed": true,
+    "no_inegi_endorsement_disclosed": true
+  },
+  "scope_limit": "Preflight compares the approved source catalog and accepted Phase 4 report to the official terms page as read on this date. It does not approve a later changed target, every asset member, or the final v1.0.0 release. Raw ZIP and person-level data remain excluded by the project contract."
+}
