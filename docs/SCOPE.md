@@ -1,124 +1,62 @@
-# Alcance — Brújula Laboral MX
+# Brújula Laboral MX — Alcance / Scope
 
-> **Alcance histórico del piloto sintético 0.1.0.** La entrega activa es la investigación ENOE real 1.0.0 de ocho trimestres. Su alcance vigente está en [PROJECT](../.planning/PROJECT.md), [REQUIREMENTS](../.planning/REQUIREMENTS.md) y [ROADMAP](../.planning/ROADMAP.md); su aceptación sigue [STATE](../.planning/STATE.md). Las exclusiones y fases futuras del texto histórico no sustituyen ese alcance.
+> Phases 1–3 and the integrated Phase 4 plan have accepted numerical, analytical and local publication evidence. Final independent Phase 4 verification and the Phase 5 release audit remain separate gates. This guide describes the full real-data scope without claiming v1.0.0 completion.
 
-Estado del documento: **baseline de planeación aceptado en M0**. Este documento
-define el producto; la implementación, las pruebas y el release analítico
-permanecen incompletos.
+## Español
 
-## Propósito
+### Propósito y preguntas del lector
 
-Brújula Laboral MX es un repositorio abierto de investigación analítica que
-ayuda a estudiantes y personas que consideran cambiar de carrera a interpretar
-señales del mercado laboral mexicano. Produce datos trazables, validaciones,
-gráficas estáticas y briefs con evidencia. No ofrece una recomendación
-individual ni predice resultados personales.
+Brújula Laboral MX es una publicación de investigación que se ejecuta localmente y permite entender qué dicen los datos oficiales de México sobre el trabajo entre personas con estudios profesionales terminados. Responde preguntas delimitadas: ¿qué población y medida describe cada cifra?, ¿cómo evolucionan las tres áreas focales durante ocho trimestres?, ¿qué diferencias descriptivas aparecen por sexo registrado o entidad en el último trimestre?, ¿qué cobertura, datos faltantes y precisión limitan la lectura?, ¿cómo se verifica una conclusión desde su fuente, método y registros? Su uso es investigar y comprobar evidencia. No recomienda una carrera, predice resultados individuales, mide vacantes o demanda de contratación, ni atribuye impacto económico.
 
-El producto se usa localmente mediante scripts y CLI. Sus salidas son tablas
-DuckDB, CSV/Parquet cuando la licencia lo permite, gráficas SVG/PNG y reportes
-Markdown/HTML. No es una aplicación, plataforma, frontend, backend ni servicio
-web.
+### Poblaciones, campos, períodos y medidas
 
-## Alcance inicial
+La ventana comprende ocho cortes trimestrales de la ENOE: 2024-Q3 a 2026-Q2. Separa el contexto nacional operativo de 15 años o más de la cohorte residente con estudios profesionales terminados y edad conocida. Los campos focales son Derecho (`033100`), Comunicación y periodismo (`032100`) y Ciencias políticas (`031300`), según la CMPE. La evolución cubre los ocho trimestres para el contexto nacional, la cohorte profesional y esos tres campos. El detalle de otros campos identificables, sexo registrado y 32 entidades corresponde al último trimestre, 2026-Q2. Cada registro conserva separados campo de estudio, ocupación, industria, geografía, sexo registrado, período, fuente, población, métrica y método.
 
-La primera liberación verificable usa exclusivamente un fixture sintético y
-visiblemente ilustrativo:
+El catálogo contiene 23 medidas: población, ocupación, población económicamente activa y desocupación; tasas de empleo, participación y desocupación; ingreso mensual nominal positivo conocido y su cobertura; conteos y proporciones sin ingreso o con ingreso no especificado; informalidad del empleo principal; mujeres entre personas ocupadas; cuatro proporciones de posición en la ocupación; conteo y tasa de subocupación; media y cobertura de horas conocidas. Los valores faltantes permanecen nulos con estado explícito. El tamaño observado de muestra se distingue del soporte y denominador ponderados y del tamaño efectivo de muestra. La precisión es una aproximación del proyecto, no precisión oficial del INEGI. Las diferencias trimestrales, anuales, por sexo o por entidad son descriptivas y no establecen causalidad ni significancia estadística.
 
-- campos de estudio: Derecho, Comunicación y periodismo, y Ciencias políticas;
-- periodos: 2025-Q2, 2025-Q3 y 2025-Q4;
-- geografías: México nacional y un segmento ilustrativo de Jalisco;
-- métricas: `mean_monthly_income`, `employed_people` y `female_share`;
-- estados públicos: `MEASURED`, `REVIEW`, `UNKNOWN` y `BLOCKED`, aunque todo
-  valor sintético no nulo debe permanecer en `REVIEW`;
-- almacenamiento local, validación de contrato, comparabilidad, recibos de
-  ejecución, reportes estáticos y agentes deterministas de solo lectura.
+### Preguntas que pueden responderse y límites
 
-El fixture demuestra el flujo y las salvaguardas. No representa estimaciones de
-México, no contiene microdatos ENOE y no valida conclusiones sustantivas sobre
-las tres carreras.
+Se pueden describir niveles y cobertura de una población y campo definidos, cambios entre trimestres adyacentes o equivalentes de años consecutivos que sean comparables, y contrastes de sexo registrado y entidad en el último trimestre. Cada afirmación se vincula a un registro público aceptado o una comparación validada. El informe incluye las 32 entidades con disponibilidad y motivos de ausencia visibles; el detalle de otros campos sigue el orden de clasificación oficial, sin implicar una clasificación de mejores y peores carreras.
 
-## Entregables de la primera liberación
+Los datos no permiten responder cuántas vacantes existen, si un título causa un resultado laboral, cuál carrera es universalmente mejor, cuánto ganará una persona ni si las diferencias son estadísticamente significativas. Campo educativo y ocupación no se consideran equivalentes. Las definiciones incompatibles de fuente, universo, geografía, medida, precios, método, concepto, edición o período bloquean la comparación. Los valores desconocidos, sin soporte o suprimidos no se convierten en cero ni se reconstruyen mediante totales.
 
-1. Contratos JSON versionados para dataset, evidencia e insight packets.
-2. Catálogo separado de fuentes oficiales candidatas, con términos, cobertura,
-   método, estado de acceso y decisión de uso.
-3. Fixture sintético con nulos intencionales, provenance y advertencia visible
-   en cada salida.
-4. Pipeline local reproducible con raw content-addressed, recibos inmutables,
-   quality gate, DuckDB y exportaciones permitidas.
-5. Comparaciones descriptivas que se bloquean cuando cambian fuente, universo,
-   geografía, métrica, unidad, base de precios, metodología, concepto o
-   condición sintética.
-6. Gráficas y reportes estáticos en español, con documentación del repositorio
-   en español e inglés.
-7. Agentes de apoyo de solo lectura que proponen investigación, anomalías,
-   mapeos o briefs; ninguna propuesta activa una fuente, bridge o publicación.
-8. Pruebas unitarias, integración y E2E, más revisión metodológica adversarial,
-   revisión de secretos/licencias y recibo de liberación.
+### Fuentes, evidencia y entregables
 
-## Fuera del alcance inicial
+El análisis usa ocho cortes aprobados de la ENOE del INEGI, fijados mediante hashes, diccionarios, catálogos y recibos de adquisición. Sólo se distribuyen agregados después de revisar licencias, atribución y ausencia de secretos y microdatos. Los entregables previstos son un informe editorial en español en HTML offline, Markdown y PDF imprimible, figuras SVG/PNG, tablas semánticas y agregados CSV/Parquet/DuckDB con diccionario, procedencia, claves de unión y estados de los valores. La operación consiste en scripts y procesos reproducibles locales. No requiere una aplicación, un servicio hospedado ni inferencia pagada.
 
-- frontend, backend, API servida, dashboard interactivo o aplicación navegable;
-- asesoría personal, ranking normativo de carreras o promesas de empleabilidad;
-- inferencia causal, pronósticos o equivalencia entre carrera, ocupación y
-  vacante;
-- scraping contrario a términos, APIs pagadas, credenciales externas, hosting
-  obligatorio o servicios de inferencia;
-- cifras de OLA, Data México o IMCO empaquetadas como dataset;
-- observaciones ENOE numéricas, informalidad o salarios reales/deflactados;
-- comparación automática entre periodos o países con metodología incompatible;
-- alertas, instituciones educativas, cobertura LATAM o interfaz local visual.
+### Estado de aceptación
 
-## Extensión real posterior
+La Fase 3 acredita 6,739 registros públicos, 4,209 comparaciones, 38 afirmaciones y tres hallazgos de apertura, sin errores al validar el JSON guardado; cinco totales permanecen nulos por supresión complementaria. La Fase 4 ejecutó aceptación numérica instalada, informe y revisión visual, sellado, invalidación tras fallos, resolución de la publicación vigente y CI nativa Windows/Ubuntu. Su recibo público es `docs/evidence/phase-04-publication-acceptance.json`. Aún faltan la verificación independiente de fase y la auditoría y publicación final de la Fase 5.
 
-México se amplía antes de considerar LATAM. La primera extensión candidata es
-ENOE 2025-Q2 nacional y solo puede entrar al dataset tras validar de forma
-conjunta:
+## English
 
-- paquete, diccionario, variables y códigos CMPE oficiales;
-- población y denominadores por métrica;
-- factor de expansión, estrato, UPM, estimación de varianza y reglas de
-  precisión;
-- URL exacta, términos, atribución, SHA-256, parámetros, fecha de consulta y
-  versión del código;
-- compatibilidad conceptual y temporal con cada observación que se compare.
+### Purpose and reader questions
 
-Que un archivo sea público no activa su uso. Los términos de redistribución, el
-contrato metodológico y el source record deben quedar aprobados y verificables.
-Informalidad, geografía subnacional y periodos adicionales requieren gates
-metodológicos propios. LATAM requiere una revisión por país antes de compartir
-ontología o series.
+Brújula Laboral MX is a local-first research publication for readers who want to understand what official Mexican labor data can and cannot say about completed professional studies. It answers bounded questions: what population and measure does each number describe; how do the three focal fields behave across eight quarters; what descriptive contrasts appear by recorded sex or entity; what coverage, missingness, and precision limit interpretation; and can another reader trace a conclusion to its source, method, record, and comparison? The output supports investigation and verification; it does not recommend a career, predict an individual outcome, measure vacancies or hiring demand, or infer economic impact.
 
-## Límites semánticos y de evidencia
+### Population, fields, periods, and measures
 
-`field_of_study`, `occupation`, `industry`, `geography`, `period` y `source`
-son dimensiones distintas. Un bridge es un artefacto editorial con provenance,
-confianza y estado `REVIEW`; nunca convierte un campo de estudio en ocupación.
+The analytical window is eight ENOE snapshots from 2024-Q3 through 2026-Q2. It keeps two populations distinct: the national operational 15+ context and the resident cohort with completed professional studies and known age. The focal fields are Law, Communication and journalism, and Political science, with official CMPE codes `033100`, `032100`, and `031300`. Eight-quarter trends cover the national context, professional cohort and these three fields. Detail for other identifiable fields, recorded sex and all 32 states covers the latest quarter, 2026-Q2. The grain keeps field of study, occupation, industry, geography, recorded sex, period, source, population, metric, and method separate.
 
-Una ausencia permanece `null`. `UNKNOWN` y `BLOCKED` no se grafican como cero.
-Cada claim debe resolver a evidence refs existentes y a un recibo con hash de
-entrada. Un refresh fallido invalida la publicación actual; un éxito histórico
-no puede presentarse como vigente.
+The accepted metric catalog contains 23 measures: population, occupied, labor force, unemployed, employment, participation and unemployment rates; positive-known nominal monthly income and its coverage; no-income and unspecified-income counts and shares; main-job informality; women among occupied people; four occupational-position shares; suboccupied count and rate; and known-hours mean and coverage. Missing values remain null with explicit status. Observed sample size is distinct from weighted support, weighted denominator, and ESS. Precision is a project approximation, not official INEGI precision; descriptive qoq/yoy, sex, and entity contrasts do not establish causality or statistical significance.
 
-## Autoridad y holds legítimos
+### Supported and unanswered questions
 
-El trabajo local de documentación, fixtures, código, pruebas aisladas y
-preparación de publicación está autorizado. También está autorizada la
-publicación en `erickinorganico/career-signals-mx` después de los checks de
-secretos y licencias.
+The scope supports descriptive statements tied to an accepted public record or validated comparison: levels and coverage for the stated population and field, changes between comparable adjacent or like-year quarters, same-quarter recorded-sex contrasts, and same-quarter entity contrasts including all 32 official entities when evidence exists. It supports a national context alongside the professional cohort, three complete focal profiles, other official fields ordered by classification code, visible availability, and documented reasons for unavailable cells.
 
-Se aplica un hold únicamente cuando falta una decisión material que no puede
-inferirse: términos de redistribución, acceso a un dataset, activación de una
-fuente o bridge, o una publicación externa distinta del repositorio autorizado.
-El hold debe registrar el objeto exacto y no detener trabajo independiente ya
-autorizado.
+The scope cannot answer how many vacancies exist, whether a degree causes employment or income, which career is universally best, whether a contrast is statistically significant, what an individual will earn, or whether observed field and occupation are equivalent. It cannot compare incompatible source, universe, geography, measure, price basis, method, concept, edition, or period definitions. It cannot turn null, unknown, unsupported, or suppressed cells into zero or reconstruct a hidden child from a visible parent.
 
-## Criterio de cierre del alcance inicial
+### Evidence, sources, and delivery boundary
 
-El alcance se considera entregado cuando un entorno limpio puede instalar,
-verificar y ejecutar la demo sin credenciales; todas las salidas identifican la
-condición sintética; los casos rojos bloquean falsos ceros, series incompatibles
-y claims sin evidencia; el reporte, las tablas y los recibos se reconstruyen de
-forma determinista; y la revisión principal confirma pruebas, términos,
-secretos y trazabilidad. La existencia de archivos o código parcial no satisface
-este criterio.
+The accepted analysis uses the approved INEGI ENOE source family and eight pinned snapshots with source custody, dictionaries, catalogs, and receipts. Public output is aggregate-only and redistributable after source, license, secret, and microdata review. The intended delivery is a Spanish editorial report with offline HTML, Markdown, printable PDF, SVG/PNG figures, semantic tables, and public CSV/Parquet/DuckDB aggregates with dictionary, provenance, stable join keys, null/status meanings, and claim/evidence links. It is a static local publication and reproducible batch workflow, not a frontend, backend, hosted service, dashboard, or paid inference system.
+
+### Acceptance boundary
+
+Phase 3 acceptance records 6,739 sanitized records, 4,209 comparisons, 38 claims, three opening claim IDs, zero persisted JSON validation errors, and five null complementary-suppression parents. Phase 4 executed installed numerical acceptance, report and visual review, sealing, failure invalidation, current resolution and native Windows/Ubuntu CI; see `docs/evidence/phase-04-publication-acceptance.json`. Independent phase verification and Phase 5 documentation, release inventory, audits and public v1.0.0 readback remain open.
+
+## Authority notes
+
+- Current planning authority: `.planning/PROJECT.md` and `.planning/REQUIREMENTS.md`.
+- Editorial/design authority: `.planning/phases/04-offline-publication-and-reproducible-operation/04-CONTEXT.md` and `04-EDITORIAL-SPEC.md`.
+- Accepted analytical authority: `docs/evidence/phase-03-analysis-acceptance.json` (`status: PASS`, `implementation_commit: a6696a1a62e91cd72ac26bde149d201f3ea07e82`, `accepted_numeric_digest: 8db575e9d664864d1513e3b9658bd9b060c4cb3bed8b51561f208adeb97b9a00`), with Phase 2 numerical evidence as its upstream authority.
+- Immutable preparation checkpoint: `d9246e416b944f8a6ec01811b6e885da0141493b`.

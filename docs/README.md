@@ -3,25 +3,26 @@
 La entrega activa es una investigación ENOE real de ocho trimestres, con
 informes estáticos y datos agregados. Sigue [PROJECT](../.planning/PROJECT.md),
 [REQUIREMENTS](../.planning/REQUIREMENTS.md), el [roadmap GSD](../.planning/ROADMAP.md)
-y [STATE](../.planning/STATE.md). Su aceptación numérica y publicación final
-siguen pendientes. [CONTRACT-V2](CONTRACT-V2.md) define el contrato real.
+y [STATE](../.planning/STATE.md). Las Fases 1–3 están aceptadas y la Fase 4
+tiene evidencia integrada y CI Windows/Ubuntu; su verificación independiente
+y el release final siguen pendientes. [CONTRACT-V2](CONTRACT-V2.md) define el contrato real.
 
 El release sintético 0.1.0 permanece como referencia histórica y fixture de
-regresión. Los documentos históricos señalados abajo se actualizarán con los
-interfaces y comprobantes aceptados de la entrega real.
+regresión. Las guías bilingües de alcance, requisitos, arquitectura, método,
+fuentes, glosario, operación y contribución describen la entrega real.
 
 | Necesidad | Documento | Qué decide o prueba |
 |---|---|---|
 | Entender el proyecto | [README ES](../README.md), [README EN](../README.en.md) | Propósito, entrada y límites actuales |
 | Resolver autoridad | [PROJECT-CHARTER](PROJECT-CHARTER.md) | Mandato, publicación autorizada, precedencia |
-| Delimitar la entrega | [SCOPE](SCOPE.md) | Dentro/fuera del MVP y fases posteriores |
-| Entender la decisión del usuario | [PRD](PRD.md) | Preguntas, hipótesis y requisitos REQ |
-| Implementar | [SPEC](SPEC.md), [CONTRACT](CONTRACT.md) | Comportamientos, schemas, interfaces y fallos |
+| Delimitar la entrega | [SCOPE](SCOPE.md) | Alcance real y límites |
+| Entender la decisión del usuario | [PRD](PRD.md) | Preguntas y requisitos de investigación |
+| Implementar | [CONTRACT-V2](CONTRACT-V2.md), [SPEC](SPEC.md), [CONTRACT histórico](CONTRACT.md) | Interfaces actuales y legado sintético |
 | Entender el diseño | [ARCHITECTURE](ARCHITECTURE.md), [ADRs](decisions/README.md) | Flujo, responsabilidades, alternativas |
 | Interpretar indicadores | [METHODOLOGY](METHODOLOGY.md), [GLOSSARY](GLOSSARY.md) | Universos, fórmulas, precisión y términos |
 | Incorporar fuentes | [SOURCES](SOURCES.md), [catálogo](../data/catalog/sources.json) | Autoridad, términos, acceso y usos permitidos |
 | Preparar gráficas | [VISUALIZATION](VISUALIZATION.md) | Contrato de reportes y metadatos |
-| Ejecutar el trabajo | [PLAN](PLAN.md), [ROADMAP](ROADMAP.md) | Tareas, dependencias, hitos y expansión |
+| Ejecutar el trabajo | [OPERATIONS](OPERATIONS.md), [PLAN](PLAN.md), [ROADMAP](ROADMAP.md) | Comandos reales, dependencias e hitos |
 | Evitar fallos | [RISKS](RISKS.md), [VALIDATION-PLAN](VALIDATION-PLAN.md) | Riesgos, casos rojos y evidencias de cierre |
 | Saber qué está probado | [STATUS](STATUS.md) | Resultados actuales, bloqueadores y límites |
 | Revisar la planeación | [PLANNING-REVIEW](PLANNING-REVIEW.md) | Hallazgos adversariales y resolución, con alcance documental |

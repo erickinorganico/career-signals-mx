@@ -6,7 +6,9 @@ Published at the owner's request as a preliminary snapshot. The real INEGI ENOE 
 
 National and focal-field profiles span eight quarters; other fields, recorded sex and all 32 states cover the latest quarter only. Missing and suppressed values remain null. Precision is explicitly nonofficial (`REVIEW`); this is neither a career ranking nor a personal recommendation.
 
-Local checks passed 592 Python tests, 30 Node controls, independent R comparisons and numerical replay. Hosted native-install CI and final GSD closure remain pending. Version 1.0.0 is not declared complete; full bilingual documentation is unfinished.
+Local checks passed 592 Python tests, 30 Node controls, independent R comparisons and numerical replay. [Hosted native-install CI](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) passed on Windows and Ubuntu. Independent Phase 4 verification and Phase 5 release audit remain open; version 1.0.0 is not declared complete.
+
+Read the current bilingual [method](docs/METHODOLOGY.md), [scope](docs/SCOPE.md), [operations](docs/OPERATIONS.md), [v2 contract](docs/CONTRACT-V2.md) and [Phase 4 evidence](docs/evidence/phase-04-publication-acceptance.json).
 
 ---
 
@@ -20,21 +22,6 @@ The remaining material describes the earlier synthetic pilot, not the real repor
 Analytics repository combining source research, evidence-aware pipelines and
 analytical reports. [Español](README.md) · [Documentation](docs/README.md)
 
-> **Real-data version 1.0.0: Phases 1–3 accepted.** The full scope covers eight
-> ENOE quarters, 2024 Q3–2026 Q2, survey uncertainty, field profiles, offline
-> HTML/Markdown/PDF reporting and reusable public aggregates. Source custody and
-> statistical estimation are accepted: 6,739 evaluated cells, independent R checks,
-> official references and identical eight-quarter replay. Project precision
-> remains explicitly nonofficial. The accepted evidence-bound packet contains
-> 6,739 real records, 4,209 comparisons, 38 claims and 3 openings; persisted JSON
-> reload validation has zero errors. Independent review verified 42/42 truths and
-> 4/4 roadmap criteria; security closed 15/15 threat entries with zero open and
-> Nyquist passed 31/31.
-> Phase 4 publication and Phase 5 release remain pending. See the
-> [numerical evidence](docs/evidence/phase-02-numerical-acceptance.json),
-> [release plan](docs/FINAL-RELEASE-PLAN.md) and [GSD status](.planning/STATE.md).
-> The public repository remains at version 0.1.0 until the final release.
->
 > The demo instructions below describe historical version 0.1.0. Its observations
 > are **synthetic**, not Mexican labor estimates or personal recommendations.
 > The demo is not the final project deliverable.

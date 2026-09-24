@@ -4,20 +4,22 @@ milestone: v1.0.0
 milestone_name: Release
 current_phase: 04
 current_phase_name: Offline Publication and Reproducible Operation
-status: paused
-stopped_at: 04-06 integrated controls under independent review; actual installed crash recovery and metadata continuity passed
-last_updated: "2026-09-24T01:29:54+00:00"
+status: active
+stopped_at: null
+last_updated: "2026-09-24T20:55:39.007750+00:00"
 last_activity: 2026-09-24
-last_activity_desc: "c222f69 installed recovery/build/open passed; 73 artifacts, 22 typed tables, 97 pages and unchanged original evidence; integrated fixture and native CI gates remain"
+last_activity_desc: "04-06 integrated acceptance complete; hosted Windows/Ubuntu installed-wheel CI passed at 3b8b2d4; Phase 4 verified 5/5 technical truths; explicit visual approval requested; Phase 5 preparation continues"
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 16
-  completed_plans: 15
+  total_plans: 19
+  completed_plans: 16
   percent: 60
 ---
 
 # Project State
+
+**Owner continuation, 2026-09-24:** the prior pause below was revoked for completing the remaining release work. Plan 04-06 now has local and hosted acceptance evidence; [CI run 36050222714](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) passed Windows and Ubuntu with downloaded installed-helper receipts. Independent Phase 4 verification and Phase 5 release gates remain; the published `v0.9.0-preview.1` snapshot is still preliminary.
 
 **Owner decision, 2026-09-24 UTC:** stop additional implementation/research to limit token usage; publish the existing validated snapshot as `v0.9.0-preview.1`. No further phase execution is authorized by this continuation. Hosted native CI, final 04-06 acceptance, Phase 5 and final GSD closure remain uncompleted; this is not v1.0.0 completion.
 
@@ -26,22 +28,22 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-22)
 
 **Core value:** Una persona puede entender y verificar una conclusión laboral útil sin confundir muestras pequeñas, datos faltantes, carreras, ocupaciones o diferencias metodológicas.
-**Current focus:** Phase 4 — Offline Publication and Reproducible Operation
+**Current focus:** Phase 4 visual acceptance; reviewed Phase 5 release preparation
 
 ## Current Position
 
 Phase: 04 — Offline Publication and Reproducible Operation
-Plan: 5/6 complete; 04-06 executing
-Status: Paused at owner request; current snapshot published
-Last activity: 2026-09-24 UTC — Actual installed abrupt-exit recovery/build/open and metadata continuity passed; integrated edge/disclosure review and cross-platform native CI remain in progress
+Plan: 6/6 implemented; independent technical verification passed, human visual approval pending
+Status: Active; current preliminary snapshot published
+Last activity: 2026-09-24 UTC — 04-06 local controls and cross-platform native CI passed; installed helper receipts read back
 
-Progress: 3/5 phases accepted; 15/16 currently planned execution plans implemented (93.75%). Phase 5 is not yet planned; this is not release completion.
+Progress: 3/5 phases independently accepted; 16/19 proposed execution plans implemented. The three Phase 5 plans passed independent plan-checker review; formal execution awaits Phase4 human visual approval; this is not release completion.
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans implemented: 15
+- Total plans implemented: 16
 - Executor-reported durations are recorded in each plan summary; they exclude orchestration, research and independent reviews.
 
 **By Phase:** Phase 1 — 4/4 plans complete, 27/27 truths verified, six prohibitions mechanically enforced; canonical phase completion returned no warnings.
@@ -77,3 +79,7 @@ None. The full real-data scope remains in v1.0.0.
 Last session: 2026-09-24T01:29:54+00:00
 Stopped at: 04-06 integrated controls under independent review; actual installed crash recovery and metadata continuity passed
 Resume file: None
+
+## Current review checkpoint
+
+Independent Phase4 verifier checked all five roadmap truths and eight requirements, with 73/73 content hashes matching. Its explicit GSD human visual gate remains pending; the user was asked to review the unchanged published PDF/HTML. Phase5 plan-checker passed all three plans after correcting executable checks, ownership, immutable-target/later-evidence sequencing and manual edge coverage. Canonical post-planning gap analysis covers all five Phase5 requirements. Independent public-content review found no material privacy/disclosure/attribution issue; exact final wheel/archive/remote custody remains pending. No v1.0.0 release or phase completion is claimed.

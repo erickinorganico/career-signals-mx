@@ -1,41 +1,17 @@
-# Licencias y atribución
+# Third-party notices / Avisos de terceros
 
-El código, documentación y fixtures originales de este repositorio se publican
-bajo [MIT](LICENSE). Los paquetes instalados no se redistribuyen aquí:
-`.venv`, cachés y artefactos de ejecución están excluidos de Git.
+## English
 
-Dependencias directas declaradas: Python, DuckDB, jsonschema y Matplotlib;
-pytest se utiliza para verificación. Las versiones fijadas están en
-[pyproject.toml](pyproject.toml) y [requirements.txt](requirements.txt).
-Sus licencias propias no se reemplazan por la licencia MIT del proyecto.
-Antes de empaquetar binarios o distribuir entornos, el gate de release deberá
-inventariar también dependencias transitivas y conservar sus avisos.
+Project code is distributed under the MIT license in [LICENSE](LICENSE), copyright 2026 Brújula Laboral MX contributors. This license does not replace the source-data or font terms.
 
-Para 0.1.0 se revisaron los metadatos de los 23 paquetes fijados, sin entradas
-carentes de información de licencia. El [inventario](docs/evidence/dependency-licenses.json)
-conserva expresiones SPDX o metadatos/clasificadores del paquete instalado.
-Los avisos completos permanecen con cada distribución. El wheel del proyecto
-incluye también recursos authored y cuatro fuentes DejaVu con su licencia
-íntegra; no redistribuye los paquetes Python dependientes. El
-[resultado histórico de pip-audit](docs/evidence/dependency-audit.json)
-no encontró vulnerabilidades conocidas en el conjunto de 0.1.0 revisado
-entonces; no constituye una auditoría nueva de esta edición.
+The research uses INEGI, Encuesta Nacional de Ocupación y Empleo (ENOE), quarterly public sources from 2024 Q3 through 2026 Q2. Source URLs, dates, metadata and hashes remain in the report and sealed manifest. These aggregates and charts were independently transformed by Brújula Laboral MX; they are not official INEGI estimates and do not imply INEGI endorsement. See [INEGI terms](https://www.inegi.org.mx/inegi/terminos.html) and [source details](docs/SOURCES.md). Raw person-level microdata are not redistributed in this release.
 
-El [catálogo de fuentes](docs/SOURCES.md) documenta condiciones de INEGI,
-OLA/STPS, Data México e IMCO. La auditoría pública conserva enlaces y notas
-metodológicas, no microdatos ENOE ni cifras OLA redistribuidas. No se incluye
-código, consultas o datos propietarios de otras organizaciones.
+Four unmodified DejaVu TrueType fonts and their complete original notice are redistributed. The wheel contains `brujula/assets/fonts/LICENSE_DEJAVU`; the research archive contains `research/assets/fonts/LICENSE_DEJAVU`. Notice SHA-256: `d75938dec098f06f0ac3c00853065d94f020be1c3c62ef1dc2975ba15b4d9b0e`. Preserve this notice when redistributing the fonts or bundled reports.
 
-Para una futura derivación de ENOE se debe conservar atribución a INEGI y al
-producto específico, periodo, fecha de consulta/actualización, metadatos y una
-nota de transformación que no implique aval de INEGI. La revisión debe hacerse
-sobre los términos vigentes del dataset y snapshot seleccionado, no solo sobre
-esta nota de planificación.
+Python dependencies, R, native PDF toolchains and their installation archives are not bundled in the project wheel or research archive. They are separately installed software under their own terms. The [dependency inventory](docs/research/DEPENDENCY-LICENSE-INVENTORY.md) records the reviewed environment and is not a blanket license for third-party packages. Embedded PDF font subsets originate from the same DejaVu files.
 
-La prueba y auditoría del PDF usan `pypdf==6.19.0` (BSD-3-Clause, copyright
-de sus contribuyentes); no forma parte del motor de generación de PDF.
-Identidad, wheel y SHA-256 revisados: [auditoría de dependencia](docs/evidence/phase-04-pdf-audit-dependency.json).
-El PDF se genera con `weasyprint==70.0`, declarado como extra `pdf`; se aplican
-las licencias y avisos de su propia distribución y dependencias nativas.
-Los cuatro archivos DejaVu TTF se distribuyen con su `LICENSE_DEJAVU` completo
-en cada publicación y wheel.
+## Español
+
+El código del proyecto se distribuye bajo MIT, con el texto completo en LICENSE. Los datos proceden de INEGI, ENOE, 2024-T3 a 2026-T2. Se conservan fuente, metadatos y hashes; los agregados y gráficas son transformaciones independientes de Brújula Laboral MX, no estimaciones oficiales ni un producto avalado por INEGI. Los términos de INEGI y de las fuentes no se sustituyen por la licencia del código. No se redistribuyen microdatos personales.
+
+Se incluyen cuatro fuentes DejaVu sin modificar, su aviso íntegro en las rutas indicadas arriba y subconjuntos incrustados en el PDF. Conserva ese aviso al redistribuir. Las dependencias Python, R y las bibliotecas nativas se instalan por separado y no forman parte del wheel ni del archivo de investigación. El inventario de dependencias describe el entorno revisado; cada paquete conserva sus propios términos.

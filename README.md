@@ -8,15 +8,15 @@ Investigación reproducible del mercado laboral mexicano con datos públicos de 
 
 Los perfiles nacionales y campos focales tienen seguimiento de ocho trimestres; los demás campos, sexo registrado y 32 entidades se presentan para el último trimestre. Carrera, ocupación e industria se mantienen separadas. Los valores faltantes y suprimidos conservan `null`; la precisión calculada es **no oficial, REVIEW**. No constituye un ranking ni una recomendación personal.
 
-El análisis incluye 6,739 registros, 4,209 comparaciones (las no comparables quedan bloqueadas) y 38 afirmaciones enlazadas a evidencia. La validación local pasó 592 pruebas Python, 30 controles Node, contraste independiente con R y replay numérico. La instalación nativa en GitHub Actions y el cierre completo de GSD siguen pendientes en esta publicación preliminar. No se declara completada la versión 1.0.0.
+El análisis incluye 6,739 registros, 4,209 comparaciones (las no comparables quedan bloqueadas) y 38 afirmaciones enlazadas a evidencia. La validación local pasó 592 pruebas Python, 30 controles Node, contraste independiente con R y replay numérico. La instalación nativa en [GitHub Actions](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) pasó en Windows y Ubuntu. La verificación independiente de Fase 4 y el cierre de Fase 5 siguen pendientes; no se declara completada la versión 1.0.0.
 
-Descarga y extrae el ZIP; abre `research/report.html` o `research/report.pdf`. Consulta [el contrato vigente](docs/CONTRACT-V2.md), [la evidencia de publicación](docs/evidence/phase-04-publication-acceptance.json) y [el estado GSD](.planning/STATE.md). No se distribuyen microdatos ni se requiere una aplicación alojada.
+Descarga y extrae el ZIP; abre `research/report.html` o `research/report.pdf`. Consulta [el método](docs/METHODOLOGY.md), [el alcance](docs/SCOPE.md), [la guía de operación](docs/OPERATIONS.md), [el contrato vigente](docs/CONTRACT-V2.md), [la evidencia de publicación](docs/evidence/phase-04-publication-acceptance.json) y [el estado GSD](.planning/STATE.md). No se distribuyen microdatos ni se requiere una aplicación alojada.
 
 ---
 
 ## Documentación histórica del piloto sintético 0.1.0
 
-El contenido siguiente describe el piloto anterior. Sus datos, periodos y alcance no son los del informe real enlazado arriba. La documentación bilingüe completa de la futura versión 1.0.0 quedó pendiente al cerrar este trabajo.
+El contenido siguiente describe el piloto anterior. Sus datos, periodos y alcance no son los del informe real enlazado arriba. Las guías bilingües actuales están enlazadas arriba; su auditoría de release final continúa en Fase 5.
 
 ## Qué construimos
 
