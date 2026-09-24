@@ -85,6 +85,32 @@ def test_plot_separates_units_and_null_is_not_zero(tmp_path):
     assert 'DATOS SINTÉTICOS' in svg_text and 'DATOS SINTÉTICOS' in png_meta
 
 
+def test_figure_metadata_preserves_spanish_scope_and_exact_public_manifest(tmp_path):
+    import json
+    import xml.etree.ElementTree as ET
+    from PIL import Image
+
+    point = _point('v2r:scope', metric='Ingreso positivo', unit='MXN/month', value=None)
+    point.update(field='Comunicación y periodismo', geography='México',
+                 recorded_sex='mujeres', recorded_sex_id='female')
+    figure = {'slug':'recorded-sex', 'figure_id':'figure:scope',
+              'title':'¿Qué cambió en México?', 'points':[point],
+              'periods':['2026-Q1'], 'source_ids':['enoe_2026_q1'], 'synthetic':True}
+    svg, png = _plot(figure, tmp_path)
+    svg_root = ET.parse(tmp_path / svg).getroot()
+    description = svg_root.find('{http://www.w3.org/2000/svg}desc').text
+    with Image.open(tmp_path / png) as raster:
+        png_description = raster.info['Description']
+    for context in (description, png_description, _print_panels(figure)):
+        for label in (figure['title'], 'México', 'Comunicación y periodismo',
+                      'personas profesionales', 'MXN/mes nominales', '2026-Q1',
+                      'enoe_2026_q1', 'mujeres', 'Ingreso positivo', 'DATOS SINTÉTICOS'):
+            assert label in context
+    assert json.loads(png_description.split('; ', 1)[1]) == [{
+        'record_id':'v2r:scope', 'value':None, 'ci90_lower':None,
+        'ci90_upper':None, 'status':'UNKNOWN', 'reason':'unknown'}]
+
+
 def test_trend_lines_require_accepted_adjacent_pair():
     assert SERIES_STYLES['033100'][1:] == ('o', 'Derecho')
     assert SERIES_STYLES['032100'][1:] == ('s', 'Comunicación y periodismo')
