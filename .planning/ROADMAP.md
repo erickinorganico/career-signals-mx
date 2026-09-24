@@ -167,7 +167,11 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
   3. A reviewer can confirm the release contains only validated, redistributable public aggregates and artifacts, with secrets, licenses, attribution, and microdata absence checked.
   4. A reader can retrieve a 1.0.0 release in erickinorganico/career-signals-mx linking code, report, figures, aggregates, manifest, and acceptance evidence; unresolved material gates prevent a complete designation.
 
-**Plans**: TBD
+**Plans**: 3 proposed plans; independent GSD plan-checker review pending
+
+- [ ] 05-01-PLAN.md — Bilingual reader documentation and clean installation
+- [ ] 05-02-PLAN.md — Independent research and release-custody audit
+- [ ] 05-03-PLAN.md — Candidate readback, public release and GSD closure
 
 ## Progress
 
@@ -178,5 +182,5 @@ This milestone delivers a reproducible, real-data ENOE research publication acro
 | 1. Official Sources and Research Contract | 4/4 | Complete    | 2026-09-22 |
 | 2. Defensible Survey Estimates | 3/3 | Complete    | 2026-09-23 |
 | 3. Supported Labor Findings | 3/3 | Complete    | 2026-09-23 |
-| 4. Offline Publication and Reproducible Operation | 5/6 | In Progress|  |
-| 5. Independent Audit and v1.0.0 Release | 0/TBD | Not started | - |
+| 4. Offline Publication and Reproducible Operation | 6/6 | Independent verification pending |  |
+| 5. Independent Audit and v1.0.0 Release | 0/3 | Proposed plans; checker pending | - |

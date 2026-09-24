@@ -12,7 +12,7 @@ last_activity_desc: "04-06 integrated acceptance complete; hosted Windows/Ubuntu
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 16
+  total_plans: 19
   completed_plans: 16
   percent: 60
 ---
@@ -37,7 +37,7 @@ Plan: 6/6 implemented; independent phase verification pending
 Status: Active; current preliminary snapshot published
 Last activity: 2026-09-24 UTC — 04-06 local controls and cross-platform native CI passed; installed helper receipts read back
 
-Progress: 3/5 phases independently accepted; 16/16 currently planned execution plans implemented. Phase 5 is not yet planned; this is not release completion.
+Progress: 3/5 phases independently accepted; 16/19 proposed execution plans implemented. The three Phase 5 plans and validation strategy are written but have not passed independent plan-checker review; this is not release completion.
 
 ## Performance Metrics
 
