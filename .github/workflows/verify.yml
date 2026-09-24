@@ -45,7 +45,7 @@ jobs:
           $expected = 'ab1151f210b4e6bb7aa7a79e91a67e8ddb760094c107bfda55241b6aaefe7d53'
           if ($actual -ne $expected) { throw 'Reviewed WeasyPrint native asset hash differs' }
           Expand-Archive -LiteralPath $archive -DestinationPath $native
-          $dll = Join-Path $native 'weasyprint/_internal'
+          $dll = Join-Path $native 'onedir/weasyprint/_internal'
           if (!(Test-Path -LiteralPath $dll -PathType Container)) { throw 'Native DLL directory missing' }
           $fontconfig = Join-Path $env:RUNNER_TEMP 'brujula-fontconfig.xml'
           $fonts = Join-Path $env:GITHUB_WORKSPACE 'brujula/assets/fonts'
