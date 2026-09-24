@@ -4,20 +4,22 @@ milestone: v1.0.0
 milestone_name: Release
 current_phase: 04
 current_phase_name: Offline Publication and Reproducible Operation
-status: paused
-stopped_at: 04-06 integrated controls under independent review; actual installed crash recovery and metadata continuity passed
+status: active
+stopped_at: null
 last_updated: "2026-09-24T01:29:54+00:00"
 last_activity: 2026-09-24
-last_activity_desc: "c222f69 installed recovery/build/open passed; 73 artifacts, 22 typed tables, 97 pages and unchanged original evidence; integrated fixture and native CI gates remain"
+last_activity_desc: "04-06 integrated acceptance complete; hosted Windows/Ubuntu installed-wheel CI passed at 3b8b2d4; independent Phase 4 verification and Phase 5 remain"
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 16
-  completed_plans: 15
+  completed_plans: 16
   percent: 60
 ---
 
 # Project State
+
+**Owner continuation, 2026-09-24:** the prior pause below was revoked for completing the remaining release work. Plan 04-06 now has local and hosted acceptance evidence; [CI run 36050222714](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) passed Windows and Ubuntu with downloaded installed-helper receipts. Independent Phase 4 verification and Phase 5 release gates remain; the published `v0.9.0-preview.1` snapshot is still preliminary.
 
 **Owner decision, 2026-09-24 UTC:** stop additional implementation/research to limit token usage; publish the existing validated snapshot as `v0.9.0-preview.1`. No further phase execution is authorized by this continuation. Hosted native CI, final 04-06 acceptance, Phase 5 and final GSD closure remain uncompleted; this is not v1.0.0 completion.
 
@@ -31,11 +33,11 @@ See: .planning/PROJECT.md (updated 2026-09-22)
 ## Current Position
 
 Phase: 04 — Offline Publication and Reproducible Operation
-Plan: 5/6 complete; 04-06 executing
-Status: Paused at owner request; current snapshot published
-Last activity: 2026-09-24 UTC — Actual installed abrupt-exit recovery/build/open and metadata continuity passed; integrated edge/disclosure review and cross-platform native CI remain in progress
+Plan: 6/6 implemented; independent phase verification pending
+Status: Active; current preliminary snapshot published
+Last activity: 2026-09-24 UTC — 04-06 local controls and cross-platform native CI passed; installed helper receipts read back
 
-Progress: 3/5 phases accepted; 15/16 currently planned execution plans implemented (93.75%). Phase 5 is not yet planned; this is not release completion.
+Progress: 3/5 phases independently accepted; 16/16 currently planned execution plans implemented. Phase 5 is not yet planned; this is not release completion.
 
 ## Performance Metrics
 

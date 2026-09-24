@@ -1,13 +1,17 @@
 ---
 phase: 04
 slug: offline-publication-and-reproducible-operation
-status: in_progress
-nyquist_compliant: false
-wave_0_complete: false
+status: complete
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-09-23
 ---
 
 # Phase 4 validation strategy
+
+## Final 04-06 readback, 2026-09-24
+
+The historical audit observations below were written before hosted CI finished. Run [36050222714](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) completed successfully on Windows and Ubuntu at commit `3b8b2d4e603d69f9d94f5ac45f6446156a17d14f`. Both downloaded installed-helper receipts report `PASS`; SHA-256 values and exact fixture/PDF scope are in `docs/evidence/phase-04-publication-acceptance.json`. `04-06-SUMMARY.md` is present. Together with the observed 45 edge mappings, four bad-red/clean-green prohibition producers and local full suite, these satisfy this plan's Nyquist evidence. Independent Phase 4 verification is still a separate gate.
 
 This document retains the original planning map below and appends observed Phase 4 validation. Phase 3 was independently accepted at source a6696a1 and checkpoint 59451d3: 42/42 truths, persisted packet validation zero errors, Windows/Ubuntu CI passed. The accepted packet is `.cache/research/phase3-analysis/analysis.json` and its public-safe durable receipt is `docs/evidence/phase-03-analysis-acceptance.json`. Phase 4 reestablished numerical trust after installed-code/resource relocation before rebinding that packet's references. Phase 4 remains in progress until final native CI and the integrated summary are read back; the current public-safe acceptance receipt explicitly says `LOCAL_PASS_PENDING_CI`.
 
