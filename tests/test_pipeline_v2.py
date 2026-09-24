@@ -305,6 +305,12 @@ def test_replay_logical_exports_checks_csv_and_parquet_independently(tmp_path):
     assert p._logical_exports(left, right, {"public_records"})
     (right / "public-records.csv").write_text("value\n999.0\n", encoding="utf-8")
     assert not p._logical_exports(left, right, {"public_records"})
+    (right / "public-records.csv").write_text("value\n1.0\n", encoding="utf-8")
+    (right / "public-records.parquet").unlink()
+    db = duckdb.connect()
+    db.execute(f"COPY (SELECT 999.0 AS value) TO '{(right / 'public-records.parquet').as_posix()}' (FORMAT PARQUET)")
+    db.close()
+    assert not p._logical_exports(left, right, {"public_records"})
 
 
 def test_replay_logical_exports_ignores_tied_container_row_order(tmp_path):
@@ -321,12 +327,6 @@ def test_replay_logical_exports_ignores_tied_container_row_order(tmp_path):
         db.close()
         (root / "public-records.csv").write_text("k,v\n1,10\n1,20\n", encoding="utf-8")
     assert p._logical_exports(left, right, {"public_records"})
-    (right / "public-records.csv").write_text("value\n1.0\n", encoding="utf-8")
-    (right / "public-records.parquet").unlink()
-    db = duckdb.connect()
-    db.execute(f"COPY (SELECT 999.0 AS value) TO '{(right / 'public-records.parquet').as_posix()}' (FORMAT PARQUET)")
-    db.close()
-    assert not p._logical_exports(left, right, {"public_records"})
 
 
 def test_replay_reconstructs_and_keeps_baseline_immutable(monkeypatch, tmp_path):
