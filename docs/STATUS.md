@@ -1,6 +1,6 @@
 # Estado publicado — v0.9.0-preview.1
 
-El propietario pidió detener la ampliación y publicar el estado existente. Se entrega el [informe real y sus agregados](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) como publicación preliminar. La implementación local está validada; CI nativa alojada, cierre de 04-06, fase 5 y auditoría final GSD permanecen pendientes. No se declara versión final 1.0.0. Los detalles que siguen son registros históricos anteriores a esta decisión.
+Se entrega el [informe real y sus agregados](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) como publicación preliminar. La implementación local y el plan 04-06 tienen evidencia de aceptación; la [CI nativa](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) pasó en Windows y Ubuntu. La verificación independiente de Fase 4, la Fase 5 y la auditoría final GSD permanecen pendientes. No se declara versión final 1.0.0. Los detalles que siguen son registros históricos anteriores a esta actualización.
 
 ---
 
