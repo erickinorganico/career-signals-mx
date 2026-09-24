@@ -82,3 +82,33 @@ idempotent recovery and malformed/reparse-path rejection. Metadata regression:
 `b6de4c3`. Independent metadata review is in 04-METADATA-REVIEW.md. Integrated
 disclosure controls, native Windows/Ubuntu CI and final phase reviews remain
 separate gates.
+
+## Nonempty real permutation and link proof
+
+The installed `c222f69` package also processed a reversed insertion order of the
+actual 6,739-record index into a fresh disposable export/figure directory.
+No production function was patched and no independent reference was overridden.
+Production model validation returned zero errors and the canonical model was
+identical. All 22 newly emitted CSV files were byte-identical to the sealed run;
+all 22 Parquet and DuckDB tables retained identical typed rows. Each of the nine
+regenerated PNG pixel buffers matched exactly; SVG/PNG numeric manifests and
+record membership also matched. The report PDF was not regenerated for this
+permutation check.
+
+Independent queries verified nonempty link sets: 249 figure-record links,
+133 figure-comparison links, three figure-claim links, 16 figure-source links
+and 65 claim-record links. All comparison endpoints and non-null claim
+comparison references resolved. This real-data check complements the isolated
+portable fixture checks for PUB-04 adjacency/order and PUB-05 membership; an
+empty figure list is not treated as evidence of plotted membership.
+
+Receipt `.cache/research/phase4-real-permutation/readback.json` SHA-256:
+`68a65608a03483a0cb5c013c59cd7a88c114b4f53a57326ee2aeaca3d1111c2c`.
+
+The separately refreshed candidate content audit read the exact current wheel
+and run: 63 wheel members, 73 content files, 22 tables, nine SVG/PNG pairs and
+one PDF. It found no credential/private-path markers or person-level fields in
+the aggregate schema, and verified project/font license identities and INEGI
+attribution. Its bounded `REVIEW` result is not a release or suppression-canary
+certification. Receipt `.cache/research/phase4-integrated-content-audit.json`
+SHA-256: `fb4e84159a45171ac5deba1845409436f7b445e5a2a6710857cc48d097a7a9e8`.

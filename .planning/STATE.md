@@ -5,10 +5,10 @@ milestone_name: Release
 current_phase: 04
 current_phase_name: Offline Publication and Reproducible Operation
 status: executing
-stopped_at: 04-05 accepted: installed reconstruction and copied-source invalidation passed; 04-06 integrated acceptance begins
-last_updated: "2026-09-24T00:32:00+00:00"
+stopped_at: 04-06 integrated controls under independent review; actual installed crash recovery and metadata continuity passed
+last_updated: "2026-09-24T01:29:54+00:00"
 last_activity: 2026-09-24
-last_activity_desc: "Sealed operation accepted with 38 focused tests, real installed replay, 22-table parity and unchanged originals after failed copied acquisition"
+last_activity_desc: "c222f69 installed recovery/build/open passed; 73 artifacts, 22 typed tables, 97 pages and unchanged original evidence; integrated fixture and native CI gates remain"
 progress:
   total_phases: 5
   completed_phases: 3
@@ -31,7 +31,7 @@ See: .planning/PROJECT.md (updated 2026-09-22)
 Phase: 04 — Offline Publication and Reproducible Operation
 Plan: 5/6 complete; 04-06 executing
 Status: Executing 04-06
-Last activity: 2026-09-24 UTC — Installed sealed operation and source invalidation accepted; integrated edge, disclosure and cross-platform CI gates begin
+Last activity: 2026-09-24 UTC — Actual installed abrupt-exit recovery/build/open and metadata continuity passed; integrated edge/disclosure review and cross-platform native CI remain in progress
 
 Progress: 3/5 phases accepted; 15/16 currently planned execution plans implemented (93.75%). Phase 5 is not yet planned; this is not release completion.
 
@@ -72,6 +72,6 @@ None. The full real-data scope remains in v1.0.0.
 
 ## Session Continuity
 
-Last session: 2026-09-24T00:32:00+00:00
-Stopped at: 04-05 accepted: installed reconstruction and copied-source invalidation passed; 04-06 integrated acceptance begins
+Last session: 2026-09-24T01:29:54+00:00
+Stopped at: 04-06 integrated controls under independent review; actual installed crash recovery and metadata continuity passed
 Resume file: None
