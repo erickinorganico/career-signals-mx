@@ -101,6 +101,71 @@ def test_colliding_run_id_never_reuses_sealed_history(monkeypatch, tmp_path):
     assert (out / "runs/20260923T120000-aaaaaaaaaaaa/manifest.json").read_bytes() == prior
 
 
+@pytest.mark.parametrize("crash_stage", ["source", "receipt", "manifest", "pointer", "final_index"])
+def test_restart_records_interrupted_publication_without_rewriting_seals(monkeypatch, tmp_path, crash_stage):
+    source, out, audit, analysis, _names = _stub_build(monkeypatch, tmp_path)
+    original_sources = p._sources
+    original_immutable = p.immutable_bytes
+    original_atomic = p.atomic_json
+    armed = True
+
+    def crash_sources(root):
+        nonlocal armed
+        if armed and crash_stage == "source":
+            armed = False
+            raise KeyboardInterrupt("abrupt process interruption")
+        return original_sources(root)
+
+    def crash_immutable(path, content):
+        nonlocal armed
+        original_immutable(path, content)
+        if armed and path.name == f"{crash_stage}.json":
+            armed = False
+            raise KeyboardInterrupt("abrupt process interruption")
+
+    def crash_atomic(path, value):
+        nonlocal armed
+        if (armed and crash_stage == "final_index" and path.name == "journal.json"
+                and value.get("build_status") == "SUCCEEDED"):
+            armed = False
+            raise KeyboardInterrupt("abrupt process interruption")
+        original_atomic(path, value)
+        if (armed and crash_stage == "pointer" and path.name == "current.json"
+                and value.get("build_status") == "SUCCEEDED"):
+            armed = False
+            raise KeyboardInterrupt("abrupt process interruption")
+
+    monkeypatch.setattr(p, "_sources", crash_sources)
+    monkeypatch.setattr(p, "immutable_bytes", crash_immutable)
+    monkeypatch.setattr(p, "atomic_json", crash_atomic)
+    with pytest.raises(KeyboardInterrupt):
+        p.build_publication(source, out, audit, analysis)
+    prior = json.loads((out / "current.json").read_text(encoding="utf-8"))
+    interrupted = out / "runs" / prior["run_id"]
+    sealed_before = {name: (interrupted / name).read_bytes()
+                     for name in ("receipt.json", "manifest.json") if (interrupted / name).exists()}
+    rebuilt = p.build_publication(source, out, audit, analysis)
+    target = "publication-failure.json" if "receipt.json" in sealed_before else "receipt.json"
+    failure = json.loads((interrupted / target).read_text(encoding="utf-8"))
+    assert failure["build_status"] == "FAILED" and failure["status"] == "BLOCKED"
+    assert failure["stage"] == "interrupted_recovery"
+    assert failure["run_id"] == prior["run_id"]
+    assert json.loads((interrupted / "journal.json").read_text())["build_status"] == "FAILED"
+    assert rebuilt["current"]["run_id"] != prior["run_id"]
+    assert all((interrupted / name).read_bytes() == content for name, content in sealed_before.items())
+    failure_before = (interrupted / target).read_bytes()
+    p.build_publication(source, out, audit, analysis)
+    assert (interrupted / target).read_bytes() == failure_before
+
+
+def test_failed_promotion_marker_blocks_a_previously_sealed_run(tmp_path):
+    run = tmp_path / "publication/runs/20260923T120000-aaaaaaaaaaaa"
+    run.mkdir(parents=True)
+    (run / "publication-failure.json").write_text('{"status":"BLOCKED"}')
+    with pytest.raises(ValueError, match="failed"):
+        p._verify_sealed(run, tmp_path / "sources")
+
+
 def test_inventory_rejects_extra_missing_and_symlink(tmp_path):
     root = tmp_path / "run"
     root.mkdir()
