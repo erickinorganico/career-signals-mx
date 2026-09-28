@@ -55,6 +55,30 @@ def test_builds_approved_archive_and_links(tmp_path):
     assert not list(tmp_path.glob(".pages-stage-*"))
 
 
+def test_chart_fragments_are_generated_from_verified_staging(tmp_path, monkeypatch):
+    import scripts.site_charts as charts
+
+    template = "<!-- HERO_CHART --><!-- TREND_CHARTS --><!-- TERRITORY_CHARTS -->"
+    archive, inventory, site = _fixture(tmp_path, landing=template)
+
+    def render(stage):
+        assert (stage / "research/report.html").read_bytes().startswith(b'<h1 id="part">')
+        return {key: f'<p>{key}</p>' for key in ("hero_markup", "trend_markup", "territory_markup")}
+
+    monkeypatch.setattr(charts, "render_charts", render)
+    output = _build(tmp_path, archive, inventory, site)
+    page = (output / "index.html").read_text(encoding="utf-8")
+    assert "<!--" not in page
+    assert "<p>trend_markup</p>" in page
+
+
+def test_incomplete_chart_template_blocks_publication(tmp_path):
+    archive, inventory, site = _fixture(tmp_path, landing="<!-- HERO_CHART -->")
+    with pytest.raises(BuildError, match="each placeholder exactly once"):
+        _build(tmp_path, archive, inventory, site)
+    assert not (tmp_path / "pages").exists()
+
+
 def test_replaces_previous_output_only_after_validation(tmp_path):
     archive, inventory, site = _fixture(tmp_path)
     output = tmp_path / "pages"

@@ -11,7 +11,7 @@ URL: https://erickinorganico.github.io/career-signals-mx/
 el ZIP de investigación del release 1.0.0 y comprueba su tamaño, SHA-256 y
 miembros contra `docs/evidence/phase-05-release-inventory.json`. Distribuye
 los archivos de investigación auditados junto con la portada; no captura
-fuentes nuevas ni publica microdatos. Las fuentes tipográficas son locales.
+fuentes nuevas ni publica microdatos. Las fuentes tipográficas son locales. Después de validar el ZIP, el constructor genera nueve series independientes y dos paneles territoriales. Los valores, intervalos y nulos se conservan; sólo cambia su presentación.
 
 ```powershell
 .venv/Scripts/python.exe scripts/build_site.py --output .cache/pages
@@ -25,7 +25,7 @@ El sitio sigue identificado como la edición histórica 1.0.0; su despliegue
 no equivale a una actualización de la ENOE. No tiene backend, formularios,
 analítica de visitantes ni dependencias JavaScript.
 
-Las imágenes del README son copias exactas de las figuras de la publicación.
+Las gráficas actuales del sitio y del README se generan desde los registros públicos auditados mediante `scripts/site_charts.py`. El informe y las figuras originales del release se conservan sin cambios.
 La portada mantiene visibles el periodo, los universos, el ingreso condicionado
 y la precisión no oficial `REVIEW`. El informe completo conserva las tablas,
 intervalos, fuentes y evidencia. Código y materiales externos mantienen sus
@@ -36,7 +36,26 @@ licencias y atribuciones respectivas.
 La portada se revisó en navegador a 1440 × 1000 y 390 × 844 píxeles:
 encabezado, resultados, navegación y gráfica territorial. No se observó
 desbordamiento horizontal; las tres instancias de imagen cargaron.
-El README enlaza tres figuras PNG copiadas sin cambios del informe sellado.
+El README enlaza tres SVG del nuevo renderer, derivados de los mismos registros auditados.
 El constructor comprueba destinos y anclas locales antes de crear el artefacto.
 La publicación pública se puede consultar en el historial del workflow
 [Publish research site](https://github.com/erickinorganico/career-signals-mx/actions/workflows/pages.yml).
+
+## Rediseño de gráficas · 2026-09-28
+
+Inspiración solicitada: la jerarquía analítica, las superficies claras y las
+separaciones discretas de MetricBlocks. La implementación es original de este
+repositorio; no incorpora código, datos ni recursos privados de la referencia.
+
+- Nueve gráficas de tendencias: tres medidas por tres campos, escalas comunes
+  dentro de cada medida y porcentajes de 0 a 100.
+- Dos paneles territoriales en orden de código, con intervalos y ausencias.
+- Valores e intervalos redondeados sólo para lectura; tablas a dos decimales y
+  `charts/chart-data.json` con los 104 registros públicos originales completos.
+- El JSON incluye SHA-256 de los CSV de registros y vínculos a figuras.
+- Tablas desplegables accesibles y enlaces a cada SVG en tamaño completo.
+
+El renderer utiliza exclusivamente los vínculos de las dos figuras auditadas:
+72 registros de tendencias y 32 territoriales. La verificación directa confirmó
+igualdad de cada fila con el CSV público. Las pruebas afectadas cubren selección,
+nulos, duplicados, composición de tablas y la integración con el constructor.

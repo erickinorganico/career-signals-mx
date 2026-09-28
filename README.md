@@ -14,13 +14,15 @@ Investigación reproducible del mercado laboral mexicano. Ocho trimestres de dat
 
 ## Tres resultados para empezar
 
+Las gráficas muestran ocho trimestres con intervalos del 90 %. Debajo se describe el último trimestre. [Explorar las nueve series y sus tablas](https://erickinorganico.github.io/career-signals-mx/#evolucion).
+
 México, segundo trimestre de 2026. Los tres perfiles corresponden a personas con estudios profesionales terminados y edad conocida de 15 años o más (97 significa 97 o más). Las medidas tienen denominadores distintos: no se deben comparar entre sí como si fueran un mismo indicador.
 
 ### Ciencias políticas: la cobertura del ingreso también es un resultado
 
 **48.48%** de las personas ocupadas del perfil tienen ingreso exacto positivo conocido. Esta cobertura limita la interpretación del ingreso medio: quienes carecen de ingreso conocido no se convierten en ceros.
 
-![Cobertura de ingreso positivo conocido en Ciencias políticas, con intervalo de confianza del 90%](docs/figures/opening-7b66a320b957029a78acf87e6f0cebebe42c8d5efde1652ddcd7544ae033c4de.png)
+![Cobertura de ingreso positivo conocido en Ciencias políticas, con intervalo de confianza del 90%](docs/figures/trend-positive_income_coverage-031300.svg)
 
 IC90: **39.77–57.29%** · CV: 11.10% · n observado: 238 · evidencia **R1549** en el [informe completo](https://erickinorganico.github.io/career-signals-mx/research/report.html).
 
@@ -28,7 +30,7 @@ IC90: **39.77–57.29%** · CV: 11.10% · n observado: 238 · evidencia **R1549*
 
 La tasa de ocupación se calcula sobre la población elegible del perfil; no mide colocación de recién egresados ni empleo relacionado con la carrera.
 
-![Tasa de ocupación del perfil de Derecho, con intervalo de confianza del 90%](docs/figures/opening-7d6e1e45043c9f5b309b91186cc9a259e4543baf20d07e12ec74bf88e99c8b2e.png)
+![Tasa de ocupación del perfil de Derecho, con intervalo de confianza del 90%](docs/figures/trend-employment_rate-033100.svg)
 
 IC90: **74.00–77.63%** · CV: 1.45% · n observado: 4,507 · evidencia **R0691** en el [informe completo](https://erickinorganico.github.io/career-signals-mx/research/report.html).
 
@@ -36,7 +38,7 @@ IC90: **74.00–77.63%** · CV: 1.45% · n observado: 4,507 · evidencia **R0691
 
 **Pesos mexicanos nominales**, exclusivamente entre personas ocupadas con ingreso exacto positivo conocido. No es el ingreso de toda la población del perfil, una oferta salarial ni una medida ajustada por inflación.
 
-![Ingreso mensual medio positivo conocido en Comunicación y periodismo, con intervalo de confianza del 90%](docs/figures/opening-49098ac0e72ad61498b66be4ad781a1a3a53d55bb7c52713ebf26f1539f0ce73.png)
+![Ingreso mensual medio positivo conocido en Comunicación y periodismo, con intervalo de confianza del 90%](docs/figures/trend-positive_income_mean-032100.svg)
 
 IC90: **$15,436.93–$23,857.75** · CV: 13.03% · n observado: 275 · evidencia **R0060** en el [informe completo](https://erickinorganico.github.io/career-signals-mx/research/report.html).
 
