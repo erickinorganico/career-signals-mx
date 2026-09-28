@@ -4,6 +4,8 @@
 
 Investigación reproducible del mercado laboral mexicano. Ocho trimestres de datos públicos, gráficas y tablas con evidencia para leer cada cifra en su contexto.
 
+**Hallazgo central, 2026-T2:** en los tres campos, las estimaciones de ocupación rondan el 75%; el ingreso positivo exacto conocido cubre menos de la mitad de los ocupados. El promedio de ingreso debe leerse junto con esa cobertura. [Leer los tres hallazgos y su evidencia](https://erickinorganico.github.io/career-signals-mx/#hallazgos).
+
 **[Explorar los resultados →](https://erickinorganico.github.io/career-signals-mx/)** · [Leer el informe completo](https://erickinorganico.github.io/career-signals-mx/research/report.html) · [Descargar PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v1.0.0/brujula-laboral-mx-informe.pdf) · [English](README.en.md)
 
 | Periodo analizado | Publicación | Material disponible |

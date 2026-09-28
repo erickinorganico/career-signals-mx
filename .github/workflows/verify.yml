@@ -68,6 +68,8 @@ jobs:
       - name: Verify research prohibitions with executable controls
         run: |
           python -c "import glob,subprocess; files=sorted(glob.glob('tests/phase*_prohibitions*.test.cjs')); print('Collected prohibition controls:', *files, sep='\n'); assert any(f.replace(chr(92),'/') == 'tests/phase4_prohibitions.test.cjs' for f in files); subprocess.run(['node','--test',*files], check=True)"
+      - name: Verify accessible editorial motion
+        run: node --test tests/test_site_motion.cjs
       - name: Build and resolve the offline synthetic demonstration
         run: |
           python -m brujula demo --as-of 2026-09-22 --output artifacts/ci-demo

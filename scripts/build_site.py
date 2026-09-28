@@ -174,9 +174,11 @@ def build_site(archive: Path | None = None, output: Path = DEFAULT_OUTPUT, *, in
             if not source.is_file():
                 raise BuildError(f"site source missing: {source}")
             shutil.copyfile(source, stage / name)
+        if (site / "motion.js").is_file():
+            shutil.copyfile(site / "motion.js", stage / "motion.js")
         landing = stage / "index.html"
         template = landing.read_text(encoding="utf-8")
-        placeholders = {"<!-- HERO_CHART -->": "hero_markup", "<!-- TREND_CHARTS -->": "trend_markup", "<!-- TERRITORY_CHARTS -->": "territory_markup"}
+        placeholders = {"<!-- HERO_CHART -->": "hero_markup", "<!-- TREND_CHARTS -->": "trend_markup", "<!-- TERRITORY_CHARTS -->": "territory_markup", "<!-- SUMMARY_INSIGHTS -->": "summary_markup"}
         if any(token in template for token in placeholders):
             if not all(template.count(token) == 1 for token in placeholders):
                 raise BuildError("chart template must contain each placeholder exactly once")

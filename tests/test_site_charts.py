@@ -29,7 +29,12 @@ def _stage(tmp_path: Path, *, gap: bool = False) -> Path:
             for index, period in enumerate(periods):
                 record_id = f"trend-{metric}-{field}-{period}"
                 missing = gap and metric == "employment_rate" and field == "033100" and index == 3
-                value = 75.86 if metric == "employment_rate" and field == "033100" and index == 7 else (18000 + index * 100 if unit == "MXN/mes" else 65 + index)
+                latest = {"employment_rate": {"033100": 75.86, "032100": 74.87, "031300": 76.07},
+                          "positive_income_coverage": {"033100": 46.88, "032100": 48.24, "031300": 48.48},
+                          "positive_income_mean": {"033100": 18504.01, "032100": 19647.34, "031300": 18078.87}}
+                value = latest[metric][field] if index == 7 else (
+                    18000 + index * 100 if unit == "MXN/mes" else
+                    (40 + index if metric == "positive_income_coverage" else 65 + index))
                 rows.append({"record_id": record_id, "population_id": "completed_professional_known_age",
                              "field_of_study_id": field, "field_label": name, "geography_id": "mx",
                              "geography_label": "México", "period_id": period, "metric_id": metric,
@@ -69,6 +74,18 @@ def test_exact_linked_rows_and_original_values(tmp_path):
     assert len(list((stage / "charts").glob("trend-*.svg"))) == 9
     assert len(list((stage / "charts").glob("territory-*.svg"))) == 2
     assert "75.86 %" in result["hero_markup"]
+    assert "74.9–76.1 %" in result["summary_markup"]
+    assert "46.9–48.5 %" in result["summary_markup"]
+    assert "$18,079–$19,647 MXN/mes" in result["summary_markup"]
+    assert result["summary_markup"].count('class="takeaway"') == 3
+    for insight in trace["editorial_insights"]:
+        assert len(insight["fields"]) == 3
+        assert {field["record_id"] for field in insight["fields"]} <= {
+            row["record_id"] for row in trace["figures"]["figure:eight-quarter-trends"]}
+        assert insight["range"]["minimum"] == min(field["value"] for field in insight["fields"])
+        assert insight["range"]["maximum"] == max(field["value"] for field in insight["fields"])
+        assert f'href="#{insight["section_id"]}"' in result["summary_markup"]
+        assert f'id="{insight["section_id"]}"' in result["trend_markup"]
     assert "Ver los 32 registros" in result["territory_markup"]
     assert '<th scope="col">Entidad</th>' in result["territory_markup"]
     assert "<td>Estado 32</td>" in result["territory_markup"]
@@ -81,6 +98,7 @@ def test_null_gap_does_not_draw_false_zero_or_connect_across_gap(tmp_path):
     # There are six connections between the seven visible points, split by the gap.
     assert svg.count('fill="none" stroke="#3659d9" stroke-width="2.5"') == 5
     assert "No disponible" in result["territory_markup"]
+    assert "31 de 32 entidades tienen cifra publicable" in result["territory_markup"]
     trace = json.loads((stage / "charts/chart-data.json").read_text(encoding="utf-8"))
     missing = next(r for r in trace["figures"]["figure:eight-quarter-trends"] if r["record_id"] == "trend-employment_rate-033100-2025-Q2")
     assert missing["value"] == "" and missing["ci90_lower"] == ""
@@ -102,4 +120,28 @@ def test_missing_public_record_fails(tmp_path):
         "trend-employment_rate-033100-2026-Q2", "not-published")
     path.write_text(text, encoding="utf-8")
     with pytest.raises(ValueError, match="no publicado"):
+        render_charts(stage)
+
+
+def test_fixed_coverage_claim_fails_when_a_field_reaches_half(tmp_path):
+    stage = _stage(tmp_path)
+    path = stage / "research/exports/public-records.csv"
+    rows = list(csv.DictReader(path.open(encoding="utf-8")))
+    target = next(row for row in rows if row["record_id"] ==
+                  "trend-positive_income_coverage-033100-2026-Q2")
+    target["value"] = "50.0"
+    _write_csv(path, rows)
+    with pytest.raises(ValueError, match="cobertura menor a la mitad"):
+        render_charts(stage)
+
+
+def test_fixed_employment_claim_fails_outside_around_75(tmp_path):
+    stage = _stage(tmp_path)
+    path = stage / "research/exports/public-records.csv"
+    rows = list(csv.DictReader(path.open(encoding="utf-8")))
+    target = next(row for row in rows if row["record_id"] ==
+                  "trend-employment_rate-031300-2026-Q2")
+    target["value"] = "85.0"
+    _write_csv(path, rows)
+    with pytest.raises(ValueError, match="ocupación ronda 75 %"):
         render_charts(stage)

@@ -58,12 +58,12 @@ def test_builds_approved_archive_and_links(tmp_path):
 def test_chart_fragments_are_generated_from_verified_staging(tmp_path, monkeypatch):
     import scripts.site_charts as charts
 
-    template = "<!-- HERO_CHART --><!-- TREND_CHARTS --><!-- TERRITORY_CHARTS -->"
+    template = "<!-- HERO_CHART --><!-- TREND_CHARTS --><!-- TERRITORY_CHARTS --><!-- SUMMARY_INSIGHTS -->"
     archive, inventory, site = _fixture(tmp_path, landing=template)
 
     def render(stage):
         assert (stage / "research/report.html").read_bytes().startswith(b'<h1 id="part">')
-        return {key: f'<p>{key}</p>' for key in ("hero_markup", "trend_markup", "territory_markup")}
+        return {key: f'<p>{key}</p>' for key in ("hero_markup", "trend_markup", "territory_markup", "summary_markup")}
 
     monkeypatch.setattr(charts, "render_charts", render)
     output = _build(tmp_path, archive, inventory, site)

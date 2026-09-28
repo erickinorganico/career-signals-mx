@@ -22,8 +22,7 @@ fuentes nuevas ni publica microdatos. Las fuentes tipográficas son locales. Des
 El workflow `pages.yml` construye en las solicitudes de cambio y publica
 solo desde `main`. Si falla la validación, no se ejecuta el despliegue.
 El sitio sigue identificado como la edición histórica 1.0.0; su despliegue
-no equivale a una actualización de la ENOE. No tiene backend, formularios,
-analítica de visitantes ni dependencias JavaScript.
+no equivale a una actualización de la ENOE. No tiene backend, formularios ni analítica de visitantes. Un script local, sin dependencias externas, añade movimiento opcional; el informe sigue legible sin JavaScript.
 
 Las gráficas actuales del sitio y del README se generan desde los registros públicos auditados mediante `scripts/site_charts.py`. El informe y las figuras originales del release se conservan sin cambios.
 La portada mantiene visibles el periodo, los universos, el ingreso condicionado
@@ -59,3 +58,26 @@ El renderer utiliza exclusivamente los vínculos de las dos figuras auditadas:
 72 registros de tendencias y 32 territoriales. La verificación directa confirmó
 igualdad de cada fila con el CSV público. Las pruebas afectadas cubren selección,
 nulos, duplicados, composición de tablas y la integración con el constructor.
+
+## Edición editorial y movimiento · 2026-09-28
+
+La portada abre con tres hallazgos derivados de las nueve estimaciones de
+2026-T2. Cada uno separa resultado, interpretación y acceso a la evidencia.
+Los rangos entre campos son descriptivos; no son intervalos de confianza ni
+pruebas de significancia. `editorial_insights` en el JSON de las gráficas
+conserva los registros usados, sus valores y los extremos del rango.
+
+Referencias de presentación consultadas (no afiliación ni aval):
+[Pew Research Center](https://www.pewresearch.org/journalism/2026/02/11/the-age-divide-in-how-americans-think-about-news/)
+para conclusiones breves con acceso a datos y metodología, y
+[McKinsey Global Institute: 2024 in charts](https://www.mckinsey.com/mgi/our-research/mckinsey-global-institute-2024-in-charts)
+para organizar la lectura mediante hallazgos apoyados por gráficas.
+Son patrones observados en esos informes, no una declaración de cumplimiento
+con una guía de estilo oficial.
+
+`motion.js` anima una sola vez la entrada de paneles durante 420 ms, añade una
+barra de avance de lectura y ofrece un control de pausa. Nunca modifica
+valores, coordenadas, intervalos ni escalas. Respeta `prefers-reduced-motion`,
+cancela animaciones activas cuando cambia esa preferencia y conserva todo el
+contenido visible si el script o las APIs de animación no están disponibles.
+No carga bibliotecas, fuentes ni recursos remotos.
