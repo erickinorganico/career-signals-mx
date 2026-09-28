@@ -19,9 +19,11 @@ progress:
 
 # Project State
 
-**Owner continuation, 2026-09-24:** the prior pause below was revoked for completing the remaining release work. Plan 04-06 now has local and hosted acceptance evidence; [CI run 36050222714](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) passed Windows and Ubuntu with downloaded installed-helper receipts. Independent Phase 4 verification and Phase 5 release gates remain; the published `v0.9.0-preview.1` snapshot is still preliminary.
+**Owner continuation, 2026-09-28:** The owner renewed continuation of pending work. The 1.0.0 candidate has a fresh outside-checkout Windows installation and an exact member privacy/license audit; release-checker hardening is independently clean and hosted CI at `611d2f5` passes Windows/Ubuntu (595 tests and 30 prohibition controls per host; six local-environment cases skipped). Exact asset/host receipts and draft preparation are recorded separately. Human visual acceptance remains pending.
 
-**Owner decision, 2026-09-24 UTC:** stop additional implementation/research to limit token usage; publish the existing validated snapshot as `v0.9.0-preview.1`. No further phase execution is authorized by this continuation. Hosted native CI, final 04-06 acceptance, Phase 5 and final GSD closure remain uncompleted; this is not v1.0.0 completion.
+**Prior continuation, 2026-09-24:** the prior pause below was revoked for completing the remaining release work. Plan 04-06 now has local and hosted acceptance evidence; [CI run 36050222714](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) passed Windows and Ubuntu with downloaded installed-helper receipts. Independent Phase 4 verification and Phase 5 release gates remain; the published `v0.9.0-preview.1` snapshot is still preliminary.
+
+**Historical decision, superseded by continuation above, 2026-09-24 UTC:** stop additional implementation/research to limit token usage; publish the existing validated snapshot as `v0.9.0-preview.1`. That pause no longer applies after the subsequent continuation requests. Hosted native CI, final 04-06 acceptance, Phase 5 and final GSD closure remain uncompleted; this is not v1.0.0 completion.
 
 ## Project Reference
 

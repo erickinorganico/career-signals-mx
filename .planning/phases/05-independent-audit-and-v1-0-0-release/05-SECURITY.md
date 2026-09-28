@@ -2,9 +2,9 @@
 phase: 5
 slug: independent-audit-and-v1-0-0-release
 status: open_threats
-threats_open: 3
+threats_open: 1
 asvs_level: 1
-reviewed: 2026-09-24
+reviewed: 2026-09-28
 ---
 
 # Phase 5 security verification
@@ -12,15 +12,15 @@ reviewed: 2026-09-24
 ## OPEN_THREATS
 
 **Phase:** 5 — Independent Audit and v1.0.0 Release  
-**Closed:** 0/3 | **Open:** 3/3  
+**Closed:** 2/3 | **Open:** 1/3
 **ASVS Level:** 1
 
 The three Phase 5 plans each declare one compound `<threat_model>` without an explicit disposition. This register assigns an audit ID to each and classifies all three as `mitigate`, consistent with their required controls. Documentation and a previous candidate are not evidence that a final release target has passed.
 
 | Threat ID | Plan | Category | Disposition | Required mitigation | State and evidence boundary |
 |---|---|---|---|---|---|
-| T-05-01 | 05-01 | Misleading documentation or stale wheel proof | mitigate | Compare bilingual claims and installed commands to accepted receipts; bind both clean-host results to the exact final wheel. | **OPEN / BLOCKER.** The accepted Phase 4 receipt `docs/evidence/phase-04-publication-acceptance.json` binds a 0.1.0 recovery wheel and hosted run 36050222714. The Phase 5 final 1.0.0 wheel and `docs/evidence/phase-05-portability.json` are not yet present for exact-target proof. |
-| T-05-02 | 05-02 | Unsafe release members, disclosure, secrets, private paths or missing notices | mitigate | Hash and inspect every loose and nested final member; verify public projection, source terms and actual redistributed notices; close the allowlist. | **OPEN / BLOCKER.** The Phase 4 manifest `38c3dfc21d816f32d7e4a21d7efd89418fc198fd80e94577783706f00d7fb023` has 73 matching content files and bounded disclosure checks below. The final wheel, aggregate archive and `docs/evidence/phase-05-release-inventory.json` are not yet present, so final-target custody is unverified. |
+| T-05-01 | 05-01 | Misleading documentation or stale wheel proof | mitigate | Compare bilingual claims and installed commands to accepted receipts; bind both clean-host results to the exact final wheel. | **MITIGATED / CLOSED technically.** `docs/evidence/phase-05-portability.json` binds actual hosted run 36464796584 at `611d2f553597439a0c58807dd6865914ff46281c`. The live host verifier downloaded both CI wheels/receipts and passed against the audited inventory; both hosts passed outside-checkout installation and Spanish PDF/resource guards. Human visual acceptance remains separate. |
+| T-05-02 | 05-02 | Unsafe release members, disclosure, secrets, private paths or missing notices | mitigate | Hash and inspect every loose and nested final member; verify public projection, source terms and actual redistributed notices; close the allowlist. | **MITIGATED / CLOSED TECHNICALLY.** `docs/evidence/phase-05-asset-review.json` binds all five frozen loose assets and their 147 nested members to SHA-256 decisions for target `611d2f553597439a0c58807dd6865914ff46281c`. The 73 sealed research files match the Phase 4 manifest; archive, fonts, notices and supplemental review passed bounded privacy/license review. The exact tested Windows CI wheel is SHA-256 `fe5c6174fccb1effa0d6b34430f66566fe4567c7dd5685a9ce5f7e7c8169b27c`; eight member differences from the prior local wheel are line endings only, and its 63-row RECORD verifies. Any changed byte reopens this threat. Hosted portability, human visual acceptance and public byte readback remain separate gates. |
 | T-05-03 | 05-03 | Wrong tag, unreviewed asset, digest mismatch or false public claim | mitigate | Compare frozen target and allowlist to draft uploads and downloads, then verify tag and all public assets through anonymous byte readback. | **OPEN / BLOCKER.** No `docs/evidence/phase-05-release-acceptance.json` or draft/public readback exists yet. |
 
 ## Bounded Phase 4 content readback relevant to T-05-02
@@ -37,4 +37,4 @@ No `## Threat Flags` section in the currently available Phase 5 summaries has id
 
 ## Closure conditions
 
-Close T-05-01 only after the exact 1.0.0 wheel and both hosted installed receipts are read back. Close T-05-02 only after a frozen, member-level release inventory, independent content/notice review and zero unresolved material findings. Close T-05-03 only after draft byte comparison and anonymous public readback of the authorized tag and every released asset. Update `threats_open` from actual evidence; until then, Phase 5 must not be marked secure.
+Close T-05-01 only after the exact 1.0.0 wheel and both hosted installed receipts are read back. T-05-02 is technically closed for the exact hashes in `docs/evidence/phase-05-asset-review.json` with zero material findings. Reopen it if any released member differs. Human visual acceptance is a separate release gate. Close T-05-03 only after draft byte comparison and anonymous public readback of the authorized tag and every released asset. Update `threats_open` from actual evidence; until then, Phase 5 must not be marked secure.

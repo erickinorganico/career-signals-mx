@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "status": "PASS",
+  "scope": "Historical fresh local Windows preparation at 844e647; superseded for distribution by the exact hosted wheel in phase-05-portability.json. No final release claim.",
+  "checked_on": "2026-09-28",
+  "candidate_package_commit": "844e647972f527de2f3cc50aca442f3710169690",
+  "dependencies_installed_offline": true,
+  "installed_helper": {
+    "authored_resource_count": 24,
+    "authored_resource_sha256": {
+      "assets/fonts/DejaVuSans-Bold.ttf": "b184b89e3c1075f22f6b71575b6fc20d4972b3cfd3b23322ca6fd596dcaef167",
+      "assets/fonts/DejaVuSans.ttf": "3fdf69cabf06049ea70a00b5919340e2ce1e6d02b0cc3c4b44fb6801bd1e0d22",
+      "assets/fonts/DejaVuSerif-Bold.ttf": "c3753f2ed6bc673f15846dc45addbeb3b9c872f32fb18fd53a21f1bef1ed7676",
+      "assets/fonts/DejaVuSerif.ttf": "107244956e9962b9e96faccdc551825e0ae0898ae13737133e1b921a2fd35ffa",
+      "assets/fonts/LICENSE_DEJAVU": "d75938dec098f06f0ac3c00853065d94f020be1c3c62ef1dc2975ba15b4d9b0e",
+      "catalog/enoe-geography-equivalence.json": "525238d870c0521d0375b71dfade86bda1b2209dfffab2fe9254d4f6c1165134",
+      "catalog/enoe-metrics.json": "72b53c6e4da6c2e7190effe2cc880999fa5fd54018a0a8bf371b8b4f1cd5a929",
+      "catalog/enoe-snapshots.json": "ff8cdf5615b9f4591e07af5f4c1522c890548e0fa497ce19ad3ccd668a0fc2a7",
+      "catalog/sources.json": "d27188bb3aa517bb4227ccc9203d4dcdab69bc566fb28ba66a127a18030ca67b",
+      "contracts/agent-run.schema.json": "3c1690b55c46e87b3f581bbc14a6708a33916fa6baec28cdff192ba7ced01de0",
+      "contracts/analysis-v2.schema.json": "81c526e4298c0474ce304fdb2237ae7a0b6654f6afc398320c58bad3eda1d2d1",
+      "contracts/dataset.schema.json": "1020f1f56eeeb97c14b8d859385f3d15d8a8ed30b729a96f5d33b37c45be6023",
+      "contracts/insight.schema.json": "b695c311eb56e307934fe6f2f265136ef3c53eb5f0e778de4e7e6564f4b06937",
+      "contracts/publication-manifest-v2.schema.json": "ab543f5f3361f7065a0dceadc7a66eebc9c547382b423b152907a6c946924bc2",
+      "contracts/publication-v2.schema.json": "53ae6b4512eede7fc20dc7307e33cb1657dc94d000dadefaad21146d6c09f20c",
+      "contracts/research-v2-public.schema.json": "52079cad4a134559edb14081ada407d29db80c5f766ac1da89b993171e7dfd12",
+      "contracts/research-v2.schema.json": "c0d99b0a62c4a9623f23c1b75baef764820935641f47c0f06bbf3b1435d10845",
+      "contracts/run.schema.json": "7e68b6f37faf9bb51942a858f1d830434439208c27099f7d23d59177fab6c0df",
+      "fixtures/analysis-v2-golden.json": "d2eaff964638b781ecfee5c872441c866e8813c22c234031c62465cf7c55a6e9",
+      "fixtures/enoe-aggregate-golden.json": "ef41c327b3e01dbee92ac92f1bfacaec1a17a0ad2978e1f7349acb684fe55071",
+      "fixtures/enoe-analysis-coverage-pins.json": "61c80d225795ef430002187edba6ba01dc7b1b38fe92656c621d16d34621c287",
+      "fixtures/enoe-analysis-reference.json": "56ed548f90a2fc5bea44f051198ca75e414231690cb8509e09e34bf6069a4abe",
+      "fixtures/pilot.json": "62de3d3345235ffd389ec86d8d3f2ac0c48f5ee03a71f9a714a2279de45eb6a5",
+      "oracle/enoe_survey_oracle.R": "b317eae113f1edbade090acbdfaaa8b783d8537c6c3160488141b9277ee13175"
+    },
+    "host_os": "Windows",
+    "installed_code_and_resource_sha256": "7aeb37d1cd655d43af4abd1ae02a8717b21ab978351feb405386b57f09d1d5c3",
+    "installed_code_count": 33,
+    "installed_outside_checkout": true,
+    "missing_resource_blocked": true,
+    "module_within_installed_package": true,
+    "native_versions": {
+      "weasyprint_onedir_sha256": "ab1151f210b4e6bb7aa7a79e91a67e8ddb760094c107bfda55241b6aaefe7d53"
+    },
+    "package_version": "1.0.0",
+    "pdf": {
+      "altered_font_blocked": true,
+      "embedded_dejavu": true,
+      "local_url_rejections": 4,
+      "pages": 1,
+      "searchable_spanish": true,
+      "sha256": "3fc2ace31f4e0ccb497a97754c08f6309160c07830760633ed41dbf51061a8c0"
+    },
+    "python_version": "3.12.13",
+    "schema_version": "1.0",
+    "status": "PASS",
+    "weasyprint_version": "70.0",
+    "wheel_member_count": 63,
+    "wheel_sha256": "2b06329eef9bc47e4085518955e9dd45479951b2683b027577f947cd83f6658d"
+  },
+  "continuity": {
+    "status": "PASS",
+    "old_wheel_sha256": "77e6a0e36aa897a3e7f054b49b6259837be3ccb83b5200adec9e63e0fb61e983",
+    "candidate_wheel_sha256": "2b06329eef9bc47e4085518955e9dd45479951b2683b027577f947cd83f6658d",
+    "package_members_compared": 57,
+    "changed_package_members": [],
+    "limit": "Package implementation and authored resources identical; metadata version/README differ. Reuses numerical/report evidence only, not final host/release proof."
+  },
+  "remaining": [
+    "Hosted exact-candidate Windows and Ubuntu checks",
+    "Final source and asset audit binding",
+    "Human visual approval",
+    "Draft/public release and final GSD audit"
+  ],
+  "distribution_evidence": "docs/evidence/phase-05-portability.json"
+}

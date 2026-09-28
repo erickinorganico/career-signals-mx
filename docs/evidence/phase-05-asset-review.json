@@ -1,0 +1,1622 @@
+{
+  "schema_version": "1.0",
+  "reviewed_on": "2026-09-28",
+  "status": "PASS_CANDIDATE_BOUND",
+  "technical_distribution_approved": true,
+  "final_release_approved": false,
+  "scope": "Independent privacy, source-terms and license review of each loose and nested member of the exact frozen 1.0.0 technical candidate. Each item decision is bound to its SHA-256; any changed asset byte requires a bounded rebind review.",
+  "target_commit": "611d2f553597439a0c58807dd6865914ff46281c",
+  "candidate_inventory": ".cache/release-v1/final-candidate-v6/candidate-inventory.json",
+  "source_run_id": "20260924T010247-81cfb71ea5f1",
+  "source_manifest_sha256": "38c3dfc21d816f32d7e4a21d7efd89418fc198fd80e94577783706f00d7fb023",
+  "assets": {
+    "wheel_sha256": "fe5c6174fccb1effa0d6b34430f66566fe4567c7dd5685a9ce5f7e7c8169b27c",
+    "research_archive_sha256": "5b3679f3eb48ec2f6c7e14e837e598b9481c59731cf54713a90879e995857c6b",
+    "report_pdf_sha256": "8b6914cda1836f22ea7bfc4b3716f23cc7e0f32681d47107f1c0a4564ed108c8",
+    "loose_manifest_sha256": "38c3dfc21d816f32d7e4a21d7efd89418fc198fd80e94577783706f00d7fb023",
+    "checksum_file_sha256": "1918ebd97c2ee73b51180a826e1cc74ea079b84a6fd8ffa4fa9fac1331e8cbbe"
+  },
+  "member_checks": {
+    "loose_assets": 5,
+    "archive_members": 84,
+    "wheel_members": 63,
+    "inventory_hash_or_size_mismatches": 0,
+    "duplicate_or_unsafe_zip_paths": 0,
+    "manifested_research_files": 73,
+    "manifested_research_hash_mismatches": 0,
+    "archive_manifest_matches_loose_manifest": true,
+    "archive_report_pdf_matches_loose_pdf": true,
+    "wheel_catalog_matches_approved_local_catalog": false,
+    "archive_source_docs_match_local": true,
+    "wheel_catalog_normalized_lf_matches_approved_local_catalog": true,
+    "wheel_record_member_hashes_verified": 63
+  },
+  "privacy": {
+    "raw_source_zip_or_person_row_members": 0,
+    "wheel_contents": "Project Python/R source, public catalogs, schemas, bounded test fixtures, four DejaVu fonts with notice, and package metadata; no installed dependencies or native PDF toolchain.",
+    "archive_contents": "The 73 sealed research files, original manifest and receipt, and nine release-context files: MIT license, bilingual README and notices, source details, prior evidence and attributable supplemental review.",
+    "targeted_windows_user_path_hits": 0,
+    "targeted_private_key_marker_hits": 0,
+    "targeted_credential_assignment_hits": 0,
+    "unchanged_content_review": "docs/evidence/phase-05-independent-review.json: 6739 public records, 3565 suppressed values with null sensitive diagnostics, 22 public DuckDB tables and no named person columns. Reused only because all 73 content hashes match."
+  },
+  "licenses_and_terms": {
+    "project_mit_license_in_wheel_and_archive": true,
+    "four_dejavu_fonts_match_between_wheel_and_archive": true,
+    "full_dejavu_notice_in_wheel_and_archive": true,
+    "dejavu_notice_sha256": "d75938dec098f06f0ac3c00853065d94f020be1c3c62ef1dc2975ba15b4d9b0e",
+    "dependencies_or_native_pdf_toolchain_bundled": false,
+    "inegi_terms_url": "https://www.inegi.org.mx/inegi/terminos.html",
+    "inegi_terms_checked_on": "2026-09-28",
+    "inegi_terms_result": "Official terms allow copies, publication, adaptation and extraction with retained metadata, INEGI and product credit, transformation disclosure and no implied endorsement. The sealed report and bundled notices meet these attribution boundaries; raw microdata remain excluded.",
+    "approved_source_catalog": "data/catalog/enoe-snapshots.json",
+    "approved_source_catalog_sha256": "ff8cdf5615b9f4591e07af5f4c1522c890548e0fa497ce19ad3ccd668a0fc2a7"
+  },
+  "findings": [],
+  "material_open_findings": 0,
+  "limits": [
+    "This technical approval binds only the five listed v6 candidate asset hashes and 147 nested member hashes; any changed asset byte requires a bounded rebind review.",
+    "The credential and private-path scan is targeted to stated patterns, not an exhaustive secret proof.",
+    "Human visual acceptance, installed portability receipts, draft upload and anonymous public byte readback remain separate release gates."
+  ],
+  "item_decisions": [
+    {
+      "asset": "brujula-laboral-mx-informe.pdf",
+      "member": null,
+      "sha256": "8b6914cda1836f22ea7bfc4b3716f23cc7e0f32681d47107f1c0a4564ed108c8",
+      "bytes": 1048093,
+      "role": "report_pdf",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Sealed Phase 4 aggregate report; unchanged hash and attribution reviewed."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": null,
+      "sha256": "5b3679f3eb48ec2f6c7e14e837e598b9481c59731cf54713a90879e995857c6b",
+      "bytes": 13220567,
+      "role": "research_archive",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Closed 84-member research archive; every nested member is reviewed below."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "LICENSE",
+      "sha256": "104a35db5e41d7b9e080141d020ac55e388917ebec508b6eec723d5b30d4432a",
+      "bytes": 1089,
+      "role": "project_license",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project MIT license text."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "README.md",
+      "sha256": "883e41c00f7107cd87e072530dc4e444ec2619b7f3fc7a18746d53e90909d356",
+      "bytes": 845,
+      "role": "release_context",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Bilingual distribution README; identifies exact frozen code commit, source vintage, attribution and nonofficial precision."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "THIRD_PARTY_NOTICES.md",
+      "sha256": "8a052d12f9b3e29c7d0919e2a1fda687a7d3c5fb16fb6c0dab9ca6303d93ae31",
+      "bytes": 2478,
+      "role": "release_context",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project notice, source documentation or audit evidence for public interpretation."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "docs/SOURCES.md",
+      "sha256": "54814e3f8bcf0bba57a2e63796f1597cc9937f199bd6ad7a040c1207c7413d5f",
+      "bytes": 10494,
+      "role": "release_context",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project notice, source documentation or audit evidence for public interpretation."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "docs/evidence/phase-04-publication-acceptance.json",
+      "sha256": "fbd8a4975641813646a9effff6eb5b1cfb8959a9c1357f29c36dbd52fb9dc69a",
+      "bytes": 6198,
+      "role": "release_context",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project notice, source documentation or audit evidence for public interpretation."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "docs/evidence/phase-05-content-review.md",
+      "role": "release_context",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Attributable supplemental independent content/distribution review; no person-level data.",
+      "sha256": "8fe49a486f6106c31831efab7333e2d0f90dbcdd703a02e16af6b0e722a69812",
+      "bytes": 2920
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "docs/evidence/phase-05-dependency-license-candidate.json",
+      "sha256": "6380fc45685b05f534c2d7ff9dbe194fa028f901eecc1a51046892fc7de0ac1e",
+      "bytes": 24504,
+      "role": "release_context",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project notice, source documentation or audit evidence for public interpretation."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "docs/evidence/phase-05-independent-review.json",
+      "sha256": "3bb9f1274d2bdc43bc816e6a2ea63cf93781766c028da6a934569328d16fe201",
+      "bytes": 5896,
+      "role": "release_context",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Stable independent content review receipt with exact sealed run, inspected paths, attributable report and hashed prior evidence."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "docs/research/DEPENDENCY-LICENSE-INVENTORY.md",
+      "sha256": "c18930e6fb1f303d85ec812d33f1271bd910f7c500c367684cfc54fa255a1485",
+      "bytes": 12427,
+      "role": "release_context",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project notice, source documentation or audit evidence for public interpretation."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/analysis.json",
+      "sha256": "4b35ce4d67f9b0372aa6e418e88ed8aa90f630b36814a1295cbf79481e25b638",
+      "bytes": 66941824,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/assets/fonts/DejaVuSans-Bold.ttf",
+      "sha256": "b184b89e3c1075f22f6b71575b6fc20d4972b3cfd3b23322ca6fd596dcaef167",
+      "bytes": 704128,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/assets/fonts/DejaVuSans.ttf",
+      "sha256": "3fdf69cabf06049ea70a00b5919340e2ce1e6d02b0cc3c4b44fb6801bd1e0d22",
+      "bytes": 756072,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/assets/fonts/DejaVuSerif-Bold.ttf",
+      "sha256": "c3753f2ed6bc673f15846dc45addbeb3b9c872f32fb18fd53a21f1bef1ed7676",
+      "bytes": 355692,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/assets/fonts/DejaVuSerif.ttf",
+      "sha256": "107244956e9962b9e96faccdc551825e0ae0898ae13737133e1b921a2fd35ffa",
+      "bytes": 379740,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/assets/fonts/LICENSE_DEJAVU",
+      "sha256": "d75938dec098f06f0ac3c00853065d94f020be1c3c62ef1dc2975ba15b4d9b0e",
+      "bytes": 4816,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/claim-evidence.csv",
+      "sha256": "8631caf99e4945d456cc7919acdbb2c8a97bac39ef8073fd538d0779aef39840",
+      "bytes": 4937,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/claim-evidence.parquet",
+      "sha256": "e4ed23a21f0664a1ec81eaa0922a684aed258a53dad1e9fa05a0cd48a5d7d488",
+      "bytes": 3401,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/claim-record-links.csv",
+      "sha256": "4461842d38ea47ac11a18d19874320317115754a2fecda3fddf3771487b3ac19",
+      "bytes": 9055,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/claim-record-links.parquet",
+      "sha256": "936eeb53074bc07b27af952f640f402f73ada0e999120d9ed9875e046ae800ff",
+      "bytes": 6863,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/claims.csv",
+      "sha256": "39ff1d3fd206b2d13f2ab5dfaf2443d14d48a1aba8bb7459ec770b042112eeb4",
+      "bytes": 52351,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/claims.parquet",
+      "sha256": "48e57dedb7a43d5a2442b250529d1ce0f07f535037b77b67908f2de7ed6396f4",
+      "bytes": 17810,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/comparison-evidence.csv",
+      "sha256": "f6ad03bec97a22aaef12ce793606860d7f3a2668b4c6446684b94592870ded98",
+      "bytes": 498162,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/comparison-evidence.parquet",
+      "sha256": "9c44ab1899cf7dbf252ebaeabf8da597eeb7b0700df215d8b3ff46c36be19a7e",
+      "bytes": 274615,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/comparisons.csv",
+      "sha256": "6522b89dd61ede35b0b856aa343a661894f81e5234a7544f00e4225817e2d9bf",
+      "bytes": 18994518,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/comparisons.parquet",
+      "sha256": "e3d086e3dc6e28e16c4ab3a313f94d8122642b91572695478f7e9ebb5f0dcfcb",
+      "bytes": 1438098,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/data-dictionary.md",
+      "sha256": "f52fa0444facd31f4c4404e900571545d36305e902a1f061f825737bbb0154f5",
+      "bytes": 14537,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/fields.csv",
+      "sha256": "93ac3ff59541eb8d472d19e2b52cfd558996f930bedeee5207c50a30b323f1c3",
+      "bytes": 5536,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/fields.parquet",
+      "sha256": "906b2520297571df8ab2dc57802d80c87ca81e982826b1f29abf7adcd2e8d19c",
+      "bytes": 3491,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/figure-claim-links.csv",
+      "sha256": "77fae1641ad7b69681c41fa5e8ddf61c7f4d9c49d865772e065a69686740cb26",
+      "bytes": 470,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/figure-claim-links.parquet",
+      "sha256": "fb042844affdd05431bb0a41d3f26cc622f69258c88e33ec15b4979201e19c05",
+      "bytes": 1303,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/figure-comparison-links.csv",
+      "sha256": "9ee483c4a7f775880b82467faa884f9ca6eebda83946a78ad21cd58b20a9ee18",
+      "bytes": 12949,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/figure-comparison-links.parquet",
+      "sha256": "75bf863dd1e74af0ae80e059402af8e9ad404e4c40f8d61f1504787f5bad7ea4",
+      "bytes": 9519,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/figure-record-links.csv",
+      "sha256": "67639be05c8804382437fad7c9494e52cc3c56cf4f7611d7b3947a0a26d50883",
+      "bytes": 23403,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/figure-record-links.parquet",
+      "sha256": "9073a45320b3b866fae3cbd99e37755130938eb38b7f8c9f73ab25fc62ca7ed8",
+      "bytes": 16560,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/figure-source-links.csv",
+      "sha256": "38dfc740d55a9abef37f9d649bc584526f507e243c3db8f48018e02053234aca",
+      "bytes": 828,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/figure-source-links.parquet",
+      "sha256": "458ad649dc4be7cd8d57a57fb732a4600a08afaa369cd8b23bef31e1526f6538",
+      "bytes": 869,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/figures.csv",
+      "sha256": "7150e60083ca8720b091e60d37b20274f838173953a251a187026da7a2e02974",
+      "bytes": 776,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/figures.parquet",
+      "sha256": "437d9d30a6c53ac3fba82070b97bd4e6e586e287b2b560eaf7076b90eae3d83d",
+      "bytes": 1173,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/geographies.csv",
+      "sha256": "b730a16080debebdee000bc4e8b49d301a28affc1e27a64d8d863ac2bb180814",
+      "bytes": 544,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/geographies.parquet",
+      "sha256": "e52dfa57d1bd9255f383c98366e07888f92b78d9c1d9d876f3d40ba3a489a8ef",
+      "bytes": 925,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/industries.csv",
+      "sha256": "6b7a56e08e89bd38b00147184e61dee87e58c51b56f920fe4adaf37c5cec95c5",
+      "bytes": 18,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/industries.parquet",
+      "sha256": "c1c59fe0d90bb1a6ef23a992e5176c5b4b067cd295725b43fc9d50c3ab8b26d3",
+      "bytes": 206,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/methods.csv",
+      "sha256": "6dc1f4b3a32df631c300b0473ea8a9803fc60b76406f1ab184adbcbebc60d031",
+      "bytes": 244,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/methods.parquet",
+      "sha256": "3eb5183f55b0a64d8d1649a6a03a703f32e85c2426654fa112a075e13f9ed299",
+      "bytes": 1377,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/metrics.csv",
+      "sha256": "bde9be5f7825f84d65d10ea1a85ecbdba5bdaeb7ad2a67ccc45785ae346c6100",
+      "bytes": 1915,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/metrics.parquet",
+      "sha256": "a1863d3382296189033eceb2da03e17e83554094ebf099e305a3cac501ff31cd",
+      "bytes": 1817,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/occupations.csv",
+      "sha256": "38600a6acc868cde1b56e867ecf44d627eefc390a8df91d77c3c10c42179ef35",
+      "bytes": 20,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/occupations.parquet",
+      "sha256": "6e725ce13df507d7b30f12bb1a2df69969e83505d0b664d2a745d59b954759ac",
+      "bytes": 210,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/periods.csv",
+      "sha256": "6970727600b9145a78e2c4b1e3d211b3bf8ccb21f7413a691a2f3daaa13ba39f",
+      "bytes": 83,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/periods.parquet",
+      "sha256": "df9f1ae631d37afd7b278f437028887b846c5c32008567700b4f2e16230c0d6f",
+      "bytes": 267,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/populations.csv",
+      "sha256": "33b44191b256666547a588e11b75dca215d26a91228295bcfa26747bd86d74ff",
+      "bytes": 422,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/populations.parquet",
+      "sha256": "4f7f33096eebbff71694876543cf24d60cad23ece2e36da08b0f26aaeb8ea136",
+      "bytes": 1392,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/public-records.csv",
+      "sha256": "bc5a5082c03c0dc85df4175ddc814ee9a609d9075833e20c59a1a67fe14f4777",
+      "bytes": 6924776,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/public-records.parquet",
+      "sha256": "83d10da7daa73ef23875e14508d861e57898282de84d3064147bb540320a9bb8",
+      "bytes": 681904,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/public.duckdb",
+      "sha256": "401ef6746ea118e4fa69111e2252cada8295d0dcb8d3f23619489e5cfda718f3",
+      "bytes": 17838080,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/record-evidence.csv",
+      "sha256": "090178531a225fff4e57b8963d5ba4fa880d83a18dddfd3d959b2f503fa6f6b6",
+      "bytes": 613273,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/record-evidence.parquet",
+      "sha256": "5f3c95bfaa8bd490aea7a1a3a136bec85a24bc2027da13fb8d8863d3097ab345",
+      "bytes": 424915,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/recorded-sexes.csv",
+      "sha256": "0a4887f74a4381ccfd157d241a947640895247fc81e63d3c1453c5689c19bcfe",
+      "bytes": 115,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/recorded-sexes.parquet",
+      "sha256": "96dd9905955cf7c256374bc326b5f13a9a0c5bb4a1407f639d092302a582c3e4",
+      "bytes": 492,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/sources.csv",
+      "sha256": "8c77a37f298f4ab24331cc89c27427b5c54639871caafa4e66ac85d937c6b4b0",
+      "bytes": 3200,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/exports/sources.parquet",
+      "sha256": "bd9809f6b7c265f7dc1e9c2e3eb3265a66c5091f36b9d1bd72a95e3c8add7931",
+      "bytes": 3255,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/eight-quarter-trends.png",
+      "sha256": "8fd7b5ec4481de5fdbab466ccd5bb1b671868590072dfe5393a21a6f4f850d85",
+      "bytes": 220746,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/eight-quarter-trends.svg",
+      "sha256": "9ec87d72d7e6f71f5ddac2c781eb24ac34914669d55b90997e4afac2f0b20a3d",
+      "bytes": 219669,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/focal-latest.png",
+      "sha256": "077df19eb3d4e166c1be45d4b68e834ea704a3c736da93ec46c20d2563003c87",
+      "bytes": 115991,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/focal-latest.svg",
+      "sha256": "dda93aa6613ec49e09e95962b9cf4af48371d0b843faa8b8d6f77b5f50c15dc4",
+      "bytes": 124581,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/national-context.png",
+      "sha256": "9cd77470226ba7a84799d7922639831ae6bf8d5ce524eaefa754ecb7a0af6cee",
+      "bytes": 148429,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/national-context.svg",
+      "sha256": "ebce9f695389d73a40056ea4d7aa7408533334c8506b16148ce15778dd6988e5",
+      "bytes": 159328,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/opening-49098ac0e72ad61498b66be4ad781a1a3a53d55bb7c52713ebf26f1539f0ce73.png",
+      "sha256": "a2024ab565645a125cbfbf4347c205d53f6926eafd6656140afe5b3b17f353ec",
+      "bytes": 51477,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/opening-49098ac0e72ad61498b66be4ad781a1a3a53d55bb7c52713ebf26f1539f0ce73.svg",
+      "sha256": "4842f51ad07cda93d7f01ef9b93a131425e57ad161646197a19f3a7911242197",
+      "bytes": 67681,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/opening-7b66a320b957029a78acf87e6f0cebebe42c8d5efde1652ddcd7544ae033c4de.png",
+      "sha256": "267900d255287eb42d6a9fc44e3b53d39a674596b1a2b89d845ef7c1f883cb16",
+      "bytes": 55788,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/opening-7b66a320b957029a78acf87e6f0cebebe42c8d5efde1652ddcd7544ae033c4de.svg",
+      "sha256": "a21fad5598b846fbeee4f0e3e4b2854cf98a9e4277c910d6215c1d63eb16a6fb",
+      "bytes": 71245,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/opening-7d6e1e45043c9f5b309b91186cc9a259e4543baf20d07e12ec74bf88e99c8b2e.png",
+      "sha256": "981988600df9dbca40a854ffa5268791ecf2204be44154b057e9a05c7a8ed8cc",
+      "bytes": 41624,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/opening-7d6e1e45043c9f5b309b91186cc9a259e4543baf20d07e12ec74bf88e99c8b2e.svg",
+      "sha256": "91937184b1c52259dd068ae80512f7ecaf3a604be9d5c61bb8c510d7d2e8e358",
+      "bytes": 60361,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/other-fields.png",
+      "sha256": "db251943a408c4d7223ae1280b4dc0c29f8911c4c667372c3ad4e776db95a8ab",
+      "bytes": 342689,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/other-fields.svg",
+      "sha256": "b15c594f36d7a51838ab952dc66bbd227bc7fa85e04fb1fdc4e49e95e99481fd",
+      "bytes": 293205,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/recorded-sex.png",
+      "sha256": "bbe0e8576db3cdda3978ec62dc0e15d704d5f5ad2319e6902b638b4fbb552630",
+      "bytes": 124201,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/recorded-sex.svg",
+      "sha256": "9473eb41d9d088ee78e74c93ffe69218bd5375df198720204da66d19627c2079",
+      "bytes": 128024,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/state-availability.png",
+      "sha256": "70250ae4a3e65bc16bdecee6e322abda58f4eb193cacf7bb1a1c4daa84353e2e",
+      "bytes": 142888,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/figures/state-availability.svg",
+      "sha256": "8ac14eb11b81d115a41466e37e43e4d0f32e74f51c0da18a2a314d1bf685792c",
+      "bytes": 150828,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/manifest.json",
+      "sha256": "38c3dfc21d816f32d7e4a21d7efd89418fc198fd80e94577783706f00d7fb023",
+      "bytes": 22289,
+      "role": "research_custody",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Original sealed run custody metadata; source and hash provenance."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/receipt.json",
+      "sha256": "1b2e2c228700c8491ea7ee2c1d489fb7af5cc603e1da40ba610d7144dcf5cbe1",
+      "bytes": 4456,
+      "role": "research_custody",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Original sealed run custody metadata; source and hash provenance."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/report.html",
+      "sha256": "00eaa8cb6a09d094ae07d6cf556825fb245a9ab04cc6f4b1db20757fa5af0a30",
+      "bytes": 3186903,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/report.md",
+      "sha256": "4177931651266afc4f484c9bf3c9746cecdf45a38a5e4e003e9c48d3e20a09ef",
+      "bytes": 254064,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "brujula-laboral-mx-investigacion.zip",
+      "member": "research/report.pdf",
+      "sha256": "8b6914cda1836f22ea7bfc4b3716f23cc7e0f32681d47107f1c0a4564ed108c8",
+      "bytes": 1048093,
+      "role": "research_content",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unchanged accepted Phase 4 public content; source manifest hash matched."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": null,
+      "sha256": "fe5c6174fccb1effa0d6b34430f66566fe4567c7dd5685a9ce5f7e7c8169b27c",
+      "bytes": 1318640,
+      "role": "wheel",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Closed 63-member project wheel; each nested member reviewed below."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/__init__.py",
+      "sha256": "1ab78c5d45e424edff3be7f9469fdf1b5589901691871f1d573c77c107cb9b84",
+      "bytes": 273,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/__main__.py",
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "bytes": 48,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/acquisition.py",
+      "sha256": "ee9aa3906c13b0fa56001d9475300214c332850b38a20d9f80f7c256a7b6c757",
+      "bytes": 15883,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/agents.py",
+      "sha256": "3db7661aeedb53e518a9e989ee86c1f1a95b22c128b7059a8023ad487de7693f",
+      "bytes": 7982,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/analysis_v2.py",
+      "sha256": "485bf048cefc25a15dae162af0c27d8499ac9f46e57be5e62978aab07be283e1",
+      "bytes": 27586,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/assets/fonts/DejaVuSans-Bold.ttf",
+      "sha256": "b184b89e3c1075f22f6b71575b6fc20d4972b3cfd3b23322ca6fd596dcaef167",
+      "bytes": 704128,
+      "role": "font",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unmodified DejaVu font with complete original notice in same distribution."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/assets/fonts/DejaVuSans.ttf",
+      "sha256": "3fdf69cabf06049ea70a00b5919340e2ce1e6d02b0cc3c4b44fb6801bd1e0d22",
+      "bytes": 756072,
+      "role": "font",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unmodified DejaVu font with complete original notice in same distribution."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/assets/fonts/DejaVuSerif-Bold.ttf",
+      "sha256": "c3753f2ed6bc673f15846dc45addbeb3b9c872f32fb18fd53a21f1bef1ed7676",
+      "bytes": 355692,
+      "role": "font",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unmodified DejaVu font with complete original notice in same distribution."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/assets/fonts/DejaVuSerif.ttf",
+      "sha256": "107244956e9962b9e96faccdc551825e0ae0898ae13737133e1b921a2fd35ffa",
+      "bytes": 379740,
+      "role": "font",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Unmodified DejaVu font with complete original notice in same distribution."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/assets/fonts/LICENSE_DEJAVU",
+      "sha256": "d75938dec098f06f0ac3c00853065d94f020be1c3c62ef1dc2975ba15b4d9b0e",
+      "bytes": 4816,
+      "role": "font_notice",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Complete original DejaVu redistribution notice."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/catalog/enoe-geography-equivalence.json",
+      "sha256": "f9a5ff5c1f36f898f69b5f31a618fefa3d9faf332fc9bac837777bda78aab1ff",
+      "bytes": 10779,
+      "role": "public_catalog",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Public approved-source catalog, terms and hashes; no raw source rows."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/catalog/enoe-metrics.json",
+      "sha256": "72b53c6e4da6c2e7190effe2cc880999fa5fd54018a0a8bf371b8b4f1cd5a929",
+      "bytes": 9071,
+      "role": "public_catalog",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Public approved-source catalog, terms and hashes; no raw source rows."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/catalog/enoe-snapshots.json",
+      "sha256": "28736ef592f8a9265f4f98090d129aa7eecfe2f8c7c3655ea0139ab2e92dd277",
+      "bytes": 4874,
+      "role": "public_catalog",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Public approved-source catalog, terms and hashes; no raw source rows."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/catalog/sources.json",
+      "sha256": "d27188bb3aa517bb4227ccc9203d4dcdab69bc566fb28ba66a127a18030ca67b",
+      "bytes": 4227,
+      "role": "public_catalog",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Public approved-source catalog, terms and hashes; no raw source rows."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/claims_v2.py",
+      "sha256": "2d122b412d7220cb84459c5cd5f31b2968e77a2843704c3d834c6a252f6e12e0",
+      "bytes": 13259,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/cli.py",
+      "sha256": "303524fb3203dfd037a00c8b299763a56711a0ee2c99915af2f800aff1c42c26",
+      "bytes": 10680,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/comparisons_v2.py",
+      "sha256": "bcbec22a48ec11ab4f2127c4029e1bdff04ab913a1576716a691a3cbe29cc340",
+      "bytes": 28425,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/contracts/agent-run.schema.json",
+      "sha256": "3c1690b55c46e87b3f581bbc14a6708a33916fa6baec28cdff192ba7ced01de0",
+      "bytes": 1816,
+      "role": "public_schema",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored validation schema."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/contracts/analysis-v2.schema.json",
+      "sha256": "81c526e4298c0474ce304fdb2237ae7a0b6654f6afc398320c58bad3eda1d2d1",
+      "bytes": 14664,
+      "role": "public_schema",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored validation schema."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/contracts/dataset.schema.json",
+      "sha256": "1020f1f56eeeb97c14b8d859385f3d15d8a8ed30b729a96f5d33b37c45be6023",
+      "bytes": 6402,
+      "role": "public_schema",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored validation schema."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/contracts/insight.schema.json",
+      "sha256": "b695c311eb56e307934fe6f2f265136ef3c53eb5f0e778de4e7e6564f4b06937",
+      "bytes": 975,
+      "role": "public_schema",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored validation schema."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/contracts/publication-manifest-v2.schema.json",
+      "sha256": "ab543f5f3361f7065a0dceadc7a66eebc9c547382b423b152907a6c946924bc2",
+      "bytes": 2299,
+      "role": "public_schema",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored validation schema."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/contracts/publication-v2.schema.json",
+      "sha256": "4ce14a90daf907513030a6243aa250c4c33804f5e375ea91e0ff8a715541bf56",
+      "bytes": 25291,
+      "role": "public_schema",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored validation schema."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/contracts/research-v2-public.schema.json",
+      "sha256": "52079cad4a134559edb14081ada407d29db80c5f766ac1da89b993171e7dfd12",
+      "bytes": 8458,
+      "role": "public_schema",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored validation schema."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/contracts/research-v2.schema.json",
+      "sha256": "c0d99b0a62c4a9623f23c1b75baef764820935641f47c0f06bbf3b1435d10845",
+      "bytes": 7960,
+      "role": "public_schema",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored validation schema."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/contracts/run.schema.json",
+      "sha256": "7e68b6f37faf9bb51942a858f1d830434439208c27099f7d23d59177fab6c0df",
+      "bytes": 2184,
+      "role": "public_schema",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored validation schema."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/data.py",
+      "sha256": "9d60d29148f2ffd126d195b70a1dd719c2ae67d882c5b78328e45447a69f9e08",
+      "bytes": 1664,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/enoe_acceptance.py",
+      "sha256": "43d3e9a4fd159e7a7e8f924956ca978080e0a0a65280797d006b6c1b04bc7acd",
+      "bytes": 53239,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/enoe_adapter.py",
+      "sha256": "cceacc5707f36e594d2659ed4a106ccee9bf6d9f0512296ac6d2380f132f19cc",
+      "bytes": 13510,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/estimates.py",
+      "sha256": "da9567e8dcff3242f7f148eabcb3edd4305c3903473fa3ad991bc70d415f4b9e",
+      "bytes": 19608,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/export.py",
+      "sha256": "f64ada10d04f135818878a41f48ae20caa356054f3f0dda69e8bca577f936017",
+      "bytes": 2625,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/export_v2.py",
+      "sha256": "a0602912146b118c18b1b684a023d1d51890aa28a8a304114cb05ff3f402c445",
+      "bytes": 14056,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/findings_v2.py",
+      "sha256": "cb2603c9714f8b7defc3cbda2a0e4d0f0b610575eab1972b82f71ecd71f2c8e9",
+      "bytes": 15736,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/fixtures/analysis-v2-golden.json",
+      "sha256": "d2eaff964638b781ecfee5c872441c866e8813c22c234031c62465cf7c55a6e9",
+      "bytes": 551,
+      "role": "fixture",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project test fixture/reference with synthetic or public aggregate provenance."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/fixtures/enoe-aggregate-golden.json",
+      "sha256": "86bf44b6ab70b78c3b40f03c7366188912d0e7d4de81e87a6b4773b7e7f6764d",
+      "bytes": 15914,
+      "role": "fixture",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project test fixture/reference with synthetic or public aggregate provenance."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/fixtures/enoe-analysis-coverage-pins.json",
+      "sha256": "ce2fb528c3164491c73214875cd12c92a75d21830612df0889a5b9b91046978b",
+      "bytes": 1095,
+      "role": "fixture",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project test fixture/reference with synthetic or public aggregate provenance."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/fixtures/enoe-analysis-reference.json",
+      "sha256": "c1672df619a73004a13b3a14579d88f03200a10a2b6ba8ef155b217424957178",
+      "bytes": 678,
+      "role": "fixture",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project test fixture/reference with synthetic or public aggregate provenance."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/fixtures/pilot.json",
+      "sha256": "62de3d3345235ffd389ec86d8d3f2ac0c48f5ee03a71f9a714a2279de45eb6a5",
+      "bytes": 44906,
+      "role": "fixture",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project test fixture/reference with synthetic or public aggregate provenance."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/insights.py",
+      "sha256": "bf40696c913996e77e88468f75111b5e87a6fd66eb0d74198f27db790819a2a3",
+      "bytes": 9135,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/metrics.py",
+      "sha256": "e5bfbccd799647e884da955e62ec46a38ae2a9c609da731429c11134f1e25b7b",
+      "bytes": 13486,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/official_reconciliation.py",
+      "sha256": "5527661b3b39450834d34377ba3c2442c070fb705e5253b94652dafb412bc812",
+      "bytes": 12370,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/oracle/enoe_survey_oracle.R",
+      "sha256": "b317eae113f1edbade090acbdfaaa8b783d8537c6c3160488141b9277ee13175",
+      "bytes": 4412,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/pdf_v2.py",
+      "sha256": "2194911d18cd78457a3961ab43b6dc7d0415131730f141b9e41a6fc114eeda16",
+      "bytes": 7473,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/pipeline.py",
+      "sha256": "9f74374616f254914f19d90379c9be906f12f33cb64f8d516991104185f12510",
+      "bytes": 13785,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/pipeline_v2.py",
+      "sha256": "e4581b3c688c522c1433829f44c3b6c6f13e26956fd188aa3fcbc07f47ce5483",
+      "bytes": 38349,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/populations.py",
+      "sha256": "47e11ede385e44ba2f44c13e4141cac39830938dc0cbee11986ab5b670024978",
+      "bytes": 11961,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/publication_v2.py",
+      "sha256": "bd177c18665cafecacb0047342b98e41ce67f14fa1359b660e8c8de1f05b4cf3",
+      "bytes": 7965,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/quality.py",
+      "sha256": "a51a7d6f40a7407022313e9faa08382993b758882f7be0fd25ff44ddeefbfc1a",
+      "bytes": 15385,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/report.py",
+      "sha256": "fcf58cb5c8d7e23e71e425f36b8562c736811ba5475c74d4b4bc24403b9a6e7e",
+      "bytes": 20075,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/report_v2.py",
+      "sha256": "8e368c2b579795bf0805277b428e5252d4a6310a5f5c54dd2601e53fdbf04a85",
+      "bytes": 52776,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/research_contract.py",
+      "sha256": "386f46e19089f828b41e98d178148d4b253bbcfb0aad06c94ae778aa28a4b766",
+      "bytes": 15795,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/resources.py",
+      "sha256": "1eea5cf7391430b7eb3640049ab97db8a0245ac35affb2e25d7cdf8150f2d9cd",
+      "bytes": 5899,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/runlock.py",
+      "sha256": "382a44c2d368d9750d018c2b20533a93b50e2c643805e2c8d0e2fdeb0a3162e6",
+      "bytes": 1978,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/scout.py",
+      "sha256": "061b6add1cc135e3e4cf8b87f12bde1cbbb9bd0eb8e5777d0981f26cffd8bb34",
+      "bytes": 4563,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/source_inventory.py",
+      "sha256": "05bd4d9ef0aa7909a68dee5cafb7a547371661ab675f734b33b112e614a30d4e",
+      "bytes": 15568,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/survey.py",
+      "sha256": "8873d29d76d897a7471796146efd8ef0ffb0c0c1ca4de3974004d34f581a9081",
+      "bytes": 12572,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "brujula/warehouse.py",
+      "sha256": "261c7f5402560c065af9b252ab97611ef9e74ec105efe6bf75041972e87da395",
+      "bytes": 4236,
+      "role": "package_source",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project-authored source code; no bundled dependency installation."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "career_signals_mx-1.0.0.dist-info/METADATA",
+      "sha256": "0acab0e9ff3e1a8e70a5c81f205e0e4268360e159bbc22b976e3bdcda14177a5",
+      "bytes": 9453,
+      "role": "package_metadata",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Wheel metadata and integrity record; no dependency payload."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "career_signals_mx-1.0.0.dist-info/RECORD",
+      "sha256": "236971223641b8953be4a41b9f510baa12faabaf1be72f8bec73dc748c6f3546",
+      "bytes": 5446,
+      "role": "package_metadata",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Wheel metadata and integrity record; no dependency payload."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "career_signals_mx-1.0.0.dist-info/WHEEL",
+      "sha256": "c14c80f0e6ae95195b7f032d990b2f367806af140702f90a72f466762ce5262d",
+      "bytes": 92,
+      "role": "package_metadata",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Wheel metadata and integrity record; no dependency payload."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "career_signals_mx-1.0.0.dist-info/entry_points.txt",
+      "sha256": "087829a66e9933507b059b0a869995e2d27b0b0af17ca762afbe986339b91107",
+      "bytes": 45,
+      "role": "package_metadata",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Wheel metadata and integrity record; no dependency payload."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "career_signals_mx-1.0.0.dist-info/licenses/LICENSE",
+      "sha256": "104a35db5e41d7b9e080141d020ac55e388917ebec508b6eec723d5b30d4432a",
+      "bytes": 1089,
+      "role": "project_license",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Project MIT license text."
+    },
+    {
+      "asset": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "member": "career_signals_mx-1.0.0.dist-info/top_level.txt",
+      "sha256": "eb9dac4d1951a6108c9dccfa3cb752816601dcafb29f6212c0c304d74a1dd5c2",
+      "bytes": 8,
+      "role": "package_metadata",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Wheel metadata and integrity record; no dependency payload."
+    },
+    {
+      "asset": "research-manifest.json",
+      "member": null,
+      "sha256": "38c3dfc21d816f32d7e4a21d7efd89418fc198fd80e94577783706f00d7fb023",
+      "bytes": 22289,
+      "role": "manifest",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Original sealed public run manifest; unchanged hash."
+    },
+    {
+      "asset": "SHA256SUMS.txt",
+      "member": null,
+      "sha256": "1918ebd97c2ee73b51180a826e1cc74ea079b84a6fd8ffa4fa9fac1331e8cbbe",
+      "bytes": 400,
+      "role": "checksums",
+      "redistributable": true,
+      "decision": "APPROVED_CANDIDATE",
+      "basis": "Candidate asset digest list; generated locally from the four distribution assets."
+    }
+  ],
+  "item_decision_count": 152,
+  "rebind": {
+    "from_target_commit": "844e647972f527de2f3cc50aca442f3710169690",
+    "to_target_commit": "611d2f553597439a0c58807dd6865914ff46281c",
+    "unchanged_research_members": 73,
+    "final_archive_members": 84,
+    "changed_archive_members_from_initial": [
+      "README.md",
+      "docs/evidence/phase-05-independent-review.json"
+    ],
+    "added_archive_members_from_initial": [
+      "docs/evidence/phase-05-content-review.md"
+    ],
+    "changed_loose_assets_from_initial": [
+      "brujula-laboral-mx-investigacion.zip",
+      "SHA256SUMS.txt"
+    ],
+    "last_v3_change": [
+      "docs/evidence/phase-05-independent-review.json",
+      "docs/evidence/phase-05-content-review.md",
+      "brujula-laboral-mx-investigacion.zip",
+      "SHA256SUMS.txt"
+    ],
+    "result": "PASS",
+    "last_v4_change": [
+      "README.md",
+      "brujula-laboral-mx-investigacion.zip",
+      "SHA256SUMS.txt"
+    ],
+    "last_v6_change": [
+      "career_signals_mx-1.0.0-py3-none-any.whl",
+      "SHA256SUMS.txt"
+    ],
+    "hosted_windows_wheel_sha256": "fe5c6174fccb1effa0d6b34430f66566fe4567c7dd5685a9ce5f7e7c8169b27c",
+    "wheel_members_byte_identical_to_local_v4": 54,
+    "wheel_members_line_ending_only_differences": 8,
+    "wheel_record_regenerated_members": 1
+  }
+}
