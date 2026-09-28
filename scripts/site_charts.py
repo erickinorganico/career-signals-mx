@@ -19,6 +19,14 @@ FIELDS = (("033100", "Derecho", "#3659d9"),
 METRICS = (("employment_rate", "Tasa de ocupación", "%"),
            ("positive_income_coverage", "Cobertura de ingreso positivo conocido", "%"),
            ("positive_income_mean", "Ingreso mensual medio positivo conocido", "MXN/mes"))
+EDITORIAL = {
+    "employment_rate": ("empleo", "La ocupación ronda 75 % en los tres campos",
+                        "Ocupación significa tener trabajo; no indica empleo en la carrera estudiada."),
+    "positive_income_coverage": ("cobertura-ingreso", "Menos de la mitad de las personas ocupadas tienen ingreso positivo exacto conocido",
+                                 "La falta de un ingreso exacto conocido no equivale a ingreso cero."),
+    "positive_income_mean": ("ingreso", "El ingreso medio observado ronda 18–20 mil pesos mensuales",
+                             "Promedio nominal entre personas ocupadas con ingreso positivo exacto conocido; no es oferta salarial ni resultado de egresados."),
+}
 
 
 def _read_csv(path: Path) -> tuple[list[dict[str, str]], str]:
@@ -157,6 +165,50 @@ def _select(records: list[dict[str, str]], links: list[dict[str, str]], figure: 
     return [index[record_id] for record_id in ids]
 
 
+def _editorial_insights(trend: list[dict[str, str]]) -> tuple[list[dict], str]:
+    """Derive the three editorial statements only from linked 2026-Q2 rows."""
+    insights = []
+    markup = []
+    for number, (metric, _, unit) in enumerate(METRICS, 1):
+        section_id, title, interpretation = EDITORIAL[metric]
+        rows = [row for row in trend if row["metric_id"] == metric and row["period_id"] == "2026-Q2"]
+        by_field = {row["field_of_study_id"]: row for row in rows}
+        if len(rows) != len(FIELDS) or set(by_field) != {field for field, _, _ in FIELDS}:
+            raise ValueError(f"faltan filas editoriales 2026-Q2: {metric}")
+        fields = []
+        for field, name, _ in FIELDS:
+            row = by_field[field]
+            value = _number(row, "value")
+            if value is None or row["status"] != "REVIEW":
+                raise ValueError(f"valor editorial no publicable: {metric}: {field}")
+            fields.append({"field_of_study_id": field, "field_label": name,
+                           "value": value, "record_id": row["record_id"]})
+        values = [field["value"] for field in fields]
+        if metric == "employment_rate" and not all(70 <= value <= 80 for value in values):
+            raise ValueError("la afirmación ocupación ronda 75 % no se sostiene")
+        if metric == "positive_income_coverage" and not all(0 <= value < 50 for value in values):
+            raise ValueError("la afirmación cobertura menor a la mitad no se sostiene")
+        if metric == "positive_income_mean" and not all(0 < value < 100000 for value in values):
+            raise ValueError("ingreso editorial fuera del rango válido")
+        if metric == "positive_income_mean" and not all(18000 <= value < 20000 for value in values):
+            raise ValueError("la afirmación ingreso ronda 18–20 mil no se sostiene")
+        if unit == "MXN/mes":
+            range_text = f"${min(values):,.0f}–${max(values):,.0f} MXN/mes"
+            point = lambda value: f"${value:,.0f}"
+        else:
+            range_text = f"{min(values):.1f}–{max(values):.1f} %"
+            point = lambda value: f"{value:.1f} %"
+        detail = "; ".join(f"{field['field_label']}: {point(field['value'])}" for field in fields)
+        insights.append({"metric_id": metric, "section_id": section_id, "period_id": "2026-Q2",
+                         "unit": unit, "range": {"minimum": min(values), "maximum": max(values),
+                                                "display": range_text}, "fields": fields})
+        markup.append(f'<article class="takeaway"><span class="takeaway-number">{number:02d}</span>'
+                      f'<h3>{escape(title)}</h3><p class="takeaway-value">{escape(range_text)}</p>'
+                      f'<p>{escape(detail)}. {escape(interpretation)}</p>'
+                      f'<a href="#{section_id}">Ver datos y método</a></article>')
+    return insights, '<div class="takeaways">' + "".join(markup) + '</div>'
+
+
 def render_charts(stage: Path) -> dict[str, str]:
     """Write static SVG/trace files and return safe HTML fragments for the site."""
     exports = stage / "research" / "exports"
@@ -179,9 +231,11 @@ def render_charts(stage: Path) -> dict[str, str]:
         raise ValueError("la figura territorial no contiene las 32 entidades")
     if any(row["metric_id"] != "employment_rate" or row["field_of_study_id"] != "033100" or row["period_id"] != "2026-Q2" for row in territory):
         raise ValueError("dimensiones inesperadas en figura territorial")
+    insights, summary_markup = _editorial_insights(trend)
     charts = stage / "charts"
     charts.mkdir(exist_ok=True)
     trace = {"schema_version": "1.0", "figures": {TREND_FIGURE: trend, TERRITORY_FIGURE: territory},
+             "editorial_insights": insights,
              "source_sha256": {"public-records.csv": records_hash, "figure-record-links.csv": links_hash}}
     (charts / "chart-data.json").write_text(json.dumps(trace, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     groups = []
@@ -199,7 +253,12 @@ def render_charts(stage: Path) -> dict[str, str]:
             cards.append(f'<article class="chart-card"><h4>{escape(name)}</h4><p class="chart-latest"><strong>{escape(_fmt(value, unit))}</strong><span>{escape(last["period_id"])} · {escape(interval)}</span></p><img src="charts/{filename}" alt="Serie trimestral de {escape(title)} para {escape(name)}; datos completos en la tabla siguiente" width="420" height="280" loading="lazy"><p class="chart-open"><a href="charts/{filename}">Abrir gráfica en tamaño completo</a></p></article>')
         metric_rows.sort(key=lambda r: (r["field_of_study_id"], r["period_id"]))
         table = _table(metric_rows, unit=unit, caption=f"{title}: ocho trimestres y tres campos de estudio")
-        groups.append(f'<section class="chart-group"><h3>{escape(title)}</h3><div class="chart-card-grid">{"".join(cards)}</div><details><summary>Ver los 24 registros e intervalos</summary>{table}</details></section>')
+        section_id, takeaway_title, interpretation = EDITORIAL[metric]
+        groups.append(f'<section class="chart-group" id="{section_id}"><h3>{escape(takeaway_title)}</h3>'
+                      f'<p class="chart-group-metric">{escape(title)}</p>'
+                      f'<p class="chart-group-note">{escape(interpretation)}</p>'
+                      f'<div class="chart-card-grid">{"".join(cards)}</div>'
+                      f'<details><summary>Ver los 24 registros e intervalos</summary>{table}</details></section>')
     territory_cards = []
     for part in range(2):
         filename = f"territory-{part+1}.svg"
@@ -214,16 +273,20 @@ def render_charts(stage: Path) -> dict[str, str]:
                    f'<strong>{escape(_fmt(value, "%", 2))}</strong><p>Tasa de ocupación · IC 90 % del proyecto: {escape(_fmt(lower, "%"))} a {escape(_fmt(upper, "%"))}</p>'
                    f'<img src="charts/trend-employment_rate-033100.svg" alt="Tasa de ocupación trimestral de Derecho; datos completos en la sección de tendencias" width="420" height="280">'
                    f'<p class="chart-note">Estimación en revisión; precisión no oficial. Personas con estudios profesionales terminados y edad conocida de 15 años o más. <a href="research/report.html#{TREND_FIGURE}">Ver investigación y método</a>.</p></div>')
-    trend_markup = ('<div class="chart-section-intro"><p>Ocho trimestres · México · personas con estudios profesionales terminados y edad conocida de 15 años o más. '
-                    'Los intervalos de confianza al 90 % son estimaciones del proyecto, sujetas a revisión y no oficiales. '
-                    'El ingreso es nominal y corresponde sólo a ingreso positivo exacto conocido.</p>'
+    trend_markup = ('<div class="chart-section-intro"><p>ENOE · México · personas con estudios profesionales terminados · ocho trimestres. '
+                    'IC 90 % del proyecto, en revisión y no oficial.</p>'
                     '<p><a href="research/report.html#figure:eight-quarter-trends">Ver figura del informe</a> · '
                     '<a href="charts/chart-data.json" download>Descargar registros públicos usados</a></p></div>' + ''.join(groups))
-    territory_markup = ('<p>Derecho · 2026-Q2 · tasa de ocupación por entidad. Códigos oficiales en orden, sin clasificación por desempeño. '
-                        'IC 90 % del proyecto; precisión no oficial. Los valores ausentes se muestran como no disponibles.</p>'
+    available = sum(_number(row, "value") is not None and row["status"] == "REVIEW"
+                    for row in territory)
+    territory_markup = (f'<h3>{available} de 32 entidades tienen cifra publicable</h3>'
+                        '<p>Derecho · 2026-Q2 · tasa de ocupación por entidad. Códigos oficiales en orden. '
+                        'IC 90 % del proyecto; precisión no oficial. Las ausencias se muestran como no disponibles; '
+                        'las diferencias descriptivas no establecen causas.</p>'
                         '<p class="territory-mobile-note">En pantalla pequeña, desplaza cada gráfica horizontalmente para leer las entidades.</p>'
                         f'<div class="territory-grid">{"".join(territory_cards)}</div>'
                         '<details><summary>Ver los 32 registros estatales e intervalos</summary>'
                         + _table(territory, unit="%", caption="Tasa de ocupación de Derecho, 2026-Q2, por entidad", territory=True) + '</details>'
                         '<p><a href="research/report.html#figure:state-availability">Ver figura del informe</a></p>')
-    return {"hero_markup": hero_markup, "trend_markup": trend_markup, "territory_markup": territory_markup}
+    return {"hero_markup": hero_markup, "summary_markup": summary_markup,
+            "trend_markup": trend_markup, "territory_markup": territory_markup}
