@@ -1,4 +1,6 @@
-# Brújula Laboral MX — research release 1.0.0
+# Brújula Laboral MX
+
+[Explore the visual results site (Spanish)](https://erickinorganico.github.io/career-signals-mx/) · [Read the complete report](https://erickinorganico.github.io/career-signals-mx/research/report.html) — research release 1.0.0
 
 [Download release](https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0) · [Spanish PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v1.0.0/brujula-laboral-mx-informe.pdf) · [Español](README.md)
 

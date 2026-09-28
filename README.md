@@ -1,123 +1,68 @@
 # Brújula Laboral MX
 
-Investigación reproducible del mercado laboral mexicano con datos públicos de INEGI.
+### ¿Qué muestra la ENOE sobre estudiar Derecho, Comunicación o Ciencias políticas?
 
-[Descargar publicación](https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0) · [Informe PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v1.0.0/brujula-laboral-mx-informe.pdf) · [English](README.en.md)
+Investigación reproducible del mercado laboral mexicano. Ocho trimestres de datos públicos, gráficas y tablas con evidencia para leer cada cifra en su contexto.
 
-**Versión 1.0.0 publicada y aprobada visualmente por el propietario.** El informe real cubre ocho trimestres ENOE, de 2024-T3 a 2026-T2. Incluye 97 páginas, nueve grupos de gráficas y 22 tablas enlazadas en CSV, Parquet y DuckDB. El paquete contiene HTML para consulta offline, Markdown, PDF, fuentes y manifiesto de integridad.
+**[Explorar los resultados →](https://erickinorganico.github.io/career-signals-mx/)** · [Leer el informe completo](https://erickinorganico.github.io/career-signals-mx/research/report.html) · [Descargar PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v1.0.0/brujula-laboral-mx-informe.pdf) · [English](README.en.md)
 
-Los perfiles nacionales y campos focales tienen seguimiento de ocho trimestres; los demás campos, sexo registrado y 32 entidades se presentan para el último trimestre. Carrera, ocupación e industria se mantienen separadas. Los valores faltantes y suprimidos conservan `null`; la precisión calculada es **no oficial, REVIEW**. No constituye un ranking ni una recomendación personal.
+| Periodo analizado | Publicación | Material disponible |
+|---|---|---|
+| 2024-T3 a 2026-T2 | Versión 1.0.0 | 97 páginas · 9 grupos de gráficas · 22 tablas |
 
-El análisis incluye 6,739 registros, 4,209 comparaciones (las no comparables quedan bloqueadas) y 38 afirmaciones enlazadas a evidencia. La CI del código publicado pasó 595 pruebas Python (seis casos requieren el entorno local) y 30 controles Node por sistema en [Windows y Ubuntu](https://github.com/erickinorganico/career-signals-mx/actions/runs/36464796584). El contraste independiente con R y el replay numérico conservan su evidencia previa para los mismos datos. La revisión visual está aprobada y los cinco archivos del release pasaron auditoría y descarga pública con verificación de hashes. El [recibo final](docs/evidence/phase-05-release-acceptance.json) separa estas comprobaciones del cierre administrativo GSD.
+> **Cómo leer los resultados.** Estimaciones del proyecto a partir de la ENOE de INEGI; precisión **no oficial, REVIEW**. Los campos de estudio no equivalen a ocupaciones. Este estudio describe poblaciones y no constituye un ranking ni una recomendación personal.
 
-Descarga y extrae el ZIP; abre `research/report.html` o `research/report.pdf`. Para instalar y reproducir desde fuentes ya custodiadas, sigue los comandos `enoe-accept`, `research-analyze`, `research-build`, `research-replay` y `research-open` con raíces explícitas en la [guía bilingüe de operación](docs/OPERATIONS.md). Consulta [el método](docs/METHODOLOGY.md), [el alcance](docs/SCOPE.md), [el contrato vigente](docs/CONTRACT-V2.md), [la evidencia numérica](docs/evidence/phase-02-numerical-acceptance.json), [la aceptación analítica](docs/evidence/phase-03-analysis-acceptance.json), [la publicación preliminar](docs/evidence/phase-04-publication-acceptance.json) y [el estado GSD](.planning/STATE.md). Para citar el archivo publicado hoy, identifica el [tag 1.0.0](https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0), el periodo ENOE y el recibo usado; [CITATION.cff](CITATION.cff) describe el código 1.0.0 publicado. No se distribuyen microdatos ni se requiere una aplicación alojada.
+## Tres resultados para empezar
 
----
+México, segundo trimestre de 2026. Los tres perfiles corresponden a personas con estudios profesionales terminados y edad conocida de 15 años o más (97 significa 97 o más). Las medidas tienen denominadores distintos: no se deben comparar entre sí como si fueran un mismo indicador.
 
-## Documentación histórica del piloto sintético 0.1.0
+### Ciencias políticas: la cobertura del ingreso también es un resultado
 
-El contenido siguiente describe el piloto anterior. Sus datos, periodos y alcance no son los del informe real enlazado arriba. Las guías bilingües actuales están enlazadas arriba; la evidencia de la entrega 1.0.0 está enlazada arriba.
+**48.48%** de las personas ocupadas del perfil tienen ingreso exacto positivo conocido. Esta cobertura limita la interpretación del ingreso medio: quienes carecen de ingreso conocido no se convierten en ceros.
 
-## Qué construimos
+![Cobertura de ingreso positivo conocido en Ciencias políticas, con intervalo de confianza del 90%](docs/figures/opening-7b66a320b957029a78acf87e6f0cebebe42c8d5efde1652ddcd7544ae033c4de.png)
 
-El objetivo es un observatorio analítico que pueda repetirse desde sus fuentes:
-registro de autoridad y términos, captura con recibos y hashes, tablas con
-conceptos separados, controles de calidad y comparabilidad, gráficas exportables
-y briefs que distingan observación, interpretación y recomendación.
+IC90: **39.77–57.29%** · CV: 11.10% · n observado: 238 · evidencia **R1549** en el [informe completo](https://erickinorganico.github.io/career-signals-mx/research/report.html).
 
-La interacción de esta versión ocurre mediante **archivos, scripts y CLI**.
-Las salidas son DuckDB, CSV/Parquet/JSON, gráficas SVG/PNG y reportes
-Markdown/HTML. No incluye frontend, backend de aplicación ni sitio navegable.
-No requiere servicios de inferencia pagados ni hosting.
+### Derecho: 75.86% de ocupación en la población del perfil
 
-## Piloto definido
+La tasa de ocupación se calcula sobre la población elegible del perfil; no mide colocación de recién egresados ni empleo relacionado con la carrera.
 
-| Aspecto | Decisión de diseño |
+![Tasa de ocupación del perfil de Derecho, con intervalo de confianza del 90%](docs/figures/opening-7d6e1e45043c9f5b309b91186cc9a259e4543baf20d07e12ec74bf88e99c8b2e.png)
+
+IC90: **74.00–77.63%** · CV: 1.45% · n observado: 4,507 · evidencia **R0691** en el [informe completo](https://erickinorganico.github.io/career-signals-mx/research/report.html).
+
+### Comunicación y periodismo: $19,647.34 de ingreso mensual medio
+
+**Pesos mexicanos nominales**, exclusivamente entre personas ocupadas con ingreso exacto positivo conocido. No es el ingreso de toda la población del perfil, una oferta salarial ni una medida ajustada por inflación.
+
+![Ingreso mensual medio positivo conocido en Comunicación y periodismo, con intervalo de confianza del 90%](docs/figures/opening-49098ac0e72ad61498b66be4ad781a1a3a53d55bb7c52713ebf26f1539f0ce73.png)
+
+IC90: **$15,436.93–$23,857.75** · CV: 13.03% · n observado: 275 · evidencia **R0060** en el [informe completo](https://erickinorganico.github.io/career-signals-mx/research/report.html).
+
+## Explorar toda la investigación
+
+| Pregunta | Dónde leer |
 |---|---|
-| Campos | Derecho; Comunicación y periodismo; Ciencias políticas |
-| Geografías | México y Jalisco ilustrativo |
-| Periodos | 2025-Q2, 2025-Q3 y 2025-Q4 |
-| Medidas | Personas ocupadas, ingreso mensual medio nominal y participación de mujeres |
-| Datos | Fixture propio, inequívocamente sintético; 54 observaciones y 7 filas `UNKNOWN`/`null` |
-| Fuente real prevista entonces | ENOE de INEGI; los ocho cortes del estudio actual tienen aceptación numérica y analítica independiente, enlazada arriba |
+| ¿Qué muestran los tres campos y su evolución? | [Sitio de resultados](https://erickinorganico.github.io/career-signals-mx/) |
+| ¿Qué ocurre por sexo registrado, entidad y otros campos? | [Informe completo con todas las tablas](https://erickinorganico.github.io/career-signals-mx/research/report.html) |
+| ¿Cómo se calcularon las cifras y sus límites? | [Metodología](docs/METHODOLOGY.md) y [fuentes](docs/SOURCES.md) |
+| ¿Cómo descargar, comprobar y reproducir? | [Publicación 1.0.0](https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0) y [guía de operación](docs/OPERATIONS.md) |
 
-Esta selección sirve para probar el flujo analítico. No identifica las mejores
-carreras ni reproduce las cifras de OLA o IMCO. Informalidad, vacantes,
-recomendación individual y cobertura LATAM quedan fuera del primer piloto.
+Los perfiles nacionales y los tres campos focales tienen ocho trimestres de seguimiento. Otros campos, sexo registrado y las 32 entidades se presentan para el último trimestre. El contexto nacional de 15 años o más tiene un universo distinto al de estudios profesionales terminados. Los valores faltantes o suprimidos permanecen `null`; los cambios de universo, fuente, método o base de precios bloquean comparaciones automáticas.
 
-## Empezar por las decisiones
+## Descargar y reproducir
 
-1. [Mandato y reglas de autoridad](docs/PROJECT-CHARTER.md): qué está autorizado.
-2. [Scope](docs/SCOPE.md) y [PRD](docs/PRD.md): preguntas, usuarios, requisitos y exclusiones.
-3. [Especificación](docs/SPEC.md), [contratos](docs/CONTRACT.md) y [metodología](docs/METHODOLOGY.md): cómo debe funcionar.
-4. [Arquitectura](docs/ARCHITECTURE.md) y [ADRs](docs/decisions/README.md): decisiones y alternativas.
-5. [Plan de trabajo](docs/PLAN.md), [roadmap](docs/ROADMAP.md) y [riesgos](docs/RISKS.md): dependencias y criterios de cierre.
-6. [Validación](docs/VALIDATION-PLAN.md), [revisión adversarial](docs/PLANNING-REVIEW.md) y [estado actual](docs/STATUS.md): qué debe probarse y qué se comprobó.
+El [ZIP de investigación](https://github.com/erickinorganico/career-signals-mx/releases/download/v1.0.0/brujula-laboral-mx-investigacion.zip) contiene HTML para consulta offline, Markdown, PDF, gráficas, exportaciones CSV/Parquet/DuckDB y manifiesto de integridad. Extráelo y abre `research/report.html`. No incluye microdatos.
 
-## Ejecutar la demo local
+Para reproducir desde fuentes custodiadas, usa `enoe-accept`, `research-analyze`, `research-build`, `research-replay` y `research-open` siguiendo la [guía bilingüe](docs/OPERATIONS.md). El sitio estático distribuye los archivos del release y verifica sus hashes antes de publicar; [cómo se construye](docs/PAGES.md).
 
-Requisitos para estos comandos: Git, Python 3.12 y `uv` disponible. También se
-puede crear un `venv` con Python e instalar `requirements.txt` con `pip`. El
-entorno y las dependencias quedan fuera del repositorio.
+## Evidencia y alcance
 
-```powershell
-git clone https://github.com/erickinorganico/career-signals-mx.git
-cd career-signals-mx
-uv venv --python 3.12
-uv pip sync requirements.txt
-.venv/Scripts/python.exe scripts/check_docs.py
-.venv/Scripts/python.exe -m brujula demo --as-of 2026-09-22 --output artifacts/demo
-.venv/Scripts/python.exe -m brujula report --output artifacts/demo --format html
-.venv/Scripts/python.exe -m brujula verify
-```
+La publicación contiene **6,739 registros evaluados, 4,209 comparaciones y 38 afirmaciones vinculadas a evidencia**. Las comparaciones no admisibles quedan bloqueadas. La [CI del código publicado](https://github.com/erickinorganico/career-signals-mx/actions/runs/36464796584) pasó 595 pruebas Python (seis casos requieren el entorno local) y 30 controles Node en Windows y Ubuntu. El [recibo de aceptación](docs/evidence/phase-05-release-acceptance.json) distingue pruebas, auditoría, aprobación visual y verificación de descargas.
 
-En Linux/macOS cambia `.venv/Scripts/python.exe` por `.venv/bin/python`.
-La alternativa sin `uv` es `python -m venv .venv` seguida de
-`.venv/Scripts/python.exe -m pip install -r requirements.txt`. Los artefactos
-de la demo quedan en `artifacts/demo/`, incluyendo `current.json`, el run
-sellado y `report/report.html`; `report` solo resuelve un `current` validado.
-La verificación cubre contratos, negativos, evals, reportes y ejecución offline.
-Consulta el [release y sus límites](docs/RELEASE.md), el
-[recibo verificable](docs/evidence/release-receipt.json) y el
-[ejemplo sintético](examples/synthetic/README.md). La demo no necesita red
-ni datos externos después de instalar las dependencias.
+- [Alcance](docs/SCOPE.md), [contrato de investigación](docs/CONTRACT-V2.md) y [arquitectura](docs/ARCHITECTURE.md).
+- [Aceptación numérica](docs/evidence/phase-02-numerical-acceptance.json), [analítica](docs/evidence/phase-03-analysis-acceptance.json) y [estado GSD](.planning/STATE.md).
+- [Contribuir](CONTRIBUTING.md), [citar](CITATION.cff) y [piloto sintético histórico](examples/synthetic/README.md).
 
-La CLI incluye `build`, `demo`, `verify`, `report --output DIR --format
-html|markdown` y `scout`. Scout es una
-lectura de metadata optativa; un resultado de lectura no autoriza incorporar
-cifras ni confirma que una metodología siga igual.
-
-## Reglas de evidencia
-
-- Un campo de estudio no es una ocupación; una persona ocupada no es una vacante.
-- Un dato ausente permanece `null`. No es cero.
-- `MEASURED`, `REVIEW`, `UNKNOWN` y `BLOCKED` expresan estados de evidencia;
-  los datos sintéticos permanecen identificados y en revisión.
-- Un cambio de universo, método, fuente, unidad o base de precios puede impedir
-  comparar. Un ingreso nominal no mide poder adquisitivo.
-- Un fallo de actualización invalida la salida actual, conservando el historial
-  como historial; el lock de sistema se recupera tras una interrupción.
-- Los agentes del prototipo usan replay determinista. No se afirma autonomía
-  de investigación ni inferencia LLM en producción.
-
-La auditoría de fuentes está en [SOURCES](docs/SOURCES.md). No se redistribuyen
-microdatos ENOE ni cifras extraídas de fuentes con términos sin resolver.
-
-## Estructura
-
-```text
-docs/                 Plan, specs, metodología, ADRs y estado
-contracts/            Schemas versionados del dataset, runs, insights y agentes
-data/catalog/         Catálogo de fuentes y permisos por uso
-data/fixtures/        Datos sintéticos del MVP
-brujula/              Loader, quality, pipeline, warehouse, reports y CLI
-tests/                Pruebas offline y de integración local
-scripts/              Comandos auxiliares y verificación documental
-```
-
-Consulta [CONTRIBUTING](CONTRIBUTING.md) para continuar el trabajo,
-[ORCHESTRATION](docs/ORCHESTRATION.md) para la colaboración entre modelos y
-[PROJECT-EFFICIENCY](PROJECT-EFFICIENCY.md) para el criterio de uso de Laya.
-Código, documentación y fixtures originales bajo [MIT](LICENSE); las fuentes
-externas conservan sus condiciones y atribución propias en los
-[avisos de terceros](THIRD_PARTY_NOTICES.md).
+Fuente: INEGI, Encuesta Nacional de Ocupación y Empleo. Selección, estimación y transformación de Brújula Laboral MX, no realizadas ni avaladas por INEGI. Código y contenido original bajo [MIT](LICENSE); los materiales externos conservan sus [condiciones y atribución](THIRD_PARTY_NOTICES.md).
