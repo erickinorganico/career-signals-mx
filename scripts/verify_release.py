@@ -92,10 +92,15 @@ def github_json(endpoint: str, authenticated: bool = False) -> dict:
 
 def github_bytes(endpoint: str, authenticated: bool = False) -> bytes:
     require(endpoint.startswith(API + "/"), "GitHub endpoint escapes pinned repository")
+    path = endpoint[len(API):]
+    artifact_zip = re.fullmatch(r"/actions/artifacts/[1-9][0-9]*/zip", path) is not None
+    release_asset = re.fullmatch(r"/releases/assets/[1-9][0-9]*", path) is not None
+    require(artifact_zip or release_asset, "unsupported GitHub binary endpoint")
+    accept = "application/json" if artifact_zip else "application/octet-stream"
     if authenticated:
-        return subprocess.run(["gh", "api", "-H", "Accept: application/octet-stream", endpoint],
+        return subprocess.run(["gh", "api", "-H", f"Accept: {accept}", endpoint],
                               capture_output=True, timeout=120, check=True).stdout
-    with urlopen(Request(endpoint, headers={"Accept": "application/octet-stream",
+    with urlopen(Request(endpoint, headers={"Accept": accept,
                                            "User-Agent": "career-signals-mx-release-check"}), timeout=120) as response:
         return response.read()
 

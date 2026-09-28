@@ -242,3 +242,19 @@ def test_host_rejects_forged_run_and_stale_wheel(tmp_path, monkeypatch):
     entries["Windows"]["wheel_sha256"] = "f" * 64
     with pytest.raises(v.EvidenceError, match="wheel identity"):
         v.host(receipt, tmp_path)
+
+
+def test_authenticated_binary_headers_follow_github_endpoint(monkeypatch):
+    calls = []
+    def run(args, **kwargs):
+        calls.append(args)
+        return type("Result", (), {"stdout": b"bytes"})()
+    monkeypatch.setattr(v.subprocess, "run", run)
+    assert v.github_bytes(f"{v.API}/actions/artifacts/12/zip", authenticated=True) == b"bytes"
+    assert v.github_bytes(f"{v.API}/releases/assets/34", authenticated=True) == b"bytes"
+    assert calls[0] == ["gh", "api", "-H", "Accept: application/json",
+                        f"{v.API}/actions/artifacts/12/zip"]
+    assert calls[1] == ["gh", "api", "-H", "Accept: application/octet-stream",
+                        f"{v.API}/releases/assets/34"]
+    with pytest.raises(v.EvidenceError, match="unsupported"):
+        v.github_bytes(f"{v.API}/actions/artifacts/12", authenticated=True)
