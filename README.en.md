@@ -1,14 +1,14 @@
 # Brújula Laboral MX — current research snapshot
 
-[Download release](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) · [Spanish PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v0.9.0-preview.1/brujula-laboral-mx-informe.pdf) · [Español](README.md)
+[Download preview](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) · [Spanish PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v0.9.0-preview.1/brujula-laboral-mx-informe.pdf) · [Español](README.md)
 
 Published at the owner's request as a preliminary snapshot. The real INEGI ENOE report covers 2024 Q3–2026 Q2, with 97 pages, nine figure groups and 22 linked CSV/Parquet/DuckDB tables. Extract the archive and open `research/report.html` or `research/report.pdf` offline. No raw person-level data is distributed.
 
 National and focal-field profiles span eight quarters; other fields, recorded sex and all 32 states cover the latest quarter only. Missing and suppressed values remain null. Precision is explicitly nonofficial (`REVIEW`); this is neither a career ranking nor a personal recommendation.
 
-Local checks passed 592 Python tests, 30 Node controls, independent R comparisons and numerical replay. [Hosted native-install CI](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) passed on Windows and Ubuntu. Independent Phase 4 verification and Phase 5 release audit remain open; version 1.0.0 is not declared complete.
+Local checks passed 592 Python tests, 30 Node controls, independent R comparisons and numerical replay. [Hosted native-install CI](https://github.com/erickinorganico/career-signals-mx/actions/runs/36053551361) passed on Windows and Ubuntu for its recorded commit. Independent technical Phase 4 verification passed 5/5; human visual approval remains pending. Phase 5 audit and the final public release remain open. A candidate Python package may carry version 1.0.0 without declaring a completed public v1.0.0 release.
 
-Read the current bilingual [method](docs/METHODOLOGY.md), [scope](docs/SCOPE.md), [operations](docs/OPERATIONS.md), [v2 contract](docs/CONTRACT-V2.md) and [Phase 4 evidence](docs/evidence/phase-04-publication-acceptance.json).
+For an installed wheel and already custodied inputs, follow the explicit-root `enoe-accept`, `research-analyze`, `research-build`, `research-replay` and `research-open` commands in the bilingual [operations guide](docs/OPERATIONS.md). Read the current bilingual [method](docs/METHODOLOGY.md), [scope](docs/SCOPE.md), [v2 contract](docs/CONTRACT-V2.md), [numerical acceptance](docs/evidence/phase-02-numerical-acceptance.json), [analytical acceptance](docs/evidence/phase-03-analysis-acceptance.json) and [Phase 4 publication evidence](docs/evidence/phase-04-publication-acceptance.json). Cite the [published preview tag](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1), ENOE period and receipt used for today's public archive; [CITATION.cff](CITATION.cff) describes the unreleased 1.0.0 source candidate.
 
 ---
 
@@ -41,10 +41,10 @@ nominal mean monthly income and women's share of employment. The implemented
 fixture contains 54 synthetic observations, including seven explicit
 `UNKNOWN`/`null` rows.
 
-An ENOE extension is future work, subject to verified redistribution conditions,
-official field codes, population filters, weights and complex-survey precision.
-No real source ingestion or automatic source activation is implied by inclusion
-in the source catalog. LATAM requires separate country-level methodology review.
+At the time of this synthetic pilot, an ENOE extension was future work. The
+current eight-snapshot study has separate accepted numerical and analytical
+receipts linked above. Catalog inclusion still does not activate a new source
+or authorize publication. LATAM requires separate country-level methodology review.
 
 ## Read the design
 

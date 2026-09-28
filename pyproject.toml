@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "career-signals-mx"
-version = "0.1.0"
+version = "1.0.0"
 description = "Reproducible Mexican labor research pipelines and evidence-aware analytical reports"
 readme = "README.md"
 requires-python = ">=3.12"

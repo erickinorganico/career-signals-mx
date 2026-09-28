@@ -1,6 +1,6 @@
 # Estado publicado — v0.9.0-preview.1
 
-Se entrega el [informe real y sus agregados](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) como publicación preliminar. La implementación local y el plan 04-06 tienen evidencia de aceptación; la [CI nativa](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) pasó en Windows y Ubuntu. La verificación independiente de Fase 4, la Fase 5 y la auditoría final GSD permanecen pendientes. No se declara versión final 1.0.0. Los detalles que siguen son registros históricos anteriores a esta actualización.
+Se entrega el [informe real y sus agregados](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) como publicación preliminar. La implementación local y el plan 04-06 tienen evidencia de aceptación; la [CI nativa](https://github.com/erickinorganico/career-signals-mx/actions/runs/36053551361) pasó en Windows y Ubuntu para el checkout registrado entonces. La verificación técnica independiente de Fase 4 pasó 5/5; la aprobación visual humana sigue pendiente. Fase 5, el paquete Python 1.0.0 candidato, su CI exacta y la auditoría final GSD permanecen separados. No se declara release público final 1.0.0. Los detalles que siguen son registros históricos anteriores a esta actualización.
 
 ---
 
@@ -20,8 +20,10 @@ amenazas, sin abiertas, y Nyquist pasó 31/31. La precisión propia continúa si
 discrepancias documentadas. La [evidencia numérica](evidence/phase-02-numerical-acceptance.json)
 conserva los intentos y hashes, y la [evidencia de Phase 3](evidence/phase-03-analysis-acceptance.json)
 conserva el digest del paquete. Phase 4 debe producir la publicación offline;
-Phase 5 debe cerrar el release. Ninguno está terminado.
-El repositorio conserva la versión pública 0.1.0 hasta el release final.
+Phase 5 debe cerrar el release. Estas frases reflejan el estado histórico
+previo a la publicación preliminar enlazada arriba.
+El repositorio conserva la versión pública sintética 0.1.0 y el preview real,
+ambos separados del futuro release final.
 
 La evidencia que sigue es el registro histórico de la demo sintética 0.1.0;
 sus bloqueos de ingesta y cifras de pruebas no describen el alcance activo.

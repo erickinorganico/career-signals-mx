@@ -8,9 +8,9 @@ Investigación reproducible del mercado laboral mexicano con datos públicos de 
 
 Los perfiles nacionales y campos focales tienen seguimiento de ocho trimestres; los demás campos, sexo registrado y 32 entidades se presentan para el último trimestre. Carrera, ocupación e industria se mantienen separadas. Los valores faltantes y suprimidos conservan `null`; la precisión calculada es **no oficial, REVIEW**. No constituye un ranking ni una recomendación personal.
 
-El análisis incluye 6,739 registros, 4,209 comparaciones (las no comparables quedan bloqueadas) y 38 afirmaciones enlazadas a evidencia. La validación local pasó 592 pruebas Python, 30 controles Node, contraste independiente con R y replay numérico. La instalación nativa en [GitHub Actions](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) pasó en Windows y Ubuntu. La verificación independiente de Fase 4 y el cierre de Fase 5 siguen pendientes; no se declara completada la versión 1.0.0.
+El análisis incluye 6,739 registros, 4,209 comparaciones (las no comparables quedan bloqueadas) y 38 afirmaciones enlazadas a evidencia. La validación local pasó 592 pruebas Python, 30 controles Node, contraste independiente con R y replay numérico. La instalación nativa en [GitHub Actions](https://github.com/erickinorganico/career-signals-mx/actions/runs/36053551361) pasó en Windows y Ubuntu para el commit entonces comprobado. La verificación técnica independiente de Fase 4 pasó 5/5, pero falta aprobación visual humana; la auditoría y el release final de Fase 5 siguen pendientes. El paquete Python puede portar versión candidata 1.0.0 sin que exista todavía un release público final v1.0.0.
 
-Descarga y extrae el ZIP; abre `research/report.html` o `research/report.pdf`. Consulta [el método](docs/METHODOLOGY.md), [el alcance](docs/SCOPE.md), [la guía de operación](docs/OPERATIONS.md), [el contrato vigente](docs/CONTRACT-V2.md), [la evidencia de publicación](docs/evidence/phase-04-publication-acceptance.json) y [el estado GSD](.planning/STATE.md). No se distribuyen microdatos ni se requiere una aplicación alojada.
+Descarga y extrae el ZIP; abre `research/report.html` o `research/report.pdf`. Para instalar y reproducir desde fuentes ya custodiadas, sigue los comandos `enoe-accept`, `research-analyze`, `research-build`, `research-replay` y `research-open` con raíces explícitas en la [guía bilingüe de operación](docs/OPERATIONS.md). Consulta [el método](docs/METHODOLOGY.md), [el alcance](docs/SCOPE.md), [el contrato vigente](docs/CONTRACT-V2.md), [la evidencia numérica](docs/evidence/phase-02-numerical-acceptance.json), [la aceptación analítica](docs/evidence/phase-03-analysis-acceptance.json), [la publicación preliminar](docs/evidence/phase-04-publication-acceptance.json) y [el estado GSD](.planning/STATE.md). Para citar el archivo publicado hoy, identifica el [tag preliminar](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1), el periodo ENOE y el recibo usado; [CITATION.cff](CITATION.cff) describe el código candidato 1.0.0, aún sin release público. No se distribuyen microdatos ni se requiere una aplicación alojada.
 
 ---
 
@@ -39,7 +39,7 @@ No requiere servicios de inferencia pagados ni hosting.
 | Periodos | 2025-Q2, 2025-Q3 y 2025-Q4 |
 | Medidas | Personas ocupadas, ingreso mensual medio nominal y participación de mujeres |
 | Datos | Fixture propio, inequívocamente sintético; 54 observaciones y 7 filas `UNKNOWN`/`null` |
-| Fuente real futura | ENOE de INEGI, condicionada a validar licencia, clasificación, ponderación y precisión |
+| Fuente real prevista entonces | ENOE de INEGI; los ocho cortes del estudio actual tienen aceptación numérica y analítica independiente, enlazada arriba |
 
 Esta selección sirve para probar el flujo analítico. No identifica las mejores
 carreras ni reproduce las cifras de OLA o IMCO. Informalidad, vacantes,

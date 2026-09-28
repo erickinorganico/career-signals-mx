@@ -1,4 +1,27 @@
-# Release 0.1.0 — piloto sintético
+# Estado de publicación y release
+
+El [informe real preliminar v0.9.0-preview.1](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1)
+está disponible con PDF español, HTML/Markdown offline y agregados. Cubre
+ocho trimestres ENOE (2024-T3 a 2026-T2) para perfiles nacionales y tres
+campos focales; el desglose de los demás campos, sexo registrado y 32 entidades
+corresponde al último trimestre. Consulta el [estado actual](STATUS.md), el
+[método](METHODOLOGY.md), las [operaciones bilingües](OPERATIONS.md) y la
+[aceptación de publicación de fase 4](evidence/phase-04-publication-acceptance.json).
+Los valores ausentes/suprimidos son `null`; la precisión propia es no oficial
+(`REVIEW`). La revisión visual humana, la custodia del paquete final y el
+readback público de v1.0.0 siguen como gates separados. Una versión candidata
+de Python 1.0.0 no equivale a un release público final.
+
+Para usar la investigación real desde una rueda instalada, sigue los comandos
+con raíces explícitas de [OPERATIONS.md](OPERATIONS.md). Una actualización
+requiere nueva custodia/acceso aprobado para cada fuente, aceptación numérica,
+análisis, publicación sellada y readback de `current`; un fallo invalida la
+publicación vigente. El informe preliminar es un snapshot histórico y no
+demuestra frescura de las fuentes al ejecutar comandos hoy.
+
+---
+
+# Release histórico 0.1.0 — piloto sintético
 
 [Publicado en GitHub como v0.1.0](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.1.0).
 
@@ -63,7 +86,7 @@ credenciales, entornos locales ni microdatos de terceros.
 
 ## Límites de esta versión
 
-`official_snapshot` permanece bloqueado. M6 exige activar y validar un paquete
+En este piloto histórico, `official_snapshot` permanecía bloqueado. M6 exigía activar y validar un paquete
 ENOE concreto, términos, clasificación, pesos, diseño muestral y precisión.
 Los insights aceptan plantillas canónicas vinculadas a observaciones exactas;
 v1 no acepta prosa agentic de comparaciones ni texto libre como evidencia.

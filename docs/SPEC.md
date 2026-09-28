@@ -1,5 +1,10 @@
 # Especificación implementable
 
+> Especificación histórica del piloto sintético 0.1.0. Para el estudio real
+> consulta el [contrato v2](CONTRACT-V2.md), la
+> [aceptación analítica](evidence/phase-03-analysis-acceptance.json) y el
+> [estado actual](STATUS.md).
+
 Versión: 1.0 · Fecha: 2026-09-22 · Estado: implementado y verificado en el MVP sintético 0.1.0.
 
 Esta especificación traduce REQ-001..REQ-018 a contratos verificables. La matriz
