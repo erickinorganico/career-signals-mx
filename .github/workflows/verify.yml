@@ -81,6 +81,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Current wheel build failed' }
           $wheel = Get-ChildItem -LiteralPath $wheelDir -Filter 'career_signals_mx-*.whl' | Select-Object -First 1
           if ($null -eq $wheel) { throw 'Current wheel not found' }
+          Copy-Item -LiteralPath $wheel.FullName -Destination (Join-Path $env:RUNNER_TEMP 'installed.whl')
           $venv = Join-Path $env:RUNNER_TEMP 'brujula-installed'
           python -m venv $venv
           if ($LASTEXITCODE -ne 0) { throw 'Outside-checkout virtual environment failed' }
@@ -99,5 +100,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: phase4-installed-runtime-${{ matrix.os }}
-          path: ${{ runner.temp }}/phase4-installed-runtime.json
+          path: |
+            ${{ runner.temp }}/phase4-installed-runtime.json
+            ${{ runner.temp }}/installed.whl
           if-no-files-found: warn
