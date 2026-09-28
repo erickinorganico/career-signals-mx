@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "status": "DRAFT_READBACK_PASS",
+  "tag": "v1.0.0",
+  "target_commit": "611d2f553597439a0c58807dd6865914ff46281c",
+  "inventory_path": "docs/evidence/phase-05-release-inventory.json",
+  "release_id": 398517656,
+  "draft_url": "https://github.com/erickinorganico/career-signals-mx/releases/tag/untagged-a5ea0d813048e504d74d",
+  "draft": true,
+  "public_available": false,
+  "final_release_approved": false,
+  "remaining_gates": [
+    "Human visual acceptance",
+    "Anonymous public readback after publication",
+    "Final GSD phase and milestone audit"
+  ],
+  "assets": [
+    {
+      "name": "brujula-laboral-mx-informe.pdf",
+      "id": 596115063,
+      "bytes": 1048093,
+      "github_digest": "sha256:8b6914cda1836f22ea7bfc4b3716f23cc7e0f32681d47107f1c0a4564ed108c8"
+    },
+    {
+      "name": "brujula-laboral-mx-investigacion.zip",
+      "id": 596115069,
+      "bytes": 13220567,
+      "github_digest": "sha256:5b3679f3eb48ec2f6c7e14e837e598b9481c59731cf54713a90879e995857c6b"
+    },
+    {
+      "name": "career_signals_mx-1.0.0-py3-none-any.whl",
+      "id": 596115058,
+      "bytes": 1318640,
+      "github_digest": "sha256:fe5c6174fccb1effa0d6b34430f66566fe4567c7dd5685a9ce5f7e7c8169b27c"
+    },
+    {
+      "name": "research-manifest.json",
+      "id": 596115085,
+      "bytes": 22289,
+      "github_digest": "sha256:38c3dfc21d816f32d7e4a21d7efd89418fc198fd80e94577783706f00d7fb023"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "id": 596115076,
+      "bytes": 400,
+      "github_digest": "sha256:1918ebd97c2ee73b51180a826e1cc74ea079b84a6fd8ffa4fa9fac1331e8cbbe"
+    }
+  ],
+  "draft_readback": {
+    "status": "PASS",
+    "checked_at": "2026-09-28T18:35:09.025276+00:00",
+    "method": "Authenticated GitHub API metadata and actual binary download of all five assets through verify_release.py remote --stage draft",
+    "asset_count": 5,
+    "exact_names_sizes_sha256": true
+  },
+  "public_readback": {
+    "status": "NOT_PUBLISHED",
+    "reason": "Human visual acceptance remains pending; draft access is not anonymous public release proof"
+  }
+}

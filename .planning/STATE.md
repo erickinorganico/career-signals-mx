@@ -7,7 +7,7 @@ current_phase_name: Offline Publication and Reproducible Operation
 status: active
 stopped_at: null
 last_updated: "2026-09-24T20:55:39.007750+00:00"
-last_activity: 2026-09-24
+last_activity: 2026-09-28
 last_activity_desc: "04-06 integrated acceptance complete; hosted Windows/Ubuntu installed-wheel CI passed at 3b8b2d4; Phase 4 verified 5/5 technical truths; explicit visual approval requested; Phase 5 preparation continues"
 progress:
   total_phases: 5
@@ -18,6 +18,8 @@ progress:
 ---
 
 # Project State
+
+**Delivery preparation, 2026-09-28:** Draft GitHub release 398517656 (`v1.0.0`) targets `611d2f5`. All five uploaded assets passed actual download/hash readback. Public release, human visual acceptance and final GSD audit remain open. The current published version is still `v0.9.0-preview.1`.
 
 **Owner continuation, 2026-09-28:** The owner renewed continuation of pending work. The 1.0.0 candidate has a fresh outside-checkout Windows installation and an exact member privacy/license audit; release-checker hardening is independently clean and hosted CI at `611d2f5` passes Windows/Ubuntu (595 tests and 30 prohibition controls per host; six local-environment cases skipped). Exact asset/host receipts and draft preparation are recorded separately. Human visual acceptance remains pending.
 

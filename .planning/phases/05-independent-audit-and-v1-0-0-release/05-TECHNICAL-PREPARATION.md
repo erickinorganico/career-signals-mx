@@ -13,3 +13,7 @@ An initial local full-suite attempt was not accepted: it lacked native PDF envir
 Candidate audit rejected a temporary ZIP README with incorrectly decoded Spanish text. That unpublished candidate was preserved separately. The replacement restores the exact previously reviewed UTF-8 README and research archive; no statistical report byte changed. The current inventory and independent asset review identify the accepted candidate explicitly.
 
 Final receipts in `docs/evidence/` distinguish independent content review, exact member redistribution decisions, installed-host portability, and any later draft/public download proof. `release_approved` within the inventory means asset eligibility only; `final_release_approved` remains false until the separate acceptance and publication gates finish.
+
+## Exact hosted and draft readback
+
+`verify_release.py host` passed against live run 36464796584 and the exact approved wheel. `verify_release.py remote --stage draft` then passed after downloading all five assets of draft release 398517656. The tag target remains `611d2f5`; later evidence commits do not replace it. The draft is deliberately not public proof. Git preserves the raw bytes of the independently hash-bound review documents using explicit `-text` attributes.
