@@ -1,6 +1,6 @@
 # Guía de arquitectura / Architecture reader guide
 
-> **Estado / Status:** las interfaces de publicación de Fase 4 tienen evidencia de aceptación integrada. La verificación independiente de fase y el release final de Fase 5 siguen abiertos. / Phase 4 publication interfaces have integrated acceptance evidence; independent phase verification and the final Phase 5 release remain open.
+> **Estado / Status:** v1.0.0 está publicada; las cinco fases tienen verificación independiente y la revisión visual está aprobada. / v1.0.0 is published, all five phases have independent verification, and human visual acceptance is recorded. See [release evidence](evidence/phase-05-release-acceptance.json) and [GSD state](../.planning/STATE.md).
 >
 > **Ancla de fuente / Source anchor:** `docs/evidence/phase-04-publication-acceptance.json` records the installed real publication and hosted Windows/Ubuntu checks. The earlier checkpoint `8353c0a` remains historical planning evidence.
 

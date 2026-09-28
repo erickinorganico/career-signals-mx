@@ -1,20 +1,21 @@
 ---
 phase: 04-offline-publication-and-reproducible-operation
 verified: 2026-09-24T20:47:38Z
-status: human_needed
+status: passed
 score: 5/5 must-haves verified
 overrides_applied: 0
+human_approved: 2026-09-28
 human_verification:
   - test: "Inspect the sealed offline report at desktop, mobile width, 200% zoom and A4 print size"
     expected: "Spanish prose, semantic tables and figure labels remain readable without clipping; source and uncertainty context remain visible"
-    why_human: "The existing agent visual inspection is documented, but the GSD verification gate reserves visual appearance for a human decision"
+    result: "PASSED: user answered 'Apruebo' to the pending visual acceptance request on 2026-09-28; see 04-UAT.md"
 ---
 
 # Phase 4: Offline Publication and Reproducible Operation Verification
 
 **Phase goal:** Readers receive consistent, evidence-bound offline research outputs from a sealed run that can be replayed and whose current status fails closed.
-**Status:** human_needed. All five codebase truths are verified; visual appearance still needs the developer's decision under the GSD verification gate. The separate Phase 5 release gate is outside this verdict.
-**Mode:** Initial verification. No earlier `04-VERIFICATION.md` or overrides existed.
+**Status:** passed. All five codebase truths were verified on September 24, and the user approved the pending visual acceptance on September 28. The separate Phase 5 release gate is outside this verdict.
+**Mode:** Initial technical verification followed by the recorded human decision. No earlier `04-VERIFICATION.md` or overrides existed.
 
 ## Goal achievement
 
@@ -71,15 +72,16 @@ No Phase 4 plan declared a `probe-*.sh` path, and none was found for this phase;
 
 ## Human verification and limits
 
-The agent visual checks were completed and recorded in `docs/visual/phase-04-visual-review.md`: local browser at desktop/mobile/200%, A4 raster pages, long tables, figure labels and Spanish text. This is strong technical evidence, but the GSD verifier instruction treats visual appearance as a human verification item. The review explicitly does not certify PDF/UA or complete screen-reader accessibility. Final public release inventory, licensing and publication approval are Phase 5 criteria, not deferred failures of Phase 4.
+The agent visual checks were completed and recorded in `docs/visual/phase-04-visual-review.md`: local browser at desktop/mobile/200%, A4 raster pages, long tables, figure labels and Spanish text. The GSD verifier instruction treated visual appearance as a human verification item, which the user accepted on September 28. The earlier agent review documents its own local edition and hashes; the human decision applies to the [published PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v0.9.0-preview.1/brujula-laboral-mx-informe.pdf), SHA-256 `8b6914cda1836f22ea7bfc4b3716f23cc7e0f32681d47107f1c0a4564ed108c8`, and the offline HTML in the same archive, as identified in `04-UAT.md`. The review explicitly does not certify PDF/UA or complete screen-reader accessibility. Final public release inventory, licensing and publication approval are Phase 5 criteria, not deferred failures of Phase 4.
 
-### Human verification required
+### Human verification accepted
 
 **Test:** Open the sealed offline HTML at desktop, mobile width and 200% browser zoom; inspect the A4 PDF, its wide tables and all nine figure groups at print size.
 
 **Expected:** Spanish prose and figures remain readable without clipping or overlap; semantic tables, units, uncertainty, universe, source and status are visible.
 
-**Why human:** Visual readability is a subjective appearance judgment. The existing agent review and raster/browser evidence narrow the check, but do not constitute the developer's acceptance.
+**Decision:** The user answered **"Apruebo"** on September 28 to the pending visual acceptance request for the identified published PDF and offline HTML. `04-UAT.md` records the one test as passed. This approval records the human judgment; it does not assert a new technical run or a fresh inspection by the verifier.
 
 _Verified: 2026-09-24T20:47:38Z_  
+_Human acceptance recorded: 2026-09-28_
 _Verifier: gsd-verifier; no commit made._

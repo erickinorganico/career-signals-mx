@@ -1,19 +1,15 @@
 {
   "schema_version": "1.0",
-  "status": "DRAFT_READBACK_PASS",
+  "status": "PUBLIC_READBACK_PASS",
   "tag": "v1.0.0",
   "target_commit": "611d2f553597439a0c58807dd6865914ff46281c",
   "inventory_path": "docs/evidence/phase-05-release-inventory.json",
   "release_id": 398517656,
   "draft_url": "https://github.com/erickinorganico/career-signals-mx/releases/tag/untagged-a5ea0d813048e504d74d",
-  "draft": true,
-  "public_available": false,
-  "final_release_approved": false,
-  "remaining_gates": [
-    "Human visual acceptance",
-    "Anonymous public readback after publication",
-    "Final GSD phase and milestone audit"
-  ],
+  "draft": false,
+  "public_available": true,
+  "final_release_approved": true,
+  "remaining_gates": [],
   "assets": [
     {
       "name": "brujula-laboral-mx-informe.pdf",
@@ -54,7 +50,21 @@
     "exact_names_sizes_sha256": true
   },
   "public_readback": {
-    "status": "NOT_PUBLISHED",
-    "reason": "Human visual acceptance remains pending; draft access is not anonymous public release proof"
+    "status": "PASS",
+    "checked_at": "2026-09-28T18:42:08.011317+00:00",
+    "method": "Unauthenticated GitHub API tag dereference and actual binary download of every public browser_download_url through verify_release.py remote --stage public",
+    "tag_commit": "611d2f553597439a0c58807dd6865914ff46281c",
+    "asset_count": 5,
+    "exact_names_sizes_sha256": true
+  },
+  "public_url": "https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0",
+  "human_acceptance_path": "docs/evidence/phase-05-human-acceptance.json",
+  "gsd_closeout": {
+    "status": "PASS",
+    "requirements": 31,
+    "phases": 5,
+    "overrides": 0,
+    "trace_path": "docs/evidence/phase-05-requirement-traceability.json",
+    "milestone_audit_path": ".planning/milestones/v1.0.0-MILESTONE-AUDIT.md"
   }
 }

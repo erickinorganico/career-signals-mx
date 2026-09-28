@@ -1,6 +1,6 @@
 # Método ENOE / ENOE methodology
 
-> This bilingual guide describes the accepted eight-snapshot numerical method and its nonofficial precision limits. Phase 4 installed identity, publication and hosted fixture/PDF checks have evidence in `docs/evidence/phase-04-publication-acceptance.json`. Independent phase verification and final Phase 5 release acceptance remain open.
+> **Estado / Status:** v1.0.0 está publicada; las cinco fases tienen verificación independiente y la revisión visual está aprobada. / v1.0.0 is published, all five phases have independent verification, and human visual acceptance is recorded. See [release evidence](evidence/phase-05-release-acceptance.json) and [GSD state](../.planning/STATE.md).
 
 ## Español
 

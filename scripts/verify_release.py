@@ -389,9 +389,21 @@ def remote(receipt: dict, root: Path, stage: str) -> None:
                 f"downloaded asset differs: {name}")
 
 
+def accepted_report_status(content: str) -> bool:
+    """Accept an explicit GSD terminal status, including its prose display form."""
+    return re.search(
+        r"(?im)^(?:(?:status|result|verdict):|\*\*(?:status|result|verdict):\*\*)"
+        r"[ \t]*(?:pass|passed|verified|complete|completed)(?=[ \t]*(?:$|[.;]))",
+        content,
+    ) is not None
+
+
 def trace(receipt: dict, root: Path) -> None:
     require(receipt.get("status") == "PASS", "GSD trace is not PASS")
-    registry = (root / ".planning/REQUIREMENTS.md").read_text(encoding="utf-8")
+    active_registry = root / ".planning/REQUIREMENTS.md"
+    archived_registry = root / ".planning/milestones/v1.0.0-REQUIREMENTS.md"
+    registry_path = active_registry if active_registry.exists() or active_registry.is_symlink() else archived_registry
+    registry = registry_path.read_text(encoding="utf-8")
     required = set(re.findall(r"^- \[[ x]\] \*\*([A-Z]+-\d+)\*\*:", registry, re.M))
     require(len(required) == 31, "canonical milestone requirement registry differs")
     require(set(receipt.get("required_ids") or []) == required, "required IDs differ from canonical registry")
@@ -414,8 +426,7 @@ def trace(receipt: dict, root: Path) -> None:
                 content = path.read_text(encoding="utf-8", errors="replace")
                 require(row["id"] in content, f"trace evidence does not cite requirement: {row['id']}")
                 if key == "verification":
-                    require(re.search(r"(?im)^(status|result|verdict):\s*(pass|verified|complete)\b", content)
-                            or re.search(r"(?im)^\*\*status:\*\*\s*(pass|verified|complete)\b", content),
+                    require(accepted_report_status(content),
                             f"verification evidence has no accepted status: {value}")
                 if key == "evidence":
                     require(re.search(r"(?im)\b(pass|accepted|verified)\b", content),
@@ -430,7 +441,7 @@ def trace(receipt: dict, root: Path) -> None:
     for key in ("security_report", "validation_report", "milestone_audit"):
         item = receipt.get(key) or {}
         content = checked_file(root, item.get("path"), item.get("sha256")).decode("utf-8")
-        require(re.search(r"(?im)^(status|result|verdict):\s*(pass|verified|complete)\b", content),
+        require(accepted_report_status(content),
                 f"{key} is not accepted")
         require(target := receipt.get("target_commit"), "trace target absent")
         require(target in content, f"{key} does not bind target commit")

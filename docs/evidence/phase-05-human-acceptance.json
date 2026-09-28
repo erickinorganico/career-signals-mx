@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "status": "PASS",
+  "approved_at": "2026-09-28T18:41:17.986345+00:00",
+  "user_response": "Apruebo",
+  "scope": "Human acceptance of PDF and offline HTML readability requested in the preceding response",
+  "report_pdf_sha256": "8b6914cda1836f22ea7bfc4b3716f23cc7e0f32681d47107f1c0a4564ed108c8",
+  "research_manifest_sha256": "38c3dfc21d816f32d7e4a21d7efd89418fc198fd80e94577783706f00d7fb023",
+  "target_commit": "611d2f553597439a0c58807dd6865914ff46281c"
+}

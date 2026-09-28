@@ -1,6 +1,6 @@
 # Brújula Laboral MX — Alcance / Scope
 
-> Phases 1–3 and the integrated Phase 4 plan have accepted numerical, analytical and local publication evidence. Final independent Phase 4 verification and the Phase 5 release audit remain separate gates. This guide describes the full real-data scope without claiming v1.0.0 completion.
+> **Estado / Status:** v1.0.0 está publicada; las cinco fases tienen verificación independiente y la revisión visual está aprobada. / v1.0.0 is published, all five phases have independent verification, and human visual acceptance is recorded. See [release evidence](evidence/phase-05-release-acceptance.json) and [GSD state](../.planning/STATE.md).
 
 ## Español
 
@@ -56,7 +56,7 @@ Phase 3 acceptance records 6,739 sanitized records, 4,209 comparisons, 38 claims
 
 ## Authority notes
 
-- Current planning authority: `.planning/PROJECT.md` and `.planning/REQUIREMENTS.md`.
+- Current planning authority: `.planning/PROJECT.md` and `.planning/milestones/v1.0.0-REQUIREMENTS.md`.
 - Editorial/design authority: `.planning/phases/04-offline-publication-and-reproducible-operation/04-CONTEXT.md` and `04-EDITORIAL-SPEC.md`.
 - Accepted analytical authority: `docs/evidence/phase-03-analysis-acceptance.json` (`status: PASS`, `implementation_commit: a6696a1a62e91cd72ac26bde149d201f3ea07e82`, `accepted_numeric_digest: 8db575e9d664864d1513e3b9658bd9b060c4cb3bed8b51561f208adeb97b9a00`), with Phase 2 numerical evidence as its upstream authority.
 - Immutable preparation checkpoint: `d9246e416b944f8a6ec01811b6e885da0141493b`.

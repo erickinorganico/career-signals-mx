@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "Citation for the 1.0.0 source candidate; public release pending. Cite v0.9.0-preview.1 for the currently published research archive, with its ENOE period and evidence receipt."
+message: "Cite release 1.0.0 together with the ENOE period and evidence receipt used."
 title: "Brújula Laboral MX: investigación reproducible del mercado laboral mexicano"
 authors:
   - name: "Erick Inorganico"
@@ -8,3 +8,5 @@ license: MIT
 repository-code: "https://github.com/erickinorganico/career-signals-mx"
 version: 1.0.0
 abstract: "Local-first ENOE labor research; project precision is nonofficial and report claims remain evidence-linked."
+date-released: 2026-09-28
+url: "https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0"

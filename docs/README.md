@@ -2,10 +2,8 @@
 
 La entrega activa es una investigación ENOE real de ocho trimestres, con
 informes estáticos y datos agregados. Sigue [PROJECT](../.planning/PROJECT.md),
-[REQUIREMENTS](../.planning/REQUIREMENTS.md), el [roadmap GSD](../.planning/ROADMAP.md)
-y [STATE](../.planning/STATE.md). Las Fases 1–3 están aceptadas y la Fase 4
-tiene evidencia integrada y CI Windows/Ubuntu; su verificación independiente
-y el release final siguen pendientes. [CONTRACT-V2](CONTRACT-V2.md) define el contrato real.
+[REQUIREMENTS](../.planning/milestones/v1.0.0-REQUIREMENTS.md), el [roadmap GSD](../.planning/ROADMAP.md)
+y [STATE](../.planning/STATE.md). Las cinco fases tienen verificación independiente y el release 1.0.0 está publicado con aprobación visual, CI Windows/Ubuntu y descarga pública comprobada. [CONTRACT-V2](CONTRACT-V2.md) define el contrato real.
 
 El release sintético 0.1.0 permanece como referencia histórica y fixture de
 regresión. Las guías bilingües de alcance, requisitos, arquitectura, método,

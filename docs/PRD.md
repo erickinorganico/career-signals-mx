@@ -1,6 +1,6 @@
 # Brújula Laboral MX — Requisitos del producto / Product requirements
 
-> This guide defines the real-data product and its evidence gates. Phases 1–3 are independently accepted. Phase 4 has integrated local and hosted acceptance evidence; independent phase verification and the Phase 5 final release remain open. See `.planning/REQUIREMENTS.md` for current requirement status.
+> **Estado / Status:** v1.0.0 está publicada; las cinco fases tienen verificación independiente y la revisión visual está aprobada. / v1.0.0 is published, all five phases have independent verification, and human visual acceptance is recorded. See [release evidence](evidence/phase-05-release-acceptance.json) and [GSD state](../.planning/STATE.md).
 
 ## Español
 
@@ -68,7 +68,7 @@ The product covers eight quarters, two populations, three focal fields and 23 me
 
 ## Authority notes
 
-- Scope and product baseline: `docs/SCOPE.md`, `docs/PRD.md`, `.planning/PROJECT.md`, `.planning/REQUIREMENTS.md`.
+- Scope and product baseline: `docs/SCOPE.md`, `docs/PRD.md`, `.planning/PROJECT.md`, `.planning/milestones/v1.0.0-REQUIREMENTS.md`.
 - Publication and editorial authority: `.planning/phases/04-offline-publication-and-reproducible-operation/04-CONTEXT.md` and `04-EDITORIAL-SPEC.md`.
 - Accepted analysis authority: `docs/evidence/phase-03-analysis-acceptance.json` (`status: PASS`, `implementation_commit: a6696a1a62e91cd72ac26bde149d201f3ea07e82`, `accepted_numeric_digest: 8db575e9d664864d1513e3b9658bd9b060c4cb3bed8b51561f208adeb97b9a00`).
 - Immutable preparation checkpoint: `d9246e416b944f8a6ec01811b6e885da0141493b`.

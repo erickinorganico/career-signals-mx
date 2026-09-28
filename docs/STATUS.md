@@ -1,3 +1,11 @@
+# Estado actual — v1.0.0 publicada
+
+La [versión 1.0.0](https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0) está publicada. El propietario aprobó la revisión visual; los cinco archivos públicos descargados coinciden con los hashes auditados. La [CI del código publicado](https://github.com/erickinorganico/career-signals-mx/actions/runs/36464796584) pasó en Windows/Ubuntu: 595 pruebas, seis casos dependientes del entorno local omitidos y 30 controles adicionales por sistema. Consulte el [recibo final](evidence/phase-05-release-acceptance.json) y el [estado GSD](../.planning/STATE.md).
+
+Los registros siguientes son históricos y no describen el estado actual.
+
+---
+
 # Estado publicado — v0.9.0-preview.1
 
 Se entrega el [informe real y sus agregados](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) como publicación preliminar. La implementación local y el plan 04-06 tienen evidencia de aceptación; la [CI nativa](https://github.com/erickinorganico/career-signals-mx/actions/runs/36053551361) pasó en Windows y Ubuntu para el checkout registrado entonces. La verificación técnica independiente de Fase 4 pasó 5/5; la aprobación visual humana sigue pendiente. Fase 5, el paquete Python 1.0.0 candidato, su CI exacta y la auditoría final GSD permanecen separados. No se declara release público final 1.0.0. Los detalles que siguen son registros históricos anteriores a esta actualización.

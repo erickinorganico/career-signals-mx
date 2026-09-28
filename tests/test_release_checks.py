@@ -175,20 +175,65 @@ def test_review_rejects_partial_scope(tmp_path):
         v.review(receipt, tmp_path)
 
 
-def test_trace_canonical_ids_and_failed_verification(tmp_path):
-    registry = (v.ROOT / ".planning/REQUIREMENTS.md").read_bytes()
-    put(tmp_path, ".planning/REQUIREMENTS.md", registry)
+def trace_fixture(root: Path) -> tuple[dict, list[str], bytes]:
+    active = v.ROOT / ".planning/REQUIREMENTS.md"
+    archived = v.ROOT / ".planning/milestones/v1.0.0-REQUIREMENTS.md"
+    registry = (active if active.exists() else archived).read_bytes()
+    put(root, ".planning/REQUIREMENTS.md", registry)
     ids = sorted(set(v.re.findall(r"^- \[[ x]\] \*\*([A-Z]+-\d+)\*\*:", registry.decode(), v.re.M)))
-    for name, status in (("plan.md", ""), ("summary.md", ""), ("verification.md", "status: FAIL"),
+    assert len(ids) == 31
+    for name, status in (("plan.md", ""), ("summary.md", ""), ("verification.md", "status: passed"),
                          ("evidence.md", "accepted")):
-        put(tmp_path, name, (" ".join(ids) + "\n" + status).encode())
+        put(root, name, (" ".join(ids) + "\n" + status).encode())
     rows = [{"id": i, "status": "satisfied", "plan": "plan.md", "summary": "summary.md",
              "verification": "verification.md", "evidence": "evidence.md"} for i in ids]
-    receipt = {"status": "PASS", "required_ids": ids, "requirements": rows}
+    reports = {}
+    for key, status in (("security_report", "status: passed"),
+                        ("validation_report", "**Status:** completed. All checks passed."),
+                        ("milestone_audit", "verdict: verified")):
+        name = f"{key}.md"
+        data = f"{status}\nTarget commit: {TARGET}\n".encode()
+        put(root, name, data)
+        reports[key] = {"path": name, "sha256": v.digest(data)}
+    receipt = {"status": "PASS", "required_ids": ids, "requirements": rows,
+               "all_phases_verified": True, "nyquist_compliant": True,
+               "material_security_open": 0, "uat_open": 0, "audit_open": 0,
+               "target_commit": TARGET, **reports}
+    return receipt, ids, registry
+
+
+def test_trace_accepts_full_canonical_trace(tmp_path):
+    receipt, _, _ = trace_fixture(tmp_path)
+    v.trace(receipt, tmp_path)
+
+
+def test_trace_canonical_ids_and_failed_verification(tmp_path):
+    receipt, ids, _ = trace_fixture(tmp_path)
+    put(tmp_path, "verification.md", (" ".join(ids) + "\nstatus: human_needed").encode())
     with pytest.raises(v.EvidenceError, match="accepted status"):
         v.trace(receipt, tmp_path)
     receipt["required_ids"] = ids[1:] + ["FAKE-01"]
     with pytest.raises(v.EvidenceError, match="canonical"):
+        v.trace(receipt, tmp_path)
+
+
+@pytest.mark.parametrize("status", ["passing", "passed_pending", "completed-later", "human_needed"])
+def test_trace_rejects_nonterminal_report_status(tmp_path, status):
+    receipt, _, _ = trace_fixture(tmp_path)
+    data = f"status: {status}\nTarget commit: {TARGET}\n".encode()
+    put(tmp_path, "security_report.md", data)
+    receipt["security_report"]["sha256"] = v.digest(data)
+    with pytest.raises(v.EvidenceError, match="security_report is not accepted"):
+        v.trace(receipt, tmp_path)
+
+
+def test_trace_uses_archived_registry_only_when_active_missing(tmp_path):
+    receipt, _, registry = trace_fixture(tmp_path)
+    put(tmp_path, ".planning/milestones/v1.0.0-REQUIREMENTS.md", registry)
+    (tmp_path / ".planning/REQUIREMENTS.md").unlink()
+    v.trace(receipt, tmp_path)
+    put(tmp_path, ".planning/REQUIREMENTS.md", b"- [x] **FAKE-01**: unrelated milestone\n")
+    with pytest.raises(v.EvidenceError, match="canonical milestone requirement registry"):
         v.trace(receipt, tmp_path)
 
 
