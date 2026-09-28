@@ -1,6 +1,6 @@
 # ENOE: especificación estadística por campo de estudio
 
-Fecha de revisión: 2026-09-22. Estado: **método propuesto; habilitación numérica pendiente de pruebas de aceptación**. Esta revisión no activa fuentes ni publica estimaciones reales. Se revisaron documentos oficiales, metadatos y el encabezado del paquete 2026Q2 obtenido por el integrador; no se ejecutó aquí una descarga masiva ni una reconciliación con microdatos.
+Fecha de revisión original: 2026-09-22. **Documento de investigación metodológica histórica.** Las propuestas y pendientes fechados abajo describen el estado anterior a la [aceptación numérica de fase 2](../evidence/phase-02-numerical-acceptance.json) y la [aceptación analítica de fase 3](../evidence/phase-03-analysis-acceptance.json), ambas de los ocho cortes 2024Q3–2026Q2. Esta revisión inicial no activó fuentes ni publicó estimaciones reales; los recibos posteriores establecen el alcance aceptado y sus límites de precisión no oficial. El [informe preliminar](../STATUS.md) y el release final tienen gates separados.
 
 ## 1. Dictamen y alcance identificable
 
@@ -119,7 +119,7 @@ CV_percent = 100 × SE / abs(estimate), si estimate != 0
 
 Aquí `x_i,y_i` incluyen el indicador de dominio y las condiciones de validez. Una persona fuera del dominio aporta cero algebraico; esto **no imputa cero al dato faltante**. Una UPM sin integrantes del dominio permanece con aporte cero. El m_h del cálculo proviene del diseño completo.
 
-El [manual autoritativo de R survey 4.5-2, secciones svydesign, svyCprod y surveyoptions](https://r-forge.r-universe.dev/survey/doc/manual.html) documenta la aproximación sin FPC, preservación de UPM en dominios y manejo de estratos con una sola UPM. Usar R como oráculo independiente de la futura implementación Python; registrar versión y opciones. Esto no exige un servicio externo.
+El [manual autoritativo de R survey 4.5-2, secciones svydesign, svyCprod y surveyoptions](https://r-forge.r-universe.dev/survey/doc/manual.html) documenta la aproximación sin FPC, preservación de UPM en dominios y manejo de estratos con una sola UPM. R se usó después como oráculo independiente de la implementación Python para la aceptación de fase 2, con versión y opciones registradas en su recibo. Esto no exige un servicio externo.
 
 Reglas de fallo propuestas:
 
@@ -174,11 +174,11 @@ Secuencia de aceptación propuesta:
 
 Tolerancia: para una cifra tabulada redondeada a unidad u, aceptar únicamente el intervalo de redondeo ±u/2, más error flotante documentado. No aceptar porcentajes arbitrarios de discrepancia. Un tabulado en miles no permite exigir igualdad de personas individuales. Si no coincide, revisar universo/edad desconocida, edición de pesos, duplicados, condición de residencia y medida; no reajustar pesos para forzar coincidencia.
 
-No se encontró en esta revisión un tabulado INEGI que valide directamente cada uno de los tres campos con exactamente este universo y promedio positivo. Las coincidencias nacionales validan márgenes; se necesitan además pruebas del cruce CMPE y un oráculo independiente para los dominios. No presentar un conteo de registros o una media sin pesos de la RNM como cifra oficial de población.
+No se encontró en esta revisión inicial un tabulado INEGI que valide directamente cada uno de los tres campos con exactamente este universo y promedio positivo. Las coincidencias nacionales validaban márgenes; las pruebas posteriores del cruce CMPE y el oráculo independiente de dominios están en el recibo de fase 2 citado arriba. No presentar un conteo de registros o una media sin pesos de la RNM como cifra oficial de población.
 
 ## 9. Casos de aceptación estadística
 
-Los casos numéricos, de diseño y publicación se implementaron en `tests/test_survey.py`; los casos de codificación/universo y reconciliación de fuentes son aceptación pendiente del adaptador. La implementación no activa la fuente.
+Los casos numéricos, de diseño y publicación se implementaron en `tests/test_survey.py`. La codificación, los universos y la reconciliación de fuentes se aceptaron después para los ocho cortes en los recibos de fases 2 y 3 citados arriba. Este documento no activa una fuente nueva.
 
 | Caso | Entrada/control | Resultado exigido |
 | --- | --- | --- |
@@ -192,7 +192,7 @@ Los casos numéricos, de diseño y publicación se implementaron en `tests/test_
 | Ingreso faltante | Cero físico con `ING7C=7`, blanco, código especial. | Excluir de monto válido; conservar no respuesta; no sumar ceros al promedio. |
 | Cero confirmado | `ING7C=6`. | Contar en sin ingreso; fuera del promedio positivo. |
 | Fronteras | CV exactamente 15/30; n exactamente 29/30; proporción 0/1. | Clasificación reproducible, límite inferior incluido correctamente; revisión de frontera. |
-| Edad desconocida | EDA 97,98,99. | 97 adulto; 98/99 desconocidos según categoría, sin edad numérica inventada. |
+| Edad desconocida | EDA 97,98,99. | 97 es la categoría truncada de 97 años o más, no edad exacta; 98/99 desconocidos según categoría, sin edad numérica inventada. |
 | Educación | CS_P16 1/2/9; niveles 07/08/09. | Egreso desconocido no se trata como terminado; universos principal/ampliado separados. |
 | Esquema y carrera | CSV con cero inicial; alias viejo/nuevo conflictivos; código no catalogado. | Preservar clave; conflictos bloquean; no asignación por ocupación ni aproximación de texto. |
 | Población/factor | Mismo dato con FAC_MEN en lugar de FAC_TRI. | Rechazo antes de estimar. |
@@ -200,7 +200,13 @@ Los casos numéricos, de diseño y publicación se implementaron en `tests/test_
 
 ## 10. Condiciones abiertas para una implementación honesta
 
-El estimador ya está implementado con fixtures. CMPE, encabezado y rango de ingreso de 2026Q2 están corroborados a nivel de metadatos; otros paquetes requieren la misma comprobación. La primera cifra real requiere cerrar: regla de edad no especificada para cada universo; estados de ingreso/horas; soporte de factores y estratos; comparación de precisión contra celdas oficiales; ampliación del contrato de salida. Resolver cada punto debe producir evidencia verificable y actualizar esta revisión, no reemplazar un desconocido con una convención implícita.
+Este párrafo documentaba el estado previo a la aceptación real. Los ocho cortes,
+la edad no especificada, ingresos/horas, factores, estratos, comparación R y
+referencias oficiales se comprobaron para el alcance de la
+[fase 2](../evidence/phase-02-numerical-acceptance.json) y el
+[paquete analítico de fase 3](../evidence/phase-03-analysis-acceptance.json).
+La precisión sigue siendo no oficial; nuevas fuentes, universos o periodos
+requieren su propia aceptación. No se convierte un desconocido en una convención implícita.
 
 ### Evidencia de implementación FINAL-04
 
@@ -208,4 +214,4 @@ Propiedad de este trabajo: `brujula/survey.py`, `tests/test_survey.py` y este do
 
 Los pesos cero requieren `allow_zero_weights=True` tras auditoría del llamador, no suman soporte y no pueden crear UPM de peso total cero. Identificadores vacíos, pesos negativos/no finitos, singleton de diseño, máscaras ambiguas, denominadores negativos o porcentajes fuera de rango fallan explícitamente. SE cero y CV indefinido en estimación cero se someten a revisión; no se clasifican como alta precisión automáticamente.
 
-Verificación ejecutada: `.venv/Scripts/python.exe -m pytest tests/test_survey.py -q`, **24 pruebas aprobadas**. Incluye oráculos aritméticos independientes de la fórmula implementada, metamorfismo de escala, orden y UPM anidadas, límites CV/n y faltantes explícitos. El contraste contra R `survey` y contra precisiones oficiales sigue pendiente del integrador; no se ha afirmado equivalencia de producción.
+Verificación histórica de implementación: `.venv/Scripts/python.exe -m pytest tests/test_survey.py -q`, **24 pruebas aprobadas**. Incluye oráculos aritméticos independientes de la fórmula implementada, metamorfismo de escala, orden y UPM anidadas, límites CV/n y faltantes explícitos. Posteriormente, la [aceptación numérica de fase 2](../evidence/phase-02-numerical-acceptance.json) registró el contraste R `survey` y las referencias oficiales de los ocho cortes. Ese contraste no convierte la precisión del proyecto en precisión oficial ni certifica por sí solo la publicación final.

@@ -2,21 +2,21 @@
 
 Investigación reproducible del mercado laboral mexicano con datos públicos de INEGI.
 
-[Descargar publicación](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) · [Informe PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v0.9.0-preview.1/brujula-laboral-mx-informe.pdf) · [English](README.en.md)
+[Descargar publicación](https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0) · [Informe PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v1.0.0/brujula-laboral-mx-informe.pdf) · [English](README.en.md)
 
-**Publicación del estado actual, por decisión del propietario.** El informe real cubre ocho trimestres ENOE, de 2024-T3 a 2026-T2. Incluye 97 páginas, nueve grupos de gráficas y 22 tablas enlazadas en CSV, Parquet y DuckDB. El paquete contiene HTML para consulta offline, Markdown, PDF, fuentes y manifiesto de integridad.
+**Versión 1.0.0 publicada y aprobada visualmente por el propietario.** El informe real cubre ocho trimestres ENOE, de 2024-T3 a 2026-T2. Incluye 97 páginas, nueve grupos de gráficas y 22 tablas enlazadas en CSV, Parquet y DuckDB. El paquete contiene HTML para consulta offline, Markdown, PDF, fuentes y manifiesto de integridad.
 
 Los perfiles nacionales y campos focales tienen seguimiento de ocho trimestres; los demás campos, sexo registrado y 32 entidades se presentan para el último trimestre. Carrera, ocupación e industria se mantienen separadas. Los valores faltantes y suprimidos conservan `null`; la precisión calculada es **no oficial, REVIEW**. No constituye un ranking ni una recomendación personal.
 
-El análisis incluye 6,739 registros, 4,209 comparaciones (las no comparables quedan bloqueadas) y 38 afirmaciones enlazadas a evidencia. La validación local pasó 592 pruebas Python, 30 controles Node, contraste independiente con R y replay numérico. La instalación nativa en GitHub Actions y el cierre completo de GSD siguen pendientes en esta publicación preliminar. No se declara completada la versión 1.0.0.
+El análisis incluye 6,739 registros, 4,209 comparaciones (las no comparables quedan bloqueadas) y 38 afirmaciones enlazadas a evidencia. La CI del código publicado pasó 595 pruebas Python (seis casos requieren el entorno local) y 30 controles Node por sistema en [Windows y Ubuntu](https://github.com/erickinorganico/career-signals-mx/actions/runs/36464796584). El contraste independiente con R y el replay numérico conservan su evidencia previa para los mismos datos. La revisión visual está aprobada y los cinco archivos del release pasaron auditoría y descarga pública con verificación de hashes. El [recibo final](docs/evidence/phase-05-release-acceptance.json) separa estas comprobaciones del cierre administrativo GSD.
 
-Descarga y extrae el ZIP; abre `research/report.html` o `research/report.pdf`. Consulta [el contrato vigente](docs/CONTRACT-V2.md), [la evidencia de publicación](docs/evidence/phase-04-publication-acceptance.json) y [el estado GSD](.planning/STATE.md). No se distribuyen microdatos ni se requiere una aplicación alojada.
+Descarga y extrae el ZIP; abre `research/report.html` o `research/report.pdf`. Para instalar y reproducir desde fuentes ya custodiadas, sigue los comandos `enoe-accept`, `research-analyze`, `research-build`, `research-replay` y `research-open` con raíces explícitas en la [guía bilingüe de operación](docs/OPERATIONS.md). Consulta [el método](docs/METHODOLOGY.md), [el alcance](docs/SCOPE.md), [el contrato vigente](docs/CONTRACT-V2.md), [la evidencia numérica](docs/evidence/phase-02-numerical-acceptance.json), [la aceptación analítica](docs/evidence/phase-03-analysis-acceptance.json), [la publicación preliminar](docs/evidence/phase-04-publication-acceptance.json) y [el estado GSD](.planning/STATE.md). Para citar el archivo publicado hoy, identifica el [tag 1.0.0](https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0), el periodo ENOE y el recibo usado; [CITATION.cff](CITATION.cff) describe el código 1.0.0 publicado. No se distribuyen microdatos ni se requiere una aplicación alojada.
 
 ---
 
 ## Documentación histórica del piloto sintético 0.1.0
 
-El contenido siguiente describe el piloto anterior. Sus datos, periodos y alcance no son los del informe real enlazado arriba. La documentación bilingüe completa de la futura versión 1.0.0 quedó pendiente al cerrar este trabajo.
+El contenido siguiente describe el piloto anterior. Sus datos, periodos y alcance no son los del informe real enlazado arriba. Las guías bilingües actuales están enlazadas arriba; la evidencia de la entrega 1.0.0 está enlazada arriba.
 
 ## Qué construimos
 
@@ -39,7 +39,7 @@ No requiere servicios de inferencia pagados ni hosting.
 | Periodos | 2025-Q2, 2025-Q3 y 2025-Q4 |
 | Medidas | Personas ocupadas, ingreso mensual medio nominal y participación de mujeres |
 | Datos | Fixture propio, inequívocamente sintético; 54 observaciones y 7 filas `UNKNOWN`/`null` |
-| Fuente real futura | ENOE de INEGI, condicionada a validar licencia, clasificación, ponderación y precisión |
+| Fuente real prevista entonces | ENOE de INEGI; los ocho cortes del estudio actual tienen aceptación numérica y analítica independiente, enlazada arriba |
 
 Esta selección sirve para probar el flujo analítico. No identifica las mejores
 carreras ni reproduce las cifras de OLA o IMCO. Informalidad, vacantes,

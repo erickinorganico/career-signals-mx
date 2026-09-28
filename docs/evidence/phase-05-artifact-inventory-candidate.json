@@ -1,0 +1,527 @@
+{
+  "schema_version": "1.0",
+  "status": "CANDIDATE_REVIEW",
+  "source_run_id": "20260924T010247-81cfb71ea5f1",
+  "source_freeze": "c222f69",
+  "manifest_sha256": "38c3dfc21d816f32d7e4a21d7efd89418fc198fd80e94577783706f00d7fb023",
+  "artifact_count": 73,
+  "total_bytes": 124040761,
+  "aggregate_export_count": 46,
+  "other_content_count": 27,
+  "hash_mismatches": 0,
+  "release_approved": false,
+  "scope_limit": "This is a byte-verified inventory of accepted Phase 4 content. It is not an exact-final-target license/privacy review or a release asset allowlist. Raw source ZIPs and person rows are excluded from this run by the Phase 4 contract and prior local audit.",
+  "items": [
+    {
+      "path": "analysis.json",
+      "bytes": 66941824,
+      "sha256": "4b35ce4d67f9b0372aa6e418e88ed8aa90f630b36814a1295cbf79481e25b638",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "assets/fonts/DejaVuSans-Bold.ttf",
+      "bytes": 704128,
+      "sha256": "b184b89e3c1075f22f6b71575b6fc20d4972b3cfd3b23322ca6fd596dcaef167",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "assets/fonts/DejaVuSans.ttf",
+      "bytes": 756072,
+      "sha256": "3fdf69cabf06049ea70a00b5919340e2ce1e6d02b0cc3c4b44fb6801bd1e0d22",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "assets/fonts/DejaVuSerif-Bold.ttf",
+      "bytes": 355692,
+      "sha256": "c3753f2ed6bc673f15846dc45addbeb3b9c872f32fb18fd53a21f1bef1ed7676",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "assets/fonts/DejaVuSerif.ttf",
+      "bytes": 379740,
+      "sha256": "107244956e9962b9e96faccdc551825e0ae0898ae13737133e1b921a2fd35ffa",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "assets/fonts/LICENSE_DEJAVU",
+      "bytes": 4816,
+      "sha256": "d75938dec098f06f0ac3c00853065d94f020be1c3c62ef1dc2975ba15b4d9b0e",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "exports/claim-evidence.csv",
+      "bytes": 4937,
+      "sha256": "8631caf99e4945d456cc7919acdbb2c8a97bac39ef8073fd538d0779aef39840",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/claim-evidence.parquet",
+      "bytes": 3401,
+      "sha256": "e4ed23a21f0664a1ec81eaa0922a684aed258a53dad1e9fa05a0cd48a5d7d488",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/claim-record-links.csv",
+      "bytes": 9055,
+      "sha256": "4461842d38ea47ac11a18d19874320317115754a2fecda3fddf3771487b3ac19",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/claim-record-links.parquet",
+      "bytes": 6863,
+      "sha256": "936eeb53074bc07b27af952f640f402f73ada0e999120d9ed9875e046ae800ff",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/claims.csv",
+      "bytes": 52351,
+      "sha256": "39ff1d3fd206b2d13f2ab5dfaf2443d14d48a1aba8bb7459ec770b042112eeb4",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/claims.parquet",
+      "bytes": 17810,
+      "sha256": "48e57dedb7a43d5a2442b250529d1ce0f07f535037b77b67908f2de7ed6396f4",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/comparison-evidence.csv",
+      "bytes": 498162,
+      "sha256": "f6ad03bec97a22aaef12ce793606860d7f3a2668b4c6446684b94592870ded98",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/comparison-evidence.parquet",
+      "bytes": 274615,
+      "sha256": "9c44ab1899cf7dbf252ebaeabf8da597eeb7b0700df215d8b3ff46c36be19a7e",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/comparisons.csv",
+      "bytes": 18994518,
+      "sha256": "6522b89dd61ede35b0b856aa343a661894f81e5234a7544f00e4225817e2d9bf",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/comparisons.parquet",
+      "bytes": 1438098,
+      "sha256": "e3d086e3dc6e28e16c4ab3a313f94d8122642b91572695478f7e9ebb5f0dcfcb",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/data-dictionary.md",
+      "bytes": 14537,
+      "sha256": "f52fa0444facd31f4c4404e900571545d36305e902a1f061f825737bbb0154f5",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/fields.csv",
+      "bytes": 5536,
+      "sha256": "93ac3ff59541eb8d472d19e2b52cfd558996f930bedeee5207c50a30b323f1c3",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/fields.parquet",
+      "bytes": 3491,
+      "sha256": "906b2520297571df8ab2dc57802d80c87ca81e982826b1f29abf7adcd2e8d19c",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/figure-claim-links.csv",
+      "bytes": 470,
+      "sha256": "77fae1641ad7b69681c41fa5e8ddf61c7f4d9c49d865772e065a69686740cb26",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/figure-claim-links.parquet",
+      "bytes": 1303,
+      "sha256": "fb042844affdd05431bb0a41d3f26cc622f69258c88e33ec15b4979201e19c05",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/figure-comparison-links.csv",
+      "bytes": 12949,
+      "sha256": "9ee483c4a7f775880b82467faa884f9ca6eebda83946a78ad21cd58b20a9ee18",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/figure-comparison-links.parquet",
+      "bytes": 9519,
+      "sha256": "75bf863dd1e74af0ae80e059402af8e9ad404e4c40f8d61f1504787f5bad7ea4",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/figure-record-links.csv",
+      "bytes": 23403,
+      "sha256": "67639be05c8804382437fad7c9494e52cc3c56cf4f7611d7b3947a0a26d50883",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/figure-record-links.parquet",
+      "bytes": 16560,
+      "sha256": "9073a45320b3b866fae3cbd99e37755130938eb38b7f8c9f73ab25fc62ca7ed8",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/figure-source-links.csv",
+      "bytes": 828,
+      "sha256": "38dfc740d55a9abef37f9d649bc584526f507e243c3db8f48018e02053234aca",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/figure-source-links.parquet",
+      "bytes": 869,
+      "sha256": "458ad649dc4be7cd8d57a57fb732a4600a08afaa369cd8b23bef31e1526f6538",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/figures.csv",
+      "bytes": 776,
+      "sha256": "7150e60083ca8720b091e60d37b20274f838173953a251a187026da7a2e02974",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/figures.parquet",
+      "bytes": 1173,
+      "sha256": "437d9d30a6c53ac3fba82070b97bd4e6e586e287b2b560eaf7076b90eae3d83d",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/geographies.csv",
+      "bytes": 544,
+      "sha256": "b730a16080debebdee000bc4e8b49d301a28affc1e27a64d8d863ac2bb180814",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/geographies.parquet",
+      "bytes": 925,
+      "sha256": "e52dfa57d1bd9255f383c98366e07888f92b78d9c1d9d876f3d40ba3a489a8ef",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/industries.csv",
+      "bytes": 18,
+      "sha256": "6b7a56e08e89bd38b00147184e61dee87e58c51b56f920fe4adaf37c5cec95c5",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/industries.parquet",
+      "bytes": 206,
+      "sha256": "c1c59fe0d90bb1a6ef23a992e5176c5b4b067cd295725b43fc9d50c3ab8b26d3",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/methods.csv",
+      "bytes": 244,
+      "sha256": "6dc1f4b3a32df631c300b0473ea8a9803fc60b76406f1ab184adbcbebc60d031",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/methods.parquet",
+      "bytes": 1377,
+      "sha256": "3eb5183f55b0a64d8d1649a6a03a703f32e85c2426654fa112a075e13f9ed299",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/metrics.csv",
+      "bytes": 1915,
+      "sha256": "bde9be5f7825f84d65d10ea1a85ecbdba5bdaeb7ad2a67ccc45785ae346c6100",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/metrics.parquet",
+      "bytes": 1817,
+      "sha256": "a1863d3382296189033eceb2da03e17e83554094ebf099e305a3cac501ff31cd",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/occupations.csv",
+      "bytes": 20,
+      "sha256": "38600a6acc868cde1b56e867ecf44d627eefc390a8df91d77c3c10c42179ef35",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/occupations.parquet",
+      "bytes": 210,
+      "sha256": "6e725ce13df507d7b30f12bb1a2df69969e83505d0b664d2a745d59b954759ac",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/periods.csv",
+      "bytes": 83,
+      "sha256": "6970727600b9145a78e2c4b1e3d211b3bf8ccb21f7413a691a2f3daaa13ba39f",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/periods.parquet",
+      "bytes": 267,
+      "sha256": "df9f1ae631d37afd7b278f437028887b846c5c32008567700b4f2e16230c0d6f",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/populations.csv",
+      "bytes": 422,
+      "sha256": "33b44191b256666547a588e11b75dca215d26a91228295bcfa26747bd86d74ff",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/populations.parquet",
+      "bytes": 1392,
+      "sha256": "4f7f33096eebbff71694876543cf24d60cad23ece2e36da08b0f26aaeb8ea136",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/public-records.csv",
+      "bytes": 6924776,
+      "sha256": "bc5a5082c03c0dc85df4175ddc814ee9a609d9075833e20c59a1a67fe14f4777",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/public-records.parquet",
+      "bytes": 681904,
+      "sha256": "83d10da7daa73ef23875e14508d861e57898282de84d3064147bb540320a9bb8",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/public.duckdb",
+      "bytes": 17838080,
+      "sha256": "401ef6746ea118e4fa69111e2252cada8295d0dcb8d3f23619489e5cfda718f3",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/record-evidence.csv",
+      "bytes": 613273,
+      "sha256": "090178531a225fff4e57b8963d5ba4fa880d83a18dddfd3d959b2f503fa6f6b6",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/record-evidence.parquet",
+      "bytes": 424915,
+      "sha256": "5f3c95bfaa8bd490aea7a1a3a136bec85a24bc2027da13fb8d8863d3097ab345",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/recorded-sexes.csv",
+      "bytes": 115,
+      "sha256": "0a4887f74a4381ccfd157d241a947640895247fc81e63d3c1453c5689c19bcfe",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/recorded-sexes.parquet",
+      "bytes": 492,
+      "sha256": "96dd9905955cf7c256374bc326b5f13a9a0c5bb4a1407f639d092302a582c3e4",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/sources.csv",
+      "bytes": 3200,
+      "sha256": "8c77a37f298f4ab24331cc89c27427b5c54639871caafa4e66ac85d937c6b4b0",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "exports/sources.parquet",
+      "bytes": 3255,
+      "sha256": "bd9809f6b7c265f7dc1e9c2e3eb3265a66c5091f36b9d1bd72a95e3c8add7931",
+      "role": "aggregate_export",
+      "release_approved": false
+    },
+    {
+      "path": "figures/eight-quarter-trends.png",
+      "bytes": 220746,
+      "sha256": "8fd7b5ec4481de5fdbab466ccd5bb1b671868590072dfe5393a21a6f4f850d85",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/eight-quarter-trends.svg",
+      "bytes": 219669,
+      "sha256": "9ec87d72d7e6f71f5ddac2c781eb24ac34914669d55b90997e4afac2f0b20a3d",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/focal-latest.png",
+      "bytes": 115991,
+      "sha256": "077df19eb3d4e166c1be45d4b68e834ea704a3c736da93ec46c20d2563003c87",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/focal-latest.svg",
+      "bytes": 124581,
+      "sha256": "dda93aa6613ec49e09e95962b9cf4af48371d0b843faa8b8d6f77b5f50c15dc4",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/national-context.png",
+      "bytes": 148429,
+      "sha256": "9cd77470226ba7a84799d7922639831ae6bf8d5ce524eaefa754ecb7a0af6cee",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/national-context.svg",
+      "bytes": 159328,
+      "sha256": "ebce9f695389d73a40056ea4d7aa7408533334c8506b16148ce15778dd6988e5",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/opening-49098ac0e72ad61498b66be4ad781a1a3a53d55bb7c52713ebf26f1539f0ce73.png",
+      "bytes": 51477,
+      "sha256": "a2024ab565645a125cbfbf4347c205d53f6926eafd6656140afe5b3b17f353ec",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/opening-49098ac0e72ad61498b66be4ad781a1a3a53d55bb7c52713ebf26f1539f0ce73.svg",
+      "bytes": 67681,
+      "sha256": "4842f51ad07cda93d7f01ef9b93a131425e57ad161646197a19f3a7911242197",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/opening-7b66a320b957029a78acf87e6f0cebebe42c8d5efde1652ddcd7544ae033c4de.png",
+      "bytes": 55788,
+      "sha256": "267900d255287eb42d6a9fc44e3b53d39a674596b1a2b89d845ef7c1f883cb16",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/opening-7b66a320b957029a78acf87e6f0cebebe42c8d5efde1652ddcd7544ae033c4de.svg",
+      "bytes": 71245,
+      "sha256": "a21fad5598b846fbeee4f0e3e4b2854cf98a9e4277c910d6215c1d63eb16a6fb",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/opening-7d6e1e45043c9f5b309b91186cc9a259e4543baf20d07e12ec74bf88e99c8b2e.png",
+      "bytes": 41624,
+      "sha256": "981988600df9dbca40a854ffa5268791ecf2204be44154b057e9a05c7a8ed8cc",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/opening-7d6e1e45043c9f5b309b91186cc9a259e4543baf20d07e12ec74bf88e99c8b2e.svg",
+      "bytes": 60361,
+      "sha256": "91937184b1c52259dd068ae80512f7ecaf3a604be9d5c61bb8c510d7d2e8e358",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/other-fields.png",
+      "bytes": 342689,
+      "sha256": "db251943a408c4d7223ae1280b4dc0c29f8911c4c667372c3ad4e776db95a8ab",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/other-fields.svg",
+      "bytes": 293205,
+      "sha256": "b15c594f36d7a51838ab952dc66bbd227bc7fa85e04fb1fdc4e49e95e99481fd",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/recorded-sex.png",
+      "bytes": 124201,
+      "sha256": "bbe0e8576db3cdda3978ec62dc0e15d704d5f5ad2319e6902b638b4fbb552630",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/recorded-sex.svg",
+      "bytes": 128024,
+      "sha256": "9473eb41d9d088ee78e74c93ffe69218bd5375df198720204da66d19627c2079",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/state-availability.png",
+      "bytes": 142888,
+      "sha256": "70250ae4a3e65bc16bdecee6e322abda58f4eb193cacf7bb1a1c4daa84353e2e",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "figures/state-availability.svg",
+      "bytes": 150828,
+      "sha256": "8ac14eb11b81d115a41466e37e43e4d0f32e74f51c0da18a2a314d1bf685792c",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "report.html",
+      "bytes": 3186903,
+      "sha256": "00eaa8cb6a09d094ae07d6cf556825fb245a9ab04cc6f4b1db20757fa5af0a30",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "report.md",
+      "bytes": 254064,
+      "sha256": "4177931651266afc4f484c9bf3c9746cecdf45a38a5e4e003e9c48d3e20a09ef",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    },
+    {
+      "path": "report.pdf",
+      "bytes": 1048093,
+      "sha256": "8b6914cda1836f22ea7bfc4b3716f23cc7e0f32681d47107f1c0a4564ed108c8",
+      "role": "report_or_figure_or_resource",
+      "release_approved": false
+    }
+  ]
+}

@@ -45,7 +45,7 @@ jobs:
           $expected = 'ab1151f210b4e6bb7aa7a79e91a67e8ddb760094c107bfda55241b6aaefe7d53'
           if ($actual -ne $expected) { throw 'Reviewed WeasyPrint native asset hash differs' }
           Expand-Archive -LiteralPath $archive -DestinationPath $native
-          $dll = Join-Path $native 'weasyprint/_internal'
+          $dll = Join-Path $native 'onedir/weasyprint/_internal'
           if (!(Test-Path -LiteralPath $dll -PathType Container)) { throw 'Native DLL directory missing' }
           $fontconfig = Join-Path $env:RUNNER_TEMP 'brujula-fontconfig.xml'
           $fonts = Join-Path $env:GITHUB_WORKSPACE 'brujula/assets/fonts'
@@ -81,6 +81,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Current wheel build failed' }
           $wheel = Get-ChildItem -LiteralPath $wheelDir -Filter 'career_signals_mx-*.whl' | Select-Object -First 1
           if ($null -eq $wheel) { throw 'Current wheel not found' }
+          Copy-Item -LiteralPath $wheel.FullName -Destination (Join-Path $env:RUNNER_TEMP 'installed.whl')
           $venv = Join-Path $env:RUNNER_TEMP 'brujula-installed'
           python -m venv $venv
           if ($LASTEXITCODE -ne 0) { throw 'Outside-checkout virtual environment failed' }
@@ -99,5 +100,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: phase4-installed-runtime-${{ matrix.os }}
-          path: ${{ runner.temp }}/phase4-installed-runtime.json
+          path: |
+            ${{ runner.temp }}/phase4-installed-runtime.json
+            ${{ runner.temp }}/installed.whl
           if-no-files-found: warn

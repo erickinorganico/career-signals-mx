@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "status": "LOCAL_PASS_PENDING_CI",
-  "scope": "Real offline Phase 4 publication and local controls; Windows and Ubuntu hosted CI remain unverified until their run artifacts are read back. Public statistical status remains REVIEW.",
+  "status": "PASS_PHASE4_ACCEPTANCE",
+  "scope": "Real offline Phase 4 publication, local controls and clean installed-wheel fixtures on hosted Windows and Ubuntu. This does not certify the separate Phase 5 release. Public statistical status remains REVIEW.",
   "synthetic": false,
   "implementation_commit": "c222f69",
   "control_commit": "ad73a72",
@@ -97,10 +97,19 @@
     "scope_limit": "Final release notices and publication approval belong to the later release gate."
   },
   "hosted_ci": {
-    "status": "PENDING",
+    "status": "PASS",
     "required_os": ["Windows", "Ubuntu"],
-    "windows_result": null,
-    "ubuntu_result": null,
-    "current_wheel_installed_helper_result": null
+    "source_commit": "3b8b2d4e603d69f9d94f5ac45f6446156a17d14f",
+    "run_id": 36050222714,
+    "run_url": "https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714",
+    "windows_result": "PASS",
+    "ubuntu_result": "PASS",
+    "current_wheel_installed_helper_result": "PASS_BOTH_HOSTS",
+    "ubuntu_receipt_sha256": "06296f3691aabb2be7b6bf421442f59d10f94862f1873fcd0f747f4e1a0c3f0d",
+    "windows_receipt_sha256": "a5e39dd08df523d0fd863a1a3dc8f87ff6d98d70908e396bc10eb7e54fe93d3c",
+    "installed_code_and_resource_sha256": "263b9900eb45604f9b3a10ef949cf6512eb6478c222c70cd2c402853afffe065",
+    "resource_count_per_host": 24,
+    "wheel_member_count_per_host": 63,
+    "hosted_scope": "Each host built the current wheel, installed it outside checkout, ran fixtures and failure controls, verified local-only assets, and rendered a searchable one-page Spanish PDF with embedded DejaVu. The complete real eight-quarter R numerical replay remains the separately accepted designated research-environment proof."
   }
 }

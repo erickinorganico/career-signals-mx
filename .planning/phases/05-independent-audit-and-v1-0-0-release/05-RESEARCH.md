@@ -188,11 +188,11 @@ for name, item in approved_inventory.items():
 | A1 | Resolved: official create/download/asset documentation was read successfully by the orchestrator on 2026-09-24. [CITED: official links above] | Architecture Patterns | Actual tag binding, upload hashes and unauthenticated access remain execution checks. |
 | A2 | Final 1.0.0 packaging may use one archive or several individual assets; no exact list has yet been accepted. [ASSUMED] | Architecture Patterns | Planner must derive the allowlist from frozen actual files, not this hypothesis. |
 
-## Open Questions
+## Resolved planning decisions and remaining execution gates
 
-1. What is the accepted final 04-06 commit, native Windows/Ubuntu CI outcome, integrated disclosure result and phase verification? Current `.planning/STATE.md` says these are pending. Use the resulting receipts; a green local sample cannot replace them. [VERIFIED: `.planning/STATE.md`; `.github/workflows/verify.yml`]
-2. Which exact report/export/package files and public-safe evidence summaries will be shipped at the frozen 1.0.0 SHA? Derive from the final manifest and asset privacy/license review. [VERIFIED: `05-CONTEXT.md`; `04-05-SUMMARY.md`]
-3. Which final citation format and reader preview will be accepted? Drafts suggest bilingual citation guidance and an aggregate-only preview; choose only after exact report, attribution and license review. [VERIFIED: `05-CONTEXT.md`; `FINAL-DOCUMENTATION-GAPS.md`; `.cache/research/phase5-doc-drafts/INTEGRATION-NOTES.md`]
+1. **Resolved identity:** 04-06 summary and public acceptance receipt bind commit 3b8b2d4 and successful Windows/Ubuntu CI 36050222714; head 76b5b72 also passed CI 36053551361. Phase4 independent verification confirms all five technical truths; visual approval remains an explicit human gate. That execution gate is not an unresolved research choice.
+2. **Resolved asset design:** ship the final 1.0.0 wheel, standalone Spanish PDF, one archive containing the unchanged sealed 73 artifacts plus project/source/font notices and public-safe evidence, a standalone manifest, and SHA256SUMS. Exact bytes and final allowlist approval are execution gates of 05-02; never infer them from this design decision. Exclude raw sources and local/native dependencies.
+3. **Resolved citation:** use CITATION.cff plus bilingual human guidance identifying project, version/tag URL, INEGI source, eight-quarter window and nonofficial transformed estimates. The existing report is the reader preview; no new application or extra visual surface is required.
 
 ## Environment Availability
 

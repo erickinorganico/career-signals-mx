@@ -1,12 +1,14 @@
-# Brújula Laboral MX — current research snapshot
+# Brújula Laboral MX — research release 1.0.0
 
-[Download release](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) · [Spanish PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v0.9.0-preview.1/brujula-laboral-mx-informe.pdf) · [Español](README.md)
+[Download release](https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0) · [Spanish PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v1.0.0/brujula-laboral-mx-informe.pdf) · [Español](README.md)
 
-Published at the owner's request as a preliminary snapshot. The real INEGI ENOE report covers 2024 Q3–2026 Q2, with 97 pages, nine figure groups and 22 linked CSV/Parquet/DuckDB tables. Extract the archive and open `research/report.html` or `research/report.pdf` offline. No raw person-level data is distributed.
+Release 1.0.0 is published with the owner's visual acceptance. The real INEGI ENOE report covers 2024 Q3–2026 Q2, with 97 pages, nine figure groups and 22 linked CSV/Parquet/DuckDB tables. Extract the archive and open `research/report.html` or `research/report.pdf` offline. No raw person-level data is distributed.
 
 National and focal-field profiles span eight quarters; other fields, recorded sex and all 32 states cover the latest quarter only. Missing and suppressed values remain null. Precision is explicitly nonofficial (`REVIEW`); this is neither a career ranking nor a personal recommendation.
 
-Local checks passed 592 Python tests, 30 Node controls, independent R comparisons and numerical replay. Hosted native-install CI and final GSD closure remain pending. Version 1.0.0 is not declared complete; full bilingual documentation is unfinished.
+The released code passed 595 Python tests (six require the local environment) and 30 Node controls on each [Windows/Ubuntu CI host](https://github.com/erickinorganico/career-signals-mx/actions/runs/36464796584). Independent R comparisons and numerical replay retain their earlier exact-input evidence. Human visual acceptance and the independent asset audit passed; anonymous downloads of all five release assets match their approved hashes. The [release receipt](docs/evidence/phase-05-release-acceptance.json) distinguishes these checks from administrative GSD closure.
+
+For an installed wheel and already custodied inputs, follow the explicit-root `enoe-accept`, `research-analyze`, `research-build`, `research-replay` and `research-open` commands in the bilingual [operations guide](docs/OPERATIONS.md). Read the current bilingual [method](docs/METHODOLOGY.md), [scope](docs/SCOPE.md), [v2 contract](docs/CONTRACT-V2.md), [numerical acceptance](docs/evidence/phase-02-numerical-acceptance.json), [analytical acceptance](docs/evidence/phase-03-analysis-acceptance.json) and [Phase 4 publication evidence](docs/evidence/phase-04-publication-acceptance.json). Cite the [published 1.0.0 tag](https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0), ENOE period and receipt used for today's public archive; [CITATION.cff](CITATION.cff) describes the published 1.0.0 source.
 
 ---
 
@@ -20,21 +22,6 @@ The remaining material describes the earlier synthetic pilot, not the real repor
 Analytics repository combining source research, evidence-aware pipelines and
 analytical reports. [Español](README.md) · [Documentation](docs/README.md)
 
-> **Real-data version 1.0.0: Phases 1–3 accepted.** The full scope covers eight
-> ENOE quarters, 2024 Q3–2026 Q2, survey uncertainty, field profiles, offline
-> HTML/Markdown/PDF reporting and reusable public aggregates. Source custody and
-> statistical estimation are accepted: 6,739 evaluated cells, independent R checks,
-> official references and identical eight-quarter replay. Project precision
-> remains explicitly nonofficial. The accepted evidence-bound packet contains
-> 6,739 real records, 4,209 comparisons, 38 claims and 3 openings; persisted JSON
-> reload validation has zero errors. Independent review verified 42/42 truths and
-> 4/4 roadmap criteria; security closed 15/15 threat entries with zero open and
-> Nyquist passed 31/31.
-> Phase 4 publication and Phase 5 release remain pending. See the
-> [numerical evidence](docs/evidence/phase-02-numerical-acceptance.json),
-> [release plan](docs/FINAL-RELEASE-PLAN.md) and [GSD status](.planning/STATE.md).
-> The public repository remains at version 0.1.0 until the final release.
->
 > The demo instructions below describe historical version 0.1.0. Its observations
 > are **synthetic**, not Mexican labor estimates or personal recommendations.
 > The demo is not the final project deliverable.
@@ -54,10 +41,10 @@ nominal mean monthly income and women's share of employment. The implemented
 fixture contains 54 synthetic observations, including seven explicit
 `UNKNOWN`/`null` rows.
 
-An ENOE extension is future work, subject to verified redistribution conditions,
-official field codes, population filters, weights and complex-survey precision.
-No real source ingestion or automatic source activation is implied by inclusion
-in the source catalog. LATAM requires separate country-level methodology review.
+At the time of this synthetic pilot, an ENOE extension was future work. The
+current eight-snapshot study has separate accepted numerical and analytical
+receipts linked above. Catalog inclusion still does not activate a new source
+or authorize publication. LATAM requires separate country-level methodology review.
 
 ## Read the design
 

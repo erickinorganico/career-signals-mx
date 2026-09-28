@@ -1,5 +1,10 @@
 # Contrato de interfaces y artefactos v1
 
+> Referencia histórica de compatibilidad del piloto sintético 0.1.0. El contrato
+> vigente para la investigación real ENOE es [CONTRACT-V2.md](CONTRACT-V2.md);
+> su [paquete analítico aceptado](evidence/phase-03-analysis-acceptance.json)
+> tiene evidencia independiente de este documento v1.
+
 Fecha: 2026-09-22 · Python 3.12+ · JSON `snake_case` · UTF-8.
 
 Este contrato distingue capacidades implementadas, verificadas localmente y

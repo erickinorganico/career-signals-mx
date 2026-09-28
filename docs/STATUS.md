@@ -1,6 +1,16 @@
+# Estado actual — v1.0.0 publicada
+
+La [versión 1.0.0](https://github.com/erickinorganico/career-signals-mx/releases/tag/v1.0.0) está publicada. El propietario aprobó la revisión visual; los cinco archivos públicos descargados coinciden con los hashes auditados. La [CI del código publicado](https://github.com/erickinorganico/career-signals-mx/actions/runs/36464796584) pasó en Windows/Ubuntu: 595 pruebas, seis casos dependientes del entorno local omitidos y 30 controles adicionales por sistema. Consulte el [recibo final](evidence/phase-05-release-acceptance.json) y el [estado GSD](../.planning/STATE.md).
+
+Los registros siguientes son históricos y no describen el estado actual.
+
+---
+
 # Estado publicado — v0.9.0-preview.1
 
-El propietario pidió detener la ampliación y publicar el estado existente. Se entrega el [informe real y sus agregados](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) como publicación preliminar. La implementación local está validada; CI nativa alojada, cierre de 04-06, fase 5 y auditoría final GSD permanecen pendientes. No se declara versión final 1.0.0. Los detalles que siguen son registros históricos anteriores a esta decisión.
+Se entrega el [informe real y sus agregados](https://github.com/erickinorganico/career-signals-mx/releases/tag/v0.9.0-preview.1) como publicación preliminar. La implementación local y el plan 04-06 tienen evidencia de aceptación; la [CI nativa](https://github.com/erickinorganico/career-signals-mx/actions/runs/36053551361) pasó en Windows y Ubuntu para el checkout registrado entonces. La verificación técnica independiente de Fase 4 pasó 5/5; la aprobación visual humana sigue pendiente. Fase 5, el paquete Python 1.0.0 candidato, su CI exacta y la auditoría final GSD permanecen separados. No se declara release público final 1.0.0. Los detalles que siguen son registros históricos anteriores a esta actualización.
+
+Preparación técnica al 2026-09-28: el candidato `611d2f5` pasó CI en Windows y Ubuntu (595 pruebas y 30 controles por sistema; seis casos dependen del entorno local). El wheel de entrega procede de esa CI y sus archivos coinciden en ambos sistemas. La auditoría aprobó los cinco archivos de entrega y sus 147 miembros internos; los verificadores de inventario y portabilidad pasaron contra los bytes reales. Véanse [portabilidad](evidence/phase-05-portability.json) e [inventario](evidence/phase-05-release-inventory.json). El borrador 1.0.0 ya está cargado y sus cinco archivos descargados coinciden con el inventario; [recibo del borrador](evidence/phase-05-release-acceptance.json). La revisión visual humana y el cierre público/GSD siguen pendientes.
 
 ---
 
@@ -20,8 +30,10 @@ amenazas, sin abiertas, y Nyquist pasó 31/31. La precisión propia continúa si
 discrepancias documentadas. La [evidencia numérica](evidence/phase-02-numerical-acceptance.json)
 conserva los intentos y hashes, y la [evidencia de Phase 3](evidence/phase-03-analysis-acceptance.json)
 conserva el digest del paquete. Phase 4 debe producir la publicación offline;
-Phase 5 debe cerrar el release. Ninguno está terminado.
-El repositorio conserva la versión pública 0.1.0 hasta el release final.
+Phase 5 debe cerrar el release. Estas frases reflejan el estado histórico
+previo a la publicación preliminar enlazada arriba.
+El repositorio conserva la versión pública sintética 0.1.0 y el preview real,
+ambos separados del futuro release final.
 
 La evidencia que sigue es el registro histórico de la demo sintética 0.1.0;
 sus bloqueos de ingesta y cifras de pruebas no describen el alcance activo.

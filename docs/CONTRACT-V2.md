@@ -43,9 +43,11 @@ intercambian automáticamente. Cada `population_id` debe existir en
 `POPULATION_DEFINITIONS` de `brujula.populations`: ese módulo es la única
 autoridad para `national_15_plus_context` y
 `completed_professional_known_age`. El primero incluye EDA 98 como edad
-operativamente desconocida; el segundo acepta 15–97 y estudios profesionales
-terminados. Ninguno implica que la carrera reportada sea toda licenciatura
-previa de una persona.
+operativamente desconocida; el segundo acepta EDA 15–96 como edades ordinarias
+y EDA 97 como la categoría truncada **97 años o más**, además de estudios
+profesionales terminados. EDA 97 no es una edad exacta. EDA 98/99 indican edad
+desconocida según el universo y nunca se convierten en una edad numérica.
+Ninguno implica que la carrera reportada sea toda licenciatura previa de una persona.
 
 ## Registro interno y proyección pública
 
@@ -83,14 +85,15 @@ contribuyen a la medida; no puede superar `weighted_denominator`, la suma
 de pesos de la población elegible usada como denominador. Las dos sumas
 pueden coincidir para un total o una media calculada sobre el mismo conjunto,
 pero no se exige igualdad para proporciones con numerador subconjunto.
-Estas comprobaciones validan diagnósticos provistos; fase 2 calcula las
-estimaciones y varianzas y contrasta su precisión con R e INEGI.
+Estas comprobaciones validan diagnósticos provistos; la [aceptación numérica de fase 2](evidence/phase-02-numerical-acceptance.json)
+calculó estimaciones y varianzas y contrastó su precisión con R e INEGI para
+los ocho cortes aceptados. La precisión del proyecto continúa siendo no oficial.
 Para un valor visible positivo, CV debe coincidir con
 `100 × error_estándar / valor` dentro de 0.005 puntos porcentuales
 (redondeo a dos decimales). Los umbrales de 15% y 30% se aplican tanto
 al CV declarado como al calculado; la tolerancia nunca permite cruzarlos.
-La validación completa de los extremos del IC90 contra `ci_method` queda
-para el gate numérico de fase 2; aquí se verifican presencia, orden y
+La validación completa de los extremos del IC90 contra `ci_method` corresponde
+al gate numérico de fase 2; este contrato verifica presencia, orden y
 contención del valor.
 
 Cuando el valor es null, la proyección pone null en denominador ponderado,
@@ -115,7 +118,8 @@ separan; por ejemplo, Taylor linealizado y `normal_wald_90` o
 `logit_delta_normal_90`. `singleton_policy=adjust` requiere revisión y
 `official_precision=false`; el ajuste del proyecto no se presenta como
 tratamiento oficial del INEGI. Soporte de diseño y dominio son contadores
-distintos. Fase 2 calcula y contrasta los intervalos, CV y soporte real.
+distintos. La fase 2 calculó y contrastó intervalos, CV y soporte real dentro
+del alcance de su recibo aceptado.
 
 `unit` admite `people`, `percent`, `MXN/month` y `hours/week`. Solo
 `MXN/month` usa `price_basis=nominal`; las otras unidades usan
@@ -134,11 +138,13 @@ y transformación de Brújula Laboral MX, no realizadas ni avaladas por INEGI.
 ZIP y filas de personas permanecen locales. Este contrato no activa una
 fuente, aprueba una cifra ni autoriza publicar microdatos.
 
-La equivalencia conceptual de `ENT` con `CVE_ENT` sigue en revisión de fase 3
-(`ANA-03`). La codificación completa de filas de personas y el tratamiento
-numérico de ingresos siguen en fase 2 (`STAT-01`/`STAT-06`). La reconciliación
-de errores estándar con R e INEGI y la política singleton siguen siendo gates
-numéricos posteriores. Los ocho paquetes y sus miembros están documentados en
+La equivalencia conceptual de `ENT` con `CVE_ENT` y la codificación de los ocho
+paquetes fueron aceptadas para el alcance de los [recibos de fase 2](evidence/phase-02-numerical-acceptance.json)
+y [fase 3](evidence/phase-03-analysis-acceptance.json). Los contrastes R/INEGI
+se aceptaron con discrepancias y precisión no oficial documentadas. La
+publicación instalada, el renderizado/exportación, el sello/current y el release
+final tienen evidencia y gates separados; este contrato no los certifica. Los
+ocho paquetes y sus miembros están documentados en
 [SOURCES.md](SOURCES.md).
 El helper de códigos CMPE reconoce las tres carreras foco verificadas tanto
 en el léxico original de cinco dígitos como en su forma SDEM de seis dígitos

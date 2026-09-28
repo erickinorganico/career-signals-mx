@@ -1,8 +1,8 @@
 ---
 phase: 4
 slug: offline-publication-and-reproducible-operation
-status: in_progress
-threats_open: 1
+status: complete
+threats_open: 0
 asvs_level: 1
 register_authored_at_plan_time: true
 created: 2026-09-23
@@ -10,7 +10,11 @@ created: 2026-09-23
 
 # Phase 4 — Security verification
 
-This register verifies the authored threats from Plans 04-01 through 04-06 against code and actual artifacts. Phase 4 remains in progress: sixteen mitigations have bounded evidence, and one is open. ASVS level 1 is scoped to the local offline publication and reproducible-operation pipeline. Authentication, sessions and a server boundary do not apply.
+## Hosted acceptance closure, 2026-09-24
+
+T-04-15 is now CLOSED for Phase 4. Hosted [run 36050222714](https://github.com/erickinorganico/career-signals-mx/actions/runs/36050222714) passed Windows and Ubuntu at commit `3b8b2d4e603d69f9d94f5ac45f6446156a17d14f`; both downloaded installed-helper receipts report `PASS` with the resource, local-asset, failure and Spanish-PDF outcomes recorded in `docs/evidence/phase-04-publication-acceptance.json`. `04-06-SUMMARY.md` binds that result to the existing local/real evidence. The register below preserves its earlier pre-CI observations as audit history. Phase 5 asset approval and release review remain separate.
+
+This register verifies the authored threats from Plans 04-01 through 04-06 against code and actual artifacts. All seventeen authored mitigations have bounded Phase 4 evidence; independent phase verification and Phase 5 release custody remain separate. ASVS level 1 is scoped to the local offline publication and reproducible-operation pipeline. Authentication, sessions and a server boundary do not apply.
 
 ## Trust boundaries
 
@@ -37,12 +41,12 @@ Severity is an initial planning classification. High covers integrity or disclos
 | 05 / T-04-12 | current pointer | high | mitigate | Verify manifest/receipt digest and eight live acquisition IDs on every read. | CLOSED — `brujula/pipeline_v2.py:422-510` checks pointer, manifest, receipt, packet, eight live acquisition receipts and artifact hashes twice per resolution; installed opens and copied-source failure are in `04-WAVE3-CHECKS.md`. |
 | 05 / T-04-13 | manifest paths/files | high | mitigate | Exact inventory, safe relative paths and all artifact SHA hashes. | CLOSED — `brujula/pipeline_v2.py:74-85,208-226,422-483` derives an exact model-specific inventory, rejects unsafe paths/reparse points and compares all hashes; corrected candidate audit found 73 matching content artifacts with no extras/misses. |
 | 05 / T-04-14 | crash/concurrency | medium | mitigate | BuildLock, journal recovery, immutable failure receipts and fault matrix. | CLOSED — `brujula/pipeline_v2.py:278-365,429-430` recovers prior RUNNING journal/current under `BuildLock`, records each run before work, preserves immutable failure bytes on interrupted recovery and rejects a failed promotion marker on reads. `tests/test_pipeline_v2.py:117-276` covers five interruption stages, process exit, idempotence, invalid IDs, junction and malformed receipts; `04-INTEGRATED-OPERATION.md` records actual installed `os._exit(17)` followed by recovered BLOCKED receipt, fresh sealed build/open and 87 unchanged anchors. |
-| 06 / T-04-15 | acceptance evidence | high | mitigate | Record exact command, hashes, exit, edge/prohibition and visual outcomes. | OPEN — `04-VALIDATION.md:83-100`, `04-INTEGRATED-OPERATION.md`, `docs/visual/phase-04-visual-review.md` and `docs/evidence/phase-04-publication-acceptance.json` record local commands, hashes, installed exits, 45 edge outcomes, four prohibition outcomes and visual review. The receipt remains `LOCAL_PASS_PENDING_CI`; its `hosted_ci` Windows/Ubuntu results and installed-helper result are null. `04-06-SUMMARY.md` is absent. The required hosted acceptance evidence is unverified. |
+| 06 / T-04-15 | acceptance evidence | high | mitigate | Record exact command, hashes, exit, edge/prohibition and visual outcomes. | CLOSED — `04-VALIDATION.md`, `04-INTEGRATED-OPERATION.md`, `docs/visual/phase-04-visual-review.md`, `04-06-SUMMARY.md` and `docs/evidence/phase-04-publication-acceptance.json` bind local commands, hashes, 45 edges, four prohibitions, visual review and hosted run 36050222714. Both Windows/Ubuntu installed-helper artifacts were downloaded and read as `PASS`; their hashes are in the public receipt. |
 | 06 / T-04-16 | bundle/evidence | high | mitigate | Scan actual wheel/bundle for microdata, secrets and nested sentinels before evidence seal. | CLOSED for the reviewed local candidate — `.cache/research/phase4-integrated-content-audit.json` records a hash-matching 63-member `c222f69` wheel and 73-artifact sealed bundle, zero credential/private-path matches, no raw person columns in the 6,739-row aggregate export, and exact manifest inventory. `tests/phase4_prohibitions.py:50-164` adds the deliberate nested suppression canary through one validated packet and scans its emitted HTML/MD/SVG/PNG/PDF/CSV/Parquet/DuckDB outputs; clean and bad controls passed (`04-VALIDATION.md:89-90`). This is bounded local candidate evidence; release approval remains separate. |
 
 ## Acceptance gate
 
-This register remains in progress while T-04-15 is open. The Phase 04-06 plan requires clean installed Windows and Ubuntu checks; the public acceptance receipt has no hosted result or installed-helper receipt for either OS. Local tests and a locally inspected sealed bundle cannot substitute for those run artifacts. Dependency identity review does not certify package vulnerability status.
+All seventeen authored Phase 4 threats have bounded closure evidence. Hosted installed-wheel fixture/PDF checks passed on Windows and Ubuntu, and their downloaded receipts were read back. Dependency identity review does not certify package vulnerability status; Phase 5 separately reviews the exact public release inventory, licenses and attribution.
 
 ## Audit trail
 
