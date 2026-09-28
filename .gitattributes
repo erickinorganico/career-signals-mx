@@ -4,3 +4,7 @@
 *.duckdb binary
 # Preserve published example bytes for the release manifest on every platform.
 examples/synthetic/** -text
+
+# Preserve independently hash-bound review bytes carried in the research archive.
+docs/evidence/phase-05-content-review.md -text
+docs/evidence/phase-05-independent-review.json -text
