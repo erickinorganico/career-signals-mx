@@ -1,5 +1,7 @@
 # Brújula Laboral MX — Alcance / Scope
 
+> Ampliación de presentación autorizada el 2026-09-28: README visual y sitio estático de resultados en GitHub Pages. Se distribuye la edición auditada 1.0.0 sin modificar el análisis ni incorporar fuentes. Véase [publicación web](PAGES.md). Las exclusiones de servicios y aplicaciones interactivas se mantienen.
+
 > **Estado / Status:** v1.0.0 está publicada; las cinco fases tienen verificación independiente y la revisión visual está aprobada. / v1.0.0 is published, all five phases have independent verification, and human visual acceptance is recorded. See [release evidence](evidence/phase-05-release-acceptance.json) and [GSD state](../.planning/STATE.md).
 
 ## Español
