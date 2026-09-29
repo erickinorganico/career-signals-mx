@@ -20,8 +20,8 @@ METRICS = (("employment_rate", "Tasa de ocupación", "%"),
            ("positive_income_coverage", "Cobertura de ingreso positivo conocido", "%"),
            ("positive_income_mean", "Ingreso mensual medio positivo conocido", "MXN/mes"))
 EDITORIAL = {
-    "employment_rate": ("empleo", "La ocupación ronda 75 % en los tres campos",
-                        "Ocupación significa tener trabajo; no indica empleo en la carrera estudiada."),
+    "employment_rate": ("empleo", "Alrededor de 3 de cada 4 personas con estos estudios tienen alguna ocupación",
+                        "La medida usa como denominador a todas las personas del grupo con situación laboral conocida, incluidas las inactivas. No mide empleo relacionado con la carrera ni calidad laboral; el resto incluye tanto personas desocupadas como inactivas."),
     "positive_income_coverage": ("cobertura-ingreso", "Menos de la mitad de las personas ocupadas tienen ingreso positivo exacto conocido",
                                  "La falta de un ingreso exacto conocido no equivale a ingreso cero."),
     "positive_income_mean": ("ingreso", "El ingreso medio observado ronda 18–20 mil pesos mensuales",
