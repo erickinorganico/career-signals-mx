@@ -4,7 +4,7 @@
 
 Investigación reproducible del mercado laboral mexicano. Ocho trimestres de datos públicos, gráficas y tablas con evidencia para leer cada cifra en su contexto.
 
-**Hallazgo central, 2026-T2:** en los tres campos, las estimaciones de ocupación rondan el 75%; el ingreso positivo exacto conocido cubre menos de la mitad de los ocupados. El promedio de ingreso debe leerse junto con esa cobertura. [Leer los tres hallazgos y su evidencia](https://erickinorganico.github.io/career-signals-mx/#hallazgos).
+**Hallazgo central, 2026-T2:** alrededor de 3 de cada 4 personas con estos estudios tienen alguna ocupación; el ingreso positivo exacto conocido cubre menos de la mitad de los ocupados. El denominador de ocupación incluye a todas las personas del grupo con situación laboral conocida, incluidas las inactivas: la medida no mide empleo relacionado con la carrera ni calidad laboral, y el resto incluye tanto personas desocupadas como inactivas. El promedio de ingreso debe leerse junto con esa cobertura. [Leer los tres hallazgos y su evidencia](https://erickinorganico.github.io/career-signals-mx/#hallazgos).
 
 **[Explorar los resultados →](https://erickinorganico.github.io/career-signals-mx/)** · [Leer el informe completo](https://erickinorganico.github.io/career-signals-mx/research/report.html) · [Descargar PDF](https://github.com/erickinorganico/career-signals-mx/releases/download/v1.0.0/brujula-laboral-mx-informe.pdf) · [English](README.en.md)
 
@@ -28,9 +28,9 @@ México, segundo trimestre de 2026. Los tres perfiles corresponden a personas co
 
 IC90: **39.77–57.29%** · CV: 11.10% · n observado: 238 · evidencia **R1549** en el [informe completo](https://erickinorganico.github.io/career-signals-mx/research/report.html).
 
-### Derecho: 75.86% de ocupación en la población del perfil
+### Derecho: 75.86% de personas con alguna ocupación en la población del perfil
 
-La tasa de ocupación se calcula sobre la población elegible del perfil; no mide colocación de recién egresados ni empleo relacionado con la carrera.
+La tasa de ocupación se calcula sobre todas las personas del grupo con situación laboral conocida, incluidas las inactivas. No mide colocación de recién egresados, empleo relacionado con la carrera ni calidad laboral; el resto incluye tanto personas desocupadas como inactivas.
 
 ![Tasa de ocupación del perfil de Derecho, con intervalo de confianza del 90%](docs/figures/trend-employment_rate-033100.svg)
 
